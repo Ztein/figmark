@@ -1,10 +1,11 @@
-"""Diagram-extraktion via PyMuPDF drawing-clustering.
+"""Diagram extraction via PyMuPDF drawing clustering.
 
-Riksbankens och liknande myndighetsrapporter har vektordiagram (matplotlib-export
-till PDF path-commands) som inte fångas av page.get_images(). Den här modulen
-hittar diagram-regioner genom att klustra drawings spatialt och expanderar bbox:en
-för att fånga axel-titlar och källrader.
+Central-bank and similar agency reports embed vector charts (matplotlib exported
+to PDF path commands) that page.get_images() does not catch. This module finds
+diagram regions by clustering drawings spatially and expands the bbox to capture
+axis titles and source lines.
 """
+
 from __future__ import annotations
 
 import base64
@@ -17,45 +18,45 @@ from .config import Config
 from .context import ContextText
 
 # ============================================================================
-# Tekniska konstanter för clustering-pipelinen. Tuna här om en specifik
-# PDF-typ kräver det. Empiriskt utprovade mot Riksbankens penningpolitiska
-# rapport (vektordiagram från matplotlib).
+# Technical constants for the clustering pipeline. Tune here if a specific PDF
+# type needs it. Empirically calibrated against a central-bank monetary-policy
+# report (vector charts from matplotlib).
 # ============================================================================
 
-# Sidor med färre drawings än så här undersöks inte (text-tunga sidor)
+# Pages with fewer drawings than this are not examined (text-heavy pages)
 MIN_DRAWINGS_PER_PAGE = 30
-# Drawings under denna pixelstorlek räknas inte (dekoration)
+# Drawings below this pixel size do not count (decoration)
 MIN_DRAWING_DIM = 2
-# Drawings större än X% av sidans yta hoppas över (bakgrundsrutor)
+# Drawings larger than X% of the page area are skipped (background boxes)
 MAX_DRAWING_AREA_RATIO = 0.4
-# Drawings inom denna pixel-distans kopplas till samma kluster
+# Drawings within this pixel distance are joined into the same cluster
 MERGE_DISTANCE = 3
-# Ett kluster måste ha minst så här många drawings
+# A cluster must contain at least this many drawings
 MIN_DRAWINGS_PER_CLUSTER = 8
-# Kluster måste vara minst så här stora (px)
+# Clusters must be at least this large (px)
 MIN_CLUSTER_WIDTH = 80
 MIN_CLUSTER_HEIGHT = 60
-# Interna y-luckor större än så här delar klustret (staplade diagram)
+# Internal y-gaps larger than this split the cluster (stacked charts)
 INTERNAL_Y_GAP_SPLIT = 40
-# Extra px runt clustering-bboxen innan text-expansion
+# Extra px around the clustering bbox before text expansion
 PADDING = 6
-# Närliggande text-block (axel-titel/källrad) inom så här px inkluderas
+# Neighbouring text blocks (axis title/source line) within this many px are included
 TEXT_EXPAND_DISTANCE = 30
-# DPI för rendering till diagram-bilden som skickas till Gemma
+# DPI for rendering the diagram image sent to the model
 RENDER_DPI = 200
-# Tak för diagram-syntolkning
+# Cap for a diagram description
 MAX_TOKENS = 1200
-# Inklippningsmall i full_text.txt
+# Inline placeholder used in the assembled plain text
 PLACEHOLDER = "[Diagram: {description}]"
 
 
 @dataclass
 class DiagramRegion:
-    page_num: int     # 1-indexerat
-    index: int        # 1-indexerat per sida
+    page_num: int  # 1-indexed
+    index: int  # 1-indexed within the page
     bbox: tuple[float, float, float, float]
     n_drawings: int
-    path: Path | None = None  # fylls i när bilden sparas
+    path: Path | None = None  # filled in when the image is saved
 
 
 def _close(r1: fitz.Rect, r2: fitz.Rect, slack: float) -> bool:
@@ -68,7 +69,7 @@ def _close(r1: fitz.Rect, r2: fitz.Rect, slack: float) -> bool:
 
 
 def _cluster_rects(rects: list[fitz.Rect], merge_distance: float) -> list[list[int]]:
-    """Union-find clustering av rektanglar via spatial proximity."""
+    """Union-find clustering of rectangles by spatial proximity."""
     n = len(rects)
     parent = list(range(n))
 
@@ -95,7 +96,7 @@ def _cluster_rects(rects: list[fitz.Rect], merge_distance: float) -> list[list[i
 
 
 def _split_by_y_gap(group_rects: list[fitz.Rect], min_gap: float) -> list[list[fitz.Rect]]:
-    """Dela ett kluster om det har en intern y-lucka större än min_gap."""
+    """Split a cluster if it has an internal y-gap larger than min_gap."""
     if len(group_rects) < 2:
         return [group_rects]
     by_y = sorted(group_rects, key=lambda r: r.y0)
@@ -122,9 +123,9 @@ def _expand_with_neighboring_text(
     y_min_limit: float,
     y_max_limit: float,
 ) -> fitz.Rect:
-    """Utöka bbox vertikalt för att inkludera närliggande text-block.
+    """Expand the bbox vertically to include neighbouring text blocks.
 
-    Begränsas av y_min/max_limit så två diagram inte smälter ihop.
+    Bounded by y_min/max_limit so two diagrams do not merge into one.
     """
     expanded = fitz.Rect(bbox)
     text_dict = page.get_text("dict")
@@ -145,10 +146,10 @@ def _expand_with_neighboring_text(
 
 
 def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
-    """Hitta diagram-regioner på en sida.
+    """Find diagram regions on a page.
 
-    Pipeline: filter drawings → cluster spatialt → splita på intern y-gap →
-    expandera bbox med närliggande text → returnera sorterat i läsordning.
+    Pipeline: filter drawings → cluster spatially → split on internal y-gap →
+    expand bbox with neighbouring text → return sorted in reading order.
     """
     drawings = page.get_drawings()
     if len(drawings) < MIN_DRAWINGS_PER_PAGE:
@@ -165,7 +166,7 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
         if r.width < MIN_DRAWING_DIM or r.height < MIN_DRAWING_DIM:
             continue
         if r.width * r.height > max_drawing_area:
-            continue  # sidbakgrund/ram
+            continue  # page background/frame
         rects.append(fitz.Rect(r))
 
     if not rects:
@@ -235,7 +236,7 @@ def render_and_save_region(
     region: DiagramRegion,
     out_dir: Path,
 ) -> Path:
-    """Rendera region-bboxen som PNG, returnera path."""
+    """Render the region bbox as PNG and return the path."""
     out_dir.mkdir(parents=True, exist_ok=True)
     matrix = fitz.Matrix(RENDER_DPI / 72, RENDER_DPI / 72)
     pix = page.get_pixmap(
@@ -257,10 +258,10 @@ def describe_diagram(
     cfg: Config,
     context: ContextText | None = None,
 ) -> str:
-    """Skicka diagram-bilden till Gemma med diagram-specifik prompt.
+    """Send the diagram image to the model with the diagram-specific prompt.
 
-    Cache: om description_path finns och är icke-tom, läs från disk.
-    Om context ges läggs den in före uppgiften i prompten.
+    Cache: if description_path exists and is non-empty, read it from disk.
+    If context is given it is prepended before the task in the prompt.
     """
     if description_path.exists():
         cached = description_path.read_text(encoding="utf-8").strip()
@@ -268,14 +269,14 @@ def describe_diagram(
             return cached
 
     if region.path is None:
-        raise RuntimeError(f"Region {region.page_num}.{region.index} har ingen sparad path")
+        raise RuntimeError(f"Region {region.page_num}.{region.index} has no saved path")
 
     img_bytes = region.path.read_bytes()
     data_uri = "data:image/png;base64," + base64.b64encode(img_bytes).decode("ascii")
 
-    # Bygg user-text med eventuell kontext
+    # Build the user text with any context.
     if context is not None and not context.is_empty():
-        user_text = f"{context.format_for_prompt()}\n\n[Uppgift]\n{cfg.diagrams.prompt}"
+        user_text = f"{context.format_for_prompt()}\n\n[Task]\n{cfg.diagrams.prompt}"
     else:
         user_text = cfg.diagrams.prompt
 
@@ -295,8 +296,8 @@ def describe_diagram(
     text = (response.choices[0].message.content or "").strip()
     if not text:
         raise RuntimeError(
-            f"API returnerade tomt innehåll för diagram {region.path.name} "
-            f"(modell={cfg.api.model})."
+            f"The API returned empty content for diagram {region.path.name} "
+            f"(model={cfg.api.model})."
         )
     description_path.parent.mkdir(parents=True, exist_ok=True)
     description_path.write_text(text, encoding="utf-8")

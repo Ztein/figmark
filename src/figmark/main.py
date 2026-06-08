@@ -22,7 +22,7 @@ from .ocr import (
     ocr_page_with_vision,
     should_fallback,
 )
-from .output import PageData, assemble
+from .output import PageData, assemble, to_markdown
 from .parallel import Job, run_jobs
 from .pdf_loader import (
     SCANNED_MIN_AVG_CHARS_PER_PAGE,
@@ -37,25 +37,26 @@ from .pdf_loader import (
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Parsa PDF till text med AI-syntolkningar av bilder."
+        prog="figmark",
+        description="Turn a PDF into Markdown with AI-generated figure descriptions.",
     )
-    parser.add_argument("pdf", type=Path, help="Sökväg till PDF-filen")
+    parser.add_argument("pdf", type=Path, help="Path to the PDF file")
     parser.add_argument(
         "--config",
         type=Path,
         default=Path("config.yaml"),
-        help="Sökväg till config-fil (default: config.yaml)",
+        help="Path to the config file (default: config.yaml)",
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=Path("output"),
-        help="Output-katalog (default: output/)",
+        help="Output directory (default: output/)",
     )
     parser.add_argument(
         "--annotate-pdf",
         action="store_true",
-        help="Producera även en annoterad kopia av PDF:en med syntolkningarna som text-annotations.",
+        help="Also produce an annotated copy of the PDF with the descriptions as text annotations.",
     )
     return parser.parse_args(argv)
 
@@ -65,13 +66,13 @@ def log(msg: str) -> None:
 
 
 def loud(msg: str) -> None:
-    """Skrik ut viktiga beslut/fallbacks så de inte gömmer sig i loggar."""
+    """Shout out important decisions/fallbacks so they don't hide in the logs."""
     bar = "!" * 78
     print(f"\n{bar}\n!!! {msg}\n{bar}\n", flush=True)
 
 
 def _collect_annotation_items(pages: list[PageData]) -> list[AnnotationItem]:
-    """Bygg AnnotationItem-lista från syntolkade bilder + diagram i page_data."""
+    """Build the AnnotationItem list from described images + diagrams in page_data."""
     items: list[AnnotationItem] = []
     for page_data in pages:
         for img in page_data.images:
@@ -84,7 +85,7 @@ def _collect_annotation_items(pages: list[PageData]) -> list[AnnotationItem]:
                         page_num=page_data.page_num,
                         bbox=img.bbox,
                         text=desc,
-                        kind="Bild",
+                        kind="Image",
                     )
                 )
         for block in page_data.blocks:
@@ -104,7 +105,7 @@ def _collect_annotation_items(pages: list[PageData]) -> list[AnnotationItem]:
 
 def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = False) -> int:
     if not pdf_path.exists():
-        raise FileNotFoundError(f"Hittar inte PDF: {pdf_path}")
+        raise FileNotFoundError(f"PDF not found: {pdf_path}")
 
     cfg = load_config(config_path)
     client = make_client(cfg)
@@ -117,73 +118,73 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
     out_dir.mkdir(parents=True, exist_ok=True)
     descriptions_dir.mkdir(parents=True, exist_ok=True)
 
-    log(f"Öppnar PDF: {pdf_path}")
+    log(f"Opening PDF: {pdf_path}")
     doc = open_pdf(pdf_path)
-    log(f"Antal sidor: {len(doc)}")
-    log(f"Modell: {cfg.api.model}  (base: {cfg.api.base_url})")
+    log(f"Page count: {len(doc)}")
+    log(f"Model: {cfg.api.model}  (base: {cfg.api.base_url})")
 
     avg_chars = sum(len(p.get_text("text").strip()) for p in doc) / max(1, len(doc))
     scanned = is_scanned(doc)
     log(
-        f"Textdensitet: {avg_chars:.0f} tecken/sida i snitt "
-        f"(tröskel: {SCANNED_MIN_AVG_CHARS_PER_PAGE})"
+        f"Text density: {avg_chars:.0f} chars/page on average "
+        f"(threshold: {SCANNED_MIN_AVG_CHARS_PER_PAGE})"
     )
     if scanned:
         loud(
-            f"PDF KLASSIFICERAD SOM SKANNAD — kör OCR-läge (Tesseract först, "
-            f"Gemma-fallback vid otillräcklig kvalitet)"
+            "PDF CLASSIFIED AS SCANNED — running OCR mode (Tesseract first, "
+            "vision-OCR fallback on insufficient quality)"
         )
     else:
-        log("PDF klassificerad som textkodad — använder direkt textextraktion.")
+        log("PDF classified as text-encoded — using direct text extraction.")
 
     pages: list[PageData] = []
-    # Spara fitz.Page-referenser så vi kan rendera diagram-regioner senare
-    page_objects: dict[int, "object"] = {}
+    # Keep fitz.Page references so we can render diagram regions later.
+    page_objects: dict[int, object] = {}
     page_regions: dict[int, list[DiagramRegion]] = {}
 
     for page_num, page in iter_pages(doc):
-        log(f"\nSida {page_num}/{len(doc)}")
+        log(f"\nPage {page_num}/{len(doc)}")
         page_data = PageData(page_num=page_num, is_ocr=scanned)
         page_objects[page_num] = page
 
         if scanned:
-            log("  → Kör Tesseract …")
+            log("  → Running Tesseract …")
             result = ocr_page(page, cfg)
             log(
-                f"    Tesseract: {len(result.text.strip())} tecken, "
+                f"    Tesseract: {len(result.text.strip())} chars, "
                 f"confidence {result.mean_confidence:.1f}"
             )
             if should_fallback(result):
                 reasons = []
                 if len(result.text.strip()) < MIN_CHARS_PER_PAGE:
                     reasons.append(
-                        f"tecken {len(result.text.strip())} < tröskel {MIN_CHARS_PER_PAGE}"
+                        f"chars {len(result.text.strip())} < threshold {MIN_CHARS_PER_PAGE}"
                     )
                 if result.mean_confidence < MIN_MEAN_CONFIDENCE:
                     reasons.append(
-                        f"confidence {result.mean_confidence:.1f} < tröskel {MIN_MEAN_CONFIDENCE}"
+                        f"confidence {result.mean_confidence:.1f} < threshold {MIN_MEAN_CONFIDENCE}"
                     )
                 loud(
-                    f"FALLBACK PÅ SIDA {page_num}: Tesseract otillräcklig "
-                    f"({'; '.join(reasons)}) — anropar Gemma för OCR"
+                    f"FALLBACK ON PAGE {page_num}: Tesseract insufficient "
+                    f"({'; '.join(reasons)}) — calling the vision model for OCR"
                 )
                 page_data.ocr_text = ocr_page_with_vision(page, client, cfg)
-                log(f"    Gemma-OCR: {len(page_data.ocr_text.strip())} tecken")
+                log(f"    Vision-OCR: {len(page_data.ocr_text.strip())} chars")
             else:
                 page_data.ocr_text = result.text
         else:
             page_data.blocks = iter_page_blocks(page)
             n_text = sum(1 for b in page_data.blocks if not isinstance(b, ImageBlock))
             n_img = sum(1 for b in page_data.blocks if isinstance(b, ImageBlock))
-            log(f"  → {n_text} textblock, {n_img} bildblock (referenser)")
+            log(f"  → {n_text} text block(s), {n_img} image block(s) (references)")
 
         page_data.images = extract_images_from_page(
             doc, page, page_num, images_dir, skip_full_page=scanned
         )
-        log(f"  → {len(page_data.images)} bild(er) sparade")
+        log(f"  → {len(page_data.images)} image(s) saved")
 
-        # Diagram-extraktion: bara för textkodade PDF:er (för skannade är "diagrammen"
-        # redan en del av sidan och fångas i OCR-vägen)
+        # Diagram extraction: only for text-encoded PDFs (for scanned ones the
+        # "diagrams" are already part of the page and captured by the OCR path).
         if cfg.diagrams.enabled and not scanned:
             regions = find_diagram_regions(page, page_num)
             if regions:
@@ -193,8 +194,8 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
                         DiagramBlock(bbox=region.bbox, region_index=region.index)
                     )
                 page_regions[page_num] = regions
-                log(f"  → {len(regions)} diagram-region(er) identifierade")
-                # Re-sortera blocks så diagrammen hamnar i läsordning ihop med text/bild
+                log(f"  → {len(regions)} diagram region(s) identified")
+                # Re-sort blocks so diagrams land in reading order with text/images.
                 page_data.blocks.sort(key=lambda b: (round(b.bbox[1] / 10), b.bbox[0]))
 
         pages.append(page_data)
@@ -203,9 +204,9 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
     if total_diagrams:
         diagram_descriptions_dir.mkdir(parents=True, exist_ok=True)
 
-    # Samla ihop ALLA syntolkningsjobb (bilder + diagram). Cache-träffar löses
-    # här direkt så vi inte schemalägger onödiga workers; bara faktiska API-anrop
-    # går till parallel.run_jobs.
+    # Gather ALL description jobs (images + diagrams). Cache hits are resolved
+    # here directly so we don't schedule needless workers; only actual API calls
+    # go to parallel.run_jobs.
     jobs: list[Job] = []
     cache_hits = 0
     total_pending = sum(len(p.images) for p in pages) + total_diagrams
@@ -231,7 +232,7 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
                 page_data.descriptions[img.xref] = cached
                 cache_hits += 1
                 continue
-            label = f"sida {page_data.page_num:>3} bild  {img.index:>2}"
+            label = f"page {page_data.page_num:>3} image   {img.index:>2}"
             ctx = _maybe_context(img.bbox)
             jobs.append(_make_image_job(label, client, img, desc_path, cfg, page_data, ctx))
 
@@ -242,57 +243,59 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
                 page_data.diagram_descriptions[region.index] = cached
                 cache_hits += 1
                 continue
-            label = f"sida {page_data.page_num:>3} diagram {region.index:>2}"
+            label = f"page {page_data.page_num:>3} diagram {region.index:>2}"
             ctx = _maybe_context(region.bbox)
             jobs.append(_make_diagram_job(label, client, region, desc_path, cfg, page_data, ctx))
 
     if total_pending:
         if cache_hits:
-            log(f"\nSyntolkning: {cache_hits} av {total_pending} hämtades från cache")
+            log(f"\nDescriptions: {cache_hits} of {total_pending} loaded from cache")
         if jobs:
             header = (
-                f"Syntolkar {len(jobs)} via {cfg.api.model} "
-                f"({cfg.concurrency.max_workers} parallella)"
+                f"Describing {len(jobs)} via {cfg.api.model} "
+                f"({cfg.concurrency.max_workers} in parallel)"
             )
             run_jobs(jobs, cfg.concurrency.max_workers, header)
         else:
-            log("\nAllt redan cache-hämtat — inga API-anrop behövdes.")
+            log("\nEverything already cached — no API calls needed.")
 
-    log("\nSammanställer text …")
-    raw_text, full_text = assemble(pages, cfg)
+    log("\nAssembling output …")
+    raw_text, _full_text = assemble(pages, cfg)
+    markdown = to_markdown(pages)
 
     raw_path = out_dir / "raw_text.txt"
-    full_path = out_dir / "full_text.txt"
+    md_path = out_dir / f"{pdf_path.stem}.md"
     raw_path.write_text(raw_text, encoding="utf-8")
-    full_path.write_text(full_text, encoding="utf-8")
+    md_path.write_text(markdown, encoding="utf-8")
 
     annotated_pdf_path: Path | None = None
     if annotate:
         items = _collect_annotation_items(pages)
         annotated_pdf_path = out_dir / f"{pdf_path.stem}_alt_text.pdf"
-        log(f"\nLägger in {len(items)} syntolkningar som alt-text → {annotated_pdf_path}")
-        # Stäng källans doc först — vi måste öppna om filen rent
+        log(f"\nEmbedding {len(items)} descriptions as alt text → {annotated_pdf_path}")
+        # Close the source doc first — we need to reopen the file cleanly.
         doc.close()
         annotate_pdf(pdf_path, annotated_pdf_path, items)
     else:
         doc.close()
 
-    log("\nKlart.")
-    log(f"  Råtext:        {raw_path}")
-    log(f"  Fulltext:      {full_path}")
-    log(f"  Bilder:        {images_dir}")
-    log(f"  Syntolkningar: {descriptions_dir}")
+    log("\nDone.")
+    log(f"  Markdown:     {md_path}")
+    log(f"  Raw text:     {raw_path}")
+    log(f"  Images:       {images_dir}")
+    log(f"  Descriptions: {descriptions_dir}")
     if total_diagrams:
-        log(f"  Diagram:       {diagrams_dir}")
-        log(f"  Diagram-text:  {diagram_descriptions_dir}")
+        log(f"  Diagrams:     {diagrams_dir}")
+        log(f"  Diagram text: {diagram_descriptions_dir}")
     if annotated_pdf_path:
-        log(f"  Alt-text PDF:  {annotated_pdf_path}")
+        log(f"  Alt-text PDF: {annotated_pdf_path}")
 
     return 0
 
 
 def _make_image_job(label, client, img, desc_path, cfg, page_data, context) -> Job:
-    """Stäng in variabler i en factory — closures-i-loop-fällan annars."""
+    """Capture the loop variables in a factory — otherwise the closure-in-loop trap."""
+
     def run_describe() -> str:
         return describe_image(client, img.path, desc_path, cfg, context=context)
 

@@ -2,14 +2,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
-from src.images import extract_images_from_page
-from src.pdf_loader import ImageBlock, iter_page_blocks, iter_pages, open_pdf
+from figmark.images import extract_images_from_page
+from figmark.pdf_loader import ImageBlock, iter_page_blocks, iter_pages, open_pdf
 
 
-def test_extract_images_writes_files(pentland_pdf: Path, tmp_path: Path):
-    doc = open_pdf(pentland_pdf)
+def test_extract_images_writes_files(paper_pdf: Path, tmp_path: Path):
+    doc = open_pdf(paper_pdf)
     out_dir = tmp_path / "images"
     try:
         total_extracted = []
@@ -25,9 +23,9 @@ def test_extract_images_writes_files(pentland_pdf: Path, tmp_path: Path):
         doc.close()
 
 
-def test_extracted_images_match_pdf_loader_xrefs(pentland_pdf: Path, tmp_path: Path):
-    """Roundtrip: varje ImageBlock från pdf_loader måste motsvara en extraherad bild."""
-    doc = open_pdf(pentland_pdf)
+def test_extracted_images_match_pdf_loader_xrefs(paper_pdf: Path, tmp_path: Path):
+    """Roundtrip: every ImageBlock from pdf_loader must map to an extracted image."""
+    doc = open_pdf(paper_pdf)
     out_dir = tmp_path / "images"
     try:
         loader_xrefs: set[int] = set()
@@ -39,7 +37,7 @@ def test_extracted_images_match_pdf_loader_xrefs(pentland_pdf: Path, tmp_path: P
             for img in extract_images_from_page(doc, page, page_num, out_dir):
                 extracted_xrefs.add(img.xref)
         assert loader_xrefs <= extracted_xrefs, (
-            f"ImageBlock-xrefs som inte hittas av extract_images_from_page: "
+            f"ImageBlock xrefs not found by extract_images_from_page: "
             f"{loader_xrefs - extracted_xrefs}"
         )
     finally:
@@ -47,14 +45,15 @@ def test_extracted_images_match_pdf_loader_xrefs(pentland_pdf: Path, tmp_path: P
 
 
 def test_extract_images_filters_tiny_via_module_constant(
-    pentland_pdf: Path, tmp_path: Path, monkeypatch
+    paper_pdf: Path, tmp_path: Path, monkeypatch
 ):
-    """Sätt module-level konstant till orimligt högt → inga bilder klarar."""
-    import src.images as images_mod
+    """Set the module-level constant absurdly high → no image passes."""
+    import figmark.images as images_mod
+
     monkeypatch.setattr(images_mod, "MIN_IMAGE_WIDTH", 100000)
     monkeypatch.setattr(images_mod, "MIN_IMAGE_HEIGHT", 100000)
 
-    doc = open_pdf(pentland_pdf)
+    doc = open_pdf(paper_pdf)
     out_dir = tmp_path / "images"
     try:
         total = []

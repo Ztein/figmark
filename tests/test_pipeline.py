@@ -1,11 +1,13 @@
-"""LIVE pipeline-tester.
+"""LIVE pipeline tests.
 
-Kör mot riktiga Berget.ai-API:t. Kräver BERGET_API_KEY i .env eller miljön.
-Hoppar INTE tyst över — failar med tydligt felmeddelande om nyckel saknas.
+Run against the real Berget.ai API. Require BERGET_API_KEY in .env or the
+environment. They do NOT skip silently — they fail with a clear message if the
+key is missing.
 
-Markerad 'live' så man kan exkludera med `pytest -m "not live"` vid utveckling.
-Default-konfigurationen i pytest.ini kör allt inklusive live.
+Marked 'live' so they can be excluded with `pytest -m "not live"` during
+development. The default configuration runs everything, including live tests.
 """
+
 from __future__ import annotations
 
 import os
@@ -13,26 +15,26 @@ from pathlib import Path
 
 import pytest
 
-from src import main as main_module
-from src.config import load_config
+from figmark import main as main_module
+from figmark.config import load_config
 
 pytestmark = pytest.mark.live
 
 
 def _require_real_key() -> str:
-    """Tydligt fel om nyckel saknas — inte tyst skip."""
+    """Fail clearly if the key is missing — not a silent skip."""
     from dotenv import load_dotenv
+
     load_dotenv()
     key = os.environ.get("BERGET_API_KEY", "")
     if not key or key.startswith("sk-test") or key == "sk-your-key-here":
         pytest.fail(
             "\n\n"
             "!" * 78 + "\n"
-            "!!! BERGET_API_KEY saknas eller är en placeholder.\n"
-            "!!! Live-pipelinetesterna körs MOT RIKTIGA API:T och kräver en riktig nyckel.\n"
-            "!!! Lägg in din nyckel i .env och kör om.\n"
-            "!!! För att hoppa över live-tester: pytest -m 'not live'\n"
-            + "!" * 78
+            "!!! BERGET_API_KEY is missing or a placeholder.\n"
+            "!!! The live pipeline tests run AGAINST THE REAL API and need a real key.\n"
+            "!!! Put your key in .env and run again.\n"
+            "!!! To skip the live tests: pytest -m 'not live'\n" + "!" * 78
         )
     return key
 
@@ -47,74 +49,71 @@ def cfg(real_key, project_root: Path):
     return load_config(project_root / "config.yaml")
 
 
-def test_pipeline_pentland_full_roundtrip(
-    real_key, project_root: Path, pentland_pdf: Path, tmp_path: Path
+def test_pipeline_paper_full_roundtrip(
+    real_key, project_root: Path, paper_pdf: Path, tmp_path: Path
 ):
-    """Den fulla roundtrippen mot riktiga Berget: PDF → text + syntolkade bilder.
+    """The full round trip against the real API: PDF → Markdown + described images.
 
-    Pentland-artikeln är mindre (16 sidor, 2 bilder) — billigast att köra på riktigt.
+    The sample paper is small — the cheapest fixture to run for real.
     """
     output_root = tmp_path / "output"
     exit_code = main_module.run(
-        pdf_path=pentland_pdf,
+        pdf_path=paper_pdf,
         config_path=project_root / "config.yaml",
         output_root=output_root,
     )
     assert exit_code == 0
 
-    pdf_out = output_root / pentland_pdf.stem
+    pdf_out = output_root / paper_pdf.stem
     raw_path = pdf_out / "raw_text.txt"
-    full_path = pdf_out / "full_text.txt"
+    md_path = pdf_out / f"{paper_pdf.stem}.md"
     images_dir = pdf_out / "images"
     descriptions_dir = pdf_out / "descriptions"
 
-    # Artefakter
+    # Artifacts
     assert raw_path.exists() and raw_path.stat().st_size > 1000
-    assert full_path.exists() and full_path.stat().st_size > 1000
+    assert md_path.exists() and md_path.stat().st_size > 1000
 
     images = sorted(images_dir.iterdir())
     descriptions = sorted(descriptions_dir.iterdir())
     assert len(images) >= 1
     assert len(descriptions) == len(images)
 
-    # Innehåll
-    full_text = full_path.read_text(encoding="utf-8")
+    # Content
+    markdown = md_path.read_text(encoding="utf-8")
     raw_text = raw_path.read_text(encoding="utf-8")
-    assert full_text.count("[Bild:") == len(images)
-    assert "[Bild:" not in raw_text
-    assert "routine" in raw_text.lower(), "Pentland-artikeln handlar om organizational routines"
+    assert markdown.count("](images/") == len(images)
+    assert "](images/" not in raw_text
 
-    # Beskrivningarna ska vara på svenska, inte tomma
+    # Descriptions should be in Swedish (the prompt is Swedish) and non-empty.
     for desc_file in descriptions:
         text = desc_file.read_text(encoding="utf-8").strip()
-        assert len(text) > 20, f"För kort syntolkning i {desc_file.name}: {text!r}"
-        # Heuristik för svenska: vanliga svenska bokstäver eller ord
+        assert len(text) > 20, f"Description too short in {desc_file.name}: {text!r}"
         lower = text.lower()
         has_swedish = any(c in lower for c in "åäö") or any(
             w in lower for w in [" och ", " att ", " som ", " en ", " ett ", " på "]
         )
-        assert has_swedish, (
-            f"Syntolkningen i {desc_file.name} ser inte ut att vara på svenska:\n{text}"
-        )
+        assert has_swedish, f"The description in {desc_file.name} does not look Swedish:\n{text}"
 
 
 def test_pipeline_cache_no_extra_api_calls_on_rerun(
-    real_key, project_root: Path, pentland_pdf: Path, tmp_path: Path, monkeypatch
+    real_key, project_root: Path, paper_pdf: Path, tmp_path: Path, monkeypatch
 ):
-    """Andra körningen ska INTE göra fler API-anrop — cachen ska gripa in.
+    """A second run must NOT make extra API calls — the cache should kick in.
 
-    Vi spårar att client.chat.completions.create inte anropas under rerun.
+    We track that client.chat.completions.create is not called during the rerun.
     """
     output_root = tmp_path / "output"
 
-    # Första körningen: full live
-    main_module.run(pentland_pdf, project_root / "config.yaml", output_root)
-    desc_dir = output_root / pentland_pdf.stem / "descriptions"
+    # First run: full live
+    main_module.run(paper_pdf, project_root / "config.yaml", output_root)
+    desc_dir = output_root / paper_pdf.stem / "descriptions"
     cached_count = sum(1 for _ in desc_dir.iterdir())
     assert cached_count >= 1
 
-    # Andra körningen: räkna API-anrop genom att wrap:a create()
-    import src.describe as describe_module
+    # Second run: count API calls by wrapping create()
+    import figmark.describe as describe_module
+
     real_make_client = describe_module.make_client
     call_counter = {"n": 0}
 
@@ -131,27 +130,28 @@ def test_pipeline_cache_no_extra_api_calls_on_rerun(
 
     monkeypatch.setattr(main_module, "make_client", make_counting_client)
 
-    main_module.run(pentland_pdf, project_root / "config.yaml", output_root)
+    main_module.run(paper_pdf, project_root / "config.yaml", output_root)
     assert call_counter["n"] == 0, (
-        f"Andra körningen gjorde {call_counter['n']} API-anrop "
-        f"— cachen i descriptions/ fungerar inte"
+        f"The second run made {call_counter['n']} API call(s) "
+        f"— the descriptions/ cache is not working"
     )
 
 
-def test_pipeline_diagrams_extracted_from_penningpolitisk(
-    real_key, project_root: Path, penningpolitisk_pdf: Path, tmp_path: Path
+def test_pipeline_diagrams_extracted_from_report(
+    real_key, project_root: Path, report_pdf: Path, tmp_path: Path
 ):
-    """End-to-end: penningpolitiska rapporten ska producera diagram-syntolkningar.
+    """End-to-end: the monetary-policy report should produce diagram descriptions.
 
-    Vi kör mot en delmängd av sidor för att hålla nere kostnad och tid.
-    Test verifierar att diagram-pipelinen aktiveras och producerar svenska syntolkningar.
+    We run against a subset of pages to keep cost and time down. The test verifies
+    that the diagram pipeline activates and produces Swedish descriptions.
     """
-    # För att begränsa kostnaden, klippt ut bara några diagram-tunga sidor till en mini-PDF
+    # To limit cost, cut out a few diagram-heavy pages into a mini PDF.
     import fitz
-    src = fitz.open(penningpolitisk_pdf)
+
+    src = fitz.open(report_pdf)
     mini = fitz.open()
-    mini.insert_pdf(src, from_page=10, to_page=10)  # sida 11 (0-indexerat 10)
-    mini.insert_pdf(src, from_page=67, to_page=67)  # sida 68
+    mini.insert_pdf(src, from_page=10, to_page=10)  # page 11 (0-indexed 10)
+    mini.insert_pdf(src, from_page=67, to_page=67)  # page 68
     mini_path = tmp_path / "mini.pdf"
     mini.save(mini_path)
     mini.close()
@@ -172,37 +172,37 @@ def test_pipeline_diagrams_extracted_from_penningpolitisk(
     diagram_files = sorted(diagrams_dir.iterdir()) if diagrams_dir.exists() else []
     desc_files = sorted(diagram_desc_dir.iterdir()) if diagram_desc_dir.exists() else []
 
-    # Sida 11 = 2 diagram, sida 68 = 2 diagram → totalt 4
-    assert len(diagram_files) == 4, f"Förväntar 4 diagram-bilder, fick {len(diagram_files)}"
+    # Page 11 = 2 diagrams, page 68 = 2 diagrams → 4 total
+    assert len(diagram_files) == 4, f"Expected 4 diagram images, got {len(diagram_files)}"
     assert len(desc_files) == 4
 
-    full_text = (pdf_out / "full_text.txt").read_text(encoding="utf-8")
-    assert full_text.count("[Diagram:") == 4
+    markdown = (pdf_out / f"{mini_path.stem}.md").read_text(encoding="utf-8")
+    assert markdown.count("](diagrams/") == 4
 
-    # Verifiera svensk myndighetssvenska i varje syntolkning
+    # Verify Swedish myndighetssvenska in each description.
     for desc_file in desc_files:
         text = desc_file.read_text(encoding="utf-8").strip()
-        assert len(text) > 100, f"Misstänkt kort diagram-syntolkning: {text[:200]}"
+        assert len(text) > 100, f"Suspiciously short diagram description: {text[:200]}"
         lower = text.lower()
-        # Diagram-syntolkningar bör nämna något om axlar, värden, eller serier
-        assert any(w in lower for w in ["axel", "diagram", "linje", "procent", "scenari", "prognos", "serie"]), (
-            f"Diagram-syntolkning saknar relevanta termer:\n{text[:400]}"
-        )
+        # Diagram descriptions should mention something about axes, values, or series.
+        assert any(
+            w in lower
+            for w in ["axel", "diagram", "linje", "procent", "scenari", "prognos", "serie"]
+        ), f"Diagram description lacks relevant terms:\n{text[:400]}"
 
 
 def test_pipeline_determinism_workers_1_vs_4(
-    real_key, project_root: Path, penningpolitisk_pdf: Path, tmp_path: Path
+    real_key, project_root: Path, report_pdf: Path, tmp_path: Path
 ):
-    """Output måste vara identisk oavsett antal workers (1 vs 4).
+    """Output must be identical regardless of worker count (1 vs 4).
 
-    Vi kör mot en mini-PDF (2 sidor med 4 diagram) två gånger:
-    en gång med max_workers=1, en gång med max_workers=4. full_text.txt
-    ska vara identisk byte-för-byte.
+    We run a mini PDF (2 pages, 4 diagrams) twice: once with max_workers=1, once
+    with max_workers=4. The Markdown output must be identical byte-for-byte.
     """
     import fitz
     import yaml
 
-    src = fitz.open(penningpolitisk_pdf)
+    src = fitz.open(report_pdf)
     mini = fitz.open()
     mini.insert_pdf(src, from_page=10, to_page=10)
     mini.insert_pdf(src, from_page=67, to_page=67)
@@ -220,52 +220,49 @@ def test_pipeline_determinism_workers_1_vs_4(
             yaml.safe_dump(raw, f, allow_unicode=True)
         return path
 
-    # Kör med 1 worker först — fyller cachen
+    # Run with 1 worker first — fills the cache.
     out_seq = tmp_path / "out_seq"
     main_module.run(mini_path, make_config(1), out_seq)
-    seq_text = (out_seq / mini_path.stem / "full_text.txt").read_text(encoding="utf-8")
+    seq_text = (out_seq / mini_path.stem / f"{mini_path.stem}.md").read_text(encoding="utf-8")
 
-    # Kör med 4 workers mot färsk output-katalog. Cachen är per-output-katalog,
-    # så det här är en faktisk ny körning. Beskrivningarna har dock samma
-    # input → texten ska ändå matcha (Gemma är inte helt deterministisk, men
-    # cachen från första körningen kan inte återanvändas mellan output-kataloger).
-    #
-    # Pragmatiskt: vi kopierar in cache från första körningen så vi jämför pipeline-
-    # ORDNINGEN, inte modellens determinism.
+    # Run with 4 workers against a fresh output dir. The cache is per output dir,
+    # so this is a genuinely new run. We copy in the cache from the first run so
+    # we compare pipeline ORDERING, not the model's determinism.
     import shutil
+
     out_par = tmp_path / "out_par"
     out_par.mkdir(parents=True)
     shutil.copytree(out_seq / mini_path.stem, out_par / mini_path.stem)
-    # Ta bort de assembled text-filerna så de byggs om
+    # Remove the assembled output files so they are rebuilt.
     (out_par / mini_path.stem / "raw_text.txt").unlink()
-    (out_par / mini_path.stem / "full_text.txt").unlink()
+    (out_par / mini_path.stem / f"{mini_path.stem}.md").unlink()
 
     main_module.run(mini_path, make_config(4), out_par)
-    par_text = (out_par / mini_path.stem / "full_text.txt").read_text(encoding="utf-8")
+    par_text = (out_par / mini_path.stem / f"{mini_path.stem}.md").read_text(encoding="utf-8")
 
-    assert seq_text == par_text, "full_text.txt skiljer sig mellan 1 och 4 workers"
+    assert seq_text == par_text, "Markdown output differs between 1 and 4 workers"
 
 
 def test_pipeline_annotate_pdf_produces_annotated_copy(
-    real_key, project_root: Path, pentland_pdf: Path, tmp_path: Path
+    real_key, project_root: Path, paper_pdf: Path, tmp_path: Path
 ):
-    """Live-test: pipelinen med annotate=True producerar en annoterad kopia
-    med rätt antal annotations (en per syntolkning)."""
+    """Live test: the pipeline with annotate=True produces an annotated copy with
+    the right number of annotations (one per description)."""
     import fitz
 
     output_root = tmp_path / "output"
     exit_code = main_module.run(
-        pdf_path=pentland_pdf,
+        pdf_path=paper_pdf,
         config_path=project_root / "config.yaml",
         output_root=output_root,
         annotate=True,
     )
     assert exit_code == 0
 
-    annotated = output_root / pentland_pdf.stem / f"{pentland_pdf.stem}_alt_text.pdf"
-    assert annotated.exists(), f"Alt-text PDF saknas: {annotated}"
+    annotated = output_root / paper_pdf.stem / f"{paper_pdf.stem}_alt_text.pdf"
+    assert annotated.exists(), f"Alt-text PDF missing: {annotated}"
 
-    # Räkna annotations i resultatet
+    # Count annotations in the result.
     doc = fitz.open(annotated)
     try:
         total_annots = 0
@@ -274,27 +271,27 @@ def test_pipeline_annotate_pdf_produces_annotated_copy(
     finally:
         doc.close()
 
-    # Pentland har 2 bilder
-    assert total_annots >= 2, f"För få annotations: {total_annots}"
+    assert total_annots >= 1, f"Too few annotations: {total_annots}"
 
 
-def test_pipeline_etikprovning_first_page_handles_large_cover_image(
-    real_key, project_root: Path, etikprovning_pdf: Path, tmp_path: Path
+def test_pipeline_cover_page_handles_large_image(
+    real_key, project_root: Path, guide_pdf: Path, tmp_path: Path
 ):
-    """Regression mot 413-bug: etikprövning-PDF:ns sida 1 har en stor omslagsbild
-    (~917 KB PNG) som triggade 'Request failed with status code 413' från Berget.
+    """Regression against the 413 bug: a page with a large cover image (~917 KB PNG)
+    used to trigger 'Request failed with status code 413' from the API.
 
-    Det här är integration-nivå — verifierar att hela pipelinen (med automatisk
-    resize) klarar bilden från extraktion till slutförd syntolkning, inte bara
-    att _prepare_image_for_api skalar ner isolerat.
+    This is integration level — it verifies that the whole pipeline (with automatic
+    resize) handles the image from extraction through a finished description, not
+    just that _prepare_image_for_api downscales in isolation.
 
-    Vi klipper ut sida 1 till en mini-PDF för att hålla nere kostnad och tid.
+    We cut out page 1 into a mini PDF to keep cost and time down.
     """
     import fitz
-    src = fitz.open(etikprovning_pdf)
+
+    src = fitz.open(guide_pdf)
     mini = fitz.open()
     mini.insert_pdf(src, from_page=0, to_page=0)
-    mini_path = tmp_path / "etikprovning_sida_1.pdf"
+    mini_path = tmp_path / "cover_page_1.pdf"
     mini.save(mini_path)
     mini.close()
     src.close()
@@ -309,18 +306,18 @@ def test_pipeline_etikprovning_first_page_handles_large_cover_image(
 
     desc_dir = output_root / mini_path.stem / "descriptions"
     descriptions = sorted(desc_dir.iterdir())
-    assert len(descriptions) >= 1, "Omslagsbilden ska ha syntolkats"
+    assert len(descriptions) >= 1, "The cover image should have been described"
     text = descriptions[0].read_text(encoding="utf-8").strip()
-    assert len(text) > 30, f"För kort syntolkning: {text!r}"
+    assert len(text) > 30, f"Description too short: {text!r}"
 
 
 def test_pipeline_describe_single_image_returns_swedish(
-    real_key, project_root: Path, pentland_pdf: Path, tmp_path: Path
+    real_key, project_root: Path, paper_pdf: Path, tmp_path: Path
 ):
-    """Isolerar API-anropet för en bild — verifierar svensk myndighetston."""
-    from src.describe import describe_image, make_client
-    from src.images import extract_images_from_page
-    from src.pdf_loader import iter_pages, open_pdf
+    """Isolate the API call for one image — verify the Swedish formal tone."""
+    from figmark.describe import describe_image, make_client
+    from figmark.images import extract_images_from_page
+    from figmark.pdf_loader import iter_pages, open_pdf
 
     cfg = load_config(project_root / "config.yaml")
     client = make_client(cfg)
@@ -328,19 +325,19 @@ def test_pipeline_describe_single_image_returns_swedish(
     images_out = tmp_path / "images"
     desc_path = tmp_path / "single.txt"
 
-    doc = open_pdf(pentland_pdf)
+    doc = open_pdf(paper_pdf)
     try:
         first_image = None
         for page_num, page in iter_pages(doc):
-            extracted = extract_images_from_page(doc, page, page_num, images_out, cfg)
+            extracted = extract_images_from_page(doc, page, page_num, images_out)
             if extracted:
                 first_image = extracted[0]
                 break
-        assert first_image is not None, "Hittade inga bilder i Pentland-PDF — testet kan inte köras"
+        assert first_image is not None, "Found no images in the paper PDF — the test cannot run"
 
         result = describe_image(client, first_image.path, desc_path, cfg)
     finally:
         doc.close()
 
-    assert len(result) > 30, f"Misstänkt kort syntolkning: {result!r}"
-    print(f"\n--- Faktisk syntolkning från Berget ({cfg.api.model}) ---\n{result}\n")
+    assert len(result) > 30, f"Suspiciously short description: {result!r}"
+    print(f"\n--- Actual description from Berget ({cfg.api.model}) ---\n{result}\n")

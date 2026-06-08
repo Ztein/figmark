@@ -1,8 +1,13 @@
-# pdf_parser — användarinställningar
+# figmark — user settings
 #
-# Det användaren vanligtvis vill styra. Tekniska tröskelvärden
-# (clustering, OCR, retry, render-DPI etc.) finns som module-level
-# konstanter i src/<modul>.py — tuna där om du verkligen behöver.
+# The knobs a user typically wants to control. Technical thresholds (clustering,
+# OCR, retries, render DPI, etc.) live as module-level constants in
+# src/figmark/<module>.py — tune them there if you really need to.
+#
+# NOTE: the `prompt` values below are intentionally written in Swedish. The tool
+# is built to produce alt text in "myndighetssvenska" (formal Swedish public-
+# sector language); the prompt is the product's domain output, not UI text.
+# Translate the prompts only if you want descriptions in another language.
 
 api:
   base_url: "https://api.berget.ai/v1"
@@ -36,8 +41,9 @@ concurrency:
   max_workers: 8
 
 context:
-  # Skicka N ord text omedelbart före och efter bilden till syntolkningen.
-  # Ger modellen domänkontext (vad rapporten handlar om) → mer relevant tolkning.
+  # Send N words of text immediately before and after the image to the
+  # description model. Gives it domain context (what the report is about) →
+  # more relevant descriptions.
   enabled: true
   words_before: 100
   words_after: 100

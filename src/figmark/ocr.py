@@ -12,27 +12,27 @@ from PIL import Image
 from .config import Config
 
 # ============================================================================
-# Tekniska konstanter — tuna här om du behöver olika beteende.
-# Språket kommer från config.yaml (ocr.language) eftersom det varierar med PDF:en.
+# Technical constants — tune here if you need different behaviour.
+# The language comes from config.yaml (ocr.language) since it varies per PDF.
 # ============================================================================
 
-# Tesseract-tröskel: under detta antal tecken → Gemma-fallback
+# Tesseract threshold: below this character count → vision-OCR fallback
 MIN_CHARS_PER_PAGE = 40
-# Tesseract-tröskel: under detta confidence-medel → Gemma-fallback
+# Tesseract threshold: below this mean confidence → vision-OCR fallback
 MIN_MEAN_CONFIDENCE = 60
-# DPI för sid-rendering till Tesseract (lokalt, kan vara högt)
+# DPI for page rendering to Tesseract (local, can be high)
 RENDER_DPI = 300
-# DPI för sid-rendering till Gemma-OCR-fallback (lägre för payload-tak)
+# DPI for page rendering to the vision-OCR fallback (lower, to stay under the payload cap)
 VISION_DPI = 150
-# JPEG-kvalitet (0-100) för Gemma-OCR-payload
+# JPEG quality (0-100) for the vision-OCR payload
 VISION_JPEG_QUALITY = 80
-# Tak för svarsläng från Gemma-OCR-anrop
+# Cap on the response length from a vision-OCR call
 OCR_MAX_TOKENS = 2000
-# Prompt för Gemma-OCR-fallback (transkribering, inte syntolkning)
+# Prompt for the vision-OCR fallback (transcription, not description)
 OCR_PROMPT = (
-    "Transkribera all text som syns i bilden, exakt som den står. "
-    "Bevara radbrytningar och styckesindelning så långt som möjligt. "
-    "Skriv inget annat än den transkriberade texten."
+    "Transcribe all text visible in the image, exactly as written. "
+    "Preserve line breaks and paragraph structure as far as possible. "
+    "Output nothing but the transcribed text."
 )
 
 
@@ -51,7 +51,7 @@ def _ensure_tesseract() -> None:
         return
     if shutil.which("tesseract") is None:
         raise RuntimeError(
-            "Hittar inte 'tesseract' på PATH. Installera med:\n"
+            "Could not find 'tesseract' on PATH. Install it with:\n"
             "  brew install tesseract tesseract-lang"
         )
     _tesseract_checked = True
@@ -73,7 +73,7 @@ def ocr_page(page: fitz.Page, cfg: Config) -> OcrResult:
 
     words: list[str] = []
     confidences: list[float] = []
-    for text, conf in zip(data.get("text", []), data.get("conf", [])):
+    for text, conf in zip(data.get("text", []), data.get("conf", []), strict=False):
         if not text or not text.strip():
             continue
         try:
@@ -115,13 +115,13 @@ def should_fallback(result: OcrResult) -> bool:
 
 
 def ocr_page_with_vision(page: fitz.Page, client, cfg: Config) -> str:
-    # Lägre DPI + JPEG för att hålla payload under vision-API:ts gräns.
+    # Lower DPI + JPEG to keep the payload under the vision API's limit.
     image = render_page(page, VISION_DPI)
     buf = io.BytesIO()
     image.save(buf, format="JPEG", quality=VISION_JPEG_QUALITY, optimize=True)
     img_bytes = buf.getvalue()
     print(
-        f"    Vision-payload: {len(img_bytes)/1024:.0f} KB JPEG "
+        f"    Vision payload: {len(img_bytes) / 1024:.0f} KB JPEG "
         f"({image.width}x{image.height} @ {VISION_DPI} DPI, q={VISION_JPEG_QUALITY})",
         flush=True,
     )

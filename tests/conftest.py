@@ -1,3 +1,12 @@
+"""Shared pytest fixtures.
+
+Sample PDFs are resolved from examples/ first (the curated, openly-licensed
+corpus, e.g. fetched via examples/download_samples.py), then from a local
+testfiler/ directory if present, and otherwise the test skips. This keeps CI
+runnable from the committed/downloadable corpus while still letting a developer
+run against their own local documents.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -5,7 +14,15 @@ from pathlib import Path
 import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+EXAMPLES = PROJECT_ROOT / "examples"
 TESTFILES = PROJECT_ROOT / "testfiler"
+
+
+def _resolve(*candidates: Path) -> Path | None:
+    for c in candidates:
+        if c.exists():
+            return c
+    return None
 
 
 @pytest.fixture(scope="session")
@@ -14,30 +31,42 @@ def project_root() -> Path:
 
 
 @pytest.fixture(scope="session")
-def pentland_pdf() -> Path:
-    p = TESTFILES / "Pentland-and-Feldman-2008-Information-and-Organization.pdf"
-    if not p.exists():
-        pytest.skip(f"Saknar test-PDF: {p}")
+def paper_pdf() -> Path:
+    """A text-encoded article/paper with at least one embedded raster image."""
+    p = _resolve(
+        EXAMPLES / "paper.pdf",
+        TESTFILES / "Pentland-and-Feldman-2008-Information-and-Organization.pdf",
+    )
+    if p is None:
+        pytest.skip("No paper sample found (examples/paper.pdf). See examples/README.md.")
     return p
 
 
 @pytest.fixture(scope="session")
-def etikprovning_pdf() -> Path:
-    p = TESTFILES / "Vagledning-om-etikprovning-EPM.pdf"
-    if not p.exists():
-        pytest.skip(f"Saknar test-PDF: {p}")
+def report_pdf() -> Path:
+    """A report containing vector charts (for the diagram pipeline)."""
+    p = _resolve(
+        EXAMPLES / "report.pdf",
+        TESTFILES / "penningpolitisk-rapport-mars-2026.pdf",
+    )
+    if p is None:
+        pytest.skip("No report sample found (examples/report.pdf). See examples/README.md.")
     return p
 
 
 @pytest.fixture(scope="session")
-def penningpolitisk_pdf() -> Path:
-    p = TESTFILES / "penningpolitisk-rapport-mars-2026.pdf"
-    if not p.exists():
-        pytest.skip(f"Saknar test-PDF: {p}")
+def guide_pdf() -> Path:
+    """A document with a large cover image (for the OCR + resize paths)."""
+    p = _resolve(
+        EXAMPLES / "guide.pdf",
+        TESTFILES / "Vagledning-om-etikprovning-EPM.pdf",
+    )
+    if p is None:
+        pytest.skip("No guide sample found (examples/guide.pdf). See examples/README.md.")
     return p
 
 
 @pytest.fixture
 def env_with_key(monkeypatch):
-    """För config-tester som behöver en (fake) API-nyckel utan att slå mot Berget."""
+    """For config tests that need a (fake) API key without hitting the real API."""
     monkeypatch.setenv("BERGET_API_KEY", "sk-test-fake-key")

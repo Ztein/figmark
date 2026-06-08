@@ -1,12 +1,13 @@
-"""Plocka N ord text-kontext omedelbart före och efter en bild/diagram-position.
+"""Grab N words of text context immediately before and after an image/diagram.
 
-Används för att ge syntolkningsmodellen domänkontext — utan kontext tolkas
-ett diagram bara visuellt; med några ord text ovan/under får modellen veta
-vad rapporten handlar om.
+Used to give the description model domain context — without it a diagram is
+interpreted purely visually; with a few words of surrounding text the model
+learns what the report is about.
 
-Hämtar text från samma sida först, fortsätter till föregående/nästa sida om
-ordkvoten inte är fylld. Hoppar över andra bild/diagram-block.
+Pulls text from the same page first, then continues to the previous/next page
+if the word quota is not yet filled. Skips other image/diagram blocks.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -21,19 +22,20 @@ class ContextText:
         return not self.before.strip() and not self.after.strip()
 
     def format_for_prompt(self) -> str:
-        """Formatera kontexten för insättning i syntolknings-prompten."""
+        """Format the context for insertion into the description prompt."""
         parts: list[str] = []
         if self.before.strip():
-            parts.append(f"[Textsammanhang före bilden]\n{self.before.strip()}")
+            parts.append(f"[Text context before the image]\n{self.before.strip()}")
         if self.after.strip():
-            parts.append(f"[Textsammanhang efter bilden]\n{self.after.strip()}")
+            parts.append(f"[Text context after the image]\n{self.after.strip()}")
         return "\n\n".join(parts)
 
 
 def _text_above(page, y_top: float) -> str:
-    """Sammanfoga text-block på en sida som ligger helt ovanför y_top."""
-    # Importera här för att undvika cirkulär import
+    """Join text blocks on a page that lie entirely above y_top."""
+    # Import here to avoid a circular import.
     from .pdf_loader import TextBlock
+
     parts = []
     for block in page.blocks:
         if not isinstance(block, TextBlock):
@@ -44,8 +46,9 @@ def _text_above(page, y_top: float) -> str:
 
 
 def _text_below(page, y_bottom: float) -> str:
-    """Sammanfoga text-block på en sida som ligger helt under y_bottom."""
+    """Join text blocks on a page that lie entirely below y_bottom."""
     from .pdf_loader import TextBlock
+
     parts = []
     for block in page.blocks:
         if not isinstance(block, TextBlock):
@@ -57,6 +60,7 @@ def _text_below(page, y_bottom: float) -> str:
 
 def _all_page_text(page) -> str:
     from .pdf_loader import TextBlock
+
     return " ".join(b.text for b in page.blocks if isinstance(b, TextBlock))
 
 
@@ -67,12 +71,12 @@ def get_text_context_around(
     words_before: int,
     words_after: int,
 ) -> ContextText:
-    """Returnera N ord text omedelbart före och efter bbox i läsordning.
+    """Return N words of text immediately before and after bbox in reading order.
 
-    Hämtar från samma sida först (ovan/under bbox), sen från föregående/nästa
-    sidor om ordkvoten inte är fylld.
+    Pulls from the same page first (above/below bbox), then from the previous/next
+    pages if the word quota is not yet filled.
     """
-    # Hitta sidans index
+    # Find the page index.
     page_idx = None
     for i, p in enumerate(pages):
         if p.page_num == page_num:
@@ -83,8 +87,8 @@ def get_text_context_around(
 
     current_page = pages[page_idx]
 
-    # ============ Före: börja på samma sida, gå bakåt vid behov ============
-    before_chunks: list[str] = []  # ordnade närmst-bilden sist
+    # ============ Before: start on the same page, walk backwards as needed ============
+    before_chunks: list[str] = []  # ordered with the nearest-to-image chunk last
     remaining = words_before
 
     if remaining > 0:
@@ -105,8 +109,8 @@ def get_text_context_around(
                 remaining -= len(take)
             prev_idx -= 1
 
-    # ============ Efter: börja på samma sida, gå framåt vid behov ============
-    after_chunks: list[str] = []  # ordnade i läsordning
+    # ============ After: start on the same page, walk forwards as needed ============
+    after_chunks: list[str] = []  # ordered in reading order
     remaining = words_after
 
     if remaining > 0:

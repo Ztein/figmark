@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
 
 import fitz
 
@@ -24,14 +24,14 @@ class ImageBlock:
 @dataclass
 class DiagramBlock:
     bbox: tuple[float, float, float, float]
-    region_index: int  # matchar DiagramRegion.index per sida
+    region_index: int  # matches DiagramRegion.index within a page
     kind: str = "diagram"
 
 
 Block = TextBlock | ImageBlock | DiagramBlock
 
-# Teknisk tröskel — om en PDF har färre tecken per sida i snitt än så här
-# klassificeras hela dokumentet som skannat och OCR-pipelinen aktiveras.
+# Technical threshold — if a PDF averages fewer characters per page than this,
+# the whole document is classified as scanned and the OCR pipeline kicks in.
 SCANNED_MIN_AVG_CHARS_PER_PAGE = 50
 
 
@@ -39,7 +39,7 @@ def open_pdf(path: str | Path) -> fitz.Document:
     doc = fitz.open(path)
     if doc.needs_pass:
         doc.close()
-        raise RuntimeError("Lösenordsskyddade PDF:er stöds inte.")
+        raise RuntimeError("Password-protected PDFs are not supported.")
     return doc
 
 
@@ -52,12 +52,12 @@ def is_scanned(doc: fitz.Document) -> bool:
 
 
 def iter_page_blocks(page: fitz.Page) -> list[Block]:
-    """Returnera text- och bildblock på sidan i läsordning (y, x).
+    """Return the page's text and image blocks in reading order (y, x).
 
-    Text-block kommer från page.get_text("dict") (typ 0). Image-block bygger vi
-    från page.get_image_info(xrefs=True) istället för dict-outputens typ 1 —
-    dict-outputen ger blocknummer i fältet "number", inte den faktiska xref:en
-    som behövs för att matcha mot page.get_images() och doc.extract_image().
+    Text blocks come from page.get_text("dict") (type 0). Image blocks are built
+    from page.get_image_info(xrefs=True) rather than the dict output's type 1 —
+    the dict output reports a block number in the "number" field, not the actual
+    xref needed to match against page.get_images() and doc.extract_image().
     """
     blocks: list[Block] = []
 
@@ -92,5 +92,4 @@ def _join_text_block(block: dict) -> str:
 
 
 def iter_pages(doc: fitz.Document) -> Iterator[tuple[int, fitz.Page]]:
-    for i, page in enumerate(doc, start=1):
-        yield i, page
+    yield from enumerate(doc, start=1)

@@ -54,32 +54,32 @@ class Config:
 
 
 def _require(section: dict, key: str, section_name: str):
-    """Hämta ett obligatoriskt fält. Smäller högt om det saknas."""
+    """Fetch a required field. Fails loudly if it is missing."""
     if key not in section or section[key] in (None, ""):
         raise RuntimeError(
-            f"{section_name}.{key} saknas i config.yaml — detta fält är nödvändigt."
+            f"{section_name}.{key} is missing from config.yaml — this field is required."
         )
     return section[key]
 
 
 def load_config(config_path: str | Path = "config.yaml") -> Config:
-    """Läs config.yaml. Allt som koden behöver MÅSTE finnas — inga gömda defaults.
+    """Read config.yaml. Everything the code needs MUST be present — no hidden defaults.
 
-    Tekniska konstanter (clustering-trösklar, OCR-trösklar, bildstorleksfilter,
-    retry-antal, render-DPI etc.) finns som module-level konstanter i de moduler
-    som använder dem. Ändra där om du behöver tuna.
+    Technical constants (clustering thresholds, OCR thresholds, image-size filters,
+    retry counts, render DPI, etc.) live as module-level constants in the modules
+    that use them. Change them there if you need to tune.
     """
     load_dotenv()
 
     api_key = os.environ.get("BERGET_API_KEY")
     if not api_key:
         raise RuntimeError(
-            "BERGET_API_KEY saknas. Kopiera .env.example till .env och fyll i din nyckel."
+            "BERGET_API_KEY is not set. Copy .env.example to .env and fill in your key."
         )
 
     path = Path(config_path)
     if not path.exists():
-        raise FileNotFoundError(f"Hittar inte config-filen: {path}")
+        raise FileNotFoundError(f"Config file not found: {path}")
 
     with path.open("r", encoding="utf-8") as f:
         raw = yaml.safe_load(f) or {}
@@ -101,7 +101,7 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
 
     diagrams_raw = raw.get("diagrams") or {}
     if "enabled" not in diagrams_raw:
-        raise RuntimeError("diagrams.enabled saknas i config.yaml — detta fält är nödvändigt.")
+        raise RuntimeError("diagrams.enabled is missing from config.yaml — this field is required.")
     enabled = bool(diagrams_raw["enabled"])
     if enabled:
         diagrams_prompt = str(_require(diagrams_raw, "prompt", "diagrams")).strip()
@@ -116,7 +116,7 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
 
     context_raw = raw.get("context") or {}
     if "enabled" not in context_raw:
-        raise RuntimeError("context.enabled saknas i config.yaml — detta fält är nödvändigt.")
+        raise RuntimeError("context.enabled is missing from config.yaml — this field is required.")
     context = ContextConfig(
         enabled=bool(context_raw["enabled"]),
         words_before=int(_require(context_raw, "words_before", "context")),

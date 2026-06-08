@@ -5,12 +5,12 @@ from pathlib import Path
 
 import fitz
 
-# Tekniska konstanter — bilder under denna storlek (px) räknas som
-# dekorativa ikoner och hoppas över.
+# Technical constants — images smaller than this (px) are treated as
+# decorative icons and skipped.
 MIN_IMAGE_WIDTH = 50
 MIN_IMAGE_HEIGHT = 50
-# Bilder som täcker mer än denna andel av sidan hoppas över i OCR-läge
-# (då är "bilden" hela sidan av text).
+# Images covering more than this fraction of the page are skipped in OCR mode
+# (there the "image" is the whole page of text).
 FULL_PAGE_AREA_RATIO = 0.80
 
 
@@ -30,11 +30,11 @@ def extract_images_from_page(
     out_dir: Path,
     skip_full_page: bool = False,
 ) -> list[ExtractedImage]:
-    """Extrahera bilder från en sida.
+    """Extract images from a page.
 
-    skip_full_page=True hoppar över bilder som täcker >80% av sidans area —
-    används i OCR-läge där hela sidan typiskt ÄR en bild av text och inte
-    en separat illustration som ska syntolkas.
+    skip_full_page=True skips images covering >80% of the page area — used in
+    OCR mode, where the whole page is typically an image of text rather than a
+    separate illustration that needs describing.
     """
     out_dir.mkdir(parents=True, exist_ok=True)
     results: list[ExtractedImage] = []

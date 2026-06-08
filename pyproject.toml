@@ -1,0 +1,80 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "figmark"
+description = "Turn a PDF into Markdown with first-class AI figure descriptions."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Joel Stenberg", email = "l.j.stenberg@gmail.com" }]
+keywords = ["pdf", "markdown", "accessibility", "alt-text", "ocr", "vision", "ai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "Topic :: Multimedia :: Graphics :: Capture",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+dynamic = ["version"]
+dependencies = [
+    "PyMuPDF>=1.24.0",
+    "pytesseract>=0.3.10",
+    "Pillow>=10.0.0",
+    "openai>=1.40.0",
+    "python-dotenv>=1.0.0",
+    "PyYAML>=6.0",
+    "rich>=13.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/joelstenberg/figmark"
+Repository = "https://github.com/joelstenberg/figmark"
+Issues = "https://github.com/joelstenberg/figmark/issues"
+
+[project.scripts]
+figmark = "figmark.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.6.0",
+]
+
+[tool.hatch.version]
+path = "src/figmark/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/figmark"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra --strict-markers"
+markers = [
+    "live: runs against the real Berget API (needs BERGET_API_KEY, costs money, takes minutes)",
+]
+# Default mode runs EVERYTHING, including live tests — the "run for real" principle.
+# For fast iteration without live calls: pytest -m "not live"
+filterwarnings = [
+    "ignore::DeprecationWarning:importlib._bootstrap",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
