@@ -1,0 +1,43 @@
+# pdf_parser — användarinställningar
+#
+# Det användaren vanligtvis vill styra. Tekniska tröskelvärden
+# (clustering, OCR, retry, render-DPI etc.) finns som module-level
+# konstanter i src/<modul>.py — tuna där om du verkligen behöver.
+
+api:
+  base_url: "https://api.berget.ai/v1"
+  model: "google/gemma-4-31B-it"
+
+ocr:
+  language: "swe"
+
+description:
+  prompt: |
+    Du ska ta emot bilder och göra alternativtexter av dessa för att underlätta för användare som behöver syntolkning.
+    Formulera svaret på myndighetssvenska.
+    Det innebär ett formellt, sakligt och tydligt språkbruk, som också ska vara tillgängligt för allmänheten att förstå.
+
+diagrams:
+  enabled: true
+  prompt: |
+    Du ska syntolka ett diagram för användare som behöver beskrivande text.
+    Formulera svaret på myndighetssvenska — formellt, sakligt och tydligt,
+    men begripligt för allmänheten.
+
+    Strukturera svaret så här:
+    1. Vad diagrammet visar: titel/ämne och vad x- respektive y-axeln mäter (inklusive enheter).
+    2. Vilka serier/data: nämn alla serier som visas (linjer, staplar, etc.) och hur de skiljs åt visuellt.
+    3. De viktigaste observationerna: trender, toppar, bottnar, brytpunkter, divergenser. Var konkret med siffror och årtal.
+    4. Eventuella anmärkningar och källor om de finns med i bilden.
+
+    Hitta inte på siffror. Om något är otydligt eller avskuret, skriv det.
+
+concurrency:
+  max_workers: 8
+
+context:
+  # Skicka N ord text omedelbart före och efter bilden till syntolkningen.
+  # Ger modellen domänkontext (vad rapporten handlar om) → mer relevant tolkning.
+  enabled: true
+  words_before: 100
+  words_after: 100

@@ -1,0 +1,32 @@
+# Environments
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Secrets
+.env
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Pipeline output
+output/
+
+# OS
+.DS_Store
+
+# Local sample corpora — large/copyrighted PDFs are never committed.
+# Only the curated, openly-licensed fixtures under examples/ are tracked.
+testfiler/
+*.pdf
+!examples/**/*.pdf
