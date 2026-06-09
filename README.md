@@ -101,6 +101,14 @@ Everything beyond the API key is controlled by [`config.yaml`](config.yaml):
 Technical thresholds (clustering, OCR, retries, render DPI) live as documented
 constants in `src/figmark/<module>.py`.
 
+## How it works
+
+A PDF is classified as text-encoded or scanned, its text is extracted (or OCR'd),
+images and vector diagrams are found, the document's language and a short summary
+are determined, and every figure is described in parallel and woven back into the
+text in reading order. For the full pipeline, module map, and outputs, see
+**[docs/architecture.md](docs/architecture.md)**.
+
 ## Tests
 
 ```bash

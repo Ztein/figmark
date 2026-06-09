@@ -1,3 +1,10 @@
+"""OCR for scanned pages.
+
+Runs Tesseract first (free, local) and falls back to the vision model when
+Tesseract's character count or mean confidence is too low. The fallback is
+shouted loudly by the caller so it never hides in the logs.
+"""
+
 from __future__ import annotations
 
 import base64

@@ -68,6 +68,13 @@ ruff check --fix src tests && ruff format src tests
 - Follow the project's "fail loudly" principle: no silent fallbacks — when the
   pipeline changes strategy, it should say so clearly.
 
+## Understanding the codebase
+
+[docs/architecture.md](docs/architecture.md) walks through the pipeline end to end
+— the stages, the module map, the outputs, and how `config.yaml` maps to
+behaviour. The [docs/tickets/](docs/tickets/) carry the design notes for why each
+piece exists.
+
 ## Design principles
 
 - **Fail loudly.** No silent fallbacks. Strategy switches (e.g. Tesseract →

@@ -1,3 +1,12 @@
+"""Describe a raster image with the vision model.
+
+Covers payload preparation (resize/encode under the API's size cap), prompt
+composition (document summary + surrounding text + output language + the
+significance skip gate), the chat completion call with retries, and on-disk
+caching of the result. ``compose_prompt`` and ``language_instruction`` are shared
+with the diagram and summary paths.
+"""
+
 from __future__ import annotations
 
 import base64

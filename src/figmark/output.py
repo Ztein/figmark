@@ -1,3 +1,11 @@
+"""Assemble the extracted text and figure descriptions into the outputs.
+
+Produces the primary Markdown (``to_markdown`` — figures embedded with
+``![...](path)`` and their descriptions as blockquote captions, in reading order)
+and the plain-text raw/full text (``assemble``). Descriptions marked by the
+significance gate as decorative are omitted from every output.
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

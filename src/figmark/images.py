@@ -1,3 +1,10 @@
+"""Extract embedded raster images (JPEG/PNG XObjects) from a page.
+
+Filters out decorative icons below a minimum size and, in OCR mode, full-page
+images (where the "image" is the scanned page of text rather than an
+illustration). Vector charts are handled separately in ``diagrams.py``.
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

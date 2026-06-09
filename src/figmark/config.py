@@ -1,3 +1,11 @@
+"""Load and validate ``config.yaml`` into typed dataclasses.
+
+No hidden defaults: every field the code relies on must be present in the file,
+otherwise loading fails loudly with a message naming the missing field. Technical
+tuning constants live as module-level constants in the modules that use them, not
+here.
+"""
+
 from __future__ import annotations
 
 import os

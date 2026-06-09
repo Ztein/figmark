@@ -1,3 +1,12 @@
+"""CLI entry point and pipeline orchestration.
+
+Ties the modules together end to end: classify the PDF as text-encoded or scanned,
+extract text (or OCR), find images and vector diagrams, detect the document
+language, summarise the document, describe every figure in parallel (with caching
+and the significance gate), and assemble the Markdown / raw text / optional
+annotated PDF. See ``docs/architecture.md`` for the full flow.
+"""
+
 from __future__ import annotations
 
 import argparse

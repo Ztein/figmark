@@ -1,3 +1,10 @@
+"""Open a PDF and turn each page into ordered blocks.
+
+Yields text and image blocks in reading order (sorted by y, then x), and
+classifies whether the document is scanned — average characters per page below a
+threshold means the OCR pipeline takes over instead of direct text extraction.
+"""
+
 from __future__ import annotations
 
 from collections.abc import Iterator
