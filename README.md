@@ -24,8 +24,14 @@ It was built to produce accessible alt text in formal Swedish
   diagram-specific prompt.
 - **Scanned PDFs.** Falls back to OCR — Tesseract first, a vision model when
   Tesseract's quality is too low.
-- **Context-aware descriptions.** Sends the surrounding text to the model so a
-  chart is interpreted in the report's context, not just visually.
+- **Context-aware descriptions.** Sends the surrounding text — plus a one-line
+  summary of what kind of document it is — to the model, so a chart is interpreted
+  in the report's context, not just visually.
+- **Matches the document's language.** Descriptions follow the document's own
+  language by default (auto-detected), or you can force one — so an English PDF
+  gets English captions, not Swedish ones.
+- **Skips decorative images.** A significance gate lets the model leave out
+  logos, dividers, and icons that carry no information — no extra API calls.
 - **Parallel + cached.** Descriptions run concurrently and are cached on disk; a
   second run re-uses them and makes no API calls.
 - **Fail loudly.** No silent fallbacks — strategy switches are shouted with clear
@@ -67,6 +73,7 @@ Output lands in `output/<pdf-name>/`:
 - `raw_text.txt` — text only, no descriptions
 - `images/`, `diagrams/` — extracted figures
 - `descriptions/`, `diagram_descriptions/` — one `.txt` per figure (the cache)
+- `document_summary.txt`, `document_language.txt` — cached document-level context
 
 Produce an accessibility-annotated copy of the source PDF too:
 
@@ -79,10 +86,16 @@ figmark path/to/document.pdf --annotate-pdf
 Everything beyond the API key is controlled by [`config.yaml`](config.yaml):
 
 - `api.model` / `api.base_url` — which model and endpoint to use
+- `language.output` — output language for descriptions/diagrams/summary:
+  `auto` follows the document's own language, or name one (`Swedish`, `English`)
+  to force it
 - `description.prompt` / `diagrams.prompt` — the figure and diagram prompts
-  (kept in Swedish by default; this is the product's domain output)
+  (written in Swedish by default; they set the task and register, the output
+  language is controlled separately by `language.output`)
 - `concurrency.max_workers` — parallel API calls
 - `context.*` — how much surrounding text to send for context
+- `significance.enabled` — let the model skip purely decorative images
+- `document_summary.*` — generate a document-type summary and pass it as context
 - `ocr.language` — Tesseract language
 
 Technical thresholds (clustering, OCR, retries, render DPI) live as documented

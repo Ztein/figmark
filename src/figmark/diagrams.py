@@ -16,6 +16,7 @@ import fitz
 
 from .config import Config
 from .context import ContextText
+from .describe import compose_prompt
 
 # ============================================================================
 # Technical constants for the clustering pipeline. Tune here if a specific PDF
@@ -257,11 +258,15 @@ def describe_diagram(
     description_path: Path,
     cfg: Config,
     context: ContextText | None = None,
+    doc_summary: str | None = None,
+    language: str | None = None,
 ) -> str:
     """Send the diagram image to the model with the diagram-specific prompt.
 
     Cache: if description_path exists and is non-empty, read it from disk.
-    If context is given it is prepended before the task in the prompt.
+    The document summary and any text context are prepended before the task.
+    The significance skip gate is not applied here — clustering already ensures a
+    region is a real chart, so we always describe it.
     """
     if description_path.exists():
         cached = description_path.read_text(encoding="utf-8").strip()
@@ -274,11 +279,13 @@ def describe_diagram(
     img_bytes = region.path.read_bytes()
     data_uri = "data:image/png;base64," + base64.b64encode(img_bytes).decode("ascii")
 
-    # Build the user text with any context.
-    if context is not None and not context.is_empty():
-        user_text = f"{context.format_for_prompt()}\n\n[Task]\n{cfg.diagrams.prompt}"
-    else:
-        user_text = cfg.diagrams.prompt
+    user_text = compose_prompt(
+        cfg.diagrams.prompt,
+        doc_summary=doc_summary,
+        context=context,
+        significance=False,
+        language=language if language is not None else cfg.language.output,
+    )
 
     response = client.chat.completions.create(
         model=cfg.api.model,

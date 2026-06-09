@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Output language follows the document (T-007).** A new `language.output`
+  setting controls the language of image/diagram descriptions and the document
+  summary. `auto` (default) detects the document's language once (cached to
+  `output/<pdf>/document_language.txt`) and instructs the model explicitly;
+  naming a language (`Swedish`, `English`, …) forces it. An English PDF now gets
+  English captions instead of Swedish ones.
+
+- **Document-type summary as context.** Before describing figures, figmark
+  summarises the document once (what it is + what it's about) from its leading
+  text and passes that summary into every image and diagram prompt, so figures
+  are interpreted with the whole document in mind. Cached to
+  `output/<pdf>/document_summary.txt`. Configurable via `document_summary.*`
+  (`enabled`, `sample_words`, `prompt`).
+- **Significance gate for images.** The vision model is asked to skip purely
+  decorative images (logos, dividers, backgrounds, icons) by replying with a
+  `[SKIP]` marker; such images are left out of the Markdown, annotations, and
+  inlined text. No extra API calls — the decision is folded into the description
+  call. Toggle with `significance.enabled`.
+
+### Changed
+
+- `config.yaml` gains three required sections — `significance`,
+  `document_summary`, and `language` (following the existing "no hidden defaults"
+  contract). Existing configs must add them — see `config.yaml` for the
+  documented defaults.
+- The default description/diagram/summary prompts no longer hardcode Swedish
+  output; they describe the task and register, while `language.output` controls
+  the language. Set `language.output: Swedish` for the previous behaviour.
+
 ## [0.1.0] - 2026-06-08
 
 First public release. Packaged the former internal `pdf_parser` tool as the

@@ -44,6 +44,25 @@ class ContextConfig:
 
 
 @dataclass
+class SignificanceConfig:
+    enabled: bool
+
+
+@dataclass
+class DocumentSummaryConfig:
+    enabled: bool
+    sample_words: int
+    prompt: str
+
+
+@dataclass
+class LanguageConfig:
+    # Output language for descriptions/diagrams/summary. "auto" follows the
+    # document's own language; otherwise a language name the model understands.
+    output: str
+
+
+@dataclass
 class Config:
     api: ApiConfig
     ocr: OcrConfig
@@ -51,6 +70,9 @@ class Config:
     diagrams: DiagramsConfig
     concurrency: ConcurrencyConfig
     context: ContextConfig
+    significance: SignificanceConfig
+    document_summary: DocumentSummaryConfig
+    language: LanguageConfig
 
 
 def _require(section: dict, key: str, section_name: str):
@@ -123,6 +145,34 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
         words_after=int(_require(context_raw, "words_after", "context")),
     )
 
+    significance_raw = raw.get("significance") or {}
+    if "enabled" not in significance_raw:
+        raise RuntimeError(
+            "significance.enabled is missing from config.yaml — this field is required."
+        )
+    significance = SignificanceConfig(enabled=bool(significance_raw["enabled"]))
+
+    summary_raw = raw.get("document_summary") or {}
+    if "enabled" not in summary_raw:
+        raise RuntimeError(
+            "document_summary.enabled is missing from config.yaml — this field is required."
+        )
+    summary_enabled = bool(summary_raw["enabled"])
+    if summary_enabled:
+        summary_words = int(_require(summary_raw, "sample_words", "document_summary"))
+        summary_prompt = str(_require(summary_raw, "prompt", "document_summary")).strip()
+    else:
+        summary_words = int(summary_raw.get("sample_words", 0) or 0)
+        summary_prompt = str(summary_raw.get("prompt", "")).strip()
+    document_summary = DocumentSummaryConfig(
+        enabled=summary_enabled,
+        sample_words=summary_words,
+        prompt=summary_prompt,
+    )
+
+    language_raw = raw.get("language") or {}
+    language = LanguageConfig(output=str(_require(language_raw, "output", "language")).strip())
+
     return Config(
         api=api,
         ocr=ocr,
@@ -130,4 +180,7 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
         diagrams=diagrams,
         concurrency=concurrency,
         context=context,
+        significance=significance,
+        document_summary=document_summary,
+        language=language,
     )

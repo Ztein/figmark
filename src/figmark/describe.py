@@ -24,6 +24,38 @@ MAX_PAYLOAD_BYTES = 500_000
 MAX_IMAGE_DIM = 1500
 JPEG_QUALITY = 85
 
+# Significance gate: when enabled, the model is told to answer with this exact
+# marker for purely decorative images. The token is code-owned (parsed below),
+# so it stays language-neutral even though the prompts around it are Swedish.
+SKIP_MARKER = "[SKIP]"
+SIGNIFICANCE_INSTRUCTION = (
+    "Om bilden är rent dekorativ och inte tillför någon information till läsaren "
+    "(till exempel en logotyp, en dekorativ linje, en bakgrund, en ikon eller en "
+    f"bård), svara med exakt {SKIP_MARKER} och ingenting annat."
+)
+
+
+def is_skip(text: str | None) -> bool:
+    """True if a description is the significance-gate skip marker (decorative image)."""
+    return bool(text) and text.strip().upper().startswith(SKIP_MARKER)
+
+
+def language_instruction(output: str) -> str:
+    """Clause that controls the model's output language.
+
+    "auto" (or empty) tells the model to answer in the document's own language,
+    using the document text/context already present in the prompt. Any other value
+    forces that language explicitly. Written in English because it is a meta
+    instruction about output — models follow it regardless of the target language.
+    """
+    out = (output or "").strip()
+    if out.lower() in ("", "auto", "document"):
+        return (
+            "Write your answer in the same language as the document text and context "
+            "provided in this prompt. Do not translate it into another language."
+        )
+    return f"Write your answer in {out}."
+
 
 def make_client(cfg: Config) -> OpenAI:
     return OpenAI(
@@ -69,11 +101,35 @@ def _image_to_data_uri(path: Path) -> str:
     return f"data:{mime};base64,{encoded}"
 
 
-def _build_user_text(base_prompt: str, context: ContextText | None) -> str:
-    """Prepend any text context before the task in the prompt."""
-    if context is None or context.is_empty():
-        return base_prompt
-    return f"{context.format_for_prompt()}\n\n[Task]\n{base_prompt}"
+def compose_prompt(
+    task: str,
+    *,
+    doc_summary: str | None = None,
+    context: ContextText | None = None,
+    significance: bool = False,
+    language: str | None = None,
+) -> str:
+    """Build the user text: optional document summary + text context, then the task.
+
+    The scaffolding labels are English (matching the context labels); the task
+    content itself stays in whatever language the prompt is written in. When
+    `significance` is set, the skip instruction is appended to the task. When
+    `language` is given, an output-language instruction is appended to the task.
+    """
+    task_text = task if not significance else f"{task}\n\n{SIGNIFICANCE_INSTRUCTION}"
+    if language is not None:
+        task_text = f"{task_text}\n\n{language_instruction(language)}"
+
+    sections: list[str] = []
+    if doc_summary and doc_summary.strip():
+        sections.append(f"[Document type]\n{doc_summary.strip()}")
+    if context is not None and not context.is_empty():
+        sections.append(context.format_for_prompt())
+
+    if not sections:
+        return task_text
+    sections.append(f"[Task]\n{task_text}")
+    return "\n\n".join(sections)
 
 
 def describe_image(
@@ -82,6 +138,8 @@ def describe_image(
     description_path: Path,
     cfg: Config,
     context: ContextText | None = None,
+    doc_summary: str | None = None,
+    language: str | None = None,
 ) -> str:
     if description_path.exists():
         cached = description_path.read_text(encoding="utf-8").strip()
@@ -89,7 +147,13 @@ def describe_image(
             return cached
 
     data_uri = _image_to_data_uri(image_path)
-    user_text = _build_user_text(cfg.description.prompt, context)
+    user_text = compose_prompt(
+        cfg.description.prompt,
+        doc_summary=doc_summary,
+        context=context,
+        significance=cfg.significance.enabled,
+        language=language if language is not None else cfg.language.output,
+    )
 
     last_error: Exception | None = None
     for attempt in range(1, MAX_RETRIES + 1):

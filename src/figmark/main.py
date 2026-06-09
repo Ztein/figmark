@@ -7,7 +7,7 @@ from pathlib import Path
 from .annotate import AnnotationItem, annotate_pdf
 from .config import load_config
 from .context import ContextText, get_text_context_around
-from .describe import describe_image, make_client
+from .describe import describe_image, is_skip, make_client
 from .diagrams import (
     DiagramRegion,
     describe_diagram,
@@ -33,6 +33,7 @@ from .pdf_loader import (
     iter_pages,
     open_pdf,
 )
+from .summarize import detect_language, summarize_document
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -79,7 +80,7 @@ def _collect_annotation_items(pages: list[PageData]) -> list[AnnotationItem]:
             if img.bbox is None:
                 continue
             desc = page_data.descriptions.get(img.xref)
-            if desc:
+            if desc and not is_skip(desc):
                 items.append(
                     AnnotationItem(
                         page_num=page_data.page_num,
@@ -204,6 +205,38 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
     if total_diagrams:
         diagram_descriptions_dir.mkdir(parents=True, exist_ok=True)
 
+    # Resolve the output language. "auto" detects the document's own language once
+    # (a soft "answer in the document's language" instruction is unreliable against
+    # Swedish-written prompts), then every description is told that language
+    # explicitly. An explicit value (e.g. "Swedish") skips detection.
+    resolved_language = cfg.language.output
+    if resolved_language.strip().lower() in ("auto", "document", ""):
+        detected = ""
+        try:
+            detected = detect_language(client, pages, cfg, out_dir / "document_language.txt")
+        except Exception as e:  # noqa: BLE001
+            loud(f"Language detection failed ({type(e).__name__}: {e}) — using prompt default")
+        if detected:
+            resolved_language = detected
+            log(f"\nDocument language: {resolved_language}")
+
+    # Document-type summary: computed once from the extracted text and passed as
+    # context into every figure description. Best-effort — a failed summary should
+    # not abort the whole run, since it is only context.
+    doc_summary = ""
+    if cfg.document_summary.enabled:
+        try:
+            doc_summary = summarize_document(
+                client, pages, cfg, out_dir / "document_summary.txt", resolved_language
+            )
+        except Exception as e:  # noqa: BLE001
+            loud(
+                f"Document summary failed ({type(e).__name__}: {e}) — "
+                f"continuing without it"
+            )
+        if doc_summary:
+            log(f"Document summary: {doc_summary}")
+
     # Gather ALL description jobs (images + diagrams). Cache hits are resolved
     # here directly so we don't schedule needless workers; only actual API calls
     # go to parallel.run_jobs.
@@ -234,7 +267,12 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
                 continue
             label = f"page {page_data.page_num:>3} image   {img.index:>2}"
             ctx = _maybe_context(img.bbox)
-            jobs.append(_make_image_job(label, client, img, desc_path, cfg, page_data, ctx))
+            jobs.append(
+                _make_image_job(
+                    label, client, img, desc_path, cfg, page_data, ctx, doc_summary,
+                    resolved_language,
+                )
+            )
 
         for region in page_regions.get(page_data.page_num, []):
             desc_path = diagram_descriptions_dir / f"{region.path.stem}.txt"
@@ -245,7 +283,12 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
                 continue
             label = f"page {page_data.page_num:>3} diagram {region.index:>2}"
             ctx = _maybe_context(region.bbox)
-            jobs.append(_make_diagram_job(label, client, region, desc_path, cfg, page_data, ctx))
+            jobs.append(
+                _make_diagram_job(
+                    label, client, region, desc_path, cfg, page_data, ctx, doc_summary,
+                    resolved_language,
+                )
+            )
 
     if total_pending:
         if cache_hits:
@@ -293,11 +336,16 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
     return 0
 
 
-def _make_image_job(label, client, img, desc_path, cfg, page_data, context) -> Job:
+def _make_image_job(
+    label, client, img, desc_path, cfg, page_data, context, doc_summary, language
+) -> Job:
     """Capture the loop variables in a factory — otherwise the closure-in-loop trap."""
 
     def run_describe() -> str:
-        return describe_image(client, img.path, desc_path, cfg, context=context)
+        return describe_image(
+            client, img.path, desc_path, cfg,
+            context=context, doc_summary=doc_summary, language=language,
+        )
 
     def store(text: str) -> None:
         page_data.descriptions[img.xref] = text
@@ -305,9 +353,14 @@ def _make_image_job(label, client, img, desc_path, cfg, page_data, context) -> J
     return Job(label=label, func=run_describe, on_done=store)
 
 
-def _make_diagram_job(label, client, region, desc_path, cfg, page_data, context) -> Job:
+def _make_diagram_job(
+    label, client, region, desc_path, cfg, page_data, context, doc_summary, language
+) -> Job:
     def run_describe() -> str:
-        return describe_diagram(client, region, desc_path, cfg, context=context)
+        return describe_diagram(
+            client, region, desc_path, cfg,
+            context=context, doc_summary=doc_summary, language=language,
+        )
 
     def store(text: str) -> None:
         page_data.diagram_descriptions[region.index] = text

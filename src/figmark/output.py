@@ -3,9 +3,15 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from .config import Config
+from .describe import is_skip
 from .diagrams import PLACEHOLDER as DIAGRAM_PLACEHOLDER
 from .images import ExtractedImage
 from .pdf_loader import Block, DiagramBlock, ImageBlock, TextBlock
+
+
+def _shown(description: str) -> str:
+    """A description that should appear in the output, or "" if it's a skip marker."""
+    return "" if is_skip(description) else description
 
 # Inline template for raster images + page separator, used in the plain-text
 # (raw) output. Rarely tuned, so it lives here rather than in config.yaml.
@@ -48,7 +54,7 @@ def assemble(pages: list[PageData], cfg: Config) -> tuple[str, str]:
                 key=lambda im: (im.bbox[1] if im.bbox else 0.0, im.bbox[0] if im.bbox else 0.0),
             )
             for img in sorted_images:
-                desc = page.descriptions.get(img.xref, "")
+                desc = _shown(page.descriptions.get(img.xref, ""))
                 if desc:
                     full_parts.append("\n\n" + IMAGE_PLACEHOLDER.format(description=desc))
         else:
@@ -59,11 +65,11 @@ def assemble(pages: list[PageData], cfg: Config) -> tuple[str, str]:
                     page_raw.append(block.text)
                     page_full.append(block.text)
                 elif isinstance(block, ImageBlock):
-                    desc = page.descriptions.get(block.xref, "")
+                    desc = _shown(page.descriptions.get(block.xref, ""))
                     if desc:
                         page_full.append(IMAGE_PLACEHOLDER.format(description=desc))
                 elif isinstance(block, DiagramBlock):
-                    desc = page.diagram_descriptions.get(block.region_index, "")
+                    desc = _shown(page.diagram_descriptions.get(block.region_index, ""))
                     if desc:
                         page_full.append(DIAGRAM_PLACEHOLDER.format(description=desc))
             raw_parts.append("\n\n".join(page_raw))
@@ -106,7 +112,7 @@ def to_markdown(pages: list[PageData]) -> str:
                 key=lambda im: (im.bbox[1] if im.bbox else 0.0, im.bbox[0] if im.bbox else 0.0),
             )
             for img in sorted_images:
-                desc = page.descriptions.get(img.xref, "")
+                desc = _shown(page.descriptions.get(img.xref, ""))
                 if desc:
                     parts.append(_figure("Image", page.page_num, f"images/{img.path.name}", desc))
         else:
@@ -116,7 +122,7 @@ def to_markdown(pages: list[PageData]) -> str:
                     if block.text.strip():
                         parts.append(block.text.strip())
                 elif isinstance(block, ImageBlock):
-                    desc = page.descriptions.get(block.xref, "")
+                    desc = _shown(page.descriptions.get(block.xref, ""))
                     if desc:
                         img = img_by_xref.get(block.xref)
                         rel = (
@@ -126,7 +132,7 @@ def to_markdown(pages: list[PageData]) -> str:
                         )
                         parts.append(_figure("Image", page.page_num, rel, desc))
                 elif isinstance(block, DiagramBlock):
-                    desc = page.diagram_descriptions.get(block.region_index, "")
+                    desc = _shown(page.diagram_descriptions.get(block.region_index, ""))
                     if desc:
                         rel = (
                             f"diagrams/page-{page.page_num:03d}-diagram-"

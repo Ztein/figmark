@@ -12,14 +12,21 @@ def test_load_default_config(env_with_key, project_root: Path):
     assert cfg.api.api_key == "sk-test-fake-key"
     assert cfg.api.base_url == "https://api.berget.ai/v1"
     assert cfg.api.model
-    # The description prompt is intentionally kept in Swedish (myndighetssvenska
-    # is the product's domain output), so we assert on its Swedish content.
+    # The description prompt is intentionally kept written in Swedish (it describes
+    # the task and the formal register), but it no longer pins the output language
+    # — that is controlled by language.output (default "auto"). See T-007.
     assert cfg.description.prompt.startswith("Du ska ta emot bilder")
-    assert "myndighetssvenska" in cfg.description.prompt
+    assert "formellt" in cfg.description.prompt
+    assert cfg.language.output == "auto"
     assert cfg.diagrams.enabled is True
     assert cfg.diagrams.prompt
     assert cfg.concurrency.max_workers >= 1
     assert cfg.ocr.language == "swe"
+    assert cfg.significance.enabled is True
+    assert cfg.document_summary.enabled is True
+    assert cfg.document_summary.sample_words >= 1
+    assert cfg.document_summary.prompt
+    assert cfg.language.output
 
 
 def test_load_config_requires_api_key(monkeypatch, project_root: Path):
@@ -199,9 +206,80 @@ def test_diagrams_disabled_skips_prompt_requirement(env_with_key, tmp_path: Path
         "description:\n  prompt: 'describe'\n"
         "diagrams:\n  enabled: false\n"
         "concurrency:\n  max_workers: 2\n"
-        "context:\n  enabled: false\n  words_before: 0\n  words_after: 0\n",
+        "context:\n  enabled: false\n  words_before: 0\n  words_after: 0\n"
+        "significance:\n  enabled: false\n"
+        "document_summary:\n  enabled: false\n"
+        "language:\n  output: auto\n",
         encoding="utf-8",
     )
     cfg = load_config(cfg_path)
     assert cfg.diagrams.enabled is False
     assert cfg.diagrams.prompt == ""
+    # A disabled document_summary does not require sample_words/prompt.
+    assert cfg.document_summary.enabled is False
+    assert cfg.significance.enabled is False
+
+
+# A complete, valid config used by the required-field tests below. Each test
+# omits exactly one field to assert it fails loudly.
+_FULL_CONFIG = (
+    "api:\n  model: 'x'\n  base_url: 'x'\n"
+    "ocr:\n  language: 'swe'\n"
+    "description:\n  prompt: 'x'\n"
+    "diagrams:\n  enabled: false\n"
+    "concurrency:\n  max_workers: 2\n"
+    "context:\n  enabled: false\n  words_before: 0\n  words_after: 0\n"
+    "significance:\n  enabled: true\n"
+    "document_summary:\n  enabled: true\n  sample_words: 100\n  prompt: 'summarise'\n"
+    "language:\n  output: auto\n"
+)
+
+
+def test_missing_significance_fails_loudly(env_with_key, tmp_path: Path):
+    bad = tmp_path / "bad.yaml"
+    bad.write_text(_FULL_CONFIG.replace("significance:\n  enabled: true\n", ""), encoding="utf-8")
+    with pytest.raises(RuntimeError, match="significance.enabled is missing"):
+        load_config(bad)
+
+
+def test_missing_document_summary_fails_loudly(env_with_key, tmp_path: Path):
+    bad = tmp_path / "bad.yaml"
+    bad.write_text(
+        _FULL_CONFIG.replace(
+            "document_summary:\n  enabled: true\n  sample_words: 100\n  prompt: 'summarise'\n", ""
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(RuntimeError, match="document_summary.enabled is missing"):
+        load_config(bad)
+
+
+def test_document_summary_enabled_requires_prompt(env_with_key, tmp_path: Path):
+    bad = tmp_path / "bad.yaml"
+    bad.write_text(
+        _FULL_CONFIG.replace(
+            "document_summary:\n  enabled: true\n  sample_words: 100\n  prompt: 'summarise'\n",
+            "document_summary:\n  enabled: true\n  sample_words: 100\n",
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(RuntimeError, match="document_summary.prompt is missing"):
+        load_config(bad)
+
+
+def test_missing_language_fails_loudly(env_with_key, tmp_path: Path):
+    bad = tmp_path / "bad.yaml"
+    bad.write_text(_FULL_CONFIG.replace("language:\n  output: auto\n", ""), encoding="utf-8")
+    with pytest.raises(RuntimeError, match="language.output is missing"):
+        load_config(bad)
+
+
+def test_full_config_loads(env_with_key, tmp_path: Path):
+    cfg_path = tmp_path / "full.yaml"
+    cfg_path.write_text(_FULL_CONFIG, encoding="utf-8")
+    cfg = load_config(cfg_path)
+    assert cfg.significance.enabled is True
+    assert cfg.document_summary.enabled is True
+    assert cfg.document_summary.sample_words == 100
+    assert cfg.document_summary.prompt == "summarise"
+    assert cfg.language.output == "auto"

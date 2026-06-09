@@ -4,10 +4,11 @@
 # OCR, retries, render DPI, etc.) live as module-level constants in
 # src/figmark/<module>.py — tune them there if you really need to.
 #
-# NOTE: the `prompt` values below are intentionally written in Swedish. The tool
-# is built to produce alt text in "myndighetssvenska" (formal Swedish public-
-# sector language); the prompt is the product's domain output, not UI text.
-# Translate the prompts only if you want descriptions in another language.
+# NOTE: the `prompt` values below are written in Swedish by design — they describe
+# the task and the desired register (formal, factual, public-accessible). They no
+# longer pin the OUTPUT language: that is controlled by `language.output` (see
+# below), which defaults to following the document. Set `language.output: Swedish`
+# to reproduce the original "myndighetssvenska" alt text for any document.
 
 api:
   base_url: "https://api.berget.ai/v1"
@@ -16,18 +17,27 @@ api:
 ocr:
   language: "swe"
 
+language:
+  # Output language for image/diagram descriptions and the document summary.
+  #   auto      → follow the document's own language (recommended)
+  #   <name>    → force a language the model understands, e.g. "Swedish",
+  #               "svenska", "English". Use this to keep Swedish alt text even
+  #               for non-Swedish documents (the original myndighetssvenska use
+  #               case). Changing this requires clearing output/<pdf>/descriptions/.
+  # The instruction prompts below stay in Swedish by design; this only controls
+  # the language the model answers in.
+  output: auto
+
 description:
   prompt: |
     Du ska ta emot bilder och göra alternativtexter av dessa för att underlätta för användare som behöver syntolkning.
-    Formulera svaret på myndighetssvenska.
-    Det innebär ett formellt, sakligt och tydligt språkbruk, som också ska vara tillgängligt för allmänheten att förstå.
+    Formulera svaret formellt, sakligt och tydligt, så att det också är tillgängligt för allmänheten att förstå.
 
 diagrams:
   enabled: true
   prompt: |
     Du ska syntolka ett diagram för användare som behöver beskrivande text.
-    Formulera svaret på myndighetssvenska — formellt, sakligt och tydligt,
-    men begripligt för allmänheten.
+    Formulera svaret formellt, sakligt och tydligt, men begripligt för allmänheten.
 
     Strukturera svaret så här:
     1. Vad diagrammet visar: titel/ämne och vad x- respektive y-axeln mäter (inklusive enheter).
@@ -47,3 +57,24 @@ context:
   enabled: true
   words_before: 100
   words_after: 100
+
+significance:
+  # When enabled, the vision model is asked to skip purely decorative images
+  # (logos, dividers, backgrounds, icons) — it replies with a skip marker and
+  # the image is left out of the output. No extra API calls: the decision is
+  # folded into the description call that would happen anyway.
+  enabled: true
+
+document_summary:
+  # Summarise the document once (what kind of document it is + what it is about)
+  # and pass that summary as context to every image/diagram description, so the
+  # model interprets each figure with the whole document in mind. Costs one extra
+  # API call per document; the result is cached in output/<pdf>/document_summary.txt.
+  enabled: true
+  # How many words of leading document text to feed the summariser.
+  sample_words: 500
+  prompt: |
+    Sammanfatta i högst två meningar vad detta är för typ av dokument och vad
+    det handlar om. Sammanfattningen används som kontext när enskilda bilder och
+    diagram i dokumentet ska tolkas, så fokusera på dokumentets ämne och syfte
+    — inte på enskilda detaljer.
