@@ -1,39 +1,39 @@
-# T-004: Tagged PDF / PDF/UA — riktig tillgänglighet via structure tree
+# T-004: Tagged PDF / PDF/UA — real accessibility via the structure tree
 
 **Status:** Open
-**Prioritet:** Medium — bygger ovanpå T-005 (annotation-MVP)
-**Önskad:** 2026-05-20
+**Priority:** Medium — builds on top of T-005 (annotation MVP)
+**Requested:** 2026-05-20
 
-## Symptom / motivering
+## Symptom / motivation
 
-T-005 (text-annotations) ger syntolkningarna en synlig och läsbar form i PDF:en, men det är inte "riktig" tillgänglighet enligt PDF/UA-standarden. Skärmläsare som följer standarden förlitar sig på **structure tree** — varje bild ska vara ett `<Figure>`-element med ett `/Alt`-attribut. Annotations är ett komplement, inte ersättning.
+T-005 (text annotations) gives the descriptions a visible and readable form in the PDF, but that isn't "real" accessibility according to the PDF/UA standard. Screen readers that follow the standard rely on the **structure tree** — every image should be a `<Figure>` element with an `/Alt` attribute. Annotations are a complement, not a replacement.
 
-## Krav
+## Requirements
 
-- Källans PDF "promoteras" till tagged PDF om den inte redan är det
-- Varje extraherad bild/diagram blir ett `<Figure>`-element i structure tree
-- `/Alt` på varje Figure innehåller syntolkningen
-- Reading order respekteras (Figure-elementen ligger på rätt plats i text-flow:n)
-- Output validerar mot PDF/UA-checker (t.ex. PAC, veraPDF)
+- The source PDF is "promoted" to a tagged PDF if it isn't already
+- Each extracted image/chart becomes a `<Figure>` element in the structure tree
+- The `/Alt` on each Figure contains the description
+- Reading order is respected (the Figure elements sit in the right place in the text flow)
+- The output validates against a PDF/UA checker (e.g. PAC, veraPDF)
 
-## Åtgärdsalternativ
+## Options
 
-### Alternativ 1: pikepdf + manuell structure tree
-Lägg till `pikepdf` som dependency. Använd dess Pdf-objektgraf-API för att bygga `/StructTreeRoot`, `/ParentTree`, och Figure-noder. Mycket arbete men full kontroll.
+### Option 1: pikepdf + manual structure tree
+Add `pikepdf` as a dependency. Use its Pdf object-graph API to build `/StructTreeRoot`, `/ParentTree`, and Figure nodes. A lot of work but full control.
 
-### Alternativ 2: använd ett färdigt verktyg som postprocess
-Använd `pdfua-tool` eller liknande (om det finns) som CLI-process efter vår pipeline. Outsourcing av komplexiteten.
+### Option 2: use an existing tool as a postprocess
+Use `pdfua-tool` or similar (if one exists) as a CLI step after our pipeline. Outsource the complexity.
 
-### Alternativ 3: hybrid annotations + StructTreeRoot-stub
-Behåll annotations (T-005) som primär informationsbärare. Lägg till en minimal StructTreeRoot som bara binder samman annotations till "figure"-roles. Inte full PDF/UA men närmare.
+### Option 3: hybrid annotations + StructTreeRoot stub
+Keep annotations (T-005) as the primary information carrier. Add a minimal StructTreeRoot that only ties the annotations to "figure" roles. Not full PDF/UA but closer.
 
-## Rekommendation
+## Recommendation
 
-**Alternativ 1 (pikepdf).** Är det "rätta" sättet enligt standard. Skalar till framtida features som heading-tags och språk-attribut.
+**Option 1 (pikepdf).** It's the "right" way according to the standard. Scales to future features like heading tags and language attributes.
 
-## Acceptanskriterier
+## Acceptance criteria
 
-- [ ] `--tagged-pdf` flagg som producerar `<pdf>_tagged.pdf`
-- [ ] PAC eller veraPDF accepterar outputten som PDF/UA-konform (åtminstone för Figure-elementen)
-- [ ] VoiceOver/NVDA läser upp syntolkningen när användaren navigerar till bilden
-- [ ] Live-test som validerar structure tree-existens på en känd PDF
+- [ ] A `--tagged-pdf` flag that produces `<pdf>_tagged.pdf`
+- [ ] PAC or veraPDF accepts the output as PDF/UA-conformant (at least for the Figure elements)
+- [ ] VoiceOver/NVDA reads out the description when the user navigates to the image
+- [ ] A live test that validates structure tree existence on a known PDF

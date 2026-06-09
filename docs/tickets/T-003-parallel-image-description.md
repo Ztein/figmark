@@ -1,145 +1,145 @@
-# T-003: Parallell bearbetning av bild- och diagram-syntolkningar
+# T-003: Parallel processing of image and chart descriptions
 
-**Status:** Closed — implementerat 2026-05-20 via ThreadPoolExecutor + rich Live-vy
-**Prioritet:** Medium — tidsvinst, inte funktionsfix
-**Önskad:** 2026-05-20
+**Status:** Closed — implemented 2026-05-20 via ThreadPoolExecutor + rich Live view
+**Priority:** Medium — time saving, not a functionality fix
+**Requested:** 2026-05-20
 
 ## Resolution
 
-Implementerat i [src/parallel.py](../../src/parallel.py). Pipelinen samlar nu
-cache-misses från både bild- och diagram-syntolkningar i en lista av `Job` och
-skickar till en ThreadPoolExecutor med konfigurerbar parallellism.
+Implemented in [src/figmark/parallel.py](../../src/figmark/parallel.py). The pipeline now
+collects cache misses from both image and chart descriptions into a list of `Job`s and
+submits them to a ThreadPoolExecutor with configurable parallelism.
 
-CLI bygger en `rich.Live`-vy som visar:
-- Header-rad med progressbar, procent, klara/totalt, förlöpt tid, ETA
-- Tabell över pågående anrop med löpande sekund-timer
-- Tabell över de 5 senaste klara med körtid
-- Slut-sammanfattning med snittid och uppmätt speedup
+The CLI builds a `rich.Live` view that shows:
+- A header row with progress bar, percent, done/total, elapsed time, ETA
+- A table of in-flight calls with a running second timer
+- A table of the 5 most recently finished calls with their runtime
+- A final summary with average time and measured speedup
 
-Konfigurerbar via `concurrency.max_workers` (default 4) i [config.yaml](../../config.yaml).
+Configurable via `concurrency.max_workers` (default 4) in [config.yaml](../../config.yaml).
 
-Verifierat live: [test_pipeline_determinism_workers_1_vs_4](../../tests/test_pipeline.py)
-kör samma mini-PDF två gånger (1 worker + 4 workers) och verifierar att
-`full_text.txt` är identisk byte-för-byte.
+Verified live: [test_pipeline_determinism_workers_1_vs_4](../../tests/test_pipeline.py)
+runs the same mini-PDF twice (1 worker + 4 workers) and verifies that
+`<name>.md` is byte-for-byte identical.
 
-## Symptom / motivering
+## Symptom / motivation
 
-Körning mot `penningpolitisk-rapport-mars-2026.pdf` (~30 bilder+diagram) tar 3-5 minuter. Varje API-anrop till Gemma är 5-15 sekunder. Anropen körs sekventiellt — varje anrop blockerar tills föregående är klar — fast nästan all tid är I/O-vänta. Med rimlig parallellism kan vi få tiden ned till ~1 minut.
+Running against `penningpolitisk-rapport-mars-2026.pdf` (~30 images+charts) takes 3-5 minutes. Each API call to Gemma is 5-15 seconds. The calls run sequentially — each call blocks until the previous one is done — even though almost all of the time is I/O wait. With reasonable parallelism we can get the time down to ~1 minute.
 
 ```
-Nuvarande:  [###] [###] [###] [###] [###] [###]  → 30 * 8s = 4 min
-Parallellt: [###]  → max 8s * (30/N) batchar
+Current:    [###] [###] [###] [###] [###] [###]  → 30 * 8s = 4 min
+Parallel:   [###]  → max 8s * (30/N) batches
             [###]
             [###]
             [###]
 ```
 
-CLI-utdata är dessutom enformig idag (`sida X: filename → API`), det blir inte mycket snyggare när det kommer 30 rader i följd.
+The CLI output is also monotonous today (`page X: filename → API`); it doesn't get much nicer when 30 lines arrive in a row.
 
-## Krav
+## Requirements
 
-1. **Konfigurerbart antal samtidiga API-anrop** via `config.yaml`. Default rimligt — kanske 4 eller 6 — så vi inte träffar Bergets rate-limits oavsiktligt.
-2. **Gäller både bilder OCH diagram** — en gemensam parallell pool för alla `describe_image` och `describe_diagram`-anrop.
-3. **Snygg CLI-vy** under körning: progressbar, antal klara/totalt, vilka som körs just nu, eta. Inte spammig.
-4. **Cache fortsätter funka** — om alla beskrivningar redan är cachade ska parallellism inte slå på alls.
-5. **Fail loudly** — om en arbetare failar ska felet rapporteras tydligt med vilken bild/diagram det gällde. Helst avbryta hela körningen så vi inte tappar fel i bruset.
-6. **Output deterministisk** — `raw_text.txt` och `full_text.txt` ska se identiska ut oavsett worker-antal eller exekveringsordning.
+1. **Configurable number of concurrent API calls** via `config.yaml`. A sensible default — maybe 4 or 6 — so we don't hit Berget's rate limits unintentionally.
+2. **Applies to both images AND charts** — a shared parallel pool for all `describe_image` and `describe_diagram` calls.
+3. **A nice CLI view** during the run: progress bar, done/total count, what's running right now, ETA. Not spammy.
+4. **Cache keeps working** — if all descriptions are already cached, parallelism should not kick in at all.
+5. **Fail loudly** — if a worker fails, the error should be reported clearly with which image/chart it concerned. Preferably abort the whole run so we don't lose errors in the noise.
+6. **Deterministic output** — `raw_text.txt` and `<name>.md` should look identical regardless of worker count or execution order.
 
-## Åtgärdsalternativ
+## Options
 
-### Alternativ 1: ThreadPoolExecutor + tqdm
-`concurrent.futures.ThreadPoolExecutor` med N workers, `tqdm.tqdm` för progressbar.
+### Option 1: ThreadPoolExecutor + tqdm
+`concurrent.futures.ThreadPoolExecutor` with N workers, `tqdm.tqdm` for the progress bar.
 
-- ✅ Enkelt — OpenAI SDK är thread-safe (HTTP-anrop)
-- ✅ tqdm är minimal, välbeprövad, integrerar bra
-- ✅ Befintlig retry-logik i `describe.py` och `diagrams.py` fungerar oförändrat
-- ❌ tqdm-output är funktionell men inte "wow-snyggt"
+- ✅ Simple — the OpenAI SDK is thread-safe (HTTP calls)
+- ✅ tqdm is minimal, well-proven, integrates well
+- ✅ Existing retry logic in `describe.py` and `diagrams.py` works unchanged
+- ❌ tqdm output is functional but not "wow-nice"
 
-### Alternativ 2: ThreadPoolExecutor + rich
-`rich.progress` för avancerad progress-vy med live-uppdaterad tabell ("3 körs nu: bild X, diagram Y, ...").
+### Option 2: ThreadPoolExecutor + rich
+`rich.progress` for an advanced progress view with a live-updated table ("3 running now: image X, chart Y, ...").
 
-- ✅ Snyggast i CLI — färger, live-tabell, eta, spinner
-- ✅ Samma underliggande threading som Alt 1
-- ❌ Adderar `rich` som dependency (~1 MB)
-- ❌ Lite mer kod för att sätta upp Progress + Task per anrop
+- ✅ Nicest in the CLI — colors, live table, ETA, spinner
+- ✅ Same underlying threading as Option 1
+- ❌ Adds `rich` as a dependency (~1 MB)
+- ❌ A bit more code to set up Progress + Task per call
 
-### Alternativ 3: asyncio + httpx + AsyncOpenAI
-Full async pipeline. Lägg om `describe_image`, `describe_diagram`, `main.run` till async.
+### Option 3: asyncio + httpx + AsyncOpenAI
+A fully async pipeline. Rewrite `describe_image`, `describe_diagram`, `main.run` to async.
 
-- ✅ Mer "modern Python"
-- ✅ Skalar bra om vi i framtiden vill ha ännu fler samtidiga
-- ❌ Stor refactor — main.run, tester, allt blir async
-- ❌ ThreadPool räcker gott för I/O-bundet med dussintal anrop
-- ❌ Komplicerar testkoden onödigt
+- ✅ More "modern Python"
+- ✅ Scales well if we ever want even more concurrency
+- ❌ Big refactor — main.run, tests, everything becomes async
+- ❌ A ThreadPool is plenty for I/O-bound work with dozens of calls
+- ❌ Complicates the test code unnecessarily
 
-### Alternativ 4: Behåll sekventiellt
-- ✅ Ingen kod ändras
-- ❌ Slö för stora dokument
+### Option 4: Keep it sequential
+- ✅ No code changes
+- ❌ Slow for large documents
 
-## Rekommendation
+## Recommendation
 
-**Alternativ 2 (ThreadPoolExecutor + rich).** Snyggt CLI är ett uttalat krav. Rich är industri-standard för CLI-UI i Python, väl underhållet, och inte stort. Threading räcker för I/O-bundet arbete med ~30-50 samtidiga anrop.
+**Option 2 (ThreadPoolExecutor + rich).** A nice CLI is a stated requirement. Rich is the industry standard for CLI UI in Python, well maintained, and not large. Threading is enough for I/O-bound work with ~30-50 concurrent calls.
 
-## Förslag på config-fält
+## Suggested config fields
 
 ```yaml
 concurrency:
-  # Antal samtidiga API-anrop för syntolkning. Berget tål typiskt 4-8 utan att
-  # rate-limita. Sätt högre på egen risk.
+  # Number of concurrent API calls for description. Berget typically tolerates 4-8
+  # without rate-limiting. Set higher at your own risk.
   max_workers: 4
-  # Avbryt hela körningen vid första fel (alternativet är att samla felen och
-  # rapportera i slutet — men "fail loudly" säger avbryt).
+  # Abort the whole run on the first error (the alternative is to collect errors and
+  # report at the end — but "fail loudly" says abort).
   fail_fast: true
 ```
 
-## Förslag på CLI-vy
+## Suggested CLI view
 
 ```
-Syntolkar 30 bilder och diagram via google/gemma-4-31B-it
-Förlöpt: 0:01:23 • Återstår: ~0:00:42
+Describing 30 images and charts via google/gemma-4-31B-it
+Elapsed: 0:01:23 • Remaining: ~0:00:42
 
-[#############-------]  60%   18/30 klara   4 kör nu
+[#############-------]  60%   18/30 done   4 running now
 
-  ↻ sida 11 diagram 2     8.4s
-  ↻ sida 14 diagram 1     6.1s
-  ↻ sida 35 bild 01       3.2s
-  ↻ sida 68 diagram 1     0.7s
+  ↻ page 11 chart 2      8.4s
+  ↻ page 14 chart 1      6.1s
+  ↻ page 35 image 01     3.2s
+  ↻ page 68 chart 1      0.7s
 
-  ✓ sida  1 bild 01       4.2s
-  ✓ sida  1 bild 02       5.7s
-  ✓ sida 11 diagram 1     7.8s
+  ✓ page  1 image 01     4.2s
+  ✓ page  1 image 02     5.7s
+  ✓ page 11 chart 1      7.8s
   ...
 ```
 
-**Detaljer:**
-- **Förlöpt tid**: stigande räknare från start av syntolknings-fasen, formaterad `H:MM:SS`
-- **Återstår** (ETA): beräknad från genomsnittlig tid per klart anrop × återstående anrop, justerad för max_workers
-- **Procent klart**: stor och tydlig i progressbar-raden, både som procent och `klara/totalt`
-- **Aktiva anrop**: lista med rullande sekund-timer per pågående anrop (så man ser vilka som hängt sig)
-- **Klara anrop**: scrollas i botten med faktisk körtid per anrop
-- Live-uppdatering med rich.Live så hela bilden uppdateras i samma område — inte spammar nya rader
+**Details:**
+- **Elapsed time**: an increasing counter from the start of the description phase, formatted `H:MM:SS`
+- **Remaining** (ETA): computed from the average time per finished call × remaining calls, adjusted for max_workers
+- **Percent done**: large and clear on the progress bar row, both as a percentage and `done/total`
+- **Active calls**: a list with a rolling second timer per in-flight call (so you can see which ones have hung)
+- **Finished calls**: scrolled at the bottom with the actual runtime per call
+- Live-updating with rich.Live so the whole view refreshes in place — not spamming new lines
 
-När alla klara, en slut-sammanfattning:
+When everything is done, a final summary:
 ```
-Klart på 0:01:42. 30 anrop, snittid 4.5s/anrop, total API-tid 2:15 (sekventiellt skulle tagit ~2:15).
+Done in 0:01:42. 30 calls, average 4.5s/call, total API time 2:15 (sequentially would have taken ~2:15).
 ```
 
-## Acceptanskriterier
+## Acceptance criteria
 
-- [ ] `concurrency.max_workers` i `config.yaml`, default 4
-- [ ] Penningpolitiska rapporten kör minst 2× snabbare med max_workers=4 (uppmätt jämfört mot 1 worker)
-- [ ] Live-test verifierar att slutoutput är identisk för max_workers=1 och max_workers=4 (samma `full_text.txt` byte-för-byte efter sortering)
-- [ ] CLI visar progressbar med procent + klara/totalt
-- [ ] CLI visar förlöpt tid (timer från start) + uppskattat återstående (ETA)
-- [ ] CLI visar lista över pågående anrop med individuell sekund-timer
-- [ ] Slut-sammanfattning med total tid, snittid per anrop, och total API-tid (sekventiell jämförelse)
-- [ ] Fel i en worker triggrar tydligt fail-loudly-meddelande och avbryter resten
-- [ ] Cache-vägen aktiveras före worker-startup om alla beskrivningar redan finns på disk
-- [ ] README uppdaterad
+- [ ] `concurrency.max_workers` in `config.yaml`, default 4
+- [ ] The monetary policy report runs at least 2× faster with max_workers=4 (measured against 1 worker)
+- [ ] A live test verifies that the final output is identical for max_workers=1 and max_workers=4 (same `<name>.md` byte-for-byte after sorting)
+- [ ] The CLI shows a progress bar with percent + done/total
+- [ ] The CLI shows elapsed time (timer from start) + estimated remaining (ETA)
+- [ ] The CLI shows a list of in-flight calls with an individual second timer
+- [ ] A final summary with total time, average time per call, and total API time (sequential comparison)
+- [ ] An error in a worker triggers a clear fail-loudly message and aborts the rest
+- [ ] The cache path activates before worker startup if all descriptions already exist on disk
+- [ ] README updated
 
-## Saker att tänka på vid implementation
+## Things to keep in mind during implementation
 
-- **Rate-limits:** Berget kan returnera 429. Befintlig retry-logik i `describe.py` med exponentiell backoff fungerar oförändrat — men med flera samtidiga anrop kan vi triggra fler 429:er. Watch.
-- **Tråd-vs-process-säkerhet:** `OpenAI`-klienten är thread-safe (HTTP-anrop via httpx, ingen delad muterbar state). Bra.
-- **Cache-race:** Två trådar kan starta på samma bild om båda kollar cache före. För korrekthet inget problem (deterministisk filskrivning, kommer skrivas över med samma resultat). Vi bör läsa cache **innan** vi schemalägger en worker så vi sparar ett anrop.
-- **Output-ordning:** `assemble()` körs efter alla anrop är klara, så slutfilen är deterministisk även om anropen klara i annan ordning.
+- **Rate limits:** Berget can return 429. The existing retry logic in `describe.py` with exponential backoff works unchanged — but with several concurrent calls we may trigger more 429s. Watch.
+- **Thread vs process safety:** The `OpenAI` client is thread-safe (HTTP calls via httpx, no shared mutable state). Good.
+- **Cache race:** Two threads can start on the same image if both check the cache first. For correctness this is no problem (deterministic file writes, will be overwritten with the same result). We should read the cache **before** scheduling a worker so we save a call.
+- **Output order:** `assemble()` runs after all calls are done, so the final file is deterministic even if the calls finish in a different order.

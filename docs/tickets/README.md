@@ -2,10 +2,6 @@
 
 Open bugs and improvements for figmark, numbered `T-NNN`.
 
-> Note: the individual ticket files below are historical design notes from the
-> project's pre-open-source development and are still written in Swedish. They
-> are kept for context; new tickets should be written in English.
-
 | ID | Status | Priority | Title |
 |---|---|---|---|
 | [T-001](T-001-vector-diagrams-missed.md) | **Closed** | HIGH | Vector charts missed entirely — pipeline only saw raster images |
@@ -14,6 +10,8 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-004](T-004-tagged-pdf-pdfua.md) | Open | Medium | Tagged PDF / PDF/UA via pikepdf — real accessibility via the structure tree |
 | [T-005](T-005-pdf-annotations.md) | **Closed** | Medium | Embed descriptions as text annotations in the PDF (MVP accessibility) |
 | [T-006](T-006-text-context-around-images.md) | **Closed** | Medium | Send text context around the image (100 words before/after) to the description |
+| [T-007](T-007-description-language-follows-document.md) | **Closed** | Medium | Description language is hardcoded to Swedish — should follow the document |
+| [T-008](T-008-diagram-internal-text-leaks-into-body.md) | Open | Low | Vector-diagram internal text leaks into the body text (needs a decision first) |
 
 ## How a ticket is written
 

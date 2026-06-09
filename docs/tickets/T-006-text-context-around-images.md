@@ -1,26 +1,26 @@
-# T-006: Skicka text-kontext runt bilden med vid syntolkning
+# T-006: Send the text context around the image along with the description
 
-**Status:** Closed — TDD-implementerad 2026-05-20 (alternativ 1: fast antal ord)
-**Prioritet:** Medium — höjer kvaliteten på syntolkningarna märkbart
-**Önskad:** 2026-05-20
+**Status:** Closed — TDD-implemented 2026-05-20 (option 1: fixed word count)
+**Priority:** Medium — noticeably raises the quality of the descriptions
+**Requested:** 2026-05-20
 
-## Symptom / motivering
+## Symptom / motivation
 
-Idag får Gemma bara bilden + prompten. Modellen vet inte vad PDF:en handlar om. För ett diagram i en penningpolitisk rapport ser den linjer och siffror, men har ingen aning om att det handlar om KPIF-prognoser specifikt eller från vilket scenario. Tolkningen blir generisk istället för domänspecifik.
+Today Gemma gets only the image + the prompt. The model doesn't know what the PDF is about. For a chart in a monetary policy report it sees lines and numbers, but has no idea that it's specifically about CPIF forecasts or from which scenario. The interpretation becomes generic instead of domain-specific.
 
-Konkret exempel: ett diagram med två linjer kring 2026-2029 kan vara *vad som helst* (BNP, inflation, ränta, arbetslöshet). Texten ovanför bilden brukar säga "Diagram 1.3: Inflation enligt KPIF-måttet, prognos vs utfall" — om vi skickar med den ledtråden hade modellen direkt kunnat skriva korrekt syntolkning utan att gissa.
+A concrete example: a chart with two lines around 2026-2029 could be *anything* (GDP, inflation, interest rate, unemployment). The text above the image usually says "Chart 1.3: Inflation according to the CPIF measure, forecast vs outcome" — if we send that clue along, the model could write a correct description directly without guessing.
 
-## Vad som ska byggas
+## What should be built
 
-- Innan varje bild/diagram skickas till Gemma — samla N ord text **före** och M ord **efter** ur PDF:en
-- Kontexten hämtas ur PDF:ens reading order (text-block sorterade på y,x — vi har det redan)
-- Vid sidgräns: hoppa till föregående/nästa sida om vi inte fyllt kvoten
-- Hoppa över andra bild/diagram-block — vi vill ha text, inte placeholders
-- Kontexten formateras tydligt i prompten så modellen vet vad som är kontext vs uppgift
+- Before each image/chart is sent to Gemma — gather N words of text **before** and M words **after** from the PDF
+- The context is taken from the PDF's reading order (text blocks sorted by y,x — we already have that)
+- At a page boundary: jump to the previous/next page if we haven't filled the quota
+- Skip other image/chart blocks — we want text, not placeholders
+- The context is formatted clearly in the prompt so the model knows what is context vs task
 
-## Konfiguration
+## Configuration
 
-Nya required-fält enligt vår "inga defaults i koden"-policy:
+New required fields per our "no defaults in the code" policy:
 
 ```yaml
 context:
@@ -29,64 +29,64 @@ context:
   words_after: 100
 ```
 
-## Åtgärdsalternativ
+## Options
 
-### Alternativ 1: Fast antal ord före/efter
-Räkna ord linjärt — `text.split()` ger antal ord, backa N TextBlocks-värda ord. Förutsägbar token-kostnad.
+### Option 1: Fixed number of words before/after
+Count words linearly — `text.split()` gives the word count, back up N TextBlocks' worth of words. Predictable token cost.
 
-- ✅ Enkelt, robust
-- ✅ Konfigurerbar gräns
-- ❌ Kan klippa mitt i mening
+- ✅ Simple, robust
+- ✅ Configurable limit
+- ❌ Can cut off mid-sentence
 
-### Alternativ 2: Hela paragrafer/stycken
-Hela TextBlocks-grupper, inga halverade meningar. Mer naturligt språk i prompten.
+### Option 2: Whole paragraphs
+Whole TextBlocks groups, no halved sentences. More natural language in the prompt.
 
-- ✅ Bättre språklig kvalitet i kontexten
-- ❌ Varierande storlek — vissa stycken är 500 ord, andra 10
-- ❌ Svårare att förutse token-kostnad
+- ✅ Better linguistic quality in the context
+- ❌ Varying size — some paragraphs are 500 words, others 10
+- ❌ Harder to predict token cost
 
-### Alternativ 3: Hela sidans text
-Skicka allt text på samma sida som bilden. Inga avstånd-beräkningar.
+### Option 3: The whole page's text
+Send all text on the same page as the image. No distance calculations.
 
-- ✅ Enklast att implementera
-- ❌ Diagram-tunga sidor → kontexten innehåller andra diagrams' text → distraherar modellen
-- ❌ Dyrt på text-tunga sidor
+- ✅ Simplest to implement
+- ❌ Chart-heavy pages → the context contains other charts' text → distracts the model
+- ❌ Expensive on text-heavy pages
 
-### Alternativ 4: Hybrid — paragraphs men capped på N ord
-Plocka hela stycken upp till en cap (säg 150 ord) — sluta vid ordkvot men runda av till styckesgräns.
+### Option 4: Hybrid — paragraphs but capped at N words
+Pick whole paragraphs up to a cap (say 150 words) — stop at the word quota but round off to a paragraph boundary.
 
-- ✅ Kombinerar A:s förutsägbarhet med B:s språkkvalitet
-- ❌ Mer kod
+- ✅ Combines Option 1's predictability with Option 2's language quality
+- ❌ More code
 
-## Rekommendation
+## Recommendation
 
-**Alternativ 1** som MVP. Enkel ord-räkning är robust och förutsägbar. Vi kan upgrade till Alternativ 4 senare om vi märker att kontexten klipper hänsynslöst.
+**Option 1** as the MVP. Simple word counting is robust and predictable. We can upgrade to Option 4 later if we notice that the context cuts off carelessly.
 
-## Acceptanskriterier
+## Acceptance criteria
 
-- [ ] `context.enabled`, `context.words_before`, `context.words_after` är required i config.yaml
-- [ ] TDD: unit-tester för `get_text_context_around(pages, page_num, bbox, words_before, words_after)`
-  - Bild i mitten av en sida → kontext från samma sida
-  - Bild högst upp på sidan → hoppar till föregående sida
-  - Bild längst ner → hoppar till nästa sida
-  - Bild på första sidan → tom `before`
-  - Bild på sista sidan → tom `after`
-  - Sida med bara bilder → backar tills text hittas
-- [ ] Prompten visar tydligt vad som är kontext med rubriker som
-      `[Textsammanhang före bilden]\n...\n[Textsammanhang efter bilden]\n...\n[Uppgift]\n...`
-- [ ] Live-test mot ett verkligt fall där kontexten gör skillnad
-      (jämför syntolkning av samma diagram med/utan kontext)
-- [ ] CLI-loggar visar antal ord kontext som faktiskt skickades per anrop
+- [ ] `context.enabled`, `context.words_before`, `context.words_after` are required in config.yaml
+- [ ] TDD: unit tests for `get_text_context_around(pages, page_num, bbox, words_before, words_after)`
+  - Image in the middle of a page → context from the same page
+  - Image at the top of the page → jumps to the previous page
+  - Image at the bottom → jumps to the next page
+  - Image on the first page → empty `before`
+  - Image on the last page → empty `after`
+  - Page with only images → backs up until text is found
+- [ ] The prompt clearly shows what is context, with headings like
+      `[Text context before the image]\n...\n[Text context after the image]\n...\n[Task]\n...`
+- [ ] A live test against a real case where the context makes a difference
+      (compare the description of the same chart with/without context)
+- [ ] CLI logs show the number of words of context actually sent per call
 
-## Saker att tänka på
+## Things to keep in mind
 
-- **Token-kostnad**: 100 ord ≈ 130 tokens på svenska. 100 före + 100 efter = ~260 extra tokens per anrop.
-  Det är hanterbart. Med 30 anrop totalt ≈ 8000 extra tokens. Marginell kostnad.
-- **Cache-invalidation**: Idag cachar vi syntolkningar per bildfil. Om vi ändrar context-config så
-  returneras gammal cache utan kontext. Antingen:
-  a) Dokumentera att man måste rensa `output/<pdf>/descriptions/` vid context-config-ändring
-  b) Hash:a prompt+context-config in i cache-filnamnet (mer arbete, värt det?)
-  → Förmodligen (a) som MVP, (b) som egen ticket om det visar sig vara ett problem.
-- **Ord-räkning på svenska**: `.split()` är bra nog. Inga special-tecken eller binding-streck att hantera.
-- **Tabeller**: PDF:ens "text" inkluderar ibland tabellinnehåll. Det blir lite brus i kontexten men inte
-  något stort problem — modellen kan filtrera bort.
+- **Token cost**: 100 words ≈ 130 tokens in Swedish. 100 before + 100 after = ~260 extra tokens per call.
+  That's manageable. With 30 calls total ≈ 8000 extra tokens. Marginal cost.
+- **Cache invalidation**: Today we cache descriptions per image file. If we change the context config,
+  stale cache without context is returned. Either:
+  a) Document that you have to clear `output/<pdf>/descriptions/` on a context-config change
+  b) Hash prompt+context-config into the cache filename (more work, worth it?)
+  → Probably (a) as the MVP, (b) as its own ticket if it turns out to be a problem.
+- **Word counting in Swedish**: `.split()` is good enough. No special characters or hyphenation to handle.
+- **Tables**: The PDF's "text" sometimes includes table content. That adds a bit of noise to the context but is not
+  a big problem — the model can filter it out.

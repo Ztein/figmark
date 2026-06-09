@@ -1,26 +1,26 @@
-# T-005: Skriv in syntolkningar som text-annotations i PDF:en
+# T-005: Write descriptions into the PDF as text annotations
 
-**Status:** Closed — implementerad TDD-stil 2026-05-20
-**Prioritet:** Medium — MVP-tillgänglighet
-**Önskad:** 2026-05-20
+**Status:** Closed — implemented TDD-style 2026-05-20
+**Priority:** Medium — MVP accessibility
+**Requested:** 2026-05-20
 
-## Symptom / motivering
+## Symptom / motivation
 
-Vi producerar idag en `full_text.txt` med syntolkningarna inklippta. För användare som faktiskt vill läsa PDF:en (inte en textfil) är detta extra arbete. Lägger vi in syntolkningarna som annotations direkt i en kopia av PDF:en så har skärmläsare något att läsa och seende får synliga popup-noter.
+Today we produce a `<name>.md` with the descriptions inlined. For users who actually want to read the PDF (not a text file) this is extra work. If we put the descriptions in as annotations directly in a copy of the PDF, screen readers have something to read and sighted users get visible popup notes.
 
-## Vad som byggs
+## What gets built
 
-- Ny modul `src/annotate.py` med `annotate_pdf(source, target, items)`
-- Varje syntolkning blir en text-annotation (`page.add_text_annot`) på bildens/diagrammets position
-- Annotation-`title` markerar om det är "Bild" eller "Diagram"
-- `--annotate-pdf` flagga i CLI producerar `output/<pdf>/<pdf>_annoterad.pdf`
+- A new module `src/figmark/annotate.py` with `annotate_pdf(source, target, items)`
+- Each description becomes a text annotation (`page.add_text_annot`) at the image's/chart's position
+- The annotation `title` marks whether it is "Image" or "Chart"
+- An `--annotate-pdf` flag in the CLI produces `output/<pdf>/<pdf>_annotated.pdf`
 
-## Acceptanskriterier
+## Acceptance criteria
 
-- [ ] Modulen är TDD-skriven (tester före implementation)
-- [ ] Test: output-PDF har en annotation per bild + diagram
-- [ ] Test: annotation-contents matchar syntolkningen byte-för-byte
-- [ ] Test: annotation-position ligger ovanpå källbildens bbox
-- [ ] Test: annoterad PDF kan öppnas och pärsas av PyMuPDF
-- [ ] Live-test: penningpolitiska rapporten producerar annoterad PDF med rätt antal annotations
-- [ ] CLI: `--annotate-pdf` flagga, default av
+- [ ] The module is written TDD (tests before implementation)
+- [ ] Test: the output PDF has one annotation per image + chart
+- [ ] Test: annotation contents match the description byte-for-byte
+- [ ] Test: annotation position sits on top of the source image's bbox
+- [ ] Test: the annotated PDF can be opened and parsed by PyMuPDF
+- [ ] Live test: the monetary policy report produces an annotated PDF with the right number of annotations
+- [ ] CLI: `--annotate-pdf` flag, default off
