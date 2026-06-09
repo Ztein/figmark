@@ -66,6 +66,30 @@ def guide_pdf() -> Path:
     return p
 
 
+@pytest.fixture(scope="session")
+def scanned_pdf() -> Path:
+    """An image-only scan (no text layer) that triggers the OCR pipeline."""
+    p = _resolve(EXAMPLES / "scanned.pdf")
+    if p is None:
+        pytest.skip(
+            "No scanned sample found (examples/scanned.pdf). "
+            "Run: python examples/download_samples.py"
+        )
+    return p
+
+
+@pytest.fixture(scope="session")
+def long_pdf() -> Path:
+    """A long (hundreds of pages) report, for pagination/scale checks."""
+    p = _resolve(EXAMPLES / "long.pdf")
+    if p is None:
+        pytest.skip(
+            "No long sample found (examples/long.pdf). "
+            "Run: python examples/download_samples.py --include-large"
+        )
+    return p
+
+
 @pytest.fixture
 def env_with_key(monkeypatch):
     """For config tests that need a (fake) API key without hitting the real API."""

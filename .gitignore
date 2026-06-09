@@ -25,8 +25,7 @@ output/
 # OS
 .DS_Store
 
-# Local sample corpora — large/copyrighted PDFs are never committed.
-# Only the curated, openly-licensed fixtures under examples/ are tracked.
+# Sample PDFs are never committed — fetch them with examples/download_samples.py
+# (see examples/README.md). This keeps the repo small and avoids vendoring.
 testfiler/
 *.pdf
-!examples/**/*.pdf
