@@ -9,7 +9,7 @@
 # Wolfi base is the documented alternative (see docs/deployment.md).
 
 # ---- builder: install hash-pinned deps + the package into a venv ----
-FROM python:3.12-slim-bookworm@sha256:93ab4b7fa528b25124c97bcc755415e60eb671a86b4dbe0328df2fe2d1c1193d AS builder
+FROM python:3.14-slim-bookworm@sha256:a9bee15510a364124aa24692899d269835683b883de42f7ebec8c293cf679ccb AS builder
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1 \
@@ -28,7 +28,7 @@ COPY src ./src
 RUN pip install --no-deps .
 
 # ---- runtime: minimal image with tesseract + the venv ----
-FROM python:3.12-slim-bookworm@sha256:93ab4b7fa528b25124c97bcc755415e60eb671a86b4dbe0328df2fe2d1c1193d AS runtime
+FROM python:3.14-slim-bookworm@sha256:a9bee15510a364124aa24692899d269835683b883de42f7ebec8c293cf679ccb AS runtime
 
 ARG VERSION=0.0.0
 ARG REVISION=unknown
