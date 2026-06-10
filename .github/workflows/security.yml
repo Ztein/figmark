@@ -14,7 +14,7 @@ jobs:
   static:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Hadolint (Dockerfile lint)
         uses: hadolint/hadolint-action@v3.1.0
@@ -51,7 +51,7 @@ jobs:
     needs: static
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build image
         run: |
