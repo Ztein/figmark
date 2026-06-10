@@ -2,6 +2,11 @@ name: CodeQL
 
 # Static application security testing (SAST) for the Python code.
 # Free for public repositories; results land under Security → Code scanning.
+#
+# Dependabot PRs are exempt from the analysis itself: dependency bumps don't
+# change first-party code, and Dependabot-triggered runs get a read-only token
+# that cannot upload SARIF (the analyze step would always fail). The job still
+# reports success so the required `analyze` check doesn't block auto-merge.
 
 on:
   push:
@@ -21,13 +26,20 @@ jobs:
       contents: read
       security-events: write
     steps:
+      - name: Skip analysis for Dependabot PRs
+        if: github.actor == 'dependabot[bot]'
+        run: echo "Dependency bump — no first-party code change. CodeQL runs on main and weekly."
+
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        if: github.actor != 'dependabot[bot]'
 
       - name: Initialize CodeQL
+        if: github.actor != 'dependabot[bot]'
         uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
         with:
           languages: python
           queries: security-and-quality
 
       - name: Perform CodeQL analysis
+        if: github.actor != 'dependabot[bot]'
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2

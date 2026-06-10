@@ -12,13 +12,11 @@ but with first-class figure interpretation: charts, photos, and diagrams become
 readable prose in reading order instead of vanishing.
 
 It was built to produce accessible alt text in formal Swedish
-("myndighetssvenska"), but works against **any OpenAI-compatible vision endpoint**
-— [Berget.ai](https://berget.ai) is the default, not a requirement. Point
-`api.base_url` / `api.model` in `config.yaml` at e.g.
-[OpenRouter](https://openrouter.ai) (`https://openrouter.ai/api/v1`), a local
-vLLM/Ollama server, or any other provider, and put that provider's key in
-`BERGET_API_KEY` (the variable name is historical — a provider-neutral name is
-tracked in [T-010](docs/tickets/T-010-provider-agnostic-llm-key.md)).
+("myndighetssvenska"). **You need a vision-capable model behind an
+OpenAI-compatible API** — hosted or local (e.g. vLLM or Ollama). Point
+`api.base_url` / `api.model` in `config.yaml` at your endpoint and put its key
+in `BERGET_API_KEY` (the variable name is historical; a provider-neutral name
+is tracked in [T-010](docs/tickets/T-010-provider-agnostic-llm-key.md)).
 
 ## What it does
 
@@ -90,6 +88,15 @@ figmark path/to/document.pdf --annotate-pdf
 
 figmark also ships as a hardened HTTP service for air-gapped deployment — a
 single container that needs only a reachable OpenAI-compatible vision endpoint.
+
+Prebuilt images are published to GHCR — every green build of `main` as `:edge`,
+and releases as `:<version>` + `:latest`:
+
+```bash
+docker pull ghcr.io/ztein/figmark:edge
+```
+
+Or run the stack with compose:
 
 ```bash
 mkdir -p secrets

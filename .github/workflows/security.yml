@@ -51,10 +51,14 @@ jobs:
           pip-audit -r requirements.lock --disable-pip --strict
 
   # Build the image, run the hard vulnerability gate, produce an SBOM, and run the
-  # Docker-gated runtime + offline compose end-to-end tests.
+  # Docker-gated runtime + offline compose end-to-end tests. Green main builds
+  # are published to GHCR as :edge.
   image:
     needs: static
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
@@ -99,6 +103,19 @@ jobs:
 
       - name: Docker-gated runtime + offline compose e2e
         run: pytest -m docker -p no:cacheprovider
+
+      # Publish AFTER all gates: only scanned, fully-tested images reach GHCR.
+      - name: Publish to GHCR (:edge — every green main build)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "$GH_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag figmark:ci "ghcr.io/$owner/figmark:edge"
+          docker tag figmark:ci "ghcr.io/$owner/figmark:main-${GITHUB_SHA::8}"
+          docker push "ghcr.io/$owner/figmark:edge"
+          docker push "ghcr.io/$owner/figmark:main-${GITHUB_SHA::8}"
 
   # Escalation: a failed SCHEDULED scan means a new vulnerability or drift was
   # found in the published state with no human at the keyboard. File (or update)

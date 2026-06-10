@@ -46,21 +46,25 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # attach assets to the GitHub Release
+      packages: write  # publish the image to GHCR
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
+      - name: Compute version (tag without the v prefix)
+        id: ver
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
       - name: Build image
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
           docker build \
-            --build-arg VERSION="${VERSION}" \
+            --build-arg VERSION="${{ steps.ver.outputs.version }}" \
             --build-arg REVISION="${GITHUB_SHA::8}" \
-            -t "figmark:${VERSION}" .
+            -t "figmark:${{ steps.ver.outputs.version }}" .
 
       - name: Trivy image gate (must pass before shipping)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
-          image-ref: figmark:${{ github.ref_name }}
+          image-ref: figmark:${{ steps.ver.outputs.version }}
           scan-type: image
           scanners: vuln
           severity: HIGH,CRITICAL
@@ -68,9 +72,22 @@ jobs:
           exit-code: "1"
           trivyignores: .trivyignore
 
-      - name: Export tarball + checksum + deploy bundle
+      - name: Publish to GHCR (versioned + latest)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.ver.outputs.version }}
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "$GH_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag "figmark:${VERSION}" "ghcr.io/$owner/figmark:${VERSION}"
+          docker tag "figmark:${VERSION}" "ghcr.io/$owner/figmark:latest"
+          docker push "ghcr.io/$owner/figmark:${VERSION}"
+          docker push "ghcr.io/$owner/figmark:latest"
+
+      - name: Export tarball + checksum + deploy bundle
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
           mkdir -p bundle
           docker save "figmark:${VERSION}" | gzip > "bundle/figmark-${VERSION}.tar.gz"
           cp compose.yaml config.yaml docs/deployment.md bundle/

@@ -1,40 +1,58 @@
-# T-010: Work with any OpenAI-compatible provider key — not just Berget
+# T-010: Purge provider-specific references — figmark is provider-neutral
 
 **Status:** Open
-**Priority:** Medium — first-run experience for every non-Berget user
+**Priority:** Medium — first-run experience and project identity
 
 ## Symptom / motivation
 
-The tool already works against any OpenAI-compatible endpoint (`api.base_url` is
-configurable), but the **key handling says otherwise**: the environment variable
-is `BERGET_API_KEY`, `.env.example` mentions only Berget, the config loader's
-error message tells the user to get a Berget key, and the live tests hard-fail
-(`pytest.fail`) specifically demanding `BERGET_API_KEY`.
+figmark requires a vision-capable model behind an OpenAI-compatible API — that
+is the whole contract. But the codebase is littered with one specific provider
+(Berget, which the maintainer happens to use), and the README briefly named
+OpenRouter as an example. Neither belongs in the project: provider names in
+code/config/docs make a neutral tool look vendor-tied and confuse every user who
+runs something else.
 
-Requirement: figmark must work — including its tests — as long as the user has
-**at least one key to any vision-capable LLM** behind an OpenAI-compatible API.
-OpenRouter is a perfectly good example, as is a local vLLM/Ollama endpoint (which
-may need no key at all). This must also be clear in the README.
+A repo-wide inventory (2026-06-10) found `berget`/`openrouter` references in 22
+files, clustering into:
+
+- **The env var `BERGET_API_KEY`** (+ `BERGET_API_KEY_FILE`) — config loader,
+  API server, compose, tests, docs, `.env.example`.
+- **The shipped `config.yaml` default** `api.base_url: https://api.berget.ai/v1`
+  and its comments.
+- **Docs**: README (install section), SECURITY.md, docs/deployment.md,
+  CONTRIBUTING.md, examples/README.md, CHANGELOG (historical — leave).
+- **Tests**: `_require_real_key` messages, fixtures, compose assertions, the
+  `live` pytest marker description ("runs against the real Berget API").
+- **compose.yaml** secret name `berget_api_key`.
+
+(Existing ticket files are historical records and are left untouched.)
 
 ## What should be built
 
-- A provider-neutral variable (e.g. `FIGMARK_API_KEY` or `LLM_API_KEY`), with
-  `BERGET_API_KEY` kept as a deprecated fallback for compatibility (loader checks
-  the new name first, warns on the old one).
-- Allow a keyless mode for endpoints that don't require auth (e.g. local vLLM):
-  e.g. `FIGMARK_API_KEY=none` or an explicit `api.auth: none` config — decide in
-  implementation, fail loudly on ambiguity.
-- Update `.env.example`, the config-loader error message, `SECURITY.md`,
-  `docs/deployment.md` (`BERGET_API_KEY_FILE` → neutral name), `compose.yaml`
-  secret naming, and the API server's `*_FILE` convention.
-- Live tests gate on "a key exists", not "a Berget key exists"; README documents
-  an OpenRouter example end-to-end (base_url + model + key).
+1. **Neutral env var** (e.g. `FIGMARK_API_KEY` / `FIGMARK_API_KEY_FILE`), with
+   `BERGET_API_KEY` as a deprecated fallback for one release (loader checks the
+   new name first, warns loudly on the old one).
+2. **Keyless mode** for endpoints that need no auth (local vLLM/Ollama): an
+   explicit opt-in (e.g. `FIGMARK_API_KEY=none`), failing loudly on ambiguity.
+3. **Shipped config.yaml** loses the Berget URL: ship a placeholder
+   (`https://your-endpoint.example/v1`) so the strict loader forces a conscious
+   choice, or document clearly that it must be edited before first run.
+4. **Rename the compose secret** (`berget_api_key` → `figmark_api_key`) and the
+   `*_FILE` plumbing in `api.py`/`compose.yaml`/`docs/deployment.md`/`SECURITY.md`.
+5. **Scrub docs and tests**: provider-neutral wording everywhere ("your
+   OpenAI-compatible vision endpoint"); the `live` marker description and
+   `_require_real_key` messages stop naming Berget; no provider examples beyond
+   generic local servers (vLLM, Ollama).
+6. README keeps exactly one statement of the requirement: you must connect a
+   vision-capable model behind an OpenAI-compatible API. (Already in place.)
 
 ## Acceptance criteria
 
-- [ ] Fresh clone + OpenRouter key + `config.yaml` pointing at OpenRouter →
-      `figmark <pdf>` works with no Berget mention anywhere in the path
-- [ ] `BERGET_API_KEY` still works (deprecation warning, documented)
-- [ ] README shows at least one non-Berget provider example
-- [ ] Live tests run with any provider key; error messages are provider-neutral
-- [ ] compose/deployment docs use the neutral secret name
+- [ ] `grep -riE "berget|openrouter"` over the repo (excluding `docs/tickets/`
+      history and CHANGELOG) returns nothing
+- [ ] Fresh clone + any OpenAI-compatible endpoint + key → `figmark <pdf>` works
+      with provider-neutral messages end to end
+- [ ] `BERGET_API_KEY` still works with a deprecation warning (documented)
+- [ ] Keyless local endpoint works via the explicit opt-in
+- [ ] compose/deployment/SECURITY use the neutral secret name
+- [ ] Live tests gate on "a key exists", with provider-neutral failure messages

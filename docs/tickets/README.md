@@ -13,7 +13,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-007](T-007-description-language-follows-document.md) | **Closed** | Medium | Description language is hardcoded to Swedish — should follow the document |
 | [T-008](T-008-diagram-internal-text-leaks-into-body.md) | Open | Low | Vector-diagram internal text leaks into the body text (needs a decision first) |
 | [T-009](T-009-starlette-badhost-cve.md) | **Closed** | HIGH | Starlette BadHost CVE in the lockfile — fixed before first push |
-| [T-010](T-010-provider-agnostic-llm-key.md) | Open | Medium | Work with any OpenAI-compatible provider key — not just Berget |
+| [T-010](T-010-provider-agnostic-llm-key.md) | Open | Medium | Purge provider-specific references — figmark is provider-neutral |
 | [T-011](T-011-codeql-sast.md) | **Closed** | Medium | Enable CodeQL (SAST) |
 | [T-012](T-012-dependabot.md) | **Closed** | Medium | Enable Dependabot updates |
 | [T-013](T-013-pip-audit-hard-gate.md) | **Closed** | Medium | Make pip-audit a blocking CI gate (was advisory) |
