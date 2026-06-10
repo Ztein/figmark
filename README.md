@@ -81,6 +81,27 @@ Produce an accessibility-annotated copy of the source PDF too:
 figmark path/to/document.pdf --annotate-pdf
 ```
 
+## Run as a service (container)
+
+figmark also ships as a hardened HTTP service for air-gapped deployment — a
+single container that needs only a reachable OpenAI-compatible vision endpoint.
+
+```bash
+mkdir -p secrets
+printf '%s' 'a-strong-token' > secrets/auth_token
+printf '%s' "$BERGET_API_KEY" > secrets/berget_api_key
+docker compose up -d            # builds/loads the image, starts figmark-server
+
+curl -s -X POST http://127.0.0.1:8000/v1/convert \
+  -H "Authorization: Bearer a-strong-token" \
+  -F "file=@document.pdf;type=application/pdf"
+```
+
+The image is non-root, read-only-rootfs compatible, self-contained (Tesseract +
+language data baked in), and passes a hard Trivy scan in CI. Secrets come from
+files (never the image or plaintext env). Full runbook:
+[docs/deployment.md](docs/deployment.md); security model: [SECURITY.md](SECURITY.md).
+
 ## Configuration
 
 Everything beyond the API key is controlled by [`config.yaml`](config.yaml):

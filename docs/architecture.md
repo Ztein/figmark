@@ -151,6 +151,27 @@ Two tiers, by design:
   filters, render DPI, retry counts, payload caps) live as documented module-level
   constants in the module that uses them — tune them there.
 
+## Service & deployment
+
+The same pipeline runs two ways, sharing one code path
+([`pipeline.convert`](../src/figmark/pipeline.py)):
+
+- **CLI** — [`main.run`](../src/figmark/main.py) loads config, builds the client,
+  calls `convert`, prints a summary.
+- **HTTP service** — [`api.py`](../src/figmark/api.py) (`figmark-server`) exposes
+  `POST /v1/convert` plus `healthz`/`readyz`/`version`. It injects its own client
+  into `convert`, runs it in a worker thread (quiet, no TTY), and adds the
+  service concerns: bearer auth, input validation, a concurrency gate, and
+  timeouts. Ops/secret knobs come from the environment (`ServerSettings`), so the
+  strict `config.yaml` contract is untouched.
+
+For tests and air-gapped runs, [`tests/mockllm/`](../tests/mockllm/) is a tiny
+OpenAI-compatible server that stands in for the vision model, so the whole stack
+runs with no internet. The service is packaged as a hardened, self-contained
+image ([Dockerfile](../Dockerfile)) and deployed with
+[`compose.yaml`](../compose.yaml); see [deployment.md](deployment.md) and
+[SECURITY.md](../SECURITY.md).
+
 ## Design principles
 
 - **Fail loudly.** No silent fallbacks; strategy switches are shouted with `!!!`

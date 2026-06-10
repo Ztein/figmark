@@ -47,6 +47,27 @@ The offline suite runs against a small sample corpus. See
 [examples/README.md](examples/README.md) for how to fetch sample documents;
 tests that need a sample skip cleanly when it is absent.
 
+Test markers:
+
+```bash
+pytest -m "not live and not docker"   # the default fast/offline suite
+pytest -m docker                       # builds the image + runs the compose stack
+pytest -m live                         # hits the real API
+```
+
+The API tests use FastAPI's `TestClient` with an injected fake client (see
+`tests/fakes.py`); `tests/mockllm/` is an OpenAI-compatible mock server used for
+the offline HTTP and compose end-to-end tests. The Docker-gated tests build the
+image and bring up the offline stack, so they need a Docker daemon and skip
+without one.
+
+If you change dependencies, regenerate the hash-pinned lockfile (CI checks it):
+
+```bash
+uv pip compile pyproject.toml --extra server --python-version 3.12 \
+  --universal --generate-hashes -o requirements.lock
+```
+
 ## Linting and formatting
 
 We use [ruff](https://docs.astral.sh/ruff/) for both linting and formatting.

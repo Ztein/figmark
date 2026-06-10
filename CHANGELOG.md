@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **HTTP service + hardened container (air-gapped).** A FastAPI service
+  (`figmark-server`, `POST /v1/convert` plus `healthz`/`readyz`/`version`) with
+  bearer auth, input validation, a concurrency gate, and timeouts. The pipeline is
+  refactored into `pipeline.convert`, shared by the CLI and the API (CLI behaviour
+  unchanged). A multi-stage, non-root, digest-pinned, hash-locked image (Tesseract
+  + eng/swe baked in) passes a hard Trivy gate, and a hardened `compose.yaml`
+  deploys it with file-based secrets. An OpenAI-compatible mock server lets the
+  whole stack run with no internet. New CI: hadolint, Trivy config/secret/image
+  scans, SBOM, lockfile-freshness; release ships a scanned image tarball bundle.
+  Docs: `SECURITY.md` and `docs/deployment.md`.
 - **Output language follows the document (T-007).** A new `language.output`
   setting controls the language of image/diagram descriptions and the document
   summary. `auto` (default) detects the document's language once (cached to
