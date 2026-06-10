@@ -1,0 +1,36 @@
+name: Auto-merge trusted PRs
+
+# Zero-touch merging for TRUSTED authors only: the repository owner and
+# Dependabot. Their PRs are auto-approved (satisfying the required review) and
+# auto-merged once every required check passes (CI matrix, Security
+# static+image, CodeQL). Anyone else's PR gets no approval here — it waits for
+# a maintainer's review, by design.
+#
+# Red PRs stay open as the visible escalation; nothing merges until all gates
+# are green. Fork PRs run with a read-only GITHUB_TOKEN, so this workflow
+# cannot approve or merge them even if triggered.
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    if: >-
+      github.event.pull_request.user.login == github.repository_owner ||
+      github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Approve the PR (satisfies the required review for trusted authors)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr review --approve "$PR_URL"
+
+      - name: Enable auto-merge (squash)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --auto --squash "$PR_URL"
