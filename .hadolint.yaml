@@ -1,0 +1,10 @@
+# hadolint configuration for the figmark Dockerfile.
+# Fail the lint on warnings and above.
+failure-threshold: warning
+trustedRegistries:
+  - docker.io
+ignored:
+  # We install apt packages without version pins but run `apt-get upgrade` and
+  # clean lists; pinning every transitive system lib is impractical and would
+  # fight the security-upgrade step. The inline `# hadolint ignore=DL3008` documents this.
+  - DL3008

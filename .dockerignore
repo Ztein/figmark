@@ -1,0 +1,34 @@
+# Keep the build context tiny and free of secrets / large files.
+.git
+.github
+.venv
+venv
+env
+__pycache__
+*.py[cod]
+*.egg-info
+.eggs
+build
+dist
+.pytest_cache
+.ruff_cache
+.mypy_cache
+
+# Pipeline output and local sample corpora — never in the image.
+output
+testfiler
+*.pdf
+
+# Secrets and local env
+.env
+secrets
+
+# Docs / dev-only material not needed at runtime
+docs
+examples
+tests
+*.md
+!README.md
+compose*.yaml
+Dockerfile
+.dockerignore

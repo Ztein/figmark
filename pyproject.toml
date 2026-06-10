@@ -48,16 +48,24 @@ figmark-server = "figmark.api:main"
 # The HTTP service. Kept optional so the CLI/PyPI install stays lean; the
 # container image installs ".[server]".
 server = [
-    "fastapi>=0.115,<0.116",
-    "uvicorn[standard]>=0.30,<0.32",
+    "fastapi>=0.119,<1.0",
+    # Pin the patched Starlette line directly (FastAPI's floor is only >=0.46.0,
+    # which leaves the CVE-2025-62727 DoS unpatched). Kept below 1.0 to avoid the
+    # untested Starlette 1.x major.
+    "starlette>=0.49.1,<1.0",
+    "uvicorn[standard]>=0.32,<1.0",
     "python-multipart>=0.0.9,<0.1",
 ]
 dev = [
     "pytest>=8.0.0",
     "ruff>=0.6.0",
     "httpx>=0.27",
-    "fastapi>=0.115,<0.116",
-    "uvicorn[standard]>=0.30,<0.32",
+    "fastapi>=0.119,<1.0",
+    # Pin the patched Starlette line directly (FastAPI's floor is only >=0.46.0,
+    # which leaves the CVE-2025-62727 DoS unpatched). Kept below 1.0 to avoid the
+    # untested Starlette 1.x major.
+    "starlette>=0.49.1,<1.0",
+    "uvicorn[standard]>=0.32,<1.0",
     "python-multipart>=0.0.9,<0.1",
 ]
 
