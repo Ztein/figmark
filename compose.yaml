@@ -1,0 +1,62 @@
+name: figmark
+
+# Single-host / air-gapped deployment of the figmark service.
+# Secrets come from files (Docker secrets), never plaintext env. The deployment's
+# config.yaml (where api.base_url points at the internal LLM) is mounted read-only.
+#
+# Before `docker compose up -d`:
+#   1. docker load < figmark-<ver>.tar.gz        (air-gapped: load the shipped image)
+#   2. printf '%s' '<token>'  > ./secrets/auth_token
+#      printf '%s' '<llm-key>' > ./secrets/berget_api_key
+#   3. edit config.yaml: api.base_url -> your internal OpenAI-compatible endpoint
+
+services:
+  app:
+    image: figmark:${FIGMARK_VERSION:-0.1.0}
+    build:
+      context: .
+      args:
+        VERSION: ${FIGMARK_VERSION:-0.0.0}
+        REVISION: ${FIGMARK_REVISION:-unknown}
+    user: "10001:10001"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    # Bound resources on the host (limits large-PDF memory blowups).
+    mem_limit: 2g
+    cpus: 2.0
+    pids_limit: 256
+    environment:
+      # Secrets are read from files, not from these values.
+      FIGMARK_AUTH_TOKEN_FILE: /run/secrets/figmark_auth_token
+      BERGET_API_KEY_FILE: /run/secrets/berget_api_key
+      FIGMARK_CONFIG_PATH: /app/config.yaml
+      FIGMARK_MAX_CONCURRENT_JOBS: "1"
+    secrets:
+      - figmark_auth_token
+      - berget_api_key
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status==200 else 1)
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+secrets:
+  figmark_auth_token:
+    file: ./secrets/auth_token
+  berget_api_key:
+    file: ./secrets/berget_api_key

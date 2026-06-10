@@ -1,0 +1,29 @@
+# Offline integration override: adds a mock OpenAI-compatible LLM and points the
+# app at it, so the whole stack runs with NO internet (the air-gapped proof).
+#
+#   docker compose -f compose.yaml -f compose.test.yaml up --build -d
+#
+# Requires ./secrets/auth_token and ./secrets/berget_api_key to exist (any value;
+# the mock ignores the key).
+
+services:
+  mock-llm:
+    build:
+      context: ./tests/mockllm
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status==200 else 1)
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  app:
+    depends_on:
+      mock-llm:
+        condition: service_healthy
+    # Override the deployment config with one whose api.base_url is the mock.
+    volumes:
+      - ./compose/config.test.yaml:/app/config.yaml:ro

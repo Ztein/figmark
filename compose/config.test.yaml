@@ -1,0 +1,39 @@
+# Test-only figmark config: points api.base_url at the in-stack mock LLM so the
+# offline compose stack works with no internet. Mounted over /app/config.yaml by
+# compose.test.yaml. Not for production.
+
+api:
+  base_url: "http://mock-llm:8000/v1"
+  model: "mock"
+
+ocr:
+  language: "swe"
+
+language:
+  output: auto
+
+description:
+  prompt: |
+    Beskriv bilden formellt, sakligt och tydligt.
+
+diagrams:
+  enabled: true
+  prompt: |
+    Beskriv diagrammet formellt, sakligt och tydligt.
+
+concurrency:
+  max_workers: 4
+
+context:
+  enabled: true
+  words_before: 50
+  words_after: 50
+
+significance:
+  enabled: true
+
+document_summary:
+  enabled: true
+  sample_words: 200
+  prompt: |
+    Sammanfatta i högst två meningar vad detta är för dokument.
