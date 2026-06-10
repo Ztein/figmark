@@ -19,14 +19,23 @@ from ..fakes import synthetic_pdf
 pytestmark = pytest.mark.docker
 
 ROOT = Path(__file__).resolve().parents[2]
-COMPOSE = ["docker", "compose", "-f", str(ROOT / "compose.yaml"), "-f", str(ROOT / "compose.test.yaml")]
+COMPOSE = [
+    "docker",
+    "compose",
+    "-f",
+    str(ROOT / "compose.yaml"),
+    "-f",
+    str(ROOT / "compose.test.yaml"),
+]
 
 
 def _docker_available() -> bool:
     if not shutil.which("docker"):
         return False
     try:
-        return subprocess.run(["docker", "version"], capture_output=True, timeout=15).returncode == 0
+        return (
+            subprocess.run(["docker", "version"], capture_output=True, timeout=15).returncode == 0
+        )
     except Exception:
         return False
 
@@ -67,9 +76,14 @@ def test_offline_stack_converts_pdf(offline_stack, tmp_path):
     # multipart upload via curl (no extra deps); assert markdown comes back.
     out = subprocess.run(
         [
-            "curl", "-s", "-X", "POST",
-            "-H", "Authorization: Bearer test-token",
-            "-F", f"file=@{tmp_path / 'doc.pdf'};type=application/pdf",
+            "curl",
+            "-s",
+            "-X",
+            "POST",
+            "-H",
+            "Authorization: Bearer test-token",
+            "-F",
+            f"file=@{tmp_path / 'doc.pdf'};type=application/pdf",
             f"{base}/v1/convert",
         ],
         capture_output=True,

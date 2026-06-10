@@ -48,10 +48,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   output; they describe the task and register, while `language.output` controls
   the language. Set `language.output: Swedish` for the previous behaviour.
 
-## [0.1.0] - 2026-06-08
+## [0.1.0] - 2026-06-08 (internal milestone — never published)
 
-First public release. Packaged the former internal `pdf_parser` tool as the
-open-source `figmark`.
+Packaged the former internal `pdf_parser` tool as the open-source `figmark`.
+This version was never tagged or published; the first public release will be
+cut from `main` after the initial push, including everything under Unreleased.
 
 ### Added
 

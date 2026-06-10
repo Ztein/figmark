@@ -13,7 +13,12 @@ readable prose in reading order instead of vanishing.
 
 It was built to produce accessible alt text in formal Swedish
 ("myndighetssvenska"), but works against **any OpenAI-compatible vision endpoint**
-— [Berget.ai](https://berget.ai) is the default, not a requirement.
+— [Berget.ai](https://berget.ai) is the default, not a requirement. Point
+`api.base_url` / `api.model` in `config.yaml` at e.g.
+[OpenRouter](https://openrouter.ai) (`https://openrouter.ai/api/v1`), a local
+vLLM/Ollama server, or any other provider, and put that provider's key in
+`BERGET_API_KEY` (the variable name is historical — a provider-neutral name is
+tracked in [T-010](docs/tickets/T-010-provider-agnostic-llm-key.md)).
 
 ## What it does
 
@@ -133,9 +138,10 @@ text in reading order. For the full pipeline, module map, and outputs, see
 ## Tests
 
 ```bash
-pytest -m "not live"   # fast, offline, no API key
-pytest -m "live"       # against the real API (costs money, takes minutes)
-pytest                 # everything
+pytest -m "not live and not docker"   # fast, offline, no API key, no Docker
+pytest -m docker                       # builds the image + runs the compose stack
+pytest -m "live"                       # against the real API (costs money, takes minutes)
+pytest                                 # everything
 ```
 
 See [examples/README.md](examples/README.md) for sample documents.

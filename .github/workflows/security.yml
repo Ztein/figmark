@@ -38,10 +38,12 @@ jobs:
           scanners: secret
           exit-code: "1"
 
-      - name: pip-audit (Python dependency CVEs)
+      - name: pip-audit (Python dependency CVEs — hard gate)
+        # A second, independent vulnerability source: pip-audit (OSV/PyPA) catches
+        # advisories before Trivy's DB ingests them (proven by PYSEC-2026-161).
         run: |
           python -m pip install pip-audit
-          pip-audit -r requirements.lock --strict || true  # advisory; image scan is the gate
+          pip-audit -r requirements.lock --disable-pip --strict
 
   # Build the image, run the hard vulnerability gate, produce an SBOM, and run the
   # Docker-gated runtime + offline compose end-to-end tests.

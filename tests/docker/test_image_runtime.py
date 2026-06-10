@@ -28,7 +28,9 @@ def _docker_available() -> bool:
     if not shutil.which("docker"):
         return False
     try:
-        return subprocess.run(["docker", "version"], capture_output=True, timeout=15).returncode == 0
+        return (
+            subprocess.run(["docker", "version"], capture_output=True, timeout=15).returncode == 0
+        )
     except Exception:
         return False
 
@@ -75,11 +77,23 @@ def test_server_healthy_under_readonly_rootfs(image):
     subprocess.run(["docker", "rm", "-f", name], capture_output=True)
     up = subprocess.run(
         [
-            "docker", "run", "-d", "--name", name,
-            "--read-only", "--tmpfs", "/tmp",
-            "--security-opt", "no-new-privileges",
-            "-e", "FIGMARK_AUTH_TOKEN=t", "-e", "BERGET_API_KEY=sk-test",
-            "-p", f"{port}:8000", image,
+            "docker",
+            "run",
+            "-d",
+            "--name",
+            name,
+            "--read-only",
+            "--tmpfs",
+            "/tmp",
+            "--security-opt",
+            "no-new-privileges",
+            "-e",
+            "FIGMARK_AUTH_TOKEN=t",
+            "-e",
+            "BERGET_API_KEY=sk-test",
+            "-p",
+            f"{port}:8000",
+            image,
         ],
         capture_output=True,
         text=True,
@@ -103,7 +117,9 @@ def test_server_healthy_under_readonly_rootfs(image):
 
         # /v1/convert without auth must be rejected
         try:
-            urllib.request.urlopen(urllib.request.Request(f"{base}/v1/convert", method="POST"), timeout=3)
+            urllib.request.urlopen(
+                urllib.request.Request(f"{base}/v1/convert", method="POST"), timeout=3
+            )
             raise AssertionError("expected 401 without auth")
         except urllib.error.HTTPError as e:
             assert e.code == 401
