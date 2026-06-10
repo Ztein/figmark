@@ -12,59 +12,13 @@ This verifies the new wiring without any API traffic:
 from __future__ import annotations
 
 from pathlib import Path
-from types import SimpleNamespace
 
-import fitz
 import pytest
 
 from figmark import main as main_module
 
-SUMMARY_REPLY = "Detta är ett testdokument om katter."
-
-
-def _make_response(text: str):
-    return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content=text))])
-
-
-DETECTED_LANGUAGE = "Swedish"
-
-
-class FakeClient:
-    """Records prompts and returns canned text. Text-only calls are either the
-    language-detection call or the summary call; calls carrying an image are a
-    figure description."""
-
-    def __init__(self, image_reply: str):
-        self.image_reply = image_reply
-        self.describe_prompts: list[str] = []
-        self.summary_prompts: list[str] = []
-        self.language_prompts: list[str] = []
-        self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._create))
-
-    def _create(self, model, max_tokens, messages, **kwargs):
-        content = messages[0]["content"]
-        if isinstance(content, str):
-            if "Identify the language" in content:
-                self.language_prompts.append(content)
-                return _make_response(DETECTED_LANGUAGE)
-            self.summary_prompts.append(content)
-            return _make_response(SUMMARY_REPLY)
-        text = next(part["text"] for part in content if part["type"] == "text")
-        self.describe_prompts.append(text)
-        return _make_response(self.image_reply)
-
-
-def _synthetic_pdf(path: Path) -> Path:
-    doc = fitz.open()
-    page = doc.new_page()
-    page.insert_text((72, 72), "Intro text about cats. " * 12)
-    pix = fitz.Pixmap(fitz.csRGB, fitz.IRect(0, 0, 100, 100))
-    pix.set_rect(pix.irect, (120, 160, 200))
-    page.insert_image(fitz.Rect(72, 200, 172, 300), pixmap=pix)
-    page.insert_text((72, 360), "More text after the image. " * 12)
-    doc.save(path)
-    doc.close()
-    return path
+from .fakes import DETECTED_LANGUAGE, SUMMARY_REPLY, FakeClient
+from .fakes import synthetic_pdf as _synthetic_pdf
 
 
 @pytest.fixture

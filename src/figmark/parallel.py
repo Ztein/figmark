@@ -55,17 +55,46 @@ def _format_duration(seconds: float) -> str:
     return f"{m}:{s:02d}"
 
 
+def _run_jobs_quiet(jobs: list[Job], max_workers: int) -> None:
+    """Run the jobs with no console output — used under the server (no TTY).
+
+    Same FAIL_FAST semantics as the live path: the first job to raise cancels the
+    rest and re-raises loudly.
+    """
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(j.func): j for j in jobs}
+        for future in as_completed(futures):
+            job = futures[future]
+            try:
+                result = future.result()
+            except Exception as e:
+                if FAIL_FAST:
+                    for f in futures:
+                        if not f.done():
+                            f.cancel()
+                raise RuntimeError(
+                    f"Error while describing '{job.label}': {type(e).__name__}: {e}"
+                ) from e
+            job.on_done(result)
+
+
 def run_jobs(
     jobs: list[Job],
     max_workers: int,
     header: str,
     console: Console | None = None,
+    quiet: bool = False,
 ) -> None:
-    """Run a list of jobs in parallel with a live CLI.
+    """Run a list of jobs in parallel.
 
-    Fails loudly if any job raises an exception (FAIL_FAST=True).
+    With ``quiet`` (e.g. under the API server, where there is no TTY) the rich live
+    view is skipped. Fails loudly if any job raises an exception (FAIL_FAST=True).
     """
     if not jobs:
+        return
+
+    if quiet:
+        _run_jobs_quiet(jobs, max_workers)
         return
 
     console = console or Console()
