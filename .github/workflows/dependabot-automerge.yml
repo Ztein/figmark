@@ -1,0 +1,25 @@
+name: Dependabot auto-merge
+
+# Zero-touch dependency maintenance: every Dependabot PR gets auto-merge enabled.
+# GitHub merges it only when ALL required checks pass (branch protection: the CI
+# matrix, Security static+image, CodeQL). Anything that fails a gate simply stays
+# open as a visible escalation — nothing is merged red, nothing needs a human for
+# the happy path. We deliberately include major bumps: the gates (full test
+# suite, image build, Trivy, pip-audit, offline compose e2e) are the review.
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable auto-merge (squash)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --auto --squash "$PR_URL"

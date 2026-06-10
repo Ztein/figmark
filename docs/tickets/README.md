@@ -18,7 +18,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-012](T-012-dependabot.md) | **Closed** | Medium | Enable Dependabot updates |
 | [T-013](T-013-pip-audit-hard-gate.md) | **Closed** | Medium | Make pip-audit a blocking CI gate (was advisory) |
 | [T-014](T-014-secret-scanning-push-protection.md) | **Closed** | Medium | Verify GitHub secret scanning + push protection on the repo |
-| [T-015](T-015-sha-pin-actions.md) | Open | Low | SHA-pin GitHub Actions |
+| [T-015](T-015-sha-pin-actions.md) | **Closed** | Low | SHA-pin GitHub Actions |
 | [T-016](T-016-cosign-image-signing.md) | Open | Low | Sign the release image and attest the SBOM (cosign) |
 
 ## How a ticket is written

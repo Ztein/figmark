@@ -1,7 +1,18 @@
 # T-015: SHA-pin GitHub Actions
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-10
 **Priority:** Low — supply-chain hardening; tags are mutable, SHAs are not
+
+## Resolution
+
+Every `uses:` in all five workflows is pinned to a full commit SHA with the
+version as a trailing comment, at the latest Node 24-compatible releases
+(checkout v6.0.3, setup-python v6.2.0, upload-artifact v7.0.1,
+download-artifact v8.0.1, hadolint v3.3.0, sbom-action v0.24.0,
+gh-release v3.0.0, codeql-action v4.36.2, pypi-publish v1.14.0,
+trivy-action v0.36.0) — which also cleared the runner's Node.js 20
+deprecation warnings. Dependabot's `github-actions` ecosystem keeps the SHAs
+fresh automatically.
 
 ## Motivation
 
