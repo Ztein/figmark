@@ -39,3 +39,44 @@ jobs:
           path: dist/
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  # The air-gapped deliverable: a scanned image exported as a tarball + checksum,
+  # bundled with the compose file, a sample config, and the deployment runbook.
+  image-bundle:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # attach assets to the GitHub Release
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          docker build \
+            --build-arg VERSION="${VERSION}" \
+            --build-arg REVISION="${GITHUB_SHA::8}" \
+            -t "figmark:${VERSION}" .
+
+      - name: Trivy image gate (must pass before shipping)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: figmark:${{ github.ref_name }}
+          scan-type: image
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
+
+      - name: Export tarball + checksum + deploy bundle
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          mkdir -p bundle
+          docker save "figmark:${VERSION}" | gzip > "bundle/figmark-${VERSION}.tar.gz"
+          cp compose.yaml config.yaml docs/deployment.md bundle/
+          cd bundle && sha256sum * > SHA256SUMS
+
+      - name: Attach bundle to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: bundle/*

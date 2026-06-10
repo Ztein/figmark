@@ -1,0 +1,11 @@
+# Trivy ignore list — the documented escape hatch for the hard image gate.
+#
+# Policy: the gate is `--severity HIGH,CRITICAL --ignore-unfixed`, so only FIXABLE
+# vulnerabilities can fail it. Add a CVE here ONLY when:
+#   * it cannot be fixed yet (no upstream patch in our base/deps), AND
+#   * it is not exploitable in figmark's usage, AND
+#   * you record the justification and a review date below.
+#
+# Format: one CVE id per line, with a comment. Review and prune regularly.
+#
+# (currently empty — the image passes the gate with nothing ignored)

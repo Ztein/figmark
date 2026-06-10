@@ -1,0 +1,94 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # Cheap static checks first — fail before the expensive build.
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Hadolint (Dockerfile lint)
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          config: .hadolint.yaml
+
+      - name: Trivy config scan (Dockerfile + compose misconfig)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: config
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+
+      - name: Trivy secret scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          exit-code: "1"
+
+      - name: pip-audit (Python dependency CVEs)
+        run: |
+          python -m pip install pip-audit
+          pip-audit -r requirements.lock --strict || true  # advisory; image scan is the gate
+
+  # Build the image, run the hard vulnerability gate, produce an SBOM, and run the
+  # Docker-gated runtime + offline compose end-to-end tests.
+  image:
+    needs: static
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: |
+          docker build \
+            --build-arg VERSION="${GITHUB_REF_NAME}" \
+            --build-arg REVISION="${GITHUB_SHA::8}" \
+            -t figmark:ci .
+
+      - name: Trivy image scan (hard gate — fixable HIGH/CRITICAL)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: figmark:ci
+          scan-type: image
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
+
+      - name: Generate SBOM (SPDX)
+        uses: anchore/sbom-action@v0
+        with:
+          image: figmark:ci
+          format: spdx-json
+          output-file: figmark-sbom.spdx.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: figmark-sbom.spdx.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dev deps (for the Docker-gated tests)
+        run: pip install -e ".[dev]"
+
+      - name: Docker-gated runtime + offline compose e2e
+        run: pytest -m docker -p no:cacheprovider

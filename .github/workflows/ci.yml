@@ -23,10 +23,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
 
-      - name: Install Tesseract (with Swedish language pack)
+      - name: Install Tesseract (English + Swedish language packs)
         run: |
           sudo apt-get update
-          sudo apt-get install -y tesseract-ocr tesseract-ocr-swe
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-eng tesseract-ocr-swe
 
       - name: Install package (with dev extras)
         run: pip install -e ".[dev]"
@@ -37,5 +37,12 @@ jobs:
       - name: Format check
         run: ruff format --check src tests
 
-      - name: Run tests (excluding live API tests)
-        run: pytest -m "not live"
+      - name: Lockfile is up to date
+        run: |
+          pip install uv
+          uv pip compile pyproject.toml --extra server --python-version 3.12 \
+            --universal --generate-hashes -o requirements.lock
+          git diff --exit-code requirements.lock
+
+      - name: Run tests (offline; excludes live API + Docker-gated)
+        run: pytest -m "not live and not docker"
