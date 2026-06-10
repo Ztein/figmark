@@ -23,7 +23,7 @@ jobs:
           config: .hadolint.yaml
 
       - name: Trivy config scan (Dockerfile + compose misconfig)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
         with:
           scan-type: config
           scan-ref: .
@@ -31,7 +31,7 @@ jobs:
           exit-code: "1"
 
       - name: Trivy secret scan
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
         with:
           scan-type: fs
           scan-ref: .
@@ -61,7 +61,7 @@ jobs:
             -t figmark:ci .
 
       - name: Trivy image scan (hard gate — fixable HIGH/CRITICAL)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
         with:
           image-ref: figmark:ci
           scan-type: image

@@ -1,6 +1,8 @@
 # T-014: Verify GitHub secret scanning + push protection on the repo
 
-**Status:** Open — repo setting, verify after the repository exists
+**Status:** Closed — verified enabled 2026-06-10 on Ztein/figmark
+(`secret_scanning: enabled`, `secret_scanning_push_protection: enabled` via the
+repos API, right after the first push)
 **Priority:** Medium — forward-looking guard; history is verified clean
 
 ## Motivation
