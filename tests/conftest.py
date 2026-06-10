@@ -96,6 +96,42 @@ def env_with_key(monkeypatch):
     monkeypatch.setenv("BERGET_API_KEY", "sk-test-fake-key")
 
 
+@pytest.fixture
+def mock_llm_server():
+    """Run the OpenAI-compatible mock server in a background thread; yield its URL.
+
+    Lets a real figmark OpenAI client make real HTTP calls with no internet.
+    """
+    import socket
+    import threading
+    import time
+
+    import uvicorn
+
+    from .mockllm.app import app as mock_app
+
+    sock = socket.socket()
+    sock.bind(("127.0.0.1", 0))
+    port = sock.getsockname()[1]
+    sock.close()
+
+    server = uvicorn.Server(
+        uvicorn.Config(mock_app, host="127.0.0.1", port=port, log_level="warning")
+    )
+    thread = threading.Thread(target=server.run, daemon=True)
+    thread.start()
+    deadline = time.time() + 10
+    while not server.started and time.time() < deadline:
+        time.sleep(0.05)
+    if not server.started:
+        raise RuntimeError("mock LLM server did not start")
+    try:
+        yield f"http://127.0.0.1:{port}"
+    finally:
+        server.should_exit = True
+        thread.join(timeout=5)
+
+
 API_TEST_TOKEN = "secret-token"
 
 
