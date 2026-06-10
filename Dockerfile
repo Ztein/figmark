@@ -36,7 +36,7 @@ LABEL org.opencontainers.image.title="figmark" \
       org.opencontainers.image.description="PDF to Markdown with AI figure descriptions (HTTP service)" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${REVISION}" \
-      org.opencontainers.image.source="https://github.com/joelstenberg/figmark" \
+      org.opencontainers.image.source="https://github.com/Ztein/figmark" \
       org.opencontainers.image.licenses="MIT"
 
 # System runtime deps: Tesseract + English/Swedish data, and tini for clean PID 1.

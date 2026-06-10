@@ -6,7 +6,7 @@ up a development environment, run the tests, and submit changes.
 ## Development setup
 
 ```bash
-git clone https://github.com/joelstenberg/figmark
+git clone https://github.com/Ztein/figmark
 cd figmark
 python -m venv .venv
 source .venv/bin/activate

@@ -37,9 +37,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/joelstenberg/figmark"
-Repository = "https://github.com/joelstenberg/figmark"
-Issues = "https://github.com/joelstenberg/figmark/issues"
+Homepage = "https://github.com/Ztein/figmark"
+Repository = "https://github.com/Ztein/figmark"
+Issues = "https://github.com/Ztein/figmark/issues"
 
 [project.scripts]
 figmark = "figmark.main:main"
