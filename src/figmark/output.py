@@ -21,6 +21,7 @@ def _shown(description: str) -> str:
     """A description that should appear in the output, or "" if it's a skip marker."""
     return "" if is_skip(description) else description
 
+
 # Inline template for raster images + page separator, used in the plain-text
 # (raw) output. Rarely tuned, so it lives here rather than in config.yaml.
 IMAGE_PLACEHOLDER = "[Image: {description}]"

@@ -112,8 +112,13 @@ def _make_image_job(
 
     def run_describe() -> str:
         return describe_image(
-            client, img.path, desc_path, cfg,
-            context=context, doc_summary=doc_summary, language=language,
+            client,
+            img.path,
+            desc_path,
+            cfg,
+            context=context,
+            doc_summary=doc_summary,
+            language=language,
         )
 
     def store(text: str) -> None:
@@ -127,8 +132,13 @@ def _make_diagram_job(
 ) -> Job:
     def run_describe() -> str:
         return describe_diagram(
-            client, region, desc_path, cfg,
-            context=context, doc_summary=doc_summary, language=language,
+            client,
+            region,
+            desc_path,
+            cfg,
+            context=context,
+            doc_summary=doc_summary,
+            language=language,
         )
 
     def store(text: str) -> None:
@@ -322,7 +332,14 @@ def convert(
             ctx = _maybe_context(img.bbox)
             jobs.append(
                 _make_image_job(
-                    label, client, img, desc_path, cfg, page_data, ctx, doc_summary,
+                    label,
+                    client,
+                    img,
+                    desc_path,
+                    cfg,
+                    page_data,
+                    ctx,
+                    doc_summary,
                     resolved_language,
                 )
             )
@@ -338,7 +355,14 @@ def convert(
             ctx = _maybe_context(region.bbox)
             jobs.append(
                 _make_diagram_job(
-                    label, client, region, desc_path, cfg, page_data, ctx, doc_summary,
+                    label,
+                    client,
+                    region,
+                    desc_path,
+                    cfg,
+                    page_data,
+                    ctx,
+                    doc_summary,
                     resolved_language,
                 )
             )

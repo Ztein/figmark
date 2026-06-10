@@ -94,3 +94,40 @@ def long_pdf() -> Path:
 def env_with_key(monkeypatch):
     """For config tests that need a (fake) API key without hitting the real API."""
     monkeypatch.setenv("BERGET_API_KEY", "sk-test-fake-key")
+
+
+API_TEST_TOKEN = "secret-token"
+
+
+@pytest.fixture
+def make_api_app(env_with_key, project_root, tmp_path):
+    """Factory: build a figmark API app with an injected (fake) client.
+
+    Keeps the real config but skips network — the client is whatever the test
+    passes (typically a FakeClient). Returns a callable so each test tunes the
+    upload limit / concurrency / token.
+    """
+
+    def _make(
+        client,
+        *,
+        max_upload_bytes: int = 50 * 1024 * 1024,
+        max_concurrent_jobs: int = 2,
+        token: str = API_TEST_TOKEN,
+        request_timeout_seconds: float = 30.0,
+    ):
+        from figmark.api import ServerSettings, create_app
+        from figmark.config import load_config
+
+        cfg = load_config(project_root / "config.yaml")
+        settings = ServerSettings(
+            auth_token=token,
+            config_path=project_root / "config.yaml",
+            max_upload_bytes=max_upload_bytes,
+            work_dir=tmp_path / "work",
+            request_timeout_seconds=request_timeout_seconds,
+            max_concurrent_jobs=max_concurrent_jobs,
+        )
+        return create_app(settings=settings, cfg=cfg, client=client)
+
+    return _make
