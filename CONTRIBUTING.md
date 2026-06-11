@@ -61,6 +61,15 @@ the offline HTTP and compose end-to-end tests. The Docker-gated tests build the
 image and bring up the offline stack, so they need a Docker daemon and skip
 without one.
 
+## Quality evaluation
+
+Beyond the unit/integration suite, [examples/eval/](examples/eval/README.md) is a
+31-document central-bank corpus for evaluating figure-interpretation quality
+end to end (`download_eval.py` → `run_eval.py`). It costs real API budget and is
+not part of CI; run it when changing the description/diagram pipeline, and add a
+dated report under `docs/`. The latest is
+[docs/eval-report-2026-06-11.md](docs/eval-report-2026-06-11.md).
+
 If you change dependencies, regenerate the hash-pinned lockfile (CI checks it):
 
 ```bash

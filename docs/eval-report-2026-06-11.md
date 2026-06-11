@@ -1,10 +1,13 @@
 # Evaluation report — central-bank corpus, 2026-06-11
 
 figmark v0.2.0+ was evaluated against 31 real economic reports from 9 central
-banks and institutions, fetched from the open web (manifest:
-[examples/eval/manifest.yaml](../examples/eval/manifest.yaml), runner:
-[examples/run_eval.py](../examples/run_eval.py)). This report covers what was
+banks and institutions, fetched from the open web. This report covers what was
 run, what broke, and a manual quality review of the interpretations.
+
+> **Reproduce:** the corpus and runner live in
+> [examples/eval/](../examples/eval/README.md) —
+> `python examples/download_eval.py && python examples/run_eval.py`. Write a new
+> dated report alongside this one for each future run.
 
 ## Corpus
 
