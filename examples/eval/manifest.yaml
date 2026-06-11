@@ -1,0 +1,148 @@
+# Evaluation corpus: 30+ real central-bank economic reports from the open web.
+# PDFs are downloaded locally (examples/eval/*.pdf, gitignored) via
+# examples/download_eval.py — never committed. Documents keep their original
+# licenses and are used for local quality evaluation only.
+#
+# Curated for variety: institution, layout, length, and language (en/sv/de).
+documents:
+  # Bank for International Settlements — chart-heavy flagship reports
+  - name: bis-ar-2025
+    url: https://www.bis.org/publ/arpdf/ar2025e.pdf
+    source: BIS Annual Economic Report 2025
+    language: en
+  - name: bis-ar-2024
+    url: https://www.bis.org/publ/arpdf/ar2024e.pdf
+    source: BIS Annual Economic Report 2024
+    language: en
+  - name: bis-qr-2503
+    url: https://www.bis.org/publ/qtrpdf/r_qt2503.pdf
+    source: BIS Quarterly Review, March 2025
+    language: en
+  - name: bis-qr-2412
+    url: https://www.bis.org/publ/qtrpdf/r_qt2412.pdf
+    source: BIS Quarterly Review, December 2024
+    language: en
+
+  # European Central Bank
+  - name: ecb-eb-202501
+    url: https://www.ecb.europa.eu/pub/pdf/ecbu/eb202501.en.pdf
+    source: ECB Economic Bulletin 1/2025
+    language: en
+  - name: ecb-eb-202502
+    url: https://www.ecb.europa.eu/pub/pdf/ecbu/eb202502.en.pdf
+    source: ECB Economic Bulletin 2/2025
+    language: en
+  - name: ecb-eb-202408
+    url: https://www.ecb.europa.eu/pub/pdf/ecbu/eb202408.en.pdf
+    source: ECB Economic Bulletin 8/2024
+    language: en
+  - name: ecb-eb-202404
+    url: https://www.ecb.europa.eu/pub/pdf/ecbu/eb202404.en.pdf
+    source: ECB Economic Bulletin 4/2024
+    language: en
+  - name: ecb-eb-202404-de
+    url: https://www.ecb.europa.eu/pub/pdf/ecbu/eb202404.de.pdf
+    source: EZB Wirtschaftsbericht 4/2024 (German)
+    language: de
+  - name: ecb-fsr-202411
+    url: https://www.ecb.europa.eu/pub/pdf/fsr/ecb.fsr202411~dd60fc02c3.en.pdf
+    source: ECB Financial Stability Review, November 2024
+    language: en
+
+  # US Federal Reserve
+  - name: fed-mpr-202407
+    url: https://www.federalreserve.gov/monetarypolicy/files/20240705_mprfullreport.pdf
+    source: Federal Reserve Monetary Policy Report, July 2024
+    language: en
+  - name: fed-fsr-202411
+    url: https://www.federalreserve.gov/publications/files/financial-stability-report-20241122.pdf
+    source: Federal Reserve Financial Stability Report, November 2024
+    language: en
+  - name: fed-fsr-202404
+    url: https://www.federalreserve.gov/publications/files/financial-stability-report-20240419.pdf
+    source: Federal Reserve Financial Stability Report, April 2024
+    language: en
+  - name: fed-bb-202401
+    url: https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20240117.pdf
+    source: Federal Reserve Beige Book, January 2024
+    language: en
+  - name: fed-bb-202410
+    url: https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20241023.pdf
+    source: Federal Reserve Beige Book, October 2024
+    language: en
+
+  # Bank of England
+  - name: boe-mpr-202402
+    url: https://www.bankofengland.co.uk/-/media/boe/files/monetary-policy-report/2024/february/monetary-policy-report-february-2024.pdf
+    source: Bank of England Monetary Policy Report, February 2024
+    language: en
+  - name: boe-mpr-202408
+    url: https://www.bankofengland.co.uk/-/media/boe/files/monetary-policy-report/2024/august/monetary-policy-report-august-2024.pdf
+    source: Bank of England Monetary Policy Report, August 2024
+    language: en
+  - name: boe-mpr-202411
+    url: https://www.bankofengland.co.uk/-/media/boe/files/monetary-policy-report/2024/november/monetary-policy-report-november-2024.pdf
+    source: Bank of England Monetary Policy Report, November 2024
+    language: en
+  - name: boe-mpr-202502
+    url: https://www.bankofengland.co.uk/-/media/boe/files/monetary-policy-report/2025/february/monetary-policy-report-february-2025.pdf
+    source: Bank of England Monetary Policy Report, February 2025
+    language: en
+
+  # Bank of Canada
+  - name: boc-mpr-202401
+    url: https://www.bankofcanada.ca/wp-content/uploads/2024/01/mpr-2024-01-24.pdf
+    source: Bank of Canada Monetary Policy Report, January 2024
+    language: en
+  - name: boc-mpr-202407
+    url: https://www.bankofcanada.ca/wp-content/uploads/2024/07/mpr-2024-07-24.pdf
+    source: Bank of Canada Monetary Policy Report, July 2024
+    language: en
+  - name: boc-mpr-202410
+    url: https://www.bankofcanada.ca/wp-content/uploads/2024/10/mpr-2024-10-23.pdf
+    source: Bank of Canada Monetary Policy Report, October 2024
+    language: en
+  - name: boc-mpr-202501
+    url: https://www.bankofcanada.ca/wp-content/uploads/2025/01/mpr-2025-01-29.pdf
+    source: Bank of Canada Monetary Policy Report, January 2025
+    language: en
+
+  # Bank of Japan (English editions)
+  - name: boj-outlook-2410
+    url: https://www.boj.or.jp/en/mopo/outlook/gor2410b.pdf
+    source: Bank of Japan Outlook Report, October 2024
+    language: en
+  - name: boj-outlook-2501
+    url: https://www.boj.or.jp/en/mopo/outlook/gor2501b.pdf
+    source: Bank of Japan Outlook Report, January 2025
+    language: en
+
+  # Czech National Bank (RBA was dropped: rba.gov.au blocks non-browser clients)
+  - name: cnb-mpr-2025-autumn
+    url: https://www.cnb.cz/export/sites/cnb/en/monetary-policy/.galleries/monetary_policy_reports/2025/autumn_2025/download/mpr_2025_autumn.pdf
+    source: Czech National Bank Monetary Policy Report, Autumn 2025
+    language: en
+  - name: cnb-geo-chartbook-202511
+    url: https://www.cnb.cz/export/sites/cnb/en/monetary-policy/.galleries/geo/geo_2025/gev_2025_chartbook_11_en.pdf
+    source: CNB Global Economic Outlook Chartbook, November 2025 (chart-dense)
+    language: en
+
+  # Sveriges Riksbank (Swedish)
+  - name: riksbank-ppr-202512
+    url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-rapport-december-2025.pdf
+    source: Riksbanken Penningpolitisk rapport, december 2025 (Swedish)
+    language: sv
+  - name: riksbank-ppr-202503
+    url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-rapport-mars-2025.pdf
+    source: Riksbanken Penningpolitisk rapport, mars 2025 (Swedish)
+    language: sv
+
+  # Norges Bank (English editions)
+  - name: norges-mpr-2-2025
+    url: https://www.norges-bank.no/contentassets/5a0246e76ce74764b599d570f5be2086/mpr_2_25.pdf
+    source: Norges Bank Monetary Policy Report 2/2025
+    language: en
+  - name: norges-mpr-4-2025
+    url: https://www.norges-bank.no/contentassets/a7205dfb429c416c846af5abd8f28ddb/mpr_425.pdf
+    source: Norges Bank Monetary Policy Report 4/2025
+    language: en
