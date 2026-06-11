@@ -1,6 +1,12 @@
 # T-024: Audit for further principle violations — silent fallbacks and hidden defaults
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-11. F1 (images.py logs failed
+extractions loudly instead of dropping them) and F2 (pipeline aborts on an
+`APIError` during language detection / summary instead of swallowing it) are
+fixed; `CONTRIBUTING.md` gained the reasonable-vs-must-raise note. F3 (config
+missing-section → `{}` gives a field-level rather than section-level message) was
+reviewed and **consciously left as-is**: it still fails loudly, only the
+diagnostic is slightly less specific — not worth the churn.
 **Priority:** Medium — guards the project's core "fail loudly" principle
 
 ## Symptom / motivation

@@ -11,6 +11,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+from openai import APIError
+
 from .annotate import AnnotationItem, annotate_pdf
 from .config import Config
 from .context import ContextText, get_text_context_around
@@ -298,11 +300,17 @@ def convert(
     # then every description is told that language explicitly.
     resolved_language = cfg.language.output
     if resolved_language.strip().lower() in ("auto", "document", ""):
-        detected = ""
+        # A real API failure here (bad key, unreachable endpoint, exhausted
+        # retries) would break every description call too — abort loudly instead
+        # of masking it as a benign "using prompt default" (T-024 F2).
         try:
             detected = detect_language(client, pages, cfg, out_dir / "document_language.txt")
-        except Exception as e:  # noqa: BLE001
-            emit_loud(f"Language detection failed ({type(e).__name__}: {e}) — using prompt default")
+        except APIError as e:
+            emit_loud(
+                f"Language detection call failed ({type(e).__name__}: {e}). Aborting — "
+                "the API key/endpoint looks misconfigured, which would fail every call."
+            )
+            raise
         if detected:
             resolved_language = detected
             emit(f"\nDocument language: {resolved_language}")
@@ -314,8 +322,12 @@ def convert(
             doc_summary = summarize_document(
                 client, pages, cfg, out_dir / "document_summary.txt", resolved_language
             )
-        except Exception as e:  # noqa: BLE001
-            emit_loud(f"Document summary failed ({type(e).__name__}: {e}) — continuing without it")
+        except APIError as e:
+            emit_loud(
+                f"Document summary call failed ({type(e).__name__}: {e}). Aborting — "
+                "the API key/endpoint looks misconfigured, which would fail every call."
+            )
+            raise
         if doc_summary:
             emit(f"Document summary: {doc_summary}")
 

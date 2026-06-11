@@ -62,9 +62,19 @@ def extract_images_from_page(
         xref = img_tuple[0]
         try:
             base = doc.extract_image(xref)
-        except Exception:
+        except Exception as exc:  # noqa: BLE001 — surface loudly, never drop silently
+            print(
+                f"WARNING: could not extract image xref={xref} on page {page_num} "
+                f"({type(exc).__name__}: {exc}) — skipping this image",
+                flush=True,
+            )
             continue
         if base is None:
+            print(
+                f"WARNING: image xref={xref} on page {page_num} returned no data "
+                "— skipping this image",
+                flush=True,
+            )
             continue
 
         width = base.get("width", 0)

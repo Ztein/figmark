@@ -100,6 +100,15 @@ piece exists.
 
 - **Fail loudly.** No silent fallbacks. Strategy switches (e.g. Tesseract →
   vision-OCR) are shouted with clear `!!!` banners.
+  - **Reasonable vs must-raise fallbacks.** A *reasonable* fallback recovers the
+    **same** operation via a legitimately equivalent path, on a real signal, and
+    says so loudly — e.g. text extraction fails → OCR the page. A fallback that
+    papers over a missing input or a failed call by **guessing** must raise
+    instead — e.g. no API key, so quietly try a deprecated env var; or an
+    auth/transport error on one call swallowed as "continuing without it" when it
+    means every call will fail. Test: recovers the same goal via an equivalent
+    path → keep (loud); masks a misconfiguration/failure by guessing → raise.
+    **When in doubt, raise.**
 - **Run for real.** Tests run against the real API by default; mocking is used
   only for isolated unit tests of internal logic.
 - **User knobs in `config.yaml`, technical knobs in code.** Thresholds and tuning
