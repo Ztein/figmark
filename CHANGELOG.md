@@ -18,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   provider-neutral — no hardcoded prices); otherwise it is `null`, never a
   misleading `0`. Cache hits make no call and cost nothing, as reflected.
 
+### Changed
+
+- **Per-page OCR decision (T-027).** The OCR/text choice is now made per page
+  instead of once per document. A page is OCR'd only when it has little
+  extractable text **and** a near-full-page image (`page_needs_ocr`), so a scanned
+  page inside an otherwise text-encoded PDF is rescued (and announced with a loud
+  banner) instead of being silently dropped — while genuinely sparse pages
+  (dividers, figure-only) are not needlessly OCR'd. The document-wide `is_scanned`
+  average is kept only as a logged hint.
+
 ### Removed
 
 - **BREAKING (T-020): the deprecated `BERGET_API_KEY` / `BERGET_API_KEY_FILE`
