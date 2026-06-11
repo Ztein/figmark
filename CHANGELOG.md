@@ -7,8 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-11
+
+First public release.
+
 ### Added
 
+- **Provider-neutral configuration (T-010).** `FIGMARK_API_KEY` (and
+  `FIGMARK_API_KEY_FILE`) replace the provider-specific key name;
+  `BERGET_API_KEY` still works as a deprecated fallback with a loud warning.
+  The tracked config is now `config.example.yaml` with a placeholder endpoint —
+  copy it to `config.yaml` and point it at any OpenAI-compatible vision endpoint
+  (hosted or local). The compose secret is `figmark_api_key`.
+- **GHCR images (T-017).** Every green build of `main` is published as
+  `ghcr.io/ztein/figmark:edge`; releases publish `:<version>` and `:latest`.
+  `compose.yaml` runs the GHCR image directly — no source checkout needed — and
+  the air-gap tarball is saved under the GHCR name so `docker load` matches.
+- **Zero-touch maintenance.** Dependabot (pip, docker, actions) with
+  auto-approve/auto-merge for trusted authors (owner + bots) once all gates
+  pass; outside contributors' PRs require maintainer review. Weekly scheduled
+  security scans file an issue automatically on failure. CodeQL SAST, pip-audit
+  as a blocking gate, all GitHub Actions SHA-pinned.
 - **HTTP service + hardened container (air-gapped).** A FastAPI service
   (`figmark-server`, `POST /v1/convert` plus `healthz`/`readyz`/`version`) with
   bearer auth, input validation, a concurrency gate, and timeouts. The pipeline is

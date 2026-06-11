@@ -19,7 +19,7 @@ def test_settings_reads_token_from_file(monkeypatch, tmp_path):
     token_file = tmp_path / "token"
     token_file.write_text("file-token\n", encoding="utf-8")
     monkeypatch.setenv("FIGMARK_AUTH_TOKEN_FILE", str(token_file))
-    monkeypatch.setenv("BERGET_API_KEY", "sk-test-fake-key")
+    monkeypatch.setenv("FIGMARK_API_KEY", "sk-test-fake-key")
     from figmark.api import ServerSettings
 
     settings = ServerSettings.from_env()
@@ -41,15 +41,31 @@ def test_create_app_fails_on_bad_config(env_with_key, tmp_path):
         create_app(settings=settings, client=object())
 
 
-def test_berget_key_file_is_surfaced_for_config(monkeypatch, tmp_path):
+def test_api_key_file_is_surfaced_for_config(monkeypatch, tmp_path):
     monkeypatch.setenv("FIGMARK_AUTH_TOKEN", "t")
-    monkeypatch.delenv("BERGET_API_KEY", raising=False)
+    monkeypatch.delenv("FIGMARK_API_KEY", raising=False)
     key_file = tmp_path / "key"
     key_file.write_text("sk-from-file\n", encoding="utf-8")
+    monkeypatch.setenv("FIGMARK_API_KEY_FILE", str(key_file))
+    from figmark.api import ServerSettings
+
+    ServerSettings.from_env()
+    import os
+
+    assert os.environ["FIGMARK_API_KEY"] == "sk-from-file"
+
+
+def test_legacy_berget_key_file_still_surfaced(monkeypatch, tmp_path):
+    """The deprecated BERGET_API_KEY_FILE secret still works as a fallback."""
+    monkeypatch.setenv("FIGMARK_AUTH_TOKEN", "t")
+    for var in ("FIGMARK_API_KEY", "FIGMARK_API_KEY_FILE", "BERGET_API_KEY"):
+        monkeypatch.delenv(var, raising=False)
+    key_file = tmp_path / "legacy"
+    key_file.write_text("sk-legacy-file\n", encoding="utf-8")
     monkeypatch.setenv("BERGET_API_KEY_FILE", str(key_file))
     from figmark.api import ServerSettings
 
     ServerSettings.from_env()
     import os
 
-    assert os.environ["BERGET_API_KEY"] == "sk-from-file"
+    assert os.environ["FIGMARK_API_KEY"] == "sk-legacy-file"

@@ -65,7 +65,7 @@ COPY --from=builder /opt/venv /opt/venv
 
 WORKDIR /app
 # A default config; deployments mount their own read-only over this.
-COPY config.yaml /app/config.yaml
+COPY config.example.yaml /app/config.yaml
 
 # Non-root, fixed uid/gid; writes only to the tmpfs work dir at runtime.
 RUN groupadd --system --gid 10001 figmark \

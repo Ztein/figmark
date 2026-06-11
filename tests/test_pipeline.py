@@ -1,6 +1,6 @@
 """LIVE pipeline tests.
 
-Run against the real Berget.ai API. Require BERGET_API_KEY in .env or the
+Run against a real LLM API. Require FIGMARK_API_KEY in .env or the
 environment. They do NOT skip silently — they fail with a clear message if the
 key is missing.
 
@@ -26,12 +26,12 @@ def _require_real_key() -> str:
     from dotenv import load_dotenv
 
     load_dotenv()
-    key = os.environ.get("BERGET_API_KEY", "")
+    key = os.environ.get("FIGMARK_API_KEY", "")
     if not key or key.startswith("sk-test") or key == "sk-your-key-here":
         pytest.fail(
             "\n\n"
             "!" * 78 + "\n"
-            "!!! BERGET_API_KEY is missing or a placeholder.\n"
+            "!!! FIGMARK_API_KEY is missing or a placeholder.\n"
             "!!! The live pipeline tests run AGAINST THE REAL API and need a real key.\n"
             "!!! Put your key in .env and run again.\n"
             "!!! To skip the live tests: pytest -m 'not live'\n" + "!" * 78
@@ -340,4 +340,4 @@ def test_pipeline_describe_single_image_returns_swedish(
         doc.close()
 
     assert len(result) > 30, f"Suspiciously short description: {result!r}"
-    print(f"\n--- Actual description from Berget ({cfg.api.model}) ---\n{result}\n")
+    print(f"\n--- Actual description from {cfg.api.model} ---\n{result}\n")

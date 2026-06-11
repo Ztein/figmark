@@ -16,7 +16,7 @@ from .fakes import DETECTED_LANGUAGE, FakeClient, synthetic_pdf
 
 def test_convert_returns_markdown_and_paths(env_with_key, project_root: Path, tmp_path: Path):
     pdf = synthetic_pdf(tmp_path / "doc.pdf")
-    cfg = load_config(project_root / "config.yaml")
+    cfg = load_config(project_root / "config.example.yaml")
     client = FakeClient("En bild på en katt.")
 
     result = convert(pdf, cfg, tmp_path / "output", client=client, quiet=True)
@@ -36,7 +36,7 @@ def test_convert_uses_injected_client_without_monkeypatch(
     env_with_key, project_root: Path, tmp_path: Path
 ):
     pdf = synthetic_pdf(tmp_path / "doc.pdf")
-    cfg = load_config(project_root / "config.yaml")
+    cfg = load_config(project_root / "config.example.yaml")
     client = FakeClient("En bild på en katt.")
 
     convert(pdf, cfg, tmp_path / "output", client=client, quiet=True)
@@ -48,7 +48,7 @@ def test_convert_uses_injected_client_without_monkeypatch(
 
 def test_convert_skip_marker_drops_figure(env_with_key, project_root: Path, tmp_path: Path):
     pdf = synthetic_pdf(tmp_path / "doc.pdf")
-    cfg = load_config(project_root / "config.yaml")
+    cfg = load_config(project_root / "config.example.yaml")
     client = FakeClient("[SKIP]")
 
     result = convert(pdf, cfg, tmp_path / "output", client=client, quiet=True)

@@ -19,7 +19,7 @@ from .fakes import synthetic_pdf
 def test_real_client_against_mock_server(
     env_with_key, project_root: Path, tmp_path: Path, mock_llm_server: str
 ):
-    cfg = load_config(project_root / "config.yaml")
+    cfg = load_config(project_root / "config.example.yaml")
     cfg.api.base_url = f"{mock_llm_server}/v1"  # point the real client at the mock
 
     pdf = synthetic_pdf(tmp_path / "doc.pdf")

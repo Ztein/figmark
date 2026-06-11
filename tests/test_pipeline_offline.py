@@ -40,7 +40,7 @@ def test_summary_is_computed_and_injected_into_figure_prompt(
     pdf = _synthetic_pdf(tmp_path / "doc.pdf")
     client = fake_client("En bild på en katt.")
 
-    exit_code = main_module.run(pdf, project_root / "config.yaml", tmp_path / "output")
+    exit_code = main_module.run(pdf, project_root / "config.example.yaml", tmp_path / "output")
     assert exit_code == 0
 
     # The language was detected once and cached.
@@ -71,7 +71,7 @@ def test_skip_reply_drops_image_from_markdown(
     pdf = _synthetic_pdf(tmp_path / "doc.pdf")
     fake_client("[SKIP]")
 
-    exit_code = main_module.run(pdf, project_root / "config.yaml", tmp_path / "output")
+    exit_code = main_module.run(pdf, project_root / "config.example.yaml", tmp_path / "output")
     assert exit_code == 0
 
     md = (tmp_path / "output" / "doc" / "doc.md").read_text(encoding="utf-8")

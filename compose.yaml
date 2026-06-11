@@ -1,23 +1,28 @@
 name: figmark
 
-# Single-host / air-gapped deployment of the figmark service.
-# Secrets come from files (Docker secrets), never plaintext env. The deployment's
-# config.yaml (where api.base_url points at the internal LLM) is mounted read-only.
+# Single-host / air-gapped deployment of the figmark service, running the
+# published image from GHCR — no source checkout needed.
+# Secrets come from files (Docker secrets), never plaintext env. Your
+# config.yaml (where api.base_url points at your LLM endpoint) is mounted
+# read-only.
 #
-# Before `docker compose up -d`:
-#   1. docker load < figmark-<ver>.tar.gz        (air-gapped: load the shipped image)
-#   2. printf '%s' '<token>'  > ./secrets/auth_token
-#      printf '%s' '<llm-key>' > ./secrets/berget_api_key
-#   3. edit config.yaml: api.base_url -> your internal OpenAI-compatible endpoint
+# Connected host:
+#   1. cp config.example.yaml config.yaml   # then edit api.base_url + api.model
+#   2. mkdir -p secrets
+#      printf '%s' '<token>'   > ./secrets/auth_token
+#      printf '%s' '<llm-key>' > ./secrets/figmark_api_key
+#   3. docker compose up -d                  # pulls ghcr.io/ztein/figmark:edge
+#
+# Air-gapped host (release bundle):
+#   1. docker load < figmark-<ver>.tar.gz
+#   2. steps as above, then: FIGMARK_VERSION=<ver> docker compose up -d
+#
+# Developing from source? Use the test override, which builds locally:
+#   docker compose -f compose.yaml -f compose.test.yaml up --build -d
 
 services:
   app:
-    image: figmark:${FIGMARK_VERSION:-0.1.0}
-    build:
-      context: .
-      args:
-        VERSION: ${FIGMARK_VERSION:-0.0.0}
-        REVISION: ${FIGMARK_REVISION:-unknown}
+    image: ghcr.io/ztein/figmark:${FIGMARK_VERSION:-edge}
     user: "10001:10001"
     read_only: true
     tmpfs:
@@ -33,12 +38,12 @@ services:
     environment:
       # Secrets are read from files, not from these values.
       FIGMARK_AUTH_TOKEN_FILE: /run/secrets/figmark_auth_token
-      BERGET_API_KEY_FILE: /run/secrets/berget_api_key
+      FIGMARK_API_KEY_FILE: /run/secrets/figmark_api_key
       FIGMARK_CONFIG_PATH: /app/config.yaml
       FIGMARK_MAX_CONCURRENT_JOBS: "1"
     secrets:
       - figmark_auth_token
-      - berget_api_key
+      - figmark_api_key
     volumes:
       - ./config.yaml:/app/config.yaml:ro
     ports:
@@ -58,5 +63,5 @@ services:
 secrets:
   figmark_auth_token:
     file: ./secrets/auth_token
-  berget_api_key:
-    file: ./secrets/berget_api_key
+  figmark_api_key:
+    file: ./secrets/figmark_api_key

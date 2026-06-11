@@ -38,7 +38,7 @@ compose `environment`:
 
 - The service auth token and the LLM API key are read at startup from files via
   the Docker `*_FILE` convention (`FIGMARK_AUTH_TOKEN_FILE`,
-  `BERGET_API_KEY_FILE`), mounted as Docker secrets under `/run/secrets/`.
+  `FIGMARK_API_KEY_FILE`), mounted as Docker secrets under `/run/secrets/`.
 - Secrets are never logged. `/version` returns only the version, model name, and
   base URL.
 - `.gitignore` and `.dockerignore` exclude `.env` and `secrets/`.

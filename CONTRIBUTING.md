@@ -22,12 +22,12 @@ brew install tesseract tesseract-lang
 sudo apt-get install tesseract-ocr tesseract-ocr-swe
 ```
 
-Copy `.env.example` to `.env` and add your Berget API key if you want to run the
+Copy `.env.example` to `.env` and add your API key if you want to run the
 live tests:
 
 ```bash
 cp .env.example .env
-# edit .env and set BERGET_API_KEY
+# edit .env and set FIGMARK_API_KEY
 ```
 
 ## Running the tests

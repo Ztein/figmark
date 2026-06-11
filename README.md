@@ -15,7 +15,7 @@ It was built to produce accessible alt text in formal Swedish
 ("myndighetssvenska"). **You need a vision-capable model behind an
 OpenAI-compatible API** — hosted or local (e.g. vLLM or Ollama). Point
 `api.base_url` / `api.model` in `config.yaml` at your endpoint and put its key
-in `BERGET_API_KEY` (the variable name is historical; a provider-neutral name
+in `FIGMARK_API_KEY` (the variable name is historical; a provider-neutral name
 is tracked in [T-010](docs/tickets/T-010-provider-agnostic-llm-key.md)).
 
 ## What it does
@@ -57,11 +57,14 @@ brew install tesseract tesseract-lang
 sudo apt-get install tesseract-ocr tesseract-ocr-swe
 ```
 
-Set your API key:
+Point figmark at your endpoint and set your API key:
 
 ```bash
+cp config.example.yaml config.yaml
+# edit config.yaml: api.base_url + api.model (your OpenAI-compatible endpoint)
+
 cp .env.example .env
-# edit .env and set BERGET_API_KEY
+# edit .env and set FIGMARK_API_KEY (or FIGMARK_API_KEY=none for keyless local endpoints)
 ```
 
 ## Usage
@@ -96,13 +99,15 @@ and releases as `:<version>` + `:latest`:
 docker pull ghcr.io/ztein/figmark:edge
 ```
 
-Or run the stack with compose:
+Or run the stack with compose (no source checkout needed — just `compose.yaml`
+and a config):
 
 ```bash
+cp config.example.yaml config.yaml   # edit api.base_url + api.model
 mkdir -p secrets
 printf '%s' 'a-strong-token' > secrets/auth_token
-printf '%s' "$BERGET_API_KEY" > secrets/berget_api_key
-docker compose up -d            # builds/loads the image, starts figmark-server
+printf '%s' "$FIGMARK_API_KEY" > secrets/figmark_api_key
+docker compose up -d                  # pulls ghcr.io/ztein/figmark:edge
 
 curl -s -X POST http://127.0.0.1:8000/v1/convert \
   -H "Authorization: Bearer a-strong-token" \
@@ -116,7 +121,8 @@ files (never the image or plaintext env). Full runbook:
 
 ## Configuration
 
-Everything beyond the API key is controlled by [`config.yaml`](config.yaml):
+Everything beyond the API key is controlled by your `config.yaml` (start from
+[`config.example.yaml`](config.example.yaml)):
 
 - `api.model` / `api.base_url` — which model and endpoint to use
 - `language.output` — output language for descriptions/diagrams/summary:

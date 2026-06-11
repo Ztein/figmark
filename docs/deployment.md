@@ -1,22 +1,34 @@
-# Deployment (air-gapped, docker compose)
+# Deployment (docker compose)
 
-figmark ships as a self-contained container image plus a hardened
-`compose.yaml`. Everything it needs at runtime (Python deps, Tesseract + eng/swe
-language data) is baked in; the only thing it talks to is your internal
-OpenAI-compatible vision endpoint, set via `api.base_url`.
+figmark ships as a self-contained container image (published to GHCR, also
+exported as a tarball for air-gapped hosts) plus a hardened `compose.yaml`.
+Everything it needs at runtime (Python deps, Tesseract + eng/swe language data)
+is baked in; the only thing it talks to is your OpenAI-compatible vision
+endpoint, set via `api.base_url`.
 
-## What you ship into the air-gapped host
+## Connected host (pull from GHCR)
+
+```bash
+cp config.example.yaml config.yaml    # edit api.base_url + api.model
+mkdir -p secrets
+printf '%s' '<a-strong-random-token>' > secrets/auth_token
+printf '%s' '<your-llm-api-key>'      > secrets/figmark_api_key
+chmod 600 secrets/*
+docker compose up -d                   # pulls ghcr.io/ztein/figmark:edge
+# pin a release instead: FIGMARK_VERSION=<version> docker compose up -d
+```
+
+## Air-gapped host (release bundle)
 
 From a connected machine, take the release bundle (attached to the GitHub
 Release, produced by CI):
 
-- `figmark-<version>.tar.gz` — the scanned image (`docker save`)
+- `figmark-<version>.tar.gz` — the scanned image (`docker save`, named
+  `ghcr.io/ztein/figmark:<version>` so it matches `compose.yaml`)
 - `SHA256SUMS` — checksums
 - `compose.yaml` — the hardened deployment
-- `config.yaml` — a starting config to edit
+- `config.example.yaml` — copy to `config.yaml` and edit
 - `docs/deployment.md` — this runbook
-
-## Steps
 
 ```bash
 # 1. Verify and load the image
@@ -26,14 +38,15 @@ docker load < figmark-<version>.tar.gz
 # 2. Create the secrets (never committed; compose reads them from files)
 mkdir -p secrets
 printf '%s' '<a-strong-random-token>' > secrets/auth_token
-printf '%s' '<your-llm-api-key>'      > secrets/berget_api_key
+printf '%s' '<your-llm-api-key>'      > secrets/figmark_api_key
 chmod 600 secrets/*
 
 # 3. Point figmark at your internal LLM
+cp config.example.yaml config.yaml
 #    edit config.yaml -> api.base_url: "https://<your-internal-llm>/v1"
 #                        api.model:    "<the model name>"
 
-# 4. Start it
+# 4. Start it (the version selects the loaded image)
 FIGMARK_VERSION=<version> docker compose up -d
 
 # 5. Check readiness (tesseract + language pack + config loaded)
@@ -60,7 +73,7 @@ language}`.
 ## Configuration
 
 - **Service/ops knobs (environment):** `FIGMARK_AUTH_TOKEN_FILE`,
-  `BERGET_API_KEY_FILE`, `FIGMARK_CONFIG_PATH`, `FIGMARK_MAX_UPLOAD_BYTES`,
+  `FIGMARK_API_KEY_FILE`, `FIGMARK_CONFIG_PATH`, `FIGMARK_MAX_UPLOAD_BYTES`,
   `FIGMARK_MAX_CONCURRENT_JOBS`, `FIGMARK_REQUEST_TIMEOUT_SECONDS`,
   `FIGMARK_WORK_DIR`, `FIGMARK_HOST`, `FIGMARK_PORT`.
 - **Pipeline knobs (`config.yaml`, mounted read-only):** `api.*`, `ocr.language`,
@@ -80,7 +93,7 @@ server in for the vision model — useful to validate the deployment with no
 internet and no real model:
 
 ```bash
-mkdir -p secrets && printf x > secrets/auth_token && printf x > secrets/berget_api_key
+mkdir -p secrets && printf x > secrets/auth_token && printf x > secrets/figmark_api_key
 docker compose -f compose.yaml -f compose.test.yaml up --build -d
 curl -s http://127.0.0.1:8000/readyz
 curl -s -X POST http://127.0.0.1:8000/v1/convert \

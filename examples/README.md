@@ -59,7 +59,7 @@ figmark examples/scanned.pdf
 # → classified as scanned; runs the OCR pipeline
 ```
 
-> Running figmark calls a vision model and needs `BERGET_API_KEY` in `.env`.
+> Running figmark calls a vision model and needs `FIGMARK_API_KEY` in `.env`.
 > See the top-level [README](../README.md).
 
 ## Provenance

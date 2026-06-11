@@ -45,4 +45,4 @@ def test_version_has_no_secrets(make_api_app):
     # No secret material is exposed.
     blob = " ".join(str(v) for v in body.values()).lower()
     assert "token" not in body
-    assert "secret-token" not in blob and "berget_api_key" not in blob
+    assert "secret-token" not in blob and "figmark_api_key" not in blob

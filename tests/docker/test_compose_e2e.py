@@ -47,7 +47,7 @@ def offline_stack(tmp_path):
     secrets = ROOT / "secrets"
     secrets.mkdir(exist_ok=True)
     (secrets / "auth_token").write_text("test-token", encoding="utf-8")
-    (secrets / "berget_api_key").write_text("sk-test", encoding="utf-8")
+    (secrets / "figmark_api_key").write_text("sk-test", encoding="utf-8")
 
     up = subprocess.run([*COMPOSE, "up", "--build", "-d"], capture_output=True, text=True, cwd=ROOT)
     if up.returncode != 0:

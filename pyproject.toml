@@ -81,7 +81,7 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-ra --strict-markers"
 markers = [
-    "live: runs against the real Berget API (needs BERGET_API_KEY, costs money, takes minutes)",
+    "live: runs against a real LLM API (needs FIGMARK_API_KEY and a config.yaml, costs money, takes minutes)",
     "docker: needs a Docker daemon (builds/runs the image or compose); skipped when absent",
 ]
 # Default mode runs EVERYTHING, including live tests — the "run for real" principle.

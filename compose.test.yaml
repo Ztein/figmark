@@ -1,10 +1,11 @@
-# Offline integration override: adds a mock OpenAI-compatible LLM and points the
-# app at it, so the whole stack runs with NO internet (the air-gapped proof).
+# Offline integration override: builds the app FROM LOCAL SOURCE (instead of
+# pulling GHCR), adds a mock OpenAI-compatible LLM, and points the app at it —
+# the whole stack runs with NO internet (the air-gapped proof).
 #
 #   docker compose -f compose.yaml -f compose.test.yaml up --build -d
 #
-# Requires ./secrets/auth_token and ./secrets/berget_api_key to exist (any value;
-# the mock ignores the key).
+# Requires ./secrets/auth_token and ./secrets/figmark_api_key to exist (any
+# value; the mock ignores the key).
 
 services:
   mock-llm:
@@ -21,6 +22,13 @@ services:
       retries: 20
 
   app:
+    # Build and test the local source under a non-clobbering test tag.
+    image: figmark-test:local
+    build:
+      context: .
+      args:
+        VERSION: ${FIGMARK_VERSION:-0.0.0}
+        REVISION: ${FIGMARK_REVISION:-unknown}
     depends_on:
       mock-llm:
         condition: service_healthy

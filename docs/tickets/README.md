@@ -13,13 +13,16 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-007](T-007-description-language-follows-document.md) | **Closed** | Medium | Description language is hardcoded to Swedish — should follow the document |
 | [T-008](T-008-diagram-internal-text-leaks-into-body.md) | Open | Low | Vector-diagram internal text leaks into the body text (needs a decision first) |
 | [T-009](T-009-starlette-badhost-cve.md) | **Closed** | HIGH | Starlette BadHost CVE in the lockfile — fixed before first push |
-| [T-010](T-010-provider-agnostic-llm-key.md) | Open | Medium | Purge provider-specific references — figmark is provider-neutral |
+| [T-010](T-010-provider-agnostic-llm-key.md) | **Closed** | Medium | Purge provider-specific references — figmark is provider-neutral |
 | [T-011](T-011-codeql-sast.md) | **Closed** | Medium | Enable CodeQL (SAST) |
 | [T-012](T-012-dependabot.md) | **Closed** | Medium | Enable Dependabot updates |
 | [T-013](T-013-pip-audit-hard-gate.md) | **Closed** | Medium | Make pip-audit a blocking CI gate (was advisory) |
 | [T-014](T-014-secret-scanning-push-protection.md) | **Closed** | Medium | Verify GitHub secret scanning + push protection on the repo |
 | [T-015](T-015-sha-pin-actions.md) | **Closed** | Low | SHA-pin GitHub Actions |
 | [T-016](T-016-cosign-image-signing.md) | Open | Low | Sign the release image and attest the SBOM (cosign) |
+| [T-017](T-017-compose-defaults-to-ghcr.md) | **Closed** | Medium | compose should run the published GHCR image — clone-free quickstart |
+| [T-018](T-018-first-public-release.md) | Open | Medium | Cut the first public release (v0.2.0) |
+| [T-019](T-019-repo-cosmetics.md) | Open | Low | Disable unused repo tabs (Wiki, Projects) |
 
 ## How a ticket is written
 

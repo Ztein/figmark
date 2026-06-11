@@ -90,7 +90,7 @@ def test_server_healthy_under_readonly_rootfs(image):
             "-e",
             "FIGMARK_AUTH_TOKEN=t",
             "-e",
-            "BERGET_API_KEY=sk-test",
+            "FIGMARK_API_KEY=sk-test",
             "-p",
             f"{port}:8000",
             image,

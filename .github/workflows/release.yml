@@ -28,6 +28,10 @@ jobs:
 
   publish:
     needs: build
+    # Skipped until PyPI Trusted Publishing is configured on pypi.org for this
+    # project. Flip it on with a repository variable:
+    #   gh variable set PYPI_PUBLISH --body true
+    if: vars.PYPI_PUBLISH == 'true'
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
@@ -85,12 +89,15 @@ jobs:
           docker push "ghcr.io/$owner/figmark:latest"
 
       - name: Export tarball + checksum + deploy bundle
+        # Save under the GHCR name so `docker load` restores exactly the image
+        # reference compose.yaml uses (with FIGMARK_VERSION=<ver>).
         env:
           VERSION: ${{ steps.ver.outputs.version }}
         run: |
+          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           mkdir -p bundle
-          docker save "figmark:${VERSION}" | gzip > "bundle/figmark-${VERSION}.tar.gz"
-          cp compose.yaml config.yaml docs/deployment.md bundle/
+          docker save "ghcr.io/$owner/figmark:${VERSION}" | gzip > "bundle/figmark-${VERSION}.tar.gz"
+          cp compose.yaml config.example.yaml docs/deployment.md bundle/
           cd bundle && sha256sum * > SHA256SUMS
 
       - name: Attach bundle to the release

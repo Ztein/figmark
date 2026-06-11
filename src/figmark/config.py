@@ -92,6 +92,31 @@ def _require(section: dict, key: str, section_name: str):
     return section[key]
 
 
+def _resolve_api_key() -> str:
+    """The key for the OpenAI-compatible endpoint.
+
+    ``FIGMARK_API_KEY`` is the supported name; ``BERGET_API_KEY`` is accepted as a
+    deprecated fallback (warned loudly). Set ``FIGMARK_API_KEY=none`` explicitly
+    for endpoints that need no auth (e.g. a local vLLM/Ollama server).
+    """
+    api_key = os.environ.get("FIGMARK_API_KEY")
+    if not api_key:
+        legacy = os.environ.get("BERGET_API_KEY")
+        if legacy:
+            print(
+                "WARNING: BERGET_API_KEY is deprecated — rename it to FIGMARK_API_KEY. "
+                "The old name still works but will be removed in a future release.",
+                flush=True,
+            )
+            return legacy
+        raise RuntimeError(
+            "FIGMARK_API_KEY is not set. Copy .env.example to .env and add the key "
+            "for your OpenAI-compatible vision endpoint (or set FIGMARK_API_KEY=none "
+            "for an endpoint that requires no auth)."
+        )
+    return api_key
+
+
 def load_config(config_path: str | Path = "config.yaml") -> Config:
     """Read config.yaml. Everything the code needs MUST be present — no hidden defaults.
 
@@ -101,11 +126,7 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
     """
     load_dotenv()
 
-    api_key = os.environ.get("BERGET_API_KEY")
-    if not api_key:
-        raise RuntimeError(
-            "BERGET_API_KEY is not set. Copy .env.example to .env and fill in your key."
-        )
+    api_key = _resolve_api_key()
 
     path = Path(config_path)
     if not path.exists():

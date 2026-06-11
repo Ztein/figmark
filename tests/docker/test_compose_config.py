@@ -34,14 +34,14 @@ def test_app_is_hardened():
 def test_secrets_are_files_not_plaintext_env():
     data, app = _app_service()
     # The app references secrets and reads them via *_FILE — never plaintext env.
-    assert set(app["secrets"]) == {"figmark_auth_token", "berget_api_key"}
+    assert set(app["secrets"]) == {"figmark_auth_token", "figmark_api_key"}
     env = app.get("environment", {})
     keys = " ".join(env.keys()) if isinstance(env, dict) else " ".join(env)
-    assert "BERGET_API_KEY_FILE" in keys and "FIGMARK_AUTH_TOKEN_FILE" in keys
+    assert "FIGMARK_API_KEY_FILE" in keys and "FIGMARK_AUTH_TOKEN_FILE" in keys
     # No plaintext secret values anywhere in the env block.
     blob = str(env).lower()
-    assert "berget_api_key:" not in blob  # i.e. not a plain BERGET_API_KEY value
-    for name in ("figmark_auth_token", "berget_api_key"):
+    assert "figmark_api_key:" not in blob  # i.e. not a plain FIGMARK_API_KEY value
+    for name in ("figmark_auth_token", "figmark_api_key"):
         assert data["secrets"][name]["file"]
 
 
@@ -57,7 +57,7 @@ def test_docker_compose_config_validates():
     # Secret files must exist for `compose config`; create throwaway ones.
     secrets = ROOT / "secrets"
     secrets.mkdir(exist_ok=True)
-    for f in ("auth_token", "berget_api_key"):
+    for f in ("auth_token", "figmark_api_key"):
         p = secrets / f
         if not p.exists():
             p.write_text("x", encoding="utf-8")

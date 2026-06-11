@@ -14,7 +14,7 @@ detects chart regions via a four-step algorithm:
 4. Text expansion: grow the bbox to capture axis titles and source lines, bounded
    by other clusters so they don't merge together
 
-Configurable via the `diagrams:` section in [config.yaml](../../config.yaml).
+Configurable via the `diagrams:` section in [config.example.yaml](../../config.example.yaml).
 
 Live test: [tests/test_pipeline.py::test_pipeline_diagrams_extracted_from_penningpolitisk](../../tests/test_pipeline.py)
 verifies that 4 charts are extracted from pages 11 + 68 of the monetary policy report,

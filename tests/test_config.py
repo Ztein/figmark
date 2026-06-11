@@ -8,9 +8,10 @@ from figmark.config import load_config
 
 
 def test_load_default_config(env_with_key, project_root: Path):
-    cfg = load_config(project_root / "config.yaml")
+    # The tracked example config ships a provider-neutral placeholder endpoint.
+    cfg = load_config(project_root / "config.example.yaml")
     assert cfg.api.api_key == "sk-test-fake-key"
-    assert cfg.api.base_url == "https://api.berget.ai/v1"
+    assert cfg.api.base_url == "https://your-llm-endpoint.example/v1"
     assert cfg.api.model
     # The description prompt is intentionally kept written in Swedish (it describes
     # the task and the formal register), but it no longer pins the output language
@@ -30,12 +31,25 @@ def test_load_default_config(env_with_key, project_root: Path):
 
 
 def test_load_config_requires_api_key(monkeypatch, project_root: Path):
+    monkeypatch.delenv("FIGMARK_API_KEY", raising=False)
     monkeypatch.delenv("BERGET_API_KEY", raising=False)
     import figmark.config as config_module
 
     monkeypatch.setattr(config_module, "load_dotenv", lambda *a, **kw: None)
-    with pytest.raises(RuntimeError, match="BERGET_API_KEY"):
-        load_config(project_root / "config.yaml")
+    with pytest.raises(RuntimeError, match="FIGMARK_API_KEY"):
+        load_config(project_root / "config.example.yaml")
+
+
+def test_legacy_berget_key_still_works_with_warning(monkeypatch, project_root: Path, capsys):
+    """BERGET_API_KEY is deprecated but must keep working (with a loud warning)."""
+    monkeypatch.delenv("FIGMARK_API_KEY", raising=False)
+    monkeypatch.setenv("BERGET_API_KEY", "sk-legacy-key")
+    import figmark.config as config_module
+
+    monkeypatch.setattr(config_module, "load_dotenv", lambda *a, **kw: None)
+    cfg = load_config(project_root / "config.example.yaml")
+    assert cfg.api.api_key == "sk-legacy-key"
+    assert "deprecated" in capsys.readouterr().out.lower()
 
 
 def test_load_config_missing_file(env_with_key, tmp_path: Path):

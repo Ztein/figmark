@@ -1,7 +1,21 @@
 # T-010: Purge provider-specific references — figmark is provider-neutral
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-11
 **Priority:** Medium — first-run experience and project identity
+
+## Resolution
+
+- `FIGMARK_API_KEY` (+ `FIGMARK_API_KEY_FILE`) is the supported name everywhere;
+  `BERGET_API_KEY`/`_FILE` remain as a deprecated fallback that warns loudly
+  (covered by tests). `FIGMARK_API_KEY=none` documented for keyless local
+  endpoints.
+- The tracked config is now `config.example.yaml` with a neutral placeholder
+  endpoint; `config.yaml` is the user's local copy (gitignored). The image bakes
+  the example as its default; compose mounts the user's copy.
+- compose secret renamed to `figmark_api_key`; docs (README, SECURITY,
+  deployment, CONTRIBUTING, examples), tests, and the pytest `live` marker are
+  provider-neutral. Tracked-file grep for berget/openrouter is clean outside the
+  deprecation shim, its tests, and historical records (CHANGELOG, tickets).
 
 ## Symptom / motivation
 

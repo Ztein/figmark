@@ -93,7 +93,7 @@ def long_pdf() -> Path:
 @pytest.fixture
 def env_with_key(monkeypatch):
     """For config tests that need a (fake) API key without hitting the real API."""
-    monkeypatch.setenv("BERGET_API_KEY", "sk-test-fake-key")
+    monkeypatch.setenv("FIGMARK_API_KEY", "sk-test-fake-key")
 
 
 @pytest.fixture
@@ -155,10 +155,10 @@ def make_api_app(env_with_key, project_root, tmp_path):
         from figmark.api import ServerSettings, create_app
         from figmark.config import load_config
 
-        cfg = load_config(project_root / "config.yaml")
+        cfg = load_config(project_root / "config.example.yaml")
         settings = ServerSettings(
             auth_token=token,
-            config_path=project_root / "config.yaml",
+            config_path=project_root / "config.example.yaml",
             max_upload_bytes=max_upload_bytes,
             work_dir=tmp_path / "work",
             request_timeout_seconds=request_timeout_seconds,

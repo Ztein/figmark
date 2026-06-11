@@ -26,12 +26,12 @@ def _require_real_key():
     from dotenv import load_dotenv
 
     load_dotenv()
-    key = os.environ.get("BERGET_API_KEY", "")
+    key = os.environ.get("FIGMARK_API_KEY", "")
     if not key or key.startswith("sk-test") or key == "sk-your-key-here":
         pytest.fail(
             "\n\n"
             + "!" * 78
-            + "\n!!! BERGET_API_KEY is missing — the OCR fallback test needs a real key.\n"
+            + "\n!!! FIGMARK_API_KEY is missing — the OCR fallback test needs a real key.\n"
             + "!" * 78
         )
 

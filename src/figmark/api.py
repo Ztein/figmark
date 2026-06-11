@@ -69,10 +69,14 @@ class ServerSettings:
                 "FIGMARK_AUTH_TOKEN (or FIGMARK_AUTH_TOKEN_FILE) is required to start "
                 "the figmark server."
             )
-        # Surface a file-mounted LLM key so the existing config loader finds it.
-        key = _read_secret("BERGET_API_KEY", "BERGET_API_KEY_FILE")
+        # Surface a file-mounted LLM key so the config loader finds it.
+        # FIGMARK_API_KEY is the supported name; BERGET_API_KEY is the deprecated
+        # fallback (the loader warns about it).
+        key = _read_secret("FIGMARK_API_KEY", "FIGMARK_API_KEY_FILE") or _read_secret(
+            "BERGET_API_KEY", "BERGET_API_KEY_FILE"
+        )
         if key:
-            os.environ["BERGET_API_KEY"] = key
+            os.environ["FIGMARK_API_KEY"] = key
         return cls(
             auth_token=token,
             config_path=Path(os.environ.get("FIGMARK_CONFIG_PATH", "config.yaml")),

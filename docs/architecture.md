@@ -143,7 +143,7 @@ clearing `descriptions/`, since descriptions are cached per figure).
 
 Two tiers, by design:
 
-- **User knobs** live in [`config.yaml`](../config.yaml) and are loaded as required
+- **User knobs** live in `config.yaml` (start from [`config.example.yaml`](../config.example.yaml)) and are loaded as required
   fields by `config.py`: `api`, `ocr.language`, `language.output`,
   `description.prompt`, `diagrams.*`, `concurrency.max_workers`, `context.*`,
   `significance.enabled`, `document_summary.*`.

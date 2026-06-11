@@ -11,8 +11,11 @@
 # to reproduce the original "myndighetssvenska" alt text for any document.
 
 api:
-  base_url: "https://api.berget.ai/v1"
-  model: "google/gemma-4-31B-it"
+  # Your OpenAI-compatible vision endpoint. figmark works with any provider or
+  # local server (vLLM, Ollama, ...) that speaks the OpenAI chat-completions API
+  # and has a vision-capable model. REQUIRED — edit before first run.
+  base_url: "https://your-llm-endpoint.example/v1"
+  model: "your-vision-model-name"
 
 ocr:
   language: "swe"

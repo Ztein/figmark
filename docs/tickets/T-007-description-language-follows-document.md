@@ -6,7 +6,7 @@
 
 ## Resolution
 
-A `language.output` setting in [config.yaml](../../config.yaml) now controls the
+A `language.output` setting in [config.example.yaml](../../config.example.yaml) now controls the
 output language of image descriptions, diagram descriptions, and the document
 summary:
 
@@ -49,7 +49,7 @@ document.
 ## Root cause
 
 The `description.prompt`, `diagrams.prompt`, and `document_summary.prompt` in
-[config.yaml](../../config.yaml) are written in Swedish ("myndighetssvenska" is
+[config.example.yaml](../../config.example.yaml) are written in Swedish ("myndighetssvenska" is
 the product's original domain output), and the prompt language drives the model's
 output language. Nothing ties the description output to the document's own
 language. `ocr.language` exists but only controls Tesseract — not the description

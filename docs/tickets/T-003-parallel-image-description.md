@@ -16,7 +16,7 @@ The CLI builds a `rich.Live` view that shows:
 - A table of the 5 most recently finished calls with their runtime
 - A final summary with average time and measured speedup
 
-Configurable via `concurrency.max_workers` (default 4) in [config.yaml](../../config.yaml).
+Configurable via `concurrency.max_workers` (default 4) in [config.example.yaml](../../config.example.yaml).
 
 Verified live: [test_pipeline_determinism_workers_1_vs_4](../../tests/test_pipeline.py)
 runs the same mini-PDF twice (1 worker + 4 workers) and verifies that
