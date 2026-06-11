@@ -23,6 +23,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-017](T-017-compose-defaults-to-ghcr.md) | **Closed** | Medium | compose should run the published GHCR image — clone-free quickstart |
 | [T-018](T-018-first-public-release.md) | **Closed** | Medium | Cut the first public release (v0.2.0) |
 | [T-019](T-019-repo-cosmetics.md) | **Closed** | Low | Disable unused repo tabs (Wiki, Projects) |
+| [T-020](T-020-remove-berget-fallback.md) | Open | Medium | Remove the deprecated BERGET_API_KEY fallback and last Berget-specific references |
 
 ## How a ticket is written
 
