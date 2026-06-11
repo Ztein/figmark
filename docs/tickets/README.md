@@ -27,7 +27,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-021](T-021-offpage-drawings-crash.md) | **Closed** | HIGH | Off-page drawing clusters crash diagram rendering (found by the eval corpus) |
 | [T-022](T-022-diagram-payload-cap.md) | **Closed** | HIGH | Diagram payloads were sent uncapped — large charts rejected by the API |
 | [T-023](T-023-significance-gate-for-diagrams.md) | Open | Low | Apply the significance gate to vector-diagram regions (2 % logo-as-diagram in eval) |
-| [T-024](T-024-audit-silent-fallbacks-and-hidden-defaults.md) | Open | Medium | Audit for further principle violations — silent fallbacks and hidden defaults |
+| [T-024](T-024-audit-silent-fallbacks-and-hidden-defaults.md) | **Closed** | Medium | Audit for further principle violations — silent fallbacks and hidden defaults |
 | [T-025](T-025-selectable-output-format.md) | Open | Low | Let the client choose the response format (JSON, Markdown, or both) on /v1/convert |
 | [T-026](T-026-tables-flattened-to-text.md) | Parked | High | Tables are flattened to loose text lines — bench: naive extraction adds garbage on chart-heavy docs |
 | [T-027](T-027-per-page-scan-decision.md) | **Closed** | High | A scanned/image-only page inside a text PDF is never OCR'd (document-level scan decision) |
