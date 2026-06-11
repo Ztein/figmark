@@ -21,8 +21,8 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-015](T-015-sha-pin-actions.md) | **Closed** | Low | SHA-pin GitHub Actions |
 | [T-016](T-016-cosign-image-signing.md) | Open | Low | Sign the release image and attest the SBOM (cosign) |
 | [T-017](T-017-compose-defaults-to-ghcr.md) | **Closed** | Medium | compose should run the published GHCR image — clone-free quickstart |
-| [T-018](T-018-first-public-release.md) | Open | Medium | Cut the first public release (v0.2.0) |
-| [T-019](T-019-repo-cosmetics.md) | Open | Low | Disable unused repo tabs (Wiki, Projects) |
+| [T-018](T-018-first-public-release.md) | **Closed** | Medium | Cut the first public release (v0.2.0) |
+| [T-019](T-019-repo-cosmetics.md) | **Closed** | Low | Disable unused repo tabs (Wiki, Projects) |
 
 ## How a ticket is written
 

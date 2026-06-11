@@ -1,6 +1,6 @@
 # T-018: Cut the first public release (v0.2.0)
 
-**Status:** Open
+**Status:** Closed — released 2026-06-11
 **Priority:** Medium — users need a stable version to pin; the air-gap bundle
 has never actually been produced
 
@@ -32,8 +32,9 @@ the first pinnable release is the clean, provider-neutral one.
 
 ## Acceptance criteria
 
-- [ ] `v0.2.0` tag + GitHub Release with tarball, SHA256SUMS, compose, config
+- [x] `v0.2.0` tag + GitHub Release with tarball, SHA256SUMS, compose, config
       example, runbook attached
-- [ ] GHCR has `:0.2.0` and `:latest`; anonymous pull verified
-- [ ] PyPI job skipped (not failed) on the release run
-- [ ] CHANGELOG and `__version__` agree with the tag
+- [x] GHCR has `:0.2.0` and `:latest`; anonymous pull verified
+- [x] PyPI job skipped (not failed) on the release run
+- [x] CHANGELOG and `__version__` agree with the tag
+- [x] Air-gap bundle verified: checksums pass, `docker load` restores the GHCR name

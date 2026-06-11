@@ -1,6 +1,6 @@
 # T-019: Disable unused repo tabs (Wiki, Projects)
 
-**Status:** Open
+**Status:** Closed — done 2026-06-11
 **Priority:** Low — cosmetic; a tidy repo signals maintenance
 
 ## Symptom
@@ -14,4 +14,4 @@ tabs read as neglect; all documentation lives in `docs/` and the README.
 
 ## Acceptance criteria
 
-- [ ] Wiki and Projects tabs no longer appear on the repository page
+- [x] Wiki and Projects tabs no longer appear on the repository page
