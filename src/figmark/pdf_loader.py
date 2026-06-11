@@ -58,6 +58,44 @@ def is_scanned(doc: fitz.Document) -> bool:
     return avg < SCANNED_MIN_AVG_CHARS_PER_PAGE
 
 
+# Per-page OCR decision (T-027). A page is treated as scanned only when it has
+# little extractable text AND a near-full-page image covering it — i.e. the text
+# really is locked inside a raster. A genuinely sparse page (section divider,
+# figure-only, blank) also has little text but no full-page image, so it stays on
+# the text path and is not needlessly OCR'd.
+PAGE_OCR_MIN_CHARS = 50
+PAGE_OCR_IMAGE_COVERAGE = 0.5
+
+
+def page_image_coverage(page: fitz.Page) -> float:
+    """Largest fraction of the page area covered by a single image (0..1)."""
+    page_area = page.rect.width * page.rect.height
+    if page_area <= 0:
+        return 0.0
+    best = 0.0
+    for info in page.get_image_info(xrefs=True):
+        rect = fitz.Rect(info.get("bbox", (0, 0, 0, 0)))
+        area = abs(rect.width * rect.height)
+        if area > best:
+            best = area
+    return min(best / page_area, 1.0)
+
+
+def page_needs_ocr(page: fitz.Page) -> tuple[bool, str]:
+    """Decide per page whether to OCR rather than extract text. Returns (ocr, reason).
+
+    Scanned page = little extractable text AND a near-full-page image. A page with
+    little text but no large image is sparse-but-digital and stays on the text path.
+    """
+    chars = len(page.get_text("text").strip())
+    if chars >= PAGE_OCR_MIN_CHARS:
+        return False, f"{chars} chars (text-encoded)"
+    coverage = page_image_coverage(page)
+    if coverage >= PAGE_OCR_IMAGE_COVERAGE:
+        return True, f"{chars} chars + image covers {coverage:.0%} of the page (scanned)"
+    return False, f"{chars} chars, no full-page image (sparse, not scanned)"
+
+
 def iter_page_blocks(page: fitz.Page) -> list[Block]:
     """Return the page's text and image blocks in reading order (y, x).
 

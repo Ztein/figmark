@@ -1,6 +1,7 @@
 # T-027: A scanned/image-only page inside a text PDF is never OCR'd (scan decision is document-level)
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-11 (`page_needs_ocr` per-page decision
+with an image-coverage guard; OCR rescues in text-encoded docs are shouted)
 **Priority:** High — silent content loss on mixed documents
 
 ## Symptom

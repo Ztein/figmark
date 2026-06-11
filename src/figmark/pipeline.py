@@ -39,6 +39,7 @@ from .pdf_loader import (
     iter_page_blocks,
     iter_pages,
     open_pdf,
+    page_needs_ocr,
 )
 from .summarize import detect_language, summarize_document
 from .usage import TrackingClient, Usage, UsageTracker, estimate_cost
@@ -211,27 +212,32 @@ def convert(
     emit(f"Model: {cfg.api.model}  (base: {cfg.api.base_url})")
 
     avg_chars = sum(len(p.get_text("text").strip()) for p in doc) / max(1, len(doc))
-    scanned = is_scanned(doc)
+    # Document-level density is now only a logged hint — the actual OCR/text choice
+    # is made per page (T-027), so a scanned page inside a text PDF (or vice versa)
+    # is handled instead of silently lost.
+    doc_hint_scanned = is_scanned(doc)
+    hint = "scanned" if doc_hint_scanned else "text-encoded"
     emit(
         f"Text density: {avg_chars:.0f} chars/page on average "
-        f"(threshold: {SCANNED_MIN_AVG_CHARS_PER_PAGE})"
+        f"(threshold: {SCANNED_MIN_AVG_CHARS_PER_PAGE}; hint: {hint}) — deciding per page"
     )
-    if scanned:
-        emit_loud(
-            "PDF CLASSIFIED AS SCANNED — running OCR mode (Tesseract first, "
-            "vision-OCR fallback on insufficient quality)"
-        )
-    else:
-        emit("PDF classified as text-encoded — using direct text extraction.")
 
     pages: list[PageData] = []
     page_regions: dict[int, list[DiagramRegion]] = {}
 
     for page_num, page in iter_pages(doc):
         emit(f"\nPage {page_num}/{len(doc)}")
-        page_data = PageData(page_num=page_num, is_ocr=scanned)
+        needs_ocr, reason = page_needs_ocr(page)
+        page_data = PageData(page_num=page_num, is_ocr=needs_ocr)
 
-        if scanned:
+        # Shout when a page is OCR'd inside an otherwise text-encoded document —
+        # that is exactly the content that used to be dropped silently.
+        if needs_ocr and not doc_hint_scanned:
+            emit_loud(f"PAGE {page_num}: OCR rescue in a text-encoded document — {reason}")
+        else:
+            emit(f"  → {'OCR' if needs_ocr else 'text'}: {reason}")
+
+        if needs_ocr:
             emit("  → Running Tesseract …")
             result = ocr_page(page, cfg)
             emit(
@@ -263,13 +269,13 @@ def convert(
             emit(f"  → {n_text} text block(s), {n_img} image block(s) (references)")
 
         page_data.images = extract_images_from_page(
-            doc, page, page_num, images_dir, skip_full_page=scanned
+            doc, page, page_num, images_dir, skip_full_page=needs_ocr
         )
         emit(f"  → {len(page_data.images)} image(s) saved")
 
-        # Diagram extraction: only for text-encoded PDFs (for scanned ones the
+        # Diagram extraction: only for text-extracted pages (on OCR'd pages the
         # "diagrams" are already part of the page and captured by the OCR path).
-        if cfg.diagrams.enabled and not scanned:
+        if cfg.diagrams.enabled and not needs_ocr:
             regions = find_diagram_regions(page, page_num)
             if regions:
                 for region in regions:

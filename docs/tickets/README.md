@@ -30,7 +30,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-024](T-024-audit-silent-fallbacks-and-hidden-defaults.md) | Open | Medium | Audit for further principle violations — silent fallbacks and hidden defaults |
 | [T-025](T-025-selectable-output-format.md) | Open | Low | Let the client choose the response format (JSON, Markdown, or both) on /v1/convert |
 | [T-026](T-026-tables-flattened-to-text.md) | Parked | High | Tables are flattened to loose text lines — bench: naive extraction adds garbage on chart-heavy docs |
-| [T-027](T-027-per-page-scan-decision.md) | Open | High | A scanned/image-only page inside a text PDF is never OCR'd (document-level scan decision) |
+| [T-027](T-027-per-page-scan-decision.md) | **Closed** | High | A scanned/image-only page inside a text PDF is never OCR'd (document-level scan decision) |
 | [T-028](T-028-evaluate-garbled-text-prevalence.md) | Open | Low | Measure how often PDFs have garbled (present-but-broken) text before building OCR handling |
 | [T-029](T-029-report-conversion-cost.md) | Open | Medium | Report token usage (and an optional cost estimate) for a conversion |
 

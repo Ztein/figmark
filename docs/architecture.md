@@ -37,12 +37,19 @@ The orchestration lives in [`main.run`](../src/figmark/main.py).
 
 ## Stages
 
-### 1. Classify: text-encoded or scanned
+### 1. Classify: text-encoded or scanned — per page (T-027)
 
-[`is_scanned`](../src/figmark/pdf_loader.py) averages the extractable characters
-per page. Below `SCANNED_MIN_AVG_CHARS_PER_PAGE` (50) the whole document is treated
-as scanned and the OCR path takes over; otherwise text is extracted directly. The
-decision is logged, and OCR mode is announced with a loud `!!!` banner.
+The OCR/text choice is made **per page**, not once per document.
+[`page_needs_ocr`](../src/figmark/pdf_loader.py) sends a page down the OCR path only
+when it has little extractable text (< `PAGE_OCR_MIN_CHARS`, 50) **and** a
+near-full-page image covers it (`page_image_coverage` ≥ `PAGE_OCR_IMAGE_COVERAGE`,
+0.5) — i.e. the text really is locked inside a raster. A page with little text but
+no large image (a section divider, a figure-only page) is sparse-but-digital and
+stays on the text path, so it is not needlessly OCR'd. This means a scanned page
+inside an otherwise text-encoded PDF is handled instead of silently dropped; such
+an OCR "rescue" is announced with a loud `!!!` banner.
+[`is_scanned`](../src/figmark/pdf_loader.py) (the document-wide average) is kept
+only as a logged hint.
 
 ### 2a. Text extraction (text-encoded PDFs)
 
