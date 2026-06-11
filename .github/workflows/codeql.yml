@@ -38,7 +38,11 @@ jobs:
         uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
         with:
           languages: python
-          queries: security-and-quality
+          # Security queries only. The "security-and-quality" suite also runs
+          # maintainability/style queries that produce low-value "note" findings
+          # (unused-global false positives, import-style nits) — noise for a
+          # security gate, and a source of needless alert emails.
+          queries: security-extended
 
       - name: Perform CodeQL analysis
         if: github.actor != 'dependabot[bot]'
