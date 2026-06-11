@@ -1,6 +1,6 @@
 # T-029: Report token usage (and an optional cost estimate) for a conversion
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-11 (PR #15): usage on the response + CLI, optional config-priced cost.
 **Priority:** Medium — cost visibility; the data is already returned and thrown away
 
 ## Symptom / motivation
