@@ -32,6 +32,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-026](T-026-tables-flattened-to-text.md) | Open | High | Tables are flattened to loose text lines — column structure is lost |
 | [T-027](T-027-per-page-scan-decision.md) | Open | High | A scanned/image-only page inside a text PDF is never OCR'd (document-level scan decision) |
 | [T-028](T-028-evaluate-garbled-text-prevalence.md) | Open | Low | Measure how often PDFs have garbled (present-but-broken) text before building OCR handling |
+| [T-029](T-029-report-conversion-cost.md) | Open | Medium | Report token usage (and an optional cost estimate) for a conversion |
 
 ## How a ticket is written
 
