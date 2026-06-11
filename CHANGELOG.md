@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Selectable response format on `/v1/convert` (T-025).** A `format` field picks
+  `json` (default) | `md` | `both`. `md` returns the raw Markdown body as
+  `text/markdown` with the metadata echoed in `X-Figmark-*` response headers;
+  `both` is an alias for `json` (which already carries markdown + metadata). An
+  unknown value fails loudly with `422` — only the absent field defaults to
+  `json`, for backward compatibility.
 - **Token usage and optional cost per conversion (T-029).** Every conversion now
   reports `usage` (`prompt_tokens`, `completion_tokens`, `total_tokens`,
   `api_calls`, `calls_missing_usage`) on the API response and as a one-line CLI
