@@ -217,6 +217,12 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
             page, bbox, TEXT_EXPAND_DISTANCE, y_min_limit, y_max_limit
         )
         expanded &= page.rect
+        # Clusters can lie (partly) outside the page — crop marks, spill-over
+        # content with negative coordinates. After clipping to the page, a
+        # degenerate or tiny remnant is not a chart: rendering it crashes the
+        # PNG writer ("Invalid bandwriter header dimensions/setup").
+        if expanded.is_empty or expanded.width < 1 or expanded.height < 1:
+            continue
         regions.append(
             DiagramRegion(
                 page_num=page_num,

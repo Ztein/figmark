@@ -79,7 +79,12 @@ def main() -> int:
 
     cfg = load_config(ROOT / "config.yaml")
     OUT_ROOT.mkdir(parents=True, exist_ok=True)
-    results: list[dict] = []
+    # Merge with previous results so a subset re-run updates rather than clobbers.
+    previous: list[dict] = []
+    if RESULTS.exists():
+        previous = json.loads(RESULTS.read_text(encoding="utf-8"))
+    running = {d["name"] for d in docs}
+    results: list[dict] = [r for r in previous if r["name"] not in running]
 
     print(f"Evaluating {len(docs)} documents ({DOC_CONCURRENCY} concurrently) …", flush=True)
     with ThreadPoolExecutor(max_workers=DOC_CONCURRENCY) as pool:

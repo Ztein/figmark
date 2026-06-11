@@ -75,6 +75,43 @@ def test_find_regions_skips_text_only_page(tmp_path: Path):
         reopened.close()
 
 
+def test_offpage_drawings_yield_no_degenerate_regions(tmp_path: Path):
+    """Drawings placed above the page (negative y — crop marks, spill-over) must
+    not produce degenerate regions: every returned bbox renders to a valid PNG.
+
+    Regression for a real-world failure (BIS Annual Report): a cluster entirely
+    off-page survived clamping with negative height and crashed the PNG writer
+    with 'Invalid bandwriter header dimensions/setup'."""
+    doc = fitz.open()
+    page = doc.new_page(width=595, height=842)
+    # A dense cluster of drawings ABOVE the page (negative y): 25 stacked thin
+    # rects 3 px apart (within MERGE_DISTANCE), 300 px wide, ~75 px tall — passes
+    # every cluster filter, but the whole cluster lies off-page.
+    for i in range(25):
+        y = -85 + i * 3
+        page.draw_rect(fitz.Rect(100, y, 400, y + 2.5))
+    # And a legitimate in-page cluster.
+    for i in range(25):
+        y = 200 + i * 3
+        page.draw_rect(fitz.Rect(100, y, 400, y + 2.5))
+    out = tmp_path / "offpage.pdf"
+    doc.save(out)
+    doc.close()
+
+    reopened = fitz.open(out)
+    try:
+        page = reopened.load_page(0)
+        regions = find_diagram_regions(page, 1)
+        for r in regions:
+            x0, y0, x1, y1 = r.bbox
+            assert x1 > x0 and y1 > y0, f"degenerate region bbox: {r.bbox}"
+            # The real proof: every region must actually render.
+            path = render_and_save_region(page, r, tmp_path / "diagrams")
+            assert path.exists() and path.stat().st_size > 0
+    finally:
+        reopened.close()
+
+
 def test_render_region_produces_png(report_pdf: Path, tmp_path: Path):
     doc = fitz.open(report_pdf)
     try:
