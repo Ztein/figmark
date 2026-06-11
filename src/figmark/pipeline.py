@@ -34,6 +34,7 @@ from .ocr import (
 from .output import PageData, assemble, to_markdown
 from .parallel import Job, run_jobs
 from .pdf_loader import (
+    GARBLE_WARN_RATIO,
     SCANNED_MIN_AVG_CHARS_PER_PAGE,
     DiagramBlock,
     ImageBlock,
@@ -42,6 +43,7 @@ from .pdf_loader import (
     iter_pages,
     open_pdf,
     page_needs_ocr,
+    text_garble_ratio,
 )
 from .summarize import detect_language, summarize_document
 from .usage import TrackingClient, Usage, UsageTracker, estimate_cost
@@ -269,6 +271,15 @@ def convert(
             n_text = sum(1 for b in page_data.blocks if not isinstance(b, ImageBlock))
             n_img = sum(1 for b in page_data.blocks if isinstance(b, ImageBlock))
             emit(f"  → {n_text} text block(s), {n_img} image block(s) (references)")
+            # Warn (don't silently emit garbage) when the text layer looks broken —
+            # e.g. a missing/bad font encoding producing mojibake (T-028).
+            garble = text_garble_ratio(page.get_text("text"))
+            if garble >= GARBLE_WARN_RATIO:
+                emit_loud(
+                    f"PAGE {page_num}: text layer looks broken ({garble:.0%} garbled "
+                    "characters — likely a missing/bad font encoding). The extracted "
+                    "text may be unusable; re-export or pre-OCR this PDF."
+                )
 
         page_data.images = extract_images_from_page(
             doc, page, page_num, images_dir, skip_full_page=needs_ocr

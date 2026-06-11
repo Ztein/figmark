@@ -1,8 +1,30 @@
 # T-028: Measure how often PDFs have garbled (present-but-broken) text before building OCR handling
 
-**Status:** Open
+**Status:** Closed — 2026-06-11. Decision: **document-as-limitation + a cheap loud
+warning**, not auto-OCR detection.
 **Priority:** Low — evaluation/spike; decides whether T-027's quality axis is worth building
 **Relates to:** [T-027](T-027-per-page-scan-decision.md) (the per-page decision this would extend)
+
+## Outcome (2026-06-11)
+
+Measured garble prevalence (PUA + U+FFFD + control-char ratio per page) on the
+available corpus (`eval/penningpolitisk-rapport-mars-2026.pdf`, 72 pages): **max
+ratio 0.0000, mean 0.00000, zero pages over 10%.** Well-produced PDFs have clean
+text layers, so broken-text is rare. The corpus is admittedly narrow (one
+professionally-produced report); a wider third-party sample could revise this.
+
+Given that, and the false-positive risk of auto-OCR (number/symbol-heavy pages
+look "garbled" to a naive detector, and OCR is neither free nor lossless), the
+decision is **not** to build detection-and-OCR now. Instead:
+
+- `text_garble_ratio()` + a conservative `GARBLE_WARN_RATIO` (0.10) in
+  `pdf_loader.py`; the pipeline flags any text page above it with a **loud
+  warning** (re-export / pre-OCR), so a user is never silently handed mojibake.
+  Warning-only — no behaviour change, so a false positive costs a log line.
+- README gains a "Known limitations" note.
+
+If a future corpus shows real prevalence, the resume path is to promote this
+signal into T-027's per-page classifier as a quality axis (garbled text → OCR).
 
 ## Symptom / motivation
 

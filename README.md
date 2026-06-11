@@ -148,6 +148,18 @@ are determined, and every figure is described in parallel and woven back into th
 text in reading order. For the full pipeline, module map, and outputs, see
 **[docs/architecture.md](docs/architecture.md)**.
 
+## Known limitations
+
+- **Broken text layers.** figmark trusts the PDF's embedded text. A PDF with a
+  missing or broken font encoding (no/garbled ToUnicode CMap) can carry plenty of
+  characters that are actually mojibake; figmark extracts them as-is. It does not
+  silently swallow this — pages whose text looks broken are flagged with a loud
+  warning — but it does not yet auto-OCR them. For such files, re-export from the
+  source or pre-OCR them before converting.
+- **Data tables.** Quantitative data drawn as charts is captured by the figure
+  descriptions; ruled/borderless *text* tables are not yet reconstructed as
+  Markdown tables (see `docs/tickets/T-026`).
+
 ## Tests
 
 ```bash

@@ -7,6 +7,7 @@ threshold means the OCR pipeline takes over instead of direct text extraction.
 
 from __future__ import annotations
 
+import unicodedata
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
@@ -94,6 +95,30 @@ def page_needs_ocr(page: fitz.Page) -> tuple[bool, str]:
     if coverage >= PAGE_OCR_IMAGE_COVERAGE:
         return True, f"{chars} chars + image covers {coverage:.0%} of the page (scanned)"
     return False, f"{chars} chars, no full-page image (sparse, not scanned)"
+
+
+# A text layer with more than this fraction of mojibake characters is flagged as
+# likely broken (T-028). Conservative, since it only warns — it does not change
+# behaviour, so a false positive costs a log line, not a needless OCR pass.
+GARBLE_WARN_RATIO = 0.10
+
+
+def text_garble_ratio(text: str) -> float:
+    """Fraction of characters that signal a broken text layer (mojibake), 0..1.
+
+    Counts Private Use Area glyphs (a missing/broken ToUnicode CMap dumps glyphs
+    there), the U+FFFD replacement character, and control characters other than
+    normal whitespace. Clean text scores 0.0.
+    """
+    if not text:
+        return 0.0
+    bad = 0
+    for ch in text:
+        if 0xE000 <= ord(ch) <= 0xF8FF or ch == "�":
+            bad += 1
+        elif ch not in "\n\r\t" and unicodedata.category(ch)[0] == "C":
+            bad += 1
+    return bad / len(text)
 
 
 def iter_page_blocks(page: fitz.Page) -> list[Block]:

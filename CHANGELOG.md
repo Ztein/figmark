@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Broken-text-layer warning (T-028).** A page whose extracted text is mostly
+  mojibake (Private Use Area glyphs / replacement / control characters — a
+  missing or broken font encoding) is now flagged with a loud warning suggesting
+  a re-export or pre-OCR, instead of silently emitting garbage. A measurement on
+  the eval corpus found this is rare for well-produced PDFs, so the decision was
+  to warn + document the limitation rather than build auto-OCR detection (which
+  risks false positives on number/symbol-heavy pages). Behaviour is unchanged —
+  it only warns.
 - **Selectable response format on `/v1/convert` (T-025).** A `format` field picks
   `json` (default) | `md` | `both`. `md` returns the raw Markdown body as
   `text/markdown` with the metadata echoed in `X-Figmark-*` response headers;
