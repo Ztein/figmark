@@ -55,8 +55,12 @@ def test_api_key_file_is_surfaced_for_config(monkeypatch, tmp_path):
     assert os.environ["FIGMARK_API_KEY"] == "sk-from-file"
 
 
-def test_legacy_berget_key_file_still_surfaced(monkeypatch, tmp_path):
-    """The deprecated BERGET_API_KEY_FILE secret still works as a fallback."""
+def test_legacy_berget_key_file_is_not_surfaced(monkeypatch, tmp_path):
+    """The old BERGET_API_KEY_FILE secret must NOT be surfaced as a fallback.
+
+    With no FIGMARK_API_KEY/_FILE set, a key mounted only under the legacy
+    BERGET_API_KEY_FILE name is ignored — startup does not silently promote it.
+    """
     monkeypatch.setenv("FIGMARK_AUTH_TOKEN", "t")
     for var in ("FIGMARK_API_KEY", "FIGMARK_API_KEY_FILE", "BERGET_API_KEY"):
         monkeypatch.delenv(var, raising=False)
@@ -68,4 +72,4 @@ def test_legacy_berget_key_file_still_surfaced(monkeypatch, tmp_path):
     ServerSettings.from_env()
     import os
 
-    assert os.environ["FIGMARK_API_KEY"] == "sk-legacy-file"
+    assert os.environ.get("FIGMARK_API_KEY") != "sk-legacy-file"

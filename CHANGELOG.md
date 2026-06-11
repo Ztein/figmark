@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- **BREAKING (T-020): the deprecated `BERGET_API_KEY` / `BERGET_API_KEY_FILE`
+  fallback is gone.** `FIGMARK_API_KEY` (or `FIGMARK_API_KEY_FILE`) is now the
+  only accepted name. A key set under the old name is no longer honoured — the
+  service fails loudly with "`FIGMARK_API_KEY` is not set" instead of silently
+  falling back. This keeps the project's "fail loudly, no silent fallbacks"
+  principle: rename the variable/secret to `FIGMARK_API_KEY`. The one-release
+  deprecation window (v0.2.0) has elapsed.
+
 ## [0.2.0] - 2026-06-11
 
 First public release.
