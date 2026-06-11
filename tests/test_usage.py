@@ -17,7 +17,7 @@ from figmark.usage import (
     format_usage,
 )
 
-from .fakes import FakeClient, make_response, synthetic_pdf
+from .fakes import FakeClient, synthetic_pdf
 
 
 def _usage(prompt, completion, total=None):
