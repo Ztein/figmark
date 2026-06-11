@@ -27,6 +27,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-021](T-021-offpage-drawings-crash.md) | **Closed** | HIGH | Off-page drawing clusters crash diagram rendering (found by the eval corpus) |
 | [T-022](T-022-diagram-payload-cap.md) | **Closed** | HIGH | Diagram payloads were sent uncapped — large charts rejected by the API |
 | [T-023](T-023-significance-gate-for-diagrams.md) | Open | Low | Apply the significance gate to vector-diagram regions (2 % logo-as-diagram in eval) |
+| [T-024](T-024-audit-silent-fallbacks-and-hidden-defaults.md) | Open | Medium | Audit for further principle violations — silent fallbacks and hidden defaults |
 
 ## How a ticket is written
 
