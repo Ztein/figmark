@@ -40,16 +40,19 @@ def test_load_config_requires_api_key(monkeypatch, project_root: Path):
         load_config(project_root / "config.example.yaml")
 
 
-def test_legacy_berget_key_still_works_with_warning(monkeypatch, project_root: Path, capsys):
-    """BERGET_API_KEY is deprecated but must keep working (with a loud warning)."""
+def test_legacy_berget_key_is_not_a_fallback(monkeypatch, project_root: Path):
+    """A key set only under the old BERGET_API_KEY name must NOT be used.
+
+    No silent fallback: with FIGMARK_API_KEY unset, the loader fails loudly even
+    if BERGET_API_KEY is present, rather than quietly honouring the old name.
+    """
     monkeypatch.delenv("FIGMARK_API_KEY", raising=False)
     monkeypatch.setenv("BERGET_API_KEY", "sk-legacy-key")
     import figmark.config as config_module
 
     monkeypatch.setattr(config_module, "load_dotenv", lambda *a, **kw: None)
-    cfg = load_config(project_root / "config.example.yaml")
-    assert cfg.api.api_key == "sk-legacy-key"
-    assert "deprecated" in capsys.readouterr().out.lower()
+    with pytest.raises(RuntimeError, match="FIGMARK_API_KEY"):
+        load_config(project_root / "config.example.yaml")
 
 
 def test_load_config_missing_file(env_with_key, tmp_path: Path):

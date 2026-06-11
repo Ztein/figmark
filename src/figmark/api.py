@@ -70,11 +70,9 @@ class ServerSettings:
                 "the figmark server."
             )
         # Surface a file-mounted LLM key so the config loader finds it.
-        # FIGMARK_API_KEY is the supported name; BERGET_API_KEY is the deprecated
-        # fallback (the loader warns about it).
-        key = _read_secret("FIGMARK_API_KEY", "FIGMARK_API_KEY_FILE") or _read_secret(
-            "BERGET_API_KEY", "BERGET_API_KEY_FILE"
-        )
+        # FIGMARK_API_KEY (or FIGMARK_API_KEY_FILE) is the only supported name —
+        # no fallback to a differently-named variable.
+        key = _read_secret("FIGMARK_API_KEY", "FIGMARK_API_KEY_FILE")
         if key:
             os.environ["FIGMARK_API_KEY"] = key
         return cls(

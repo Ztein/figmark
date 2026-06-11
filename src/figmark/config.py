@@ -95,20 +95,13 @@ def _require(section: dict, key: str, section_name: str):
 def _resolve_api_key() -> str:
     """The key for the OpenAI-compatible endpoint.
 
-    ``FIGMARK_API_KEY`` is the supported name; ``BERGET_API_KEY`` is accepted as a
-    deprecated fallback (warned loudly). Set ``FIGMARK_API_KEY=none`` explicitly
-    for endpoints that need no auth (e.g. a local vLLM/Ollama server).
+    ``FIGMARK_API_KEY`` is the only supported name. Set ``FIGMARK_API_KEY=none``
+    explicitly for endpoints that need no auth (e.g. a local vLLM/Ollama server).
+    There is no fallback: an unset key fails loudly rather than silently using a
+    key meant for a different variable.
     """
     api_key = os.environ.get("FIGMARK_API_KEY")
     if not api_key:
-        legacy = os.environ.get("BERGET_API_KEY")
-        if legacy:
-            print(
-                "WARNING: BERGET_API_KEY is deprecated — rename it to FIGMARK_API_KEY. "
-                "The old name still works but will be removed in a future release.",
-                flush=True,
-            )
-            return legacy
         raise RuntimeError(
             "FIGMARK_API_KEY is not set. Copy .env.example to .env and add the key "
             "for your OpenAI-compatible vision endpoint (or set FIGMARK_API_KEY=none "
