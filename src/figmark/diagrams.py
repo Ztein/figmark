@@ -16,7 +16,7 @@ import fitz
 
 from .config import Config
 from .context import ContextText
-from .describe import compose_prompt
+from .describe import _prepare_image_for_api, compose_prompt
 
 # ============================================================================
 # Technical constants for the clustering pipeline. Tune here if a specific PDF
@@ -282,8 +282,10 @@ def describe_diagram(
     if region.path is None:
         raise RuntimeError(f"Region {region.page_num}.{region.index} has no saved path")
 
-    img_bytes = region.path.read_bytes()
-    data_uri = "data:image/png;base64," + base64.b64encode(img_bytes).decode("ascii")
+    # Resize/re-encode under the API payload cap — large chart regions rendered
+    # at 200 DPI can exceed it (BIS AR 2024 p.115: a 1 MB PNG → 400 from the API).
+    img_bytes, mime = _prepare_image_for_api(region.path)
+    data_uri = f"data:{mime};base64," + base64.b64encode(img_bytes).decode("ascii")
 
     user_text = compose_prompt(
         cfg.diagrams.prompt,

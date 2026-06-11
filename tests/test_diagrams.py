@@ -112,6 +112,45 @@ def test_offpage_drawings_yield_no_degenerate_regions(tmp_path: Path):
         reopened.close()
 
 
+def test_large_diagram_payload_is_capped(tmp_path: Path, env_with_key, project_root: Path):
+    """A huge rendered diagram must be resized below the API payload cap before
+    being sent — exactly like raster images are.
+
+    Regression for a real-world failure (BIS Annual Report 2024, page 115): a
+    1 MB diagram PNG was base64'd raw and rejected by the endpoint (400/413)."""
+    import os
+    from types import SimpleNamespace
+
+    from PIL import Image
+
+    from figmark.config import load_config
+    from figmark.describe import MAX_PAYLOAD_BYTES
+    from figmark.diagrams import DiagramRegion, describe_diagram
+
+    data = os.urandom(1500 * 1500 * 3)  # incompressible noise → big PNG
+    img_path = tmp_path / "big.png"
+    Image.frombytes("RGB", (1500, 1500), data).save(img_path)
+    assert img_path.stat().st_size > MAX_PAYLOAD_BYTES, "test image is not 'too large'"
+
+    captured = {}
+
+    def create(model, max_tokens, messages, **kw):
+        for part in messages[0]["content"]:
+            if part["type"] == "image_url":
+                captured["url_len"] = len(part["image_url"]["url"])
+        return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content="d"))])
+
+    client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+    region = DiagramRegion(page_num=1, index=1, bbox=(0, 0, 10, 10), n_drawings=10, path=img_path)
+    cfg = load_config(project_root / "config.example.yaml")
+
+    describe_diagram(client, region, tmp_path / "desc.txt", cfg)
+    # base64 expands by 4/3; the encoded payload must stay near the cap.
+    assert captured["url_len"] < MAX_PAYLOAD_BYTES * 1.4, (
+        f"diagram payload not capped: {captured['url_len']} chars"
+    )
+
+
 def test_render_region_produces_png(report_pdf: Path, tmp_path: Path):
     doc = fitz.open(report_pdf)
     try:

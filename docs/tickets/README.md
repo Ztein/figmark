@@ -25,6 +25,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-019](T-019-repo-cosmetics.md) | **Closed** | Low | Disable unused repo tabs (Wiki, Projects) |
 | [T-020](T-020-remove-berget-fallback.md) | Open | Medium | Remove the deprecated BERGET_API_KEY fallback and last Berget-specific references |
 | [T-021](T-021-offpage-drawings-crash.md) | **Closed** | HIGH | Off-page drawing clusters crash diagram rendering (found by the eval corpus) |
+| [T-022](T-022-diagram-payload-cap.md) | **Closed** | HIGH | Diagram payloads were sent uncapped — large charts rejected by the API |
 
 ## How a ticket is written
 
