@@ -1,7 +1,47 @@
 # T-026: Tables are flattened to loose text lines — column structure is lost
 
-**Status:** Open
+**Status:** Parked (2026-06-11) — the bench showed naive extraction does more harm
+than good on the chart-heavy corpus; resume when there is a table-heavy document
+to validate against, or build the conservative filtered approach below.
 **Priority:** High — data fidelity for the core use case (data-heavy reports)
+
+## Bench results (2026-06-11) — why this is parked
+
+Ran the planned quality bench on the real corpus
+(`eval/penningpolitisk-rapport-mars-2026.pdf`, 72 pages):
+
+| Engine / strategy | Result |
+|---|---|
+| PyMuPDF `lines` / `lines_strict` | 0–1 tables — degenerate, empty |
+| PyMuPDF `text` | 69 "tables" — **false positives**: ordinary prose chopped into cells |
+| pdfplumber `lines` (default) | 20 "tables" on 11 pages — but the cells are **empty**: it latches onto **chart gridlines/axes** |
+| pdfplumber `text` | 71 "tables" — same prose-as-table garbage |
+
+**No engine/strategy extracts reliable data tables from this report.** The reason
+is structural: this corpus is **chart-heavy** — its quantitative data lives in
+graphs (already described by the vision pipeline as figures), not in ruled text
+tables. "lines" detectors catch chart gridlines → empty tables; "text" detectors
+turn prose → tables. Shipping the naive approach would **inject garbage tables**
+into otherwise-clean output, which is worse than the status quo.
+
+This is exactly what the bench-before-code step was meant to catch.
+
+## Decision / path to resume
+
+Do **not** ship the simple "find_tables → Markdown" approach. Two ways forward
+when this is picked up again:
+
+1. **Conservative pdfplumber + quality filters.** Extract only tables that pass:
+   non-empty-cell ratio above a threshold, **not overlapping a detected diagram
+   region** (we already find those — drops chart-gridline false positives), and a
+   minimum rows/cols. Adds the pdfplumber dependency. Yields real tables where
+   they exist and stays silent on chart-heavy docs.
+2. **Validate on a table-heavy document first.** Add a Riksbank doc that actually
+   has ruled data tables (e.g. a statistical appendix) to `eval/`, re-run the
+   bench, and tune filters against real positives before shipping.
+
+(The original symptom, options, and the labelled-bench design below remain valid
+for whoever resumes this.)
 
 ## Symptom
 
