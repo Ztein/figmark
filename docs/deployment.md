@@ -59,7 +59,11 @@ curl -s -X POST http://127.0.0.1:8000/v1/convert \
 ```
 
 The response is JSON: `{markdown, page_count, figure_count, skipped_count,
-language}`.
+language, usage, estimated_cost, currency}`. `usage` always reports
+`{prompt_tokens, completion_tokens, total_tokens, api_calls, calls_missing_usage}`;
+`estimated_cost` (with `currency`) is included only when `api.input_token_price`
+and `api.output_token_price` are configured, and is `null` otherwise — never a
+misleading `0`.
 
 ## Endpoints
 

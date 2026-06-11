@@ -15,6 +15,7 @@ from pathlib import Path
 from .config import load_config
 from .describe import make_client
 from .pipeline import convert, log
+from .usage import Cost, format_usage
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -61,6 +62,13 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
         log(f"  Diagram text: {result.output_dir / 'diagram_descriptions'}")
     if result.annotated_pdf_path:
         log(f"  Alt-text PDF: {result.annotated_pdf_path}")
+
+    cost = (
+        Cost(result.estimated_cost, result.currency or "")
+        if result.estimated_cost is not None
+        else None
+    )
+    log("  " + format_usage(result.usage, cost))
 
     return 0
 

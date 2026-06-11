@@ -3,8 +3,49 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+import yaml
 
 from figmark.config import load_config
+
+
+def _config_with_api(project_root: Path, tmp_path: Path, **api_overrides) -> Path:
+    """Write a temp config = the example, with api.* keys overridden/added."""
+    raw = yaml.safe_load((project_root / "config.example.yaml").read_text(encoding="utf-8"))
+    raw["api"].update(api_overrides)
+    path = tmp_path / "config.yaml"
+    path.write_text(yaml.safe_dump(raw), encoding="utf-8")
+    return path
+
+
+def test_token_prices_are_optional_and_parsed(env_with_key, project_root: Path, tmp_path: Path):
+    path = _config_with_api(
+        project_root, tmp_path,
+        input_token_price=2.5e-7, output_token_price=5e-7, currency="EUR",
+    )
+    cfg = load_config(path)
+    assert cfg.api.input_token_price == 2.5e-7
+    assert cfg.api.output_token_price == 5e-7
+    assert cfg.api.currency == "EUR"
+
+
+def test_token_prices_default_to_none(env_with_key, project_root: Path):
+    cfg = load_config(project_root / "config.example.yaml")
+    assert cfg.api.input_token_price is None
+    assert cfg.api.output_token_price is None
+
+
+def test_half_configured_prices_fail_loudly(env_with_key, project_root: Path, tmp_path: Path):
+    path = _config_with_api(project_root, tmp_path, input_token_price=2.5e-7)
+    with pytest.raises(RuntimeError, match="both be set"):
+        load_config(path)
+
+
+def test_non_numeric_price_fails_loudly(env_with_key, project_root: Path, tmp_path: Path):
+    path = _config_with_api(
+        project_root, tmp_path, input_token_price="cheap", output_token_price=5e-7
+    )
+    with pytest.raises(RuntimeError, match="must be a number"):
+        load_config(path)
 
 
 def test_load_default_config(env_with_key, project_root: Path):
