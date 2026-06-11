@@ -22,7 +22,17 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import fitz
-from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Request, UploadFile
+from fastapi import (
+    Depends,
+    FastAPI,
+    File,
+    Form,
+    Header,
+    HTTPException,
+    Request,
+    Response,
+    UploadFile,
+)
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
@@ -117,6 +127,66 @@ class VersionResponse(BaseModel):
     base_url: str
 
 
+# Response formats for /v1/convert. `json` (default) and `both` return the full
+# JSON object (which already carries markdown + metadata); `md` returns the raw
+# Markdown body with the metadata echoed in X-Figmark-* headers.
+ALLOWED_FORMATS = ("json", "md", "both")
+
+
+def _convert_response_model(result) -> ConvertResponse:
+    return ConvertResponse(
+        markdown=result.markdown,
+        page_count=result.page_count,
+        figure_count=result.figure_count,
+        skipped_count=result.skipped_count,
+        language=result.language,
+        usage=UsageInfo(
+            prompt_tokens=result.usage.prompt_tokens,
+            completion_tokens=result.usage.completion_tokens,
+            total_tokens=result.usage.total_tokens,
+            api_calls=result.usage.api_calls,
+            calls_missing_usage=result.usage.calls_missing_usage,
+        ),
+        estimated_cost=result.estimated_cost,
+        currency=result.currency,
+    )
+
+
+def format_convert_result(result, fmt: str):
+    """Shape a ConversionResult per the requested format.
+
+    Returns a ``ConvertResponse`` for ``json``/``both`` (the JSON already carries
+    both markdown and metadata) or a ``text/markdown`` ``Response`` for ``md``
+    (metadata echoed in ``X-Figmark-*`` headers). An unknown format fails loudly
+    with 422 — no silent default (T-025).
+    """
+    if fmt not in ALLOWED_FORMATS:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unknown format {fmt!r}. Allowed: {', '.join(ALLOWED_FORMATS)}.",
+        )
+    if fmt != "md":
+        return _convert_response_model(result)
+
+    headers = {
+        "X-Figmark-Page-Count": str(result.page_count),
+        "X-Figmark-Figure-Count": str(result.figure_count),
+        "X-Figmark-Skipped-Count": str(result.skipped_count),
+        "X-Figmark-Language": result.language,
+        "X-Figmark-Total-Tokens": str(result.usage.total_tokens),
+        "X-Figmark-Api-Calls": str(result.usage.api_calls),
+    }
+    if result.estimated_cost is not None:
+        headers["X-Figmark-Estimated-Cost"] = repr(result.estimated_cost)
+        if result.currency:
+            headers["X-Figmark-Currency"] = result.currency
+    return Response(
+        content=result.markdown,
+        media_type="text/markdown; charset=utf-8",
+        headers=headers,
+    )
+
+
 def _available_ocr_languages() -> list[str]:
     """Languages Tesseract can use; empty list if it cannot be queried."""
     try:
@@ -175,7 +245,15 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
         request: Request,
         file: UploadFile = File(...),
         annotate: bool = Form(default=False),
-    ) -> ConvertResponse:
+        output_format: str = Form(default="json", alias="format"),
+    ):
+        # Validate the format up front so a bad value fails fast (and loudly),
+        # before any expensive conversion work.
+        if output_format not in ALLOWED_FORMATS:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Unknown format {output_format!r}. Allowed: {', '.join(ALLOWED_FORMATS)}.",
+            )
         name = (file.filename or "upload").lower()
         ctype = (file.content_type or "").lower()
         if not (name.endswith(".pdf") or ctype == "application/pdf"):
@@ -240,22 +318,7 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
                 result.skipped_count,
                 result.language,
             )
-            return ConvertResponse(
-                markdown=result.markdown,
-                page_count=result.page_count,
-                figure_count=result.figure_count,
-                skipped_count=result.skipped_count,
-                language=result.language,
-                usage=UsageInfo(
-                    prompt_tokens=result.usage.prompt_tokens,
-                    completion_tokens=result.usage.completion_tokens,
-                    total_tokens=result.usage.total_tokens,
-                    api_calls=result.usage.api_calls,
-                    calls_missing_usage=result.usage.calls_missing_usage,
-                ),
-                estimated_cost=result.estimated_cost,
-                currency=result.currency,
-            )
+            return format_convert_result(result, output_format)
         finally:
             shutil.rmtree(work, ignore_errors=True)
 

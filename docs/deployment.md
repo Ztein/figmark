@@ -58,12 +58,24 @@ curl -s -X POST http://127.0.0.1:8000/v1/convert \
   -F "file=@document.pdf;type=application/pdf"
 ```
 
-The response is JSON: `{markdown, page_count, figure_count, skipped_count,
-language, usage, estimated_cost, currency}`. `usage` always reports
+By default the response is JSON: `{markdown, page_count, figure_count,
+skipped_count, language, usage, estimated_cost, currency}`. `usage` always reports
 `{prompt_tokens, completion_tokens, total_tokens, api_calls, calls_missing_usage}`;
 `estimated_cost` (with `currency`) is included only when `api.input_token_price`
 and `api.output_token_price` are configured, and is `null` otherwise — never a
 misleading `0`.
+
+Pick the response shape with the `format` field (`json` (default) | `md` |
+`both`; `both` is an alias for `json`, which already carries markdown + metadata):
+
+```bash
+# Raw Markdown body (text/markdown), metadata echoed in X-Figmark-* headers:
+curl -s -X POST http://127.0.0.1:8000/v1/convert \
+  -H "Authorization: Bearer <token>" \
+  -F "file=@document.pdf;type=application/pdf" -F "format=md" -o document.md
+```
+
+An unknown `format` is rejected with `422` (no silent default).
 
 ## Endpoints
 

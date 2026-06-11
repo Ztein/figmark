@@ -1,6 +1,10 @@
 # T-025: Let the client choose the response format (JSON, Markdown, or both) on /v1/convert
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-11. A `format` form field (`json`
+default | `md` | `both`) on `/v1/convert`; `md` returns `text/markdown` with
+metadata in `X-Figmark-*` headers, `both` is an alias for `json`, and an unknown
+value is a loud `422`. Chose Option 1 with `both`=`json` (no multipart, no
+`Accept`-header machinery) as recommended.
 **Priority:** Low — ergonomics; the data is already available, this is about delivery
 
 ## Symptom / motivation
