@@ -16,6 +16,13 @@ api:
   # and has a vision-capable model. REQUIRED — edit before first run.
   base_url: "https://your-llm-endpoint.example/v1"
   model: "your-vision-model-name"
+  # OPTIONAL cost estimation. Token usage is always reported; a monetary estimate
+  # is only added when BOTH prices below are set (per single token — the unit most
+  # OpenAI-compatible /v1/models endpoints use). Provider-neutral: look up your
+  # endpoint's prices and fill them in. Both or neither — a half-set pair is an error.
+  # input_token_price: 0.00000025    # e.g. 0.25 € per 1M input tokens
+  # output_token_price: 0.0000005    # e.g. 0.50 € per 1M output tokens
+  # currency: "EUR"
 
 ocr:
   language: "swe"

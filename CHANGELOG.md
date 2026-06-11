@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Token usage and optional cost per conversion (T-029).** Every conversion now
+  reports `usage` (`prompt_tokens`, `completion_tokens`, `total_tokens`,
+  `api_calls`, `calls_missing_usage`) on the API response and as a one-line CLI
+  summary; the data was already returned by every completion and previously
+  discarded. A monetary `estimated_cost` (+ `currency`) is added only when
+  `api.input_token_price` and `api.output_token_price` are configured (per-token,
+  provider-neutral — no hardcoded prices); otherwise it is `null`, never a
+  misleading `0`. Cache hits make no call and cost nothing, as reflected.
+
 ### Removed
 
 - **BREAKING (T-020): the deprecated `BERGET_API_KEY` / `BERGET_API_KEY_FILE`

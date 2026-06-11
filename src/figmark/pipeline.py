@@ -41,6 +41,7 @@ from .pdf_loader import (
     open_pdf,
 )
 from .summarize import detect_language, summarize_document
+from .usage import TrackingClient, Usage, UsageTracker, estimate_cost
 
 
 @dataclass(frozen=True)
@@ -57,6 +58,9 @@ class ConversionResult:
     figure_count: int
     skipped_count: int
     language: str
+    usage: Usage
+    estimated_cost: float | None
+    currency: str | None
 
 
 def log(msg: str) -> None:
@@ -183,6 +187,12 @@ def convert(
 
     if client is None:
         client = make_client(cfg)
+
+    # Wrap the client so every chat.completions.create records its token usage
+    # (thread-safe — descriptions run in parallel). Cache hits make no call, so
+    # they correctly contribute nothing.
+    tracker = UsageTracker()
+    client = TrackingClient(client, tracker)
 
     emit = _noop if quiet else log
     emit_loud = _noop if quiet else loud
@@ -400,6 +410,8 @@ def convert(
         doc.close()
 
     figure_count, skipped_count = _count_figures(pages)
+    usage = tracker.snapshot()
+    cost = estimate_cost(usage, cfg.api)
     return ConversionResult(
         markdown=markdown,
         markdown_path=md_path,
@@ -411,4 +423,7 @@ def convert(
         figure_count=figure_count,
         skipped_count=skipped_count,
         language=resolved_language,
+        usage=usage,
+        estimated_cost=(cost.amount if cost else None),
+        currency=(cost.currency if cost else None),
     )

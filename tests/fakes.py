@@ -18,9 +18,20 @@ SUMMARY_REPLY = "Detta är ett testdokument om katter."
 DETECTED_LANGUAGE = "Swedish"
 
 
-def make_response(text: str):
-    """Build an object shaped like an OpenAI chat completion response."""
-    return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content=text))])
+def make_response(text: str, *, prompt_tokens: int = 10, completion_tokens: int = 5):
+    """Build an object shaped like an OpenAI chat completion response.
+
+    Includes a ``usage`` block like the real API, so usage accounting can be
+    exercised offline.
+    """
+    return SimpleNamespace(
+        choices=[SimpleNamespace(message=SimpleNamespace(content=text))],
+        usage=SimpleNamespace(
+            prompt_tokens=prompt_tokens,
+            completion_tokens=completion_tokens,
+            total_tokens=prompt_tokens + completion_tokens,
+        ),
+    )
 
 
 class FakeClient:

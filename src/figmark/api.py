@@ -91,12 +91,24 @@ class ServerSettings:
         )
 
 
+class UsageInfo(BaseModel):
+    prompt_tokens: int
+    completion_tokens: int
+    total_tokens: int
+    api_calls: int
+    calls_missing_usage: int
+
+
 class ConvertResponse(BaseModel):
     markdown: str
     page_count: int
     figure_count: int
     skipped_count: int
     language: str
+    usage: UsageInfo
+    # Monetary estimate, only when prices are configured; null otherwise (never 0).
+    estimated_cost: float | None = None
+    currency: str | None = None
 
 
 class VersionResponse(BaseModel):
@@ -234,6 +246,15 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
                 figure_count=result.figure_count,
                 skipped_count=result.skipped_count,
                 language=result.language,
+                usage=UsageInfo(
+                    prompt_tokens=result.usage.prompt_tokens,
+                    completion_tokens=result.usage.completion_tokens,
+                    total_tokens=result.usage.total_tokens,
+                    api_calls=result.usage.api_calls,
+                    calls_missing_usage=result.usage.calls_missing_usage,
+                ),
+                estimated_cost=result.estimated_cost,
+                currency=result.currency,
             )
         finally:
             shutil.rmtree(work, ignore_errors=True)

@@ -21,6 +21,12 @@ class ApiConfig:
     base_url: str
     model: str
     api_key: str
+    # Optional, provider-neutral cost estimation. Prices are per single token
+    # (matching the OpenAI-compatible /v1/models pricing unit). Both must be set
+    # together, or both omitted; never hardcode a provider's prices here.
+    input_token_price: float | None = None
+    output_token_price: float | None = None
+    currency: str | None = None
 
 
 @dataclass
@@ -92,6 +98,21 @@ def _require(section: dict, key: str, section_name: str):
     return section[key]
 
 
+def _optional_price(value, key: str) -> float | None:
+    """Parse an optional per-token price. Empty/absent → None; junk fails loudly."""
+    if value in (None, ""):
+        return None
+    try:
+        price = float(value)
+    except (TypeError, ValueError) as exc:
+        raise RuntimeError(
+            f"api.{key} must be a number (price per token) if set, got {value!r}."
+        ) from exc
+    if price < 0:
+        raise RuntimeError(f"api.{key} must be non-negative, got {price}.")
+    return price
+
+
 def _resolve_api_key() -> str:
     """The key for the OpenAI-compatible endpoint.
 
@@ -129,10 +150,20 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
         raw = yaml.safe_load(f) or {}
 
     api_raw = raw.get("api") or {}
+    in_price = _optional_price(api_raw.get("input_token_price"), "input_token_price")
+    out_price = _optional_price(api_raw.get("output_token_price"), "output_token_price")
+    if (in_price is None) != (out_price is None):
+        raise RuntimeError(
+            "api.input_token_price and api.output_token_price must both be set "
+            "(for cost estimation) or both omitted."
+        )
     api = ApiConfig(
         base_url=str(_require(api_raw, "base_url", "api")),
         model=str(_require(api_raw, "model", "api")),
         api_key=api_key,
+        input_token_price=in_price,
+        output_token_price=out_price,
+        currency=(str(api_raw["currency"]).strip() if api_raw.get("currency") else None),
     )
 
     ocr_raw = raw.get("ocr") or {}
