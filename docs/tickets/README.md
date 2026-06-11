@@ -28,6 +28,8 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-022](T-022-diagram-payload-cap.md) | **Closed** | HIGH | Diagram payloads were sent uncapped — large charts rejected by the API |
 | [T-023](T-023-significance-gate-for-diagrams.md) | Open | Low | Apply the significance gate to vector-diagram regions (2 % logo-as-diagram in eval) |
 | [T-024](T-024-audit-silent-fallbacks-and-hidden-defaults.md) | Open | Medium | Audit for further principle violations — silent fallbacks and hidden defaults |
+| [T-026](T-026-tables-flattened-to-text.md) | Open | High | Tables are flattened to loose text lines — column structure is lost |
+| [T-027](T-027-per-page-scan-decision.md) | Open | High | A scanned/image-only page inside a text PDF is never OCR'd (document-level scan decision) |
 
 ## How a ticket is written
 
