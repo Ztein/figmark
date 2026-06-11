@@ -97,9 +97,7 @@ def test_estimate_cost_is_none_without_prices():
 
 
 def test_estimate_cost_uses_per_token_prices():
-    api = SimpleNamespace(
-        input_token_price=2.5e-7, output_token_price=5e-7, currency="EUR"
-    )
+    api = SimpleNamespace(input_token_price=2.5e-7, output_token_price=5e-7, currency="EUR")
     cost = estimate_cost(Usage(prompt_tokens=1_000_000, completion_tokens=1_000_000), api)
     assert cost is not None
     assert cost.currency == "EUR"
@@ -151,9 +149,7 @@ def test_convert_estimates_cost_when_prices_configured(
 
     result = convert(pdf, cfg, tmp_path / "output", client=FakeClient("desc"), quiet=True)
 
-    expected = (
-        result.usage.prompt_tokens * 2.5e-7 + result.usage.completion_tokens * 5e-7
-    )
+    expected = result.usage.prompt_tokens * 2.5e-7 + result.usage.completion_tokens * 5e-7
     assert result.estimated_cost is not None
     assert abs(result.estimated_cost - expected) < 1e-12
     assert result.currency == "EUR"

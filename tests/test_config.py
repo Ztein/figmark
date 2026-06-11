@@ -19,8 +19,11 @@ def _config_with_api(project_root: Path, tmp_path: Path, **api_overrides) -> Pat
 
 def test_token_prices_are_optional_and_parsed(env_with_key, project_root: Path, tmp_path: Path):
     path = _config_with_api(
-        project_root, tmp_path,
-        input_token_price=2.5e-7, output_token_price=5e-7, currency="EUR",
+        project_root,
+        tmp_path,
+        input_token_price=2.5e-7,
+        output_token_price=5e-7,
+        currency="EUR",
     )
     cfg = load_config(path)
     assert cfg.api.input_token_price == 2.5e-7
