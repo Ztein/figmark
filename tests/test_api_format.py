@@ -10,12 +10,13 @@ from pathlib import Path
 
 import pytest
 from fastapi import HTTPException, Response
-from starlette.testclient import TestClient
+from fastapi.testclient import TestClient
 
 from figmark.api import ConvertResponse, format_convert_result
 from figmark.pipeline import ConversionResult
 from figmark.usage import Usage
 
+from .conftest import API_TEST_TOKEN
 from .fakes import FakeClient, synthetic_pdf
 
 
@@ -81,7 +82,7 @@ def test_md_includes_cost_header_when_priced():
 def _post(client, pdf: bytes, data=None):
     return client.post(
         "/v1/convert",
-        headers={"Authorization": "Bearer test-token"},
+        headers={"Authorization": f"Bearer {API_TEST_TOKEN}"},
         files={"file": ("doc.pdf", pdf, "application/pdf")},
         data=data or {},
     )
