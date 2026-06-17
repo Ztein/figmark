@@ -1,7 +1,7 @@
 # Test-only mock OpenAI-compatible server image (NOT for production).
 # Used by compose.test.yaml to stand in for the vision LLM in the offline stack.
 # Same digest-pinned base as the main Dockerfile.
-FROM python:3.14-slim-bookworm@sha256:a9bee15510a364124aa24692899d269835683b883de42f7ebec8c293cf679ccb
+FROM python:3.14-slim-bookworm@sha256:a70519002c49552ea0a853de47599cf40479b001bd7a624f1112eaf44dcaccc7
 
 RUN pip install --no-cache-dir "fastapi>=0.119,<1.0" "uvicorn>=0.32,<1.0"
 
