@@ -28,6 +28,7 @@ def _result(estimated_cost=None, currency=None) -> ConversionResult:
         output_dir=Path("out"),
         images_dir=Path("out/images"),
         annotated_pdf_path=None,
+        tagged_pdf_path=None,
         page_count=3,
         figure_count=2,
         skipped_count=1,

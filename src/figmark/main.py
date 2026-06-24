@@ -41,16 +41,28 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Also produce an annotated copy of the PDF with the descriptions as text annotations.",
     )
+    parser.add_argument(
+        "--tagged-pdf",
+        action="store_true",
+        help="Also produce a tagged copy (<pdf>_tagged.pdf) with a Figure structure "
+        "tree carrying the descriptions as /Alt (accessibility foundation).",
+    )
     return parser.parse_args(argv)
 
 
-def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = False) -> int:
+def run(
+    pdf_path: Path,
+    config_path: Path,
+    output_root: Path,
+    annotate: bool = False,
+    tagged: bool = False,
+) -> int:
     if not pdf_path.exists():
         raise FileNotFoundError(f"PDF not found: {pdf_path}")
 
     cfg = load_config(config_path)
     client = make_client(cfg)
-    result = convert(pdf_path, cfg, output_root, annotate=annotate, client=client)
+    result = convert(pdf_path, cfg, output_root, annotate=annotate, tagged=tagged, client=client)
 
     log("\nDone.")
     log(f"  Markdown:     {result.markdown_path}")
@@ -62,6 +74,8 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
         log(f"  Diagram text: {result.output_dir / 'diagram_descriptions'}")
     if result.annotated_pdf_path:
         log(f"  Alt-text PDF: {result.annotated_pdf_path}")
+    if result.tagged_pdf_path:
+        log(f"  Tagged PDF:   {result.tagged_pdf_path}")
 
     cost = (
         Cost(result.estimated_cost, result.currency or "")
@@ -75,7 +89,9 @@ def run(pdf_path: Path, config_path: Path, output_root: Path, annotate: bool = F
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    return run(args.pdf, args.config, args.output, annotate=args.annotate_pdf)
+    return run(
+        args.pdf, args.config, args.output, annotate=args.annotate_pdf, tagged=args.tagged_pdf
+    )
 
 
 if __name__ == "__main__":

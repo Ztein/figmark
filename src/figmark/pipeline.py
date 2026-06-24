@@ -51,6 +51,7 @@ from .pdf_loader import (
 )
 from .summarize import detect_language, summarize_document
 from .tables import find_table_blocks, text_block_consumed
+from .tagged import lang_code, tag_pdf
 from .usage import TrackingClient, Usage, UsageTracker, estimate_cost
 
 
@@ -64,6 +65,7 @@ class ConversionResult:
     output_dir: Path
     images_dir: Path
     annotated_pdf_path: Path | None
+    tagged_pdf_path: Path | None
     page_count: int
     figure_count: int
     skipped_count: int
@@ -186,6 +188,7 @@ def convert(
     output_root: Path,
     *,
     annotate: bool = False,
+    tagged: bool = False,
     client=None,
     console=None,
     quiet: bool = False,
@@ -505,15 +508,19 @@ def convert(
     md_path.write_text(markdown, encoding="utf-8")
 
     annotated_pdf_path: Path | None = None
+    tagged_pdf_path: Path | None = None
+    # Same described images/diagrams feed both the annotation and the tagged PDF.
+    items = _collect_annotation_items(pages) if (annotate or tagged) else []
+    # Close the source doc before reopening it for annotation/tagging.
+    doc.close()
     if annotate:
-        items = _collect_annotation_items(pages)
         annotated_pdf_path = out_dir / f"{pdf_path.stem}_alt_text.pdf"
         emit(f"\nEmbedding {len(items)} descriptions as alt text → {annotated_pdf_path}")
-        # Close the source doc first — we need to reopen the file cleanly.
-        doc.close()
         annotate_pdf(pdf_path, annotated_pdf_path, items)
-    else:
-        doc.close()
+    if tagged:
+        tagged_pdf_path = out_dir / f"{pdf_path.stem}_tagged.pdf"
+        emit(f"\nWriting tagged PDF (structure tree, {len(items)} figures) → {tagged_pdf_path}")
+        tag_pdf(pdf_path, tagged_pdf_path, items, lang=lang_code(resolved_language))
 
     figure_count, skipped_count = _count_figures(pages)
     usage = tracker.snapshot()
@@ -525,6 +532,7 @@ def convert(
         output_dir=out_dir,
         images_dir=images_dir,
         annotated_pdf_path=annotated_pdf_path,
+        tagged_pdf_path=tagged_pdf_path,
         page_count=len(pages),
         figure_count=figure_count,
         skipped_count=skipped_count,

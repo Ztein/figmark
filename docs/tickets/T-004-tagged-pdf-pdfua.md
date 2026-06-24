@@ -1,6 +1,15 @@
 # T-004: Tagged PDF / PDF/UA — real accessibility via the structure tree
 
-**Status:** Open
+**Status:** Open — **Phase 1 done** (2026-06-24, PR #40): structure-tree
+foundation. `--tagged-pdf` produces `<pdf>_tagged.pdf` with a `/StructTreeRoot`
+holding one `/Figure` element per described image/diagram, each carrying the
+description as `/Alt`, plus `/MarkInfo /Marked true` and a document `/Lang` (new
+`src/figmark/tagged.py`, pikepdf). Offline tests assert the structure tree exists
+with the right `/Alt`/`/Lang`/`/MarkInfo`. **Remaining (Phase 2):** MCID-anchor the
+Figures to marked content in the page streams (a `/ParentTree`), tag *all* content
+(text as `/P`/`/H`), and validate with veraPDF/PAC + a screen reader — none of which
+can be run/verified in this environment, so the conformance acceptance criteria
+below stay unchecked.
 **Priority:** Medium — builds on top of T-005 (annotation MVP)
 **Requested:** 2026-05-20
 
