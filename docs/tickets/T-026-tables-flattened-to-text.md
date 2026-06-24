@@ -1,10 +1,9 @@
 # T-026: Tables are flattened to loose text lines — column structure is lost
 
-**Status:** Open (un-parked 2026-06-24) — the resume condition is met: the eval
-corpus now contains documents with real ruled data tables. Execution is split into
-[T-030](T-030-labelled-table-bench.md) (build the labelled bench) and
-[T-031](T-031-conservative-table-extraction.md) (filtered extraction + `TableBlock`).
-See the 2026-06-24 update below.
+**Status:** Closed — 2026-06-24. Un-parked once the eval corpus gained real ruled
+data tables; delivered via [T-030](T-030-labelled-table-bench.md) (labelled bench,
+PyMuPDF-only decision) and [T-031](T-031-conservative-table-extraction.md) (filtered
+extraction + `TableBlock`, PR #35). See the 2026-06-24 update below.
 **Priority:** High — data fidelity for the core use case (data-heavy reports)
 
 ## Update 2026-06-24 — un-parking: the corpus now has real tables

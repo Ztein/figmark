@@ -261,6 +261,30 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
     return regions
 
 
+# A text block this fraction inside a diagram region is the diagram's own label
+# text (redundant with the rendered image + description). High, deliberately: the
+# region bbox is expanded to grab axis titles/source lines, so a body paragraph
+# that merely abuts the chart is only partly inside and must be kept, not deleted.
+TEXT_IN_REGION_OVERLAP = 0.8
+
+
+def text_block_in_region(
+    bbox, regions: list[DiagramRegion], min_overlap: float = TEXT_IN_REGION_OVERLAP
+) -> bool:
+    """True if a text block lies mostly inside a diagram region — its content is the
+    diagram's internal labels, which leak into the body otherwise. (T-008)
+    """
+    r = fitz.Rect(bbox)
+    area = abs(r.width * r.height)
+    if area <= 0:
+        return False
+    for region in regions:
+        inter = r & fitz.Rect(region.bbox)
+        if not inter.is_empty and abs(inter.width * inter.height) / area >= min_overlap:
+            return True
+    return False
+
+
 def render_and_save_region(
     page: fitz.Page,
     region: DiagramRegion,

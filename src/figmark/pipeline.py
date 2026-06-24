@@ -23,6 +23,7 @@ from .diagrams import (
     describe_diagram,
     find_diagram_regions,
     render_and_save_region,
+    text_block_in_region,
 )
 from .images import MIN_IMAGE_HEIGHT, MIN_IMAGE_WIDTH, extract_images_from_page
 from .ocr import (
@@ -322,6 +323,19 @@ def convert(
                     )
                 page_regions[page_num] = regions
                 emit(f"  → {len(regions)} diagram region(s) identified")
+                # Drop the diagram's internal label text (axis labels, legends) so it
+                # doesn't leak into the body — it's redundant with the rendered image
+                # and its description. Conservative containment so body text merely
+                # abutting the chart is kept, not deleted. (T-008)
+                before = len(page_data.blocks)
+                page_data.blocks = [
+                    b
+                    for b in page_data.blocks
+                    if not (isinstance(b, TextBlock) and text_block_in_region(b.bbox, regions))
+                ]
+                dropped = before - len(page_data.blocks)
+                if dropped:
+                    emit(f"  → {dropped} in-diagram text block(s) suppressed")
                 # Re-sort blocks so diagrams land in reading order with text/images
                 # (column-aware, matching iter_page_blocks). (T-036)
                 sort_blocks_reading_order(page_data.blocks, page.rect.width)

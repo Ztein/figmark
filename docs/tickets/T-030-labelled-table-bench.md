@@ -1,7 +1,7 @@
 # T-030: Build the labelled table bench and score the engine + filter
 
-**Status:** Open — bench built and scored 2026-06-24; decision recorded below
-(**ship PyMuPDF-only**). Ready to close on merge of the bench + ground truth.
+**Status:** Closed — 2026-06-24. Bench built and scored (results below): PyMuPDF +
+filter chosen (**ship PyMuPDF-only**). Productionised in [T-031](T-031-conservative-table-extraction.md) (PR #35).
 **Priority:** High — gates [T-031](T-031-conservative-table-extraction.md); no
 extraction code ships until the numbers justify it
 **Parent:** [T-026](T-026-tables-flattened-to-text.md)
