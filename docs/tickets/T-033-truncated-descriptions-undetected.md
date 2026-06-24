@@ -1,6 +1,8 @@
 # T-033: Truncated descriptions are never detected (finish_reason ignored)
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24 (PR #31). `describe_image`/
+`describe_diagram` warn on `finish_reason == "length"`; empty completions remain a
+documented hard error (a retry under FAIL_FAST repeats the same failure).
 **Priority:** Medium — silent quality loss for an accessibility tool; tiny fix
 **Source:** External code review (2026-06-24), verified against the code.
 

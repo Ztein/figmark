@@ -1,6 +1,9 @@
 # T-034: Description cache ignores config — stale output after a config change
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24 (PR #32). A `cache_fingerprint` of
+(model, prompt, resolved language, significance, context, summary settings) is
+folded into the cache filename for both image and diagram caches; a config change
+misses and regenerates.
 **Priority:** Medium — a correctness trap disguised as a feature
 **Source:** External code review (2026-06-24), verified against the code.
 

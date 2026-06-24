@@ -1,6 +1,8 @@
 # T-032: Loud pipeline warnings are silenced in container/API mode
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24 (PR #31). Under `quiet=True` loud
+warnings now route to the `figmark.pipeline` logger (interactive runs keep the
+banner), so they survive into the API's structured logs.
 **Priority:** High — fail-loud breaks in exactly the deployment it was designed for
 **Source:** External code review (2026-06-24), verified against the code.
 

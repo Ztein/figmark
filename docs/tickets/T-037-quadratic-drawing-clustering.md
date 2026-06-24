@@ -1,6 +1,9 @@
 # T-037: O(n²) drawing clustering is a hotspot on draw-heavy pages
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24 (PR #33). `_cluster_rects` uses an
+x-sweep over a pruned active set instead of all-pairs comparison, yielding the
+identical partition (regression-tested vs brute-force) but near-linear on
+spatially-spread chart pages.
 **Priority:** Low — performance, not correctness; profile before optimising
 **Source:** External code review (2026-06-24), verified against the code.
 

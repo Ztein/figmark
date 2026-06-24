@@ -1,6 +1,9 @@
 # T-036: Reading order is naive for multi-column pages
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24 (PR #34). `sort_blocks_reading_order`
+detects column boundaries from clustered block left-edges and orders
+column-by-column on multi-column pages; single-column pages keep the identical
+(y, x) flow.
 **Priority:** Medium — interleaved text on two-column pages; affects T-031
 **Source:** External code review (2026-06-24), verified against the code.
 

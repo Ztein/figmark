@@ -1,6 +1,8 @@
 # T-002: Log says "N image blocks" but doesn't explain why 0 are saved
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24. `extract_images_from_page` returns an
+`ImageExtraction` (kept images + skip counts); the pipeline log now reads e.g.
+`0 image(s) saved (4 < 50x50 filtered)`, and an unfiltered page logs as before.
 **Priority:** Low — cosmetic, but confusing during diagnosis
 
 ## Symptom

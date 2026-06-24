@@ -12,7 +12,7 @@ def test_extract_images_writes_files(paper_pdf: Path, tmp_path: Path):
     try:
         total_extracted = []
         for page_num, page in iter_pages(doc):
-            extracted = extract_images_from_page(doc, page, page_num, out_dir)
+            extracted = extract_images_from_page(doc, page, page_num, out_dir).images
             total_extracted.extend(extracted)
         assert len(total_extracted) >= 1
         for img in total_extracted:
@@ -34,7 +34,7 @@ def test_extracted_images_match_pdf_loader_xrefs(paper_pdf: Path, tmp_path: Path
             for b in iter_page_blocks(page):
                 if isinstance(b, ImageBlock):
                     loader_xrefs.add(b.xref)
-            for img in extract_images_from_page(doc, page, page_num, out_dir):
+            for img in extract_images_from_page(doc, page, page_num, out_dir).images:
                 extracted_xrefs.add(img.xref)
         assert loader_xrefs <= extracted_xrefs, (
             f"ImageBlock xrefs not found by extract_images_from_page: "
@@ -57,8 +57,13 @@ def test_extract_images_filters_tiny_via_module_constant(
     out_dir = tmp_path / "images"
     try:
         total = []
+        total_skipped = 0
         for page_num, page in iter_pages(doc):
-            total.extend(extract_images_from_page(doc, page, page_num, out_dir))
+            result = extract_images_from_page(doc, page, page_num, out_dir)
+            total.extend(result.images)
+            total_skipped += result.skipped_small
         assert total == []
+        # The filtered images are reported (T-002), not silently dropped.
+        assert total_skipped >= 1
     finally:
         doc.close()

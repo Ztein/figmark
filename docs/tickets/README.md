@@ -5,7 +5,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | ID | Status | Priority | Title |
 |---|---|---|---|
 | [T-001](T-001-vector-diagrams-missed.md) | **Closed** | HIGH | Vector charts missed entirely — pipeline only saw raster images |
-| [T-002](T-002-misleading-filtered-image-log.md) | Open | Low | Log says "N image blocks" but doesn't explain why 0 are saved |
+| [T-002](T-002-misleading-filtered-image-log.md) | **Closed** | Low | Log says "N image blocks" but doesn't explain why 0 are saved |
 | [T-003](T-003-parallel-image-description.md) | **Closed** | Medium | Parallel processing of image/diagram descriptions with a rich CLI |
 | [T-004](T-004-tagged-pdf-pdfua.md) | Open | Medium | Tagged PDF / PDF/UA via pikepdf — real accessibility via the structure tree |
 | [T-005](T-005-pdf-annotations.md) | **Closed** | Medium | Embed descriptions as text annotations in the PDF (MVP accessibility) |
@@ -23,10 +23,10 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-017](T-017-compose-defaults-to-ghcr.md) | **Closed** | Medium | compose should run the published GHCR image — clone-free quickstart |
 | [T-018](T-018-first-public-release.md) | **Closed** | Medium | Cut the first public release (v0.2.0) |
 | [T-019](T-019-repo-cosmetics.md) | **Closed** | Low | Disable unused repo tabs (Wiki, Projects) |
-| [T-020](T-020-remove-berget-fallback.md) | Open | Medium | Remove the deprecated BERGET_API_KEY fallback and last Berget-specific references |
+| [T-020](T-020-remove-berget-fallback.md) | **Closed** | Medium | Remove the deprecated BERGET_API_KEY fallback and last Berget-specific references |
 | [T-021](T-021-offpage-drawings-crash.md) | **Closed** | HIGH | Off-page drawing clusters crash diagram rendering (found by the eval corpus) |
 | [T-022](T-022-diagram-payload-cap.md) | **Closed** | HIGH | Diagram payloads were sent uncapped — large charts rejected by the API |
-| [T-023](T-023-significance-gate-for-diagrams.md) | Open | Low | Apply the significance gate to vector-diagram regions (2 % logo-as-diagram in eval) |
+| [T-023](T-023-significance-gate-for-diagrams.md) | **Closed** | Low | Apply the significance gate to vector-diagram regions (2 % logo-as-diagram in eval) |
 | [T-024](T-024-audit-silent-fallbacks-and-hidden-defaults.md) | **Closed** | Medium | Audit for further principle violations — silent fallbacks and hidden defaults |
 | [T-025](T-025-selectable-output-format.md) | **Closed** | Low | Let the client choose the response format (JSON, Markdown, or both) on /v1/convert |
 | [T-026](T-026-tables-flattened-to-text.md) | Open | High | Tables are flattened to loose text lines — un-parked: corpus now has real tables (split into T-030/T-031) |
@@ -35,14 +35,14 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-029](T-029-report-conversion-cost.md) | **Closed** | Medium | Report token usage (and an optional cost estimate) for a conversion |
 | [T-030](T-030-labelled-table-bench.md) | Open | High | Labelled table bench — scored: PyMuPDF+filter 100%/99%, beats pdfplumber → ship PyMuPDF-only |
 | [T-031](T-031-conservative-table-extraction.md) | **Closed** | High | Conservative table extraction → Markdown via a TableBlock (PyMuPDF-only) |
-| [T-032](T-032-loud-warnings-silenced-under-quiet.md) | Open | High | Loud pipeline warnings silenced in container/API mode (quiet=True → _noop) |
-| [T-033](T-033-truncated-descriptions-undetected.md) | Open | Medium | Truncated descriptions never detected (finish_reason ignored); empty response not retried |
-| [T-034](T-034-cache-ignores-config.md) | Open | Medium | Description cache ignores config — stale output after a model/prompt/language change |
+| [T-032](T-032-loud-warnings-silenced-under-quiet.md) | **Closed** | High | Loud pipeline warnings silenced in container/API mode (quiet=True → _noop) |
+| [T-033](T-033-truncated-descriptions-undetected.md) | **Closed** | Medium | Truncated descriptions never detected (finish_reason ignored); empty response not retried |
+| [T-034](T-034-cache-ignores-config.md) | **Closed** | Medium | Description cache ignores config — stale output after a model/prompt/language change |
 | [T-035](T-035-diagram-detection-recall-unmeasured.md) | Open | High | Diagram detection recall unmeasured + single-genre calibrated — silent figure loss |
-| [T-036](T-036-naive-multicolumn-reading-order.md) | Open | Medium | Reading order naive for multi-column pages (interleaves columns; affects T-031) |
-| [T-037](T-037-quadratic-drawing-clustering.md) | Open | Low | O(n²) drawing clustering — hotspot on draw-heavy pages |
-| [T-038](T-038-document-pdf-prompt-injection.md) | Open | Low | Threat model omits PDF-text prompt injection (document in SECURITY.md) |
-| [T-039](T-039-dockerfile-base-comment-drift.md) | Open | Low | Dockerfile base comment drifted (says 3.12, pins 3.14); verify wheel stability |
+| [T-036](T-036-naive-multicolumn-reading-order.md) | **Closed** | Medium | Reading order naive for multi-column pages (interleaves columns; affects T-031) |
+| [T-037](T-037-quadratic-drawing-clustering.md) | **Closed** | Low | O(n²) drawing clustering — hotspot on draw-heavy pages |
+| [T-038](T-038-document-pdf-prompt-injection.md) | **Closed** | Low | Threat model omits PDF-text prompt injection (document in SECURITY.md) |
+| [T-039](T-039-dockerfile-base-comment-drift.md) | **Closed** | Low | Dockerfile base comment drifted (says 3.12, pins 3.14); verify wheel stability |
 
 ## How a ticket is written
 

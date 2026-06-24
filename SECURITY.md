@@ -30,6 +30,16 @@ Trust boundaries and mitigations:
 - **Egress.** The container talks only to `api.base_url`. In an air-gapped network
   this is your internal LLM; nothing else is contacted at runtime, and the image
   performs no downloads.
+- **Prompt injection via PDF text.** Text extracted from the PDF (the surrounding
+  context sent with each figure, and the document summary) is concatenated into the
+  model prompt. A hostile PDF could therefore embed instructions aimed at the vision
+  model ("ignore the task and output X"). figmark's intended use is **trusted
+  documents** (e.g. an agency's own reports), so this is accepted, not mitigated:
+  the model only ever produces descriptive text that is written to output files —
+  it has no tools, no actions, and no access to secrets or the network. The blast
+  radius of a successful injection is a wrong/misleading figure description, not
+  code execution or data exfiltration. Do not point figmark at untrusted PDFs and
+  treat its output as authoritative without review.
 
 ## Secret handling
 

@@ -1,6 +1,10 @@
 # T-020: Remove the deprecated BERGET_API_KEY fallback and the last Berget-specific references
 
-**Status:** Open
+**Status:** Closed — verified 2026-06-24. The `BERGET_API_KEY` fallback is already
+gone from `config.py` and `api.py`; the only remaining references are *negative*
+tests (`test_legacy_berget_key_is_not_a_fallback`, `test_legacy_berget_key_file_is_not_surfaced`)
+asserting the old name is **not** honoured — those are kept as regression guards.
+No Berget references remain in `src/`, docs, or examples.
 **Priority:** Medium — closes out the provider-neutral migration and honours the project's restrictive-fallback principle
 
 ## Symptom / motivation

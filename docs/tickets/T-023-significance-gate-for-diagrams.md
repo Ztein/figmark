@@ -1,6 +1,8 @@
 # T-023: Apply the significance gate to vector-diagram regions
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24 (PR #33). `describe_diagram` now applies
+`significance=cfg.significance.enabled`; `[SKIP]` diagrams are dropped from the
+Markdown and not annotated. (Eval re-run on ECB bulletins is a live-API follow-up.)
 **Priority:** Low — 2 % of diagram regions in the eval corpus; output is ugly, not wrong
 
 ## Symptom

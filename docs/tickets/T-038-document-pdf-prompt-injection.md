@@ -1,6 +1,8 @@
 # T-038: Threat model omits PDF-text prompt injection
 
-**Status:** Open
+**Status:** Closed — documented 2026-06-24. SECURITY.md's threat model now has a
+"Prompt injection via PDF text" entry stating the trusted-document assumption and
+the limited blast radius (descriptive text only; no tools/network/secrets).
 **Priority:** Low — low risk for the stated use case, but undocumented
 **Source:** External code review (2026-06-24), verified against the code.
 
