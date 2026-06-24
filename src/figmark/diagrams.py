@@ -73,7 +73,16 @@ def _close(r1: fitz.Rect, r2: fitz.Rect, slack: float) -> bool:
 
 
 def _cluster_rects(rects: list[fitz.Rect], merge_distance: float) -> list[list[int]]:
-    """Union-find clustering of rectangles by spatial proximity."""
+    """Union-find clustering of rectangles by spatial proximity.
+
+    Connectivity is the ``_close`` relation (bboxes within ``merge_distance``).
+    Rather than test all O(n²) pairs, sweep left to right by ``x0`` keeping an
+    "active" set of rects whose right edge is still within reach; a rect can only
+    be close to an active one. This yields the *identical* connected components as
+    the brute-force pairing (a pair pruned by the sweep can never satisfy
+    ``_close``), but is near-linear when drawings are spatially spread — the common
+    case on a chart page — instead of quadratic. (T-037)
+    """
     n = len(rects)
     parent = list(range(n))
 
@@ -88,10 +97,21 @@ def _cluster_rects(rects: list[fitz.Rect], merge_distance: float) -> list[list[i
         if px != py:
             parent[px] = py
 
-    for i in range(n):
-        for j in range(i + 1, n):
-            if _close(rects[i], rects[j], merge_distance):
-                union(i, j)
+    order = sorted(range(n), key=lambda i: rects[i].x0)
+    active: list[int] = []  # indices whose right edge may still reach a later rect
+    for idx in order:
+        r = rects[idx]
+        still_active: list[int] = []
+        for j in active:
+            # Once a rect's right edge + slack is left of r.x0, it (and every later
+            # rect, all with larger x0) can never be close again — drop it.
+            if rects[j].x1 + merge_distance < r.x0:
+                continue
+            still_active.append(j)
+            if _close(rects[j], r, merge_distance):
+                union(j, idx)
+        still_active.append(idx)
+        active = still_active
 
     groups: dict[int, list[int]] = {}
     for i in range(n):
@@ -274,8 +294,9 @@ def describe_diagram(
 
     Cache: if description_path exists and is non-empty, read it from disk.
     The document summary and any text context are prepended before the task.
-    The significance skip gate is not applied here — clustering already ensures a
-    region is a real chart, so we always describe it.
+    The significance skip gate follows ``cfg.significance`` here too: the eval
+    corpus showed ~2 % of clustered regions are vector logos, not charts, so the
+    gate lets the model return [SKIP] for those instead of captioning a logo. (T-023)
     """
     if description_path.exists():
         cached = description_path.read_text(encoding="utf-8").strip()
@@ -294,7 +315,7 @@ def describe_diagram(
         cfg.diagrams.prompt,
         doc_summary=doc_summary,
         context=context,
-        significance=False,
+        significance=cfg.significance.enabled,
         language=language if language is not None else cfg.language.output,
     )
 

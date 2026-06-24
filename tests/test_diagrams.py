@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import random
 from pathlib import Path
 
 import fitz
@@ -10,6 +11,8 @@ from figmark.diagrams import (
     MIN_CLUSTER_HEIGHT,
     MIN_CLUSTER_WIDTH,
     MIN_DRAWINGS_PER_CLUSTER,
+    _close,
+    _cluster_rects,
     find_diagram_regions,
     render_and_save_region,
 )
@@ -149,6 +152,46 @@ def test_large_diagram_payload_is_capped(tmp_path: Path, env_with_key, project_r
     assert captured["url_len"] < MAX_PAYLOAD_BYTES * 1.4, (
         f"diagram payload not capped: {captured['url_len']} chars"
     )
+
+
+def _rand_rect(rng: random.Random) -> fitz.Rect:
+    x = rng.uniform(0, 500)
+    y = rng.uniform(0, 500)
+    return fitz.Rect(x, y, x + rng.uniform(1, 60), y + rng.uniform(1, 60))
+
+
+def _bruteforce_partition(rects: list[fitz.Rect], slack: float) -> set[frozenset[int]]:
+    """All-pairs union-find — the reference the x-sweep must reproduce exactly."""
+    n = len(rects)
+    parent = list(range(n))
+
+    def find(x: int) -> int:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            if _close(rects[i], rects[j], slack):
+                a, b = find(i), find(j)
+                if a != b:
+                    parent[a] = b
+    groups: dict[int, list[int]] = {}
+    for i in range(n):
+        groups.setdefault(find(i), []).append(i)
+    return {frozenset(g) for g in groups.values()}
+
+
+def test_cluster_rects_matches_bruteforce_partition():
+    """T-037: the near-linear x-sweep clustering must yield the identical partition
+    as the original O(n²) all-pairs version, across many random layouts."""
+    rng = random.Random(20260624)
+    for _ in range(25):
+        rects = [_rand_rect(rng) for _ in range(90)]
+        slack = rng.uniform(0, 12)
+        swept = {frozenset(g) for g in _cluster_rects(rects, slack)}
+        assert swept == _bruteforce_partition(rects, slack)
 
 
 def test_render_region_produces_png(report_pdf: Path, tmp_path: Path):

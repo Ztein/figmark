@@ -91,3 +91,51 @@ def test_skip_marked_description_is_not_rendered():
     md = to_markdown([page])
     assert "Body text." in md
     assert "](images/" not in md, "a skip-marked image must not be embedded"
+
+
+def test_skip_marked_diagram_is_not_rendered_or_annotated():
+    """A clustered region the model flags as decorative (a vector logo) must be
+    dropped from the Markdown and not embedded as a PDF annotation. (T-023)"""
+    from figmark.pdf_loader import DiagramBlock
+    from figmark.pipeline import _collect_annotation_items
+
+    page = PageData(page_num=1, is_ocr=False)
+    page.blocks = [DiagramBlock(bbox=(0, 0, 100, 100), region_index=1)]
+    page.diagram_descriptions = {1: SKIP_MARKER}
+
+    md = to_markdown([page])
+    assert "Diagram" not in md
+    assert SKIP_MARKER not in md
+    assert _collect_annotation_items([page]) == [], "a skip-marked diagram must not be annotated"
+
+
+def test_describe_diagram_applies_significance_gate(env_with_key, project_root, tmp_path):
+    """describe_diagram now composes its prompt with the skip instruction when the
+    significance gate is enabled, so a vector logo can be answered with [SKIP]. (T-023)"""
+    from types import SimpleNamespace
+
+    from PIL import Image
+
+    from figmark.config import load_config
+    from figmark.diagrams import DiagramRegion, describe_diagram
+
+    from .fakes import make_response
+
+    cfg = load_config(project_root / "config.example.yaml")
+    cfg.significance.enabled = True
+
+    img_path = tmp_path / "diagram.png"
+    Image.new("RGB", (32, 32), (255, 255, 255)).save(img_path)
+    region = DiagramRegion(page_num=1, index=1, bbox=(0, 0, 100, 100), n_drawings=10, path=img_path)
+
+    captured: dict[str, str] = {}
+
+    def create(model, max_tokens, messages, **kw):
+        captured["text"] = next(p["text"] for p in messages[0]["content"] if p["type"] == "text")
+        return make_response(SKIP_MARKER)
+
+    client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+    out = describe_diagram(client, region, tmp_path / "d.txt", cfg)
+
+    assert SKIP_MARKER in captured["text"]  # the gate instruction reached the prompt
+    assert is_skip(out)

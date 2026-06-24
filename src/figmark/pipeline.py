@@ -106,7 +106,7 @@ def _collect_annotation_items(pages: list[PageData]) -> list[AnnotationItem]:
         for block in page_data.blocks:
             if isinstance(block, DiagramBlock):
                 desc = page_data.diagram_descriptions.get(block.region_index)
-                if desc:
+                if desc and not is_skip(desc):  # a [SKIP] (logo) diagram is not annotated (T-023)
                     items.append(
                         AnnotationItem(
                             page_num=page_data.page_num,
@@ -364,8 +364,7 @@ def convert(
     # Config fingerprint folded into the cache filename: a change to the model,
     # prompt, resolved language, significance gate, context window, or document
     # summary now misses the cache and regenerates, instead of silently reusing a
-    # description produced under the old config. (T-034) Diagrams never apply the
-    # significance gate (clustering already vetted them), hence False there.
+    # description produced under the old config. (T-034)
     _ctx_fp = (cfg.context.enabled, cfg.context.words_before, cfg.context.words_after)
     _summary_fp = (cfg.document_summary.enabled, cfg.document_summary.prompt)
     image_fp = cache_fingerprint(
@@ -380,7 +379,7 @@ def convert(
         cfg.api.model,
         cfg.diagrams.prompt,
         resolved_language,
-        False,
+        cfg.significance.enabled,
         _ctx_fp,
         _summary_fp,
     )
