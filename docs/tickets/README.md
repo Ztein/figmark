@@ -29,10 +29,20 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-023](T-023-significance-gate-for-diagrams.md) | Open | Low | Apply the significance gate to vector-diagram regions (2 % logo-as-diagram in eval) |
 | [T-024](T-024-audit-silent-fallbacks-and-hidden-defaults.md) | **Closed** | Medium | Audit for further principle violations — silent fallbacks and hidden defaults |
 | [T-025](T-025-selectable-output-format.md) | **Closed** | Low | Let the client choose the response format (JSON, Markdown, or both) on /v1/convert |
-| [T-026](T-026-tables-flattened-to-text.md) | Parked | High | Tables are flattened to loose text lines — bench: naive extraction adds garbage on chart-heavy docs |
+| [T-026](T-026-tables-flattened-to-text.md) | Open | High | Tables are flattened to loose text lines — un-parked: corpus now has real tables (split into T-030/T-031) |
 | [T-027](T-027-per-page-scan-decision.md) | **Closed** | High | A scanned/image-only page inside a text PDF is never OCR'd (document-level scan decision) |
 | [T-028](T-028-evaluate-garbled-text-prevalence.md) | **Closed** | Low | Measure how often PDFs have garbled (present-but-broken) text before building OCR handling |
 | [T-029](T-029-report-conversion-cost.md) | **Closed** | Medium | Report token usage (and an optional cost estimate) for a conversion |
+| [T-030](T-030-labelled-table-bench.md) | Open | High | Labelled table bench — scored: PyMuPDF+filter 100%/99%, beats pdfplumber → ship PyMuPDF-only |
+| [T-031](T-031-conservative-table-extraction.md) | Open | High | Conservative table extraction → Markdown via a TableBlock (unblocked: PyMuPDF-only) |
+| [T-032](T-032-loud-warnings-silenced-under-quiet.md) | Open | High | Loud pipeline warnings silenced in container/API mode (quiet=True → _noop) |
+| [T-033](T-033-truncated-descriptions-undetected.md) | Open | Medium | Truncated descriptions never detected (finish_reason ignored); empty response not retried |
+| [T-034](T-034-cache-ignores-config.md) | Open | Medium | Description cache ignores config — stale output after a model/prompt/language change |
+| [T-035](T-035-diagram-detection-recall-unmeasured.md) | Open | High | Diagram detection recall unmeasured + single-genre calibrated — silent figure loss |
+| [T-036](T-036-naive-multicolumn-reading-order.md) | Open | Medium | Reading order naive for multi-column pages (interleaves columns; affects T-031) |
+| [T-037](T-037-quadratic-drawing-clustering.md) | Open | Low | O(n²) drawing clustering — hotspot on draw-heavy pages |
+| [T-038](T-038-document-pdf-prompt-injection.md) | Open | Low | Threat model omits PDF-text prompt injection (document in SECURITY.md) |
+| [T-039](T-039-dockerfile-base-comment-drift.md) | Open | Low | Dockerfile base comment drifted (says 3.12, pins 3.14); verify wheel stability |
 
 ## How a ticket is written
 

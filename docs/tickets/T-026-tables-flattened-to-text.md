@@ -1,9 +1,68 @@
 # T-026: Tables are flattened to loose text lines — column structure is lost
 
-**Status:** Parked (2026-06-11) — the bench showed naive extraction does more harm
-than good on the chart-heavy corpus; resume when there is a table-heavy document
-to validate against, or build the conservative filtered approach below.
+**Status:** Open (un-parked 2026-06-24) — the resume condition is met: the eval
+corpus now contains documents with real ruled data tables. Execution is split into
+[T-030](T-030-labelled-table-bench.md) (build the labelled bench) and
+[T-031](T-031-conservative-table-extraction.md) (filtered extraction + `TableBlock`).
+See the 2026-06-24 update below.
 **Priority:** High — data fidelity for the core use case (data-heavy reports)
+
+## Update 2026-06-24 — un-parking: the corpus now has real tables
+
+When this was parked (2026-06-11) the only eval document was the chart-heavy
+`penningpolitisk-rapport-mars-2026.pdf`, which has **no** ruled data tables. The
+eval corpus has since grown to ~32 central-bank PDFs, so the "validate on a
+table-heavy document first" resume path is now possible. Ran an unlabelled
+detector probe ([scripts/probe_tables.py](../../scripts/probe_tables.py)):
+PyMuPDF `find_tables()` per page, scoring each hit by rows×cols, non-empty-cell
+ratio, and overlap with a detected diagram region.
+
+**Documents with real ruled data tables (the validation set):**
+
+| Document | Pages w/ real tables | What they are |
+|---|---|---|
+| `norges-mpr-4-2025` / `norges-mpr-2-2025` | 17,18,27,53,54,55 / 19,32,63,64,65 | Forecast tables, year columns + revision deltas `1.9 (0.1)`; **same structure across editions** |
+| `boc-mpr-202401` / `boc-mpr-202407` | 6,14 / 6,14,15 | GDP-contribution tables, clean numeric grids |
+| `fed-mpr-202407` | 53 | Fed balance-sheet table |
+
+**Critical caveat — raw counts lie.** Two documents reported high `find_tables`
+counts that are *false positives* on inspection, so detection count alone is not a
+quality signal:
+- `ecb-fsr-202411` → 70 "tables" that are actually **chart-caption rows** laid out
+  in columns (`a) Inflation… b) 2025 real GDP… c) Average potential…`), not data.
+- `bis-ar-2024` → 10 "good" + 126 empty; the non-empty ones are mostly **chart
+  axis-tick ladders** (`5 / 4 / 3 / 2 / 1 / 0`), not data.
+
+The Riksbank reports (`riksbank-ppr-202503`, `-202512`) and `penningpolitisk-
+rapport` return **0 tables** — their data lives in vector charts, already handled
+by the figure pipeline. This confirms the original parking rationale: naive
+extraction injects convincing garbage, and the original corpus genuinely had
+nothing to detect.
+
+**Refined filter (sharpens resume-path Option 1, still no new dependency).** The
+naive non-empty-ratio + min-size filter is not enough — it lets chart captions and
+axis ladders through. Three additional gates, all derivable from data we already
+have:
+1. **Drop diagram overlaps.** Reject a table whose bbox overlaps a detected
+   diagram region (`find_diagram_regions`, already in [diagrams.py](src/figmark/diagrams.py))
+   by >50%. This zeroes the BoE-MPR false positives (all hits sat on charts).
+2. **Require a numeric body.** Demand ≥3 rows AND a meaningful fraction of cells
+   that parse as numbers / parenthesised deltas → kills `ecb-fsr`'s 1–2-row prose
+   caption rows.
+3. **Reject single-column number ladders.** A lone numeric column with empty
+   neighbours is a chart axis → kills `bis-ar`'s tick scales.
+
+With these gates the behaviour is correct: real tables (Norges/BoC/Fed) emit as
+Markdown; chart-heavy docs (Riksbank/BoE/BIS) fall back silently to today's text
+path — no garbage injected. The numbers and the PyMuPDF-vs-pdfplumber decision get
+recorded in [T-030](T-030-labelled-table-bench.md).
+
+**Outcome ([T-030](T-030-labelled-table-bench.md), 2026-06-24):** the labelled
+bench scored PyMuPDF + filter at **100 % detection, 99 % cell-recall, zero
+false-positive leaks** on the controls; pdfplumber managed only 80 % recall and
+flooded 203 false tables on `bis-ar` without a filter. **Decision: ship
+PyMuPDF-only + the 3-gate filter, no new dependency.** Productionisation is
+[T-031](T-031-conservative-table-extraction.md).
 
 ## Bench results (2026-06-11) — why this is parked
 
