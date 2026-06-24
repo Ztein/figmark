@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import base64
 import io
+import logging
 import mimetypes
 import time
 from pathlib import Path
@@ -20,6 +21,8 @@ from PIL import Image
 
 from .config import Config
 from .context import ContextText
+
+logger = logging.getLogger("figmark.describe")
 
 # Technical constants — tune here if you need to.
 TIMEOUT_SECONDS = 60
@@ -180,12 +183,27 @@ def describe_image(
                     }
                 ],
             )
-            text = (response.choices[0].message.content or "").strip()
+            choice = response.choices[0]
+            text = (choice.message.content or "").strip()
             if not text:
+                # An empty completion is a hard error, deliberately NOT retried:
+                # with FAIL_FAST a retry just repeats the same failure, and an empty
+                # body almost always means the model can't take image input or
+                # rejected the prompt — not a transient blip. (T-033)
                 raise RuntimeError(
                     f"The API returned empty content for {image_path.name} "
                     f"(model={cfg.api.model}). This usually means the model does "
                     f"not support image input or the prompt was rejected."
+                )
+            if getattr(choice, "finish_reason", None) == "length":
+                # Truncated at the token cap — the description is likely cut
+                # mid-sentence. Warn loudly (do not silently cache a partial as if
+                # complete) but still keep what we got. (T-033)
+                logger.warning(
+                    "Description for %s was truncated at the %d-token cap "
+                    "(finish_reason=length); it may be cut mid-sentence.",
+                    image_path.name,
+                    MAX_TOKENS,
                 )
             description_path.parent.mkdir(parents=True, exist_ok=True)
             description_path.write_text(text, encoding="utf-8")

@@ -7,12 +7,17 @@ images so the test is fully self-contained (no external PDF, no API).
 
 from __future__ import annotations
 
+import logging
 import os
 from pathlib import Path
+from types import SimpleNamespace
 
 from PIL import Image
 
-from figmark.describe import MAX_PAYLOAD_BYTES, _prepare_image_for_api
+from figmark.config import load_config
+from figmark.describe import MAX_PAYLOAD_BYTES, MAX_TOKENS, _prepare_image_for_api, describe_image
+
+from .fakes import make_response
 
 
 def _write_random_png(path: Path, size: int) -> Path:
@@ -43,3 +48,29 @@ def test_large_image_gets_resized_under_cap(tmp_path: Path):
     payload, mime = _prepare_image_for_api(img_path)
     assert len(payload) <= MAX_PAYLOAD_BYTES
     assert mime == "image/jpeg"  # converted to JPEG on resize
+
+
+# --- T-033: a truncated description (finish_reason=length) warns loudly -------
+
+
+class _TruncatingClient:
+    """Returns a description the API cut off at the token cap."""
+
+    def __init__(self):
+        self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._create))
+
+    def _create(self, model, max_tokens, messages, **kwargs):
+        return make_response("A partial description that was cut off", finish_reason="length")
+
+
+def test_truncated_description_warns(env_with_key, project_root: Path, tmp_path: Path, caplog):
+    cfg = load_config(project_root / "config.example.yaml")
+    img_path = _write_random_png(tmp_path / "fig.png", 64)
+    desc_path = tmp_path / "fig.txt"
+
+    with caplog.at_level(logging.WARNING, logger="figmark.describe"):
+        out = describe_image(_TruncatingClient(), img_path, desc_path, cfg)
+
+    assert out == "A partial description that was cut off"  # still returned/cached
+    assert "truncated" in caplog.text.lower()
+    assert str(MAX_TOKENS) in caplog.text  # names the cap that was hit

@@ -18,14 +18,25 @@ SUMMARY_REPLY = "Detta är ett testdokument om katter."
 DETECTED_LANGUAGE = "Swedish"
 
 
-def make_response(text: str, *, prompt_tokens: int = 10, completion_tokens: int = 5):
+def make_response(
+    text: str,
+    *,
+    prompt_tokens: int = 10,
+    completion_tokens: int = 5,
+    finish_reason: str = "stop",
+):
     """Build an object shaped like an OpenAI chat completion response.
 
-    Includes a ``usage`` block like the real API, so usage accounting can be
-    exercised offline.
+    Includes a ``usage`` block and a ``finish_reason`` like the real API, so usage
+    accounting and truncation detection can be exercised offline.
     """
     return SimpleNamespace(
-        choices=[SimpleNamespace(message=SimpleNamespace(content=text))],
+        choices=[
+            SimpleNamespace(
+                message=SimpleNamespace(content=text),
+                finish_reason=finish_reason,
+            )
+        ],
         usage=SimpleNamespace(
             prompt_tokens=prompt_tokens,
             completion_tokens=completion_tokens,
