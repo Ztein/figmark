@@ -34,6 +34,9 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "PyYAML>=6.0",
     "rich>=13.0.0",
+    # PDF/UA structure-tree tagging (T-004). Wheels bundle qpdf — no apt package
+    # needed, so the air-gapped image stays self-contained.
+    "pikepdf>=9.0",
 ]
 
 [project.urls]
