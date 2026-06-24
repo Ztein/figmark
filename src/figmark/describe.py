@@ -10,6 +10,7 @@ with the diagram and summary paths.
 from __future__ import annotations
 
 import base64
+import hashlib
 import io
 import logging
 import mimetypes
@@ -50,6 +51,18 @@ SIGNIFICANCE_INSTRUCTION = (
 def is_skip(text: str | None) -> bool:
     """True if a description is the significance-gate skip marker (decorative image)."""
     return bool(text) and text.strip().upper().startswith(SKIP_MARKER)
+
+
+def cache_fingerprint(*parts: object) -> str:
+    """Short, stable hash of the inputs that determine a description's content.
+
+    Folded into the cache filename so that changing the model, prompt, output
+    language, significance gate, or context settings produces a different key — a
+    cache miss that regenerates — instead of silently reusing output produced under
+    the old config. (T-034)
+    """
+    blob = "\x1f".join(str(p) for p in parts).encode("utf-8")
+    return hashlib.sha256(blob).hexdigest()[:10]
 
 
 def language_instruction(output: str) -> str:

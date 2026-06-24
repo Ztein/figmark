@@ -32,6 +32,30 @@ def test_convert_returns_markdown_and_paths(env_with_key, project_root: Path, tm
     assert result.language == DETECTED_LANGUAGE
 
 
+def test_cache_misses_when_config_changes(env_with_key, project_root: Path, tmp_path: Path):
+    """A description is reused only while the config that produced it is unchanged.
+    Same config → cache hit (no API call); changed config → miss → regenerate. (T-034)"""
+    pdf = synthetic_pdf(tmp_path / "doc.pdf")
+    out = tmp_path / "output"
+    cfg = load_config(project_root / "config.example.yaml")
+
+    first = FakeClient("En bild på en katt.")
+    convert(pdf, cfg, out, client=first, quiet=True)
+    n_first = len(first.describe_prompts)
+    assert n_first >= 1  # the embedded image was described
+
+    # Same config, same output dir → every description is a cache hit.
+    again = FakeClient("En bild på en katt.")
+    convert(pdf, cfg, out, client=again, quiet=True)
+    assert again.describe_prompts == []
+
+    # Change a field that determines the output (the language) → cache miss.
+    cfg.language.output = "English"
+    changed = FakeClient("A picture of a cat.")
+    convert(pdf, cfg, out, client=changed, quiet=True)
+    assert len(changed.describe_prompts) == n_first
+
+
 def test_convert_uses_injected_client_without_monkeypatch(
     env_with_key, project_root: Path, tmp_path: Path
 ):

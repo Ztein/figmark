@@ -17,7 +17,7 @@ from openai import APIError
 from .annotate import AnnotationItem, annotate_pdf
 from .config import Config
 from .context import ContextText, get_text_context_around
-from .describe import describe_image, is_skip, make_client
+from .describe import cache_fingerprint, describe_image, is_skip, make_client
 from .diagrams import (
     DiagramRegion,
     describe_diagram,
@@ -361,6 +361,30 @@ def convert(
     cache_hits = 0
     total_pending = sum(len(p.images) for p in pages) + total_diagrams
 
+    # Config fingerprint folded into the cache filename: a change to the model,
+    # prompt, resolved language, significance gate, context window, or document
+    # summary now misses the cache and regenerates, instead of silently reusing a
+    # description produced under the old config. (T-034) Diagrams never apply the
+    # significance gate (clustering already vetted them), hence False there.
+    _ctx_fp = (cfg.context.enabled, cfg.context.words_before, cfg.context.words_after)
+    _summary_fp = (cfg.document_summary.enabled, cfg.document_summary.prompt)
+    image_fp = cache_fingerprint(
+        cfg.api.model,
+        cfg.description.prompt,
+        resolved_language,
+        cfg.significance.enabled,
+        _ctx_fp,
+        _summary_fp,
+    )
+    diagram_fp = cache_fingerprint(
+        cfg.api.model,
+        cfg.diagrams.prompt,
+        resolved_language,
+        False,
+        _ctx_fp,
+        _summary_fp,
+    )
+
     def _maybe_context(bbox) -> ContextText | None:
         if not cfg.context.enabled or bbox is None:
             return None
@@ -374,7 +398,7 @@ def convert(
 
     for page_data in pages:
         for img in page_data.images:
-            desc_path = descriptions_dir / f"{img.path.stem}.txt"
+            desc_path = descriptions_dir / f"{img.path.stem}-{image_fp}.txt"
             cached = desc_path.exists() and desc_path.read_text(encoding="utf-8").strip()
             if cached:
                 page_data.descriptions[img.xref] = cached
@@ -397,7 +421,7 @@ def convert(
             )
 
         for region in page_regions.get(page_data.page_num, []):
-            desc_path = diagram_descriptions_dir / f"{region.path.stem}.txt"
+            desc_path = diagram_descriptions_dir / f"{region.path.stem}-{diagram_fp}.txt"
             cached = desc_path.exists() and desc_path.read_text(encoding="utf-8").strip()
             if cached:
                 page_data.diagram_descriptions[region.index] = cached
