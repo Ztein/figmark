@@ -1,6 +1,13 @@
 # T-035: Diagram detection recall is unmeasured (and single-genre calibrated)
 
-**Status:** Open
+**Status:** Open — **Phase 1 done** (2026-06-24, PR #39): recall bench harness
+built ([scripts/recall_bench/bench.py](../../scripts/recall_bench/bench.py)) with
+hand-annotated ground truth, and a first non-central-bank genre measured (the
+U-Net scientific paper: 1 vector diagram, detector recall 1/1 = 100 %; its raster
+figures are images.py's job, excluded). That single diagram shows the detector
+generalises but is far too thin to characterise recall. **Remaining: source a
+vector-chart-rich genre 2** (e.g. a TikZ-heavy paper or an InDesign brochure) and
+annotate it — needs a decision on which public PDFs to use (licensing/repro).
 **Priority:** High — the most dangerous blind spot: silent figure loss
 **Source:** External code review (2026-06-24), verified against the code.
 
