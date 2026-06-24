@@ -34,7 +34,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-028](T-028-evaluate-garbled-text-prevalence.md) | **Closed** | Low | Measure how often PDFs have garbled (present-but-broken) text before building OCR handling |
 | [T-029](T-029-report-conversion-cost.md) | **Closed** | Medium | Report token usage (and an optional cost estimate) for a conversion |
 | [T-030](T-030-labelled-table-bench.md) | Open | High | Labelled table bench — scored: PyMuPDF+filter 100%/99%, beats pdfplumber → ship PyMuPDF-only |
-| [T-031](T-031-conservative-table-extraction.md) | Open | High | Conservative table extraction → Markdown via a TableBlock (unblocked: PyMuPDF-only) |
+| [T-031](T-031-conservative-table-extraction.md) | **Closed** | High | Conservative table extraction → Markdown via a TableBlock (PyMuPDF-only) |
 | [T-032](T-032-loud-warnings-silenced-under-quiet.md) | Open | High | Loud pipeline warnings silenced in container/API mode (quiet=True → _noop) |
 | [T-033](T-033-truncated-descriptions-undetected.md) | Open | Medium | Truncated descriptions never detected (finish_reason ignored); empty response not retried |
 | [T-034](T-034-cache-ignores-config.md) | Open | Medium | Description cache ignores config — stale output after a model/prompt/language change |

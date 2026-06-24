@@ -111,6 +111,7 @@ def test_missing_api_model_fails_loudly(env_with_key, tmp_path: Path):
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
+        "tables:\n  enabled: false\n"
         "concurrency:\n  max_workers: 2\n",
         encoding="utf-8",
     )
@@ -125,6 +126,7 @@ def test_missing_api_base_url_fails_loudly(env_with_key, tmp_path: Path):
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
+        "tables:\n  enabled: false\n"
         "concurrency:\n  max_workers: 2\n",
         encoding="utf-8",
     )
@@ -138,10 +140,25 @@ def test_missing_concurrency_fails_loudly(env_with_key, tmp_path: Path):
         "api:\n  model: 'x'\n  base_url: 'x'\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
-        "diagrams:\n  enabled: false\n",
+        "diagrams:\n  enabled: false\n"
+        "tables:\n  enabled: false\n",
         encoding="utf-8",
     )
     with pytest.raises(RuntimeError, match="concurrency.max_workers is missing"):
+        load_config(bad)
+
+
+def test_missing_tables_fails_loudly(env_with_key, tmp_path: Path):
+    bad = tmp_path / "bad.yaml"
+    bad.write_text(
+        "api:\n  model: 'x'\n  base_url: 'x'\n"
+        "ocr:\n  language: 'swe'\n"
+        "description:\n  prompt: 'x'\n"
+        "diagrams:\n  enabled: false\n"
+        "concurrency:\n  max_workers: 2\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(RuntimeError, match="tables.enabled is missing"):
         load_config(bad)
 
 
@@ -151,6 +168,7 @@ def test_missing_ocr_language_fails_loudly(env_with_key, tmp_path: Path):
         "api:\n  model: 'x'\n  base_url: 'x'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
+        "tables:\n  enabled: false\n"
         "concurrency:\n  max_workers: 2\n",
         encoding="utf-8",
     )
@@ -195,6 +213,7 @@ def test_empty_string_field_fails_loudly(env_with_key, tmp_path: Path):
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
+        "tables:\n  enabled: false\n"
         "concurrency:\n  max_workers: 2\n",
         encoding="utf-8",
     )
@@ -210,6 +229,7 @@ def test_null_value_fails_loudly(env_with_key, tmp_path: Path):
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
+        "tables:\n  enabled: false\n"
         "concurrency:\n  max_workers: 2\n",
         encoding="utf-8",
     )
@@ -237,6 +257,7 @@ def test_missing_context_fails_loudly(env_with_key, tmp_path: Path):
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
+        "tables:\n  enabled: false\n"
         "concurrency:\n  max_workers: 2\n",
         encoding="utf-8",
     )
@@ -251,6 +272,7 @@ def test_context_words_before_required(env_with_key, tmp_path: Path):
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
+        "tables:\n  enabled: false\n"
         "concurrency:\n  max_workers: 2\n"
         "context:\n  enabled: true\n  words_after: 50\n",
         encoding="utf-8",
@@ -266,6 +288,7 @@ def test_diagrams_disabled_skips_prompt_requirement(env_with_key, tmp_path: Path
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'describe'\n"
         "diagrams:\n  enabled: false\n"
+        "tables:\n  enabled: false\n"
         "concurrency:\n  max_workers: 2\n"
         "context:\n  enabled: false\n  words_before: 0\n  words_after: 0\n"
         "significance:\n  enabled: false\n"
@@ -288,6 +311,7 @@ _FULL_CONFIG = (
     "ocr:\n  language: 'swe'\n"
     "description:\n  prompt: 'x'\n"
     "diagrams:\n  enabled: false\n"
+    "tables:\n  enabled: false\n"
     "concurrency:\n  max_workers: 2\n"
     "context:\n  enabled: false\n  words_before: 0\n  words_after: 0\n"
     "significance:\n  enabled: true\n"

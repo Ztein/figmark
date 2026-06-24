@@ -39,6 +39,7 @@ from .pdf_loader import (
     SCANNED_MIN_AVG_CHARS_PER_PAGE,
     DiagramBlock,
     ImageBlock,
+    TextBlock,
     is_scanned,
     iter_page_blocks,
     iter_pages,
@@ -48,6 +49,7 @@ from .pdf_loader import (
     text_garble_ratio,
 )
 from .summarize import detect_language, summarize_document
+from .tables import find_table_blocks, text_block_consumed
 from .usage import TrackingClient, Usage, UsageTracker, estimate_cost
 
 
@@ -315,6 +317,21 @@ def convert(
                 # Re-sort blocks so diagrams land in reading order with text/images
                 # (column-aware, matching iter_page_blocks). (T-036)
                 sort_blocks_reading_order(page_data.blocks, page.rect.width)
+
+        # Table extraction (T-031): detect ruled data tables and emit them as
+        # Markdown. Only on text pages; no API calls. The text spans a kept table
+        # consumes are dropped so the cells are not also emitted as loose text.
+        if cfg.tables.enabled and not needs_ocr:
+            table_blocks = find_table_blocks(page, page_num)
+            if table_blocks:
+                page_data.blocks = [
+                    b
+                    for b in page_data.blocks
+                    if not (isinstance(b, TextBlock) and text_block_consumed(b.bbox, table_blocks))
+                ]
+                page_data.blocks.extend(table_blocks)
+                sort_blocks_reading_order(page_data.blocks, page.rect.width)
+                emit(f"  → {len(table_blocks)} table(s) extracted")
 
         pages.append(page_data)
 

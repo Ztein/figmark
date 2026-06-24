@@ -46,6 +46,13 @@ class DiagramsConfig:
 
 
 @dataclass
+class TablesConfig:
+    # When enabled, ruled data tables are detected (PyMuPDF) and emitted as
+    # Markdown tables. Conservative filters keep it silent on chart-heavy docs.
+    enabled: bool
+
+
+@dataclass
 class ConcurrencyConfig:
     max_workers: int
 
@@ -82,6 +89,7 @@ class Config:
     ocr: OcrConfig
     description: DescriptionConfig
     diagrams: DiagramsConfig
+    tables: TablesConfig
     concurrency: ConcurrencyConfig
     context: ContextConfig
     significance: SignificanceConfig
@@ -184,6 +192,11 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
         diagrams_prompt = str(diagrams_raw.get("prompt", "")).strip()
     diagrams = DiagramsConfig(enabled=enabled, prompt=diagrams_prompt)
 
+    tables_raw = raw.get("tables") or {}
+    if "enabled" not in tables_raw:
+        raise RuntimeError("tables.enabled is missing from config.yaml — this field is required.")
+    tables = TablesConfig(enabled=bool(tables_raw["enabled"]))
+
     concurrency_raw = raw.get("concurrency") or {}
     concurrency = ConcurrencyConfig(
         max_workers=int(_require(concurrency_raw, "max_workers", "concurrency")),
@@ -231,6 +244,7 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
         ocr=ocr,
         description=description,
         diagrams=diagrams,
+        tables=tables,
         concurrency=concurrency,
         context=context,
         significance=significance,
