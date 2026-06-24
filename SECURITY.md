@@ -64,6 +64,20 @@ compose `environment`:
 - `--ignore-unfixed` is used because vulnerabilities with no upstream fix cannot be
   remediated by us; everything fixable must be fixed. The narrow, documented escape
   hatch for a justified, time-boxed exception is [`.trivyignore`](.trivyignore).
+- **Signed releases (keyless).** Each released GHCR image is signed with
+  [cosign](https://github.com/sigstore/cosign) and carries an SPDX SBOM attestation,
+  both produced in the release workflow via GitHub OIDC (no long-lived keys; the
+  signature is recorded in the public Rekor transparency log). Verify before
+  deploying:
+
+  ```sh
+  cosign verify ghcr.io/ztein/figmark:<version> \
+    --certificate-identity-regexp '^https://github.com/Ztein/figmark/.github/workflows/release.yml@.*' \
+    --certificate-oidc-issuer https://token.actions.githubusercontent.com
+  cosign verify-attestation --type spdxjson ghcr.io/ztein/figmark:<version> \
+    --certificate-identity-regexp '^https://github.com/Ztein/figmark/.github/workflows/release.yml@.*' \
+    --certificate-oidc-issuer https://token.actions.githubusercontent.com
+  ```
 
 See [docs/deployment.md](docs/deployment.md) for the hardened runtime configuration
 (non-root, read-only rootfs, dropped capabilities, no-new-privileges).

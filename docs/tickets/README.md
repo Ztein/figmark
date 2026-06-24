@@ -19,7 +19,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-013](T-013-pip-audit-hard-gate.md) | **Closed** | Medium | Make pip-audit a blocking CI gate (was advisory) |
 | [T-014](T-014-secret-scanning-push-protection.md) | **Closed** | Medium | Verify GitHub secret scanning + push protection on the repo |
 | [T-015](T-015-sha-pin-actions.md) | **Closed** | Low | SHA-pin GitHub Actions |
-| [T-016](T-016-cosign-image-signing.md) | Open | Low | Sign the release image and attest the SBOM (cosign) |
+| [T-016](T-016-cosign-image-signing.md) | **Closed** | Low | Sign the release image and attest the SBOM (cosign) |
 | [T-017](T-017-compose-defaults-to-ghcr.md) | **Closed** | Medium | compose should run the published GHCR image — clone-free quickstart |
 | [T-018](T-018-first-public-release.md) | **Closed** | Medium | Cut the first public release (v0.2.0) |
 | [T-019](T-019-repo-cosmetics.md) | **Closed** | Low | Disable unused repo tabs (Wiki, Projects) |

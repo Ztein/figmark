@@ -51,6 +51,7 @@ jobs:
     permissions:
       contents: write  # attach assets to the GitHub Release
       packages: write  # publish the image to GHCR
+      id-token: write  # keyless cosign signing via the GitHub OIDC token (T-016)
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
@@ -77,6 +78,7 @@ jobs:
           trivyignores: .trivyignore
 
       - name: Publish to GHCR (versioned + latest)
+        id: publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ steps.ver.outputs.version }}
@@ -87,6 +89,30 @@ jobs:
           docker tag "figmark:${VERSION}" "ghcr.io/$owner/figmark:latest"
           docker push "ghcr.io/$owner/figmark:${VERSION}"
           docker push "ghcr.io/$owner/figmark:latest"
+          # The immutable digest both tags now point at — sign/attest by digest,
+          # not by mutable tag, so the signature can't be swapped under us. (T-016)
+          digest=$(docker inspect --format='{{index .RepoDigests 0}}' "ghcr.io/$owner/figmark:${VERSION}")
+          echo "image=$digest" >> "$GITHUB_OUTPUT"
+
+      # --- Supply-chain provenance: keyless cosign signature + SBOM attestation (T-016) ---
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+
+      - name: Generate SBOM (SPDX) for the image
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
+        with:
+          image: ${{ steps.publish.outputs.image }}
+          format: spdx-json
+          output-file: figmark.spdx.json
+
+      - name: Sign the image and attest its SBOM (keyless)
+        env:
+          IMAGE: ${{ steps.publish.outputs.image }}
+        run: |
+          # Keyless: identity from the GitHub OIDC token, signature logged to the
+          # public Rekor transparency log. No long-lived keys.
+          cosign sign --yes "$IMAGE"
+          cosign attest --yes --type spdxjson --predicate figmark.spdx.json "$IMAGE"
 
       - name: Export tarball + checksum + deploy bundle
         # Save under the GHCR name so `docker load` restores exactly the image
