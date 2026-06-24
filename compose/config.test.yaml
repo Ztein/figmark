@@ -21,6 +21,9 @@ diagrams:
   prompt: |
     Beskriv diagrammet formellt, sakligt och tydligt.
 
+tables:
+  enabled: true
+
 concurrency:
   max_workers: 4
 
