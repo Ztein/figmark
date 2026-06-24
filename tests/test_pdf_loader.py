@@ -11,7 +11,33 @@ from figmark.pdf_loader import (
     iter_page_blocks,
     iter_pages,
     open_pdf,
+    sort_blocks_reading_order,
 )
+
+
+def test_single_column_reading_order_is_plain_y_then_x():
+    """A single-column page has no wide left-edge gap, so ordering is the same
+    plain (y, x) flow as before — no behaviour change. (T-036)"""
+    blocks = [
+        TextBlock(bbox=(50, 300, 540, 320), text="C"),
+        TextBlock(bbox=(50, 100, 540, 120), text="A"),
+        TextBlock(bbox=(50, 200, 540, 220), text="B"),
+    ]
+    sort_blocks_reading_order(blocks, page_width=595)
+    assert [b.text for b in blocks] == ["A", "B", "C"]
+
+
+def test_two_column_reading_order_not_interleaved():
+    """On a two-column page, the left column is read top-to-bottom before the
+    right column — not interleaved by y across both. (T-036)"""
+    blocks = [
+        TextBlock(bbox=(50, 100, 290, 120), text="L1"),
+        TextBlock(bbox=(320, 100, 560, 120), text="R1"),
+        TextBlock(bbox=(50, 140, 290, 160), text="L2"),
+        TextBlock(bbox=(320, 140, 560, 160), text="R2"),
+    ]
+    sort_blocks_reading_order(blocks, page_width=595)
+    assert [b.text for b in blocks] == ["L1", "L2", "R1", "R2"]
 
 
 def test_open_pdf_returns_document(paper_pdf: Path):

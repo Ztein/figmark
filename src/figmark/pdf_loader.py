@@ -121,8 +121,63 @@ def text_garble_ratio(text: str) -> float:
     return bad / len(text)
 
 
+# Reading order. A single global (y, x) sort interleaves columns on a multi-column
+# page: a right-column block at the same y-band as left-column text sorts *between*
+# the left blocks. We detect column boundaries from clustered block left-edges and,
+# when the page is multi-column, order column-by-column (each top-to-bottom). A
+# single-column page has no wide left-edge gap, so it falls back to the exact same
+# (y, x) flow as before — no behaviour change for the common case. (T-036)
+# A left-edge gap ≥ this fraction of the page width starts a new column.
+COLUMN_GAP_RATIO = 0.06
+# Each side of a candidate split must hold at least this many blocks.
+MIN_BLOCKS_PER_COLUMN = 2
+
+
+def _column_boundaries(blocks: list[Block], page_width: float) -> list[float]:
+    """X positions that separate columns, inferred from clustered block left-edges.
+
+    Empty for a single-column page (no left-edge gap wide enough), so callers fall
+    back to the plain (y, x) flow.
+    """
+    if page_width <= 0 or len(blocks) < 2 * MIN_BLOCKS_PER_COLUMN:
+        return []
+    lefts = sorted(blk.bbox[0] for blk in blocks)
+    min_gap = COLUMN_GAP_RATIO * page_width
+    boundaries: list[float] = []
+    for i in range(1, len(lefts)):
+        if lefts[i] - lefts[i - 1] < min_gap:
+            continue
+        cut = (lefts[i - 1] + lefts[i]) / 2
+        left_n = sum(1 for blk in blocks if blk.bbox[0] < cut)
+        # Only a real column split — enough blocks on both sides (guards against a
+        # lone centred title or indented line creating a spurious thin column).
+        if MIN_BLOCKS_PER_COLUMN <= left_n <= len(blocks) - MIN_BLOCKS_PER_COLUMN:
+            boundaries.append(cut)
+    return boundaries
+
+
+def _column_index(x0: float, boundaries: list[float]) -> int:
+    return sum(1 for b in boundaries if x0 >= b)
+
+
+def sort_blocks_reading_order(blocks: list[Block], page_width: float) -> list[Block]:
+    """Sort blocks in place into reading order, column-aware. Returns the list."""
+    boundaries = _column_boundaries(blocks, page_width)
+    if not boundaries:
+        blocks.sort(key=lambda blk: (round(blk.bbox[1] / 10), blk.bbox[0]))
+    else:
+        blocks.sort(
+            key=lambda blk: (
+                _column_index(blk.bbox[0], boundaries),
+                round(blk.bbox[1] / 10),
+                blk.bbox[0],
+            )
+        )
+    return blocks
+
+
 def iter_page_blocks(page: fitz.Page) -> list[Block]:
-    """Return the page's text and image blocks in reading order (y, x).
+    """Return the page's text and image blocks in reading order (column-aware).
 
     Text blocks come from page.get_text("dict") (type 0). Image blocks are built
     from page.get_image_info(xrefs=True) rather than the dict output's type 1 —
@@ -147,8 +202,7 @@ def iter_page_blocks(page: fitz.Page) -> list[Block]:
         bbox = tuple(info.get("bbox", (0.0, 0.0, 0.0, 0.0)))
         blocks.append(ImageBlock(bbox=bbox, xref=int(xref)))
 
-    blocks.sort(key=lambda blk: (round(blk.bbox[1] / 10), blk.bbox[0]))
-    return blocks
+    return sort_blocks_reading_order(blocks, page.rect.width)
 
 
 def _join_text_block(block: dict) -> str:

@@ -44,6 +44,7 @@ from .pdf_loader import (
     iter_pages,
     open_pdf,
     page_needs_ocr,
+    sort_blocks_reading_order,
     text_garble_ratio,
 )
 from .summarize import detect_language, summarize_document
@@ -311,8 +312,9 @@ def convert(
                     )
                 page_regions[page_num] = regions
                 emit(f"  → {len(regions)} diagram region(s) identified")
-                # Re-sort blocks so diagrams land in reading order with text/images.
-                page_data.blocks.sort(key=lambda b: (round(b.bbox[1] / 10), b.bbox[0]))
+                # Re-sort blocks so diagrams land in reading order with text/images
+                # (column-aware, matching iter_page_blocks). (T-036)
+                sort_blocks_reading_order(page_data.blocks, page.rect.width)
 
         pages.append(page_data)
 
