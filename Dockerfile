@@ -11,7 +11,7 @@
 # (see docs/deployment.md).
 
 # ---- builder: install hash-pinned deps + the package into a venv ----
-FROM python:3.14-slim-bookworm@sha256:a9bee15510a364124aa24692899d269835683b883de42f7ebec8c293cf679ccb AS builder
+FROM python:3.14-slim-bookworm@sha256:4ff4b92a68355dbdb52584ab3391dff8d371a61d4e063468bfd0130e3189c6d9 AS builder
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1 \
@@ -30,7 +30,7 @@ COPY src ./src
 RUN pip install --no-deps .
 
 # ---- runtime: minimal image with tesseract + the venv ----
-FROM python:3.14-slim-bookworm@sha256:a9bee15510a364124aa24692899d269835683b883de42f7ebec8c293cf679ccb AS runtime
+FROM python:3.14-slim-bookworm@sha256:4ff4b92a68355dbdb52584ab3391dff8d371a61d4e063468bfd0130e3189c6d9 AS runtime
 
 ARG VERSION=0.0.0
 ARG REVISION=unknown
