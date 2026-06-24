@@ -29,7 +29,7 @@ def test_failed_image_extraction_is_logged_not_silent(tmp_path: Path, capsys, mo
 
     monkeypatch.setattr(fitz.Document, "extract_image", boom)
 
-    images = extract_images_from_page(doc, doc[0], 1, tmp_path / "out")
+    images = extract_images_from_page(doc, doc[0], 1, tmp_path / "out").images
 
     assert images == []  # the bad image is skipped …
     out = capsys.readouterr().out

@@ -1,6 +1,8 @@
 # T-039: Dockerfile base comment has drifted from the pinned image
 
-**Status:** Open
+**Status:** Closed — fixed 2026-06-24. The Dockerfile comment now matches the
+pinned 3.14-slim base (kept current by Dependabot) and notes that the Tesseract
+apt packages and PyMuPDF/Pillow wheels are available for it.
 **Priority:** Low — misleading comment; verify the bleeding-edge base is stable
 **Source:** External code review (2026-06-24), verified against the code.
 

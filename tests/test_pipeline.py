@@ -329,7 +329,7 @@ def test_pipeline_describe_single_image_returns_swedish(
     try:
         first_image = None
         for page_num, page in iter_pages(doc):
-            extracted = extract_images_from_page(doc, page, page_num, images_out)
+            extracted = extract_images_from_page(doc, page, page_num, images_out).images
             if extracted:
                 first_image = extracted[0]
                 break

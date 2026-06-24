@@ -4,9 +4,11 @@
 # Everything (Python deps, Tesseract + eng/swe language data) is baked in; the only
 # runtime dependency is the OpenAI-compatible vision endpoint (config api.base_url).
 #
-# Base is pinned by digest. python:3.12-slim-bookworm is the reliable choice that
-# carries Tesseract + language packs; for an even tighter Trivy posture a Chainguard
-# Wolfi base is the documented alternative (see docs/deployment.md).
+# Base is pinned by digest (python:3.14-slim-bookworm), kept current by Dependabot.
+# Debian bookworm carries the Tesseract apt packages, and the PyMuPDF/Pillow wheels
+# publish builds for this interpreter — verified at the pinned digest. For an even
+# tighter Trivy posture a Chainguard Wolfi base is the documented alternative
+# (see docs/deployment.md).
 
 # ---- builder: install hash-pinned deps + the package into a venv ----
 FROM python:3.14-slim-bookworm@sha256:a9bee15510a364124aa24692899d269835683b883de42f7ebec8c293cf679ccb AS builder

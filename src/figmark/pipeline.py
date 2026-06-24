@@ -24,7 +24,7 @@ from .diagrams import (
     find_diagram_regions,
     render_and_save_region,
 )
-from .images import extract_images_from_page
+from .images import MIN_IMAGE_HEIGHT, MIN_IMAGE_WIDTH, extract_images_from_page
 from .ocr import (
     MIN_CHARS_PER_PAGE,
     MIN_MEAN_CONFIDENCE,
@@ -297,10 +297,18 @@ def convert(
                     "text may be unusable; re-export or pre-OCR this PDF."
                 )
 
-        page_data.images = extract_images_from_page(
+        extraction = extract_images_from_page(
             doc, page, page_num, images_dir, skip_full_page=needs_ocr
         )
-        emit(f"  → {len(page_data.images)} image(s) saved")
+        page_data.images = extraction.images
+        # Explain filtering so "0 saved" doesn't read like a bug (T-002).
+        skip_notes = []
+        if extraction.skipped_small:
+            skip_notes.append(f"{extraction.skipped_small} < {MIN_IMAGE_WIDTH}x{MIN_IMAGE_HEIGHT}")
+        if extraction.skipped_full_page:
+            skip_notes.append(f"{extraction.skipped_full_page} full-page")
+        note = f" ({', '.join(skip_notes)} filtered)" if skip_notes else ""
+        emit(f"  → {len(page_data.images)} image(s) saved{note}")
 
         # Diagram extraction: only for text-extracted pages (on OCR'd pages the
         # "diagrams" are already part of the page and captured by the OCR path).

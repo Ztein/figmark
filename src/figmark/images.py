@@ -30,25 +30,38 @@ class ExtractedImage:
     bbox: tuple[float, float, float, float] | None
 
 
+@dataclass
+class ImageExtraction:
+    """The kept images plus why others were dropped, so the caller can explain a
+    "0 saved" line rather than make it look like a bug. (T-002)"""
+
+    images: list[ExtractedImage]
+    skipped_small: int = 0  # below MIN_IMAGE_WIDTH/HEIGHT (decorative icons)
+    skipped_full_page: int = 0  # full-page image skipped in OCR mode
+
+
 def extract_images_from_page(
     doc: fitz.Document,
     page: fitz.Page,
     page_num: int,
     out_dir: Path,
     skip_full_page: bool = False,
-) -> list[ExtractedImage]:
+) -> ImageExtraction:
     """Extract images from a page.
 
     skip_full_page=True skips images covering >80% of the page area — used in
     OCR mode, where the whole page is typically an image of text rather than a
-    separate illustration that needs describing.
+    separate illustration that needs describing. The returned ImageExtraction also
+    reports how many images were filtered (and why).
     """
     out_dir.mkdir(parents=True, exist_ok=True)
     results: list[ExtractedImage] = []
+    skipped_small = 0
+    skipped_full_page = 0
 
     image_list = page.get_images(full=True)
     if not image_list:
-        return results
+        return ImageExtraction(results)
 
     rect_lookup: dict[int, list[tuple[float, float, float, float]]] = {}
     for info in page.get_image_info(xrefs=True):
@@ -80,6 +93,7 @@ def extract_images_from_page(
         width = base.get("width", 0)
         height = base.get("height", 0)
         if width < MIN_IMAGE_WIDTH or height < MIN_IMAGE_HEIGHT:
+            skipped_small += 1
             continue
 
         bboxes = rect_lookup.get(xref, [])
@@ -88,6 +102,7 @@ def extract_images_from_page(
         if skip_full_page and bbox and page_area > 0:
             bbox_area = max(0.0, (bbox[2] - bbox[0])) * max(0.0, (bbox[3] - bbox[1]))
             if bbox_area / page_area > FULL_PAGE_AREA_RATIO:
+                skipped_full_page += 1
                 continue
 
         ext = base.get("ext", "png")
@@ -107,4 +122,4 @@ def extract_images_from_page(
             )
         )
 
-    return results
+    return ImageExtraction(results, skipped_small, skipped_full_page)
