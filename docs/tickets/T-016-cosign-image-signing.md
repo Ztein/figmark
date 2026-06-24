@@ -1,6 +1,10 @@
 # T-016: Sign the release image and attest the SBOM (cosign)
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24 (PR #38). The release workflow signs the
+GHCR image by digest with keyless cosign (GitHub OIDC → Rekor) and attests an SPDX
+SBOM (Syft). `id-token: write` added to the `image-bundle` job; actions SHA-pinned
+(`cosign-installer` v4.1.2, `sbom-action` v0.24.0). Verification commands documented
+in SECURITY.md. Exercised only on the next tagged release.
 **Priority:** Low — provenance for the air-gapped delivery chain
 
 ## Motivation
