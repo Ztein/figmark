@@ -38,7 +38,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-032](T-032-loud-warnings-silenced-under-quiet.md) | **Closed** | High | Loud pipeline warnings silenced in container/API mode (quiet=True → _noop) |
 | [T-033](T-033-truncated-descriptions-undetected.md) | **Closed** | Medium | Truncated descriptions never detected (finish_reason ignored); empty response not retried |
 | [T-034](T-034-cache-ignores-config.md) | **Closed** | Medium | Description cache ignores config — stale output after a model/prompt/language change |
-| [T-035](T-035-diagram-detection-recall-unmeasured.md) | Open | High | Diagram detection recall unmeasured + single-genre calibrated — silent figure loss |
+| [T-035](T-035-diagram-detection-recall-unmeasured.md) | Open (Phase 1) | High | Diagram recall — bench built, genre 1 (paper) = 1/1; needs a vector-rich genre 2 |
 | [T-036](T-036-naive-multicolumn-reading-order.md) | **Closed** | Medium | Reading order naive for multi-column pages (interleaves columns; affects T-031) |
 | [T-037](T-037-quadratic-drawing-clustering.md) | **Closed** | Low | O(n²) drawing clustering — hotspot on draw-heavy pages |
 | [T-038](T-038-document-pdf-prompt-injection.md) | **Closed** | Low | Threat model omits PDF-text prompt injection (document in SECURITY.md) |
