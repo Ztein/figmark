@@ -8,6 +8,7 @@ API server both call it; the API injects its own client and runs it quietly.
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -66,6 +67,9 @@ class ConversionResult:
     usage: Usage
     estimated_cost: float | None
     currency: str | None
+
+
+logger = logging.getLogger("figmark.pipeline")
 
 
 def log(msg: str) -> None:
@@ -200,7 +204,16 @@ def convert(
     client = TrackingClient(client, tracker)
 
     emit = _noop if quiet else log
-    emit_loud = _noop if quiet else loud
+
+    def emit_loud(msg: str) -> None:
+        # Loud warnings (OCR rescue, Tesseract fallback, broken text layer) must
+        # not vanish in container/server mode. Under quiet=True (no TTY) they go to
+        # the structured logger so they survive into the API's JSON logs; on an
+        # interactive run they show as the console banner instead. (T-032)
+        if quiet:
+            logger.warning(msg)
+        else:
+            loud(msg)
 
     out_dir = output_root / pdf_path.stem
     images_dir = out_dir / "images"

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import fitz
@@ -56,3 +57,23 @@ def test_api_error_during_language_detection_aborts(
     cfg = load_config(project_root / "config.example.yaml")
     with pytest.raises(APIError):
         convert(pdf, cfg, tmp_path / "out", client=_FailingClient("desc"), quiet=True)
+
+
+# --- T-032: loud warnings survive quiet mode via the structured logger -------
+
+
+def test_loud_warning_survives_quiet_via_logger(
+    env_with_key, project_root: Path, tmp_path: Path, monkeypatch, caplog
+):
+    """Under quiet=True (the server path), a loud pipeline warning must still reach
+    the logger — it must not be silently dropped as it was when emit_loud was a
+    no-op under quiet."""
+    pdf = synthetic_pdf(tmp_path / "doc.pdf")
+    cfg = load_config(project_root / "config.example.yaml")
+    # Force the broken-text-layer loud event on the text-extracted page.
+    monkeypatch.setattr("figmark.pipeline.text_garble_ratio", lambda _text: 0.9)
+
+    with caplog.at_level(logging.WARNING, logger="figmark.pipeline"):
+        convert(pdf, cfg, tmp_path / "out", client=FakeClient("a cat"), quiet=True)
+
+    assert "text layer looks broken" in caplog.text

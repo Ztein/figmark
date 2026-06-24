@@ -9,6 +9,7 @@ axis titles and source lines.
 from __future__ import annotations
 
 import base64
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -17,6 +18,8 @@ import fitz
 from .config import Config
 from .context import ContextText
 from .describe import _prepare_image_for_api, compose_prompt
+
+logger = logging.getLogger("figmark.diagrams")
 
 # ============================================================================
 # Technical constants for the clustering pipeline. Tune here if a specific PDF
@@ -308,11 +311,20 @@ def describe_diagram(
             }
         ],
     )
-    text = (response.choices[0].message.content or "").strip()
+    choice = response.choices[0]
+    text = (choice.message.content or "").strip()
     if not text:
         raise RuntimeError(
             f"The API returned empty content for diagram {region.path.name} "
             f"(model={cfg.api.model})."
+        )
+    if getattr(choice, "finish_reason", None) == "length":
+        # Truncated at the token cap — warn, don't silently cache a partial. (T-033)
+        logger.warning(
+            "Description for diagram %s was truncated at the %d-token cap "
+            "(finish_reason=length); it may be cut mid-sentence.",
+            region.path.name,
+            MAX_TOKENS,
         )
     description_path.parent.mkdir(parents=True, exist_ok=True)
     description_path.write_text(text, encoding="utf-8")
