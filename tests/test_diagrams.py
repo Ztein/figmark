@@ -11,11 +11,25 @@ from figmark.diagrams import (
     MIN_CLUSTER_HEIGHT,
     MIN_CLUSTER_WIDTH,
     MIN_DRAWINGS_PER_CLUSTER,
+    DiagramRegion,
     _close,
     _cluster_rects,
     find_diagram_regions,
     render_and_save_region,
+    text_block_in_region,
 )
+
+
+def test_text_block_in_region_drops_internal_keeps_adjacent():
+    """T-008: a label fully inside a diagram region is suppressed, but body text
+    that merely abuts the (expanded) region is kept — never silently deleted."""
+    region = DiagramRegion(page_num=1, index=1, bbox=(100, 100, 400, 400), n_drawings=20)
+    # An internal label, fully inside the chart → suppressed.
+    assert text_block_in_region((150, 150, 250, 170), [region]) is True
+    # A body paragraph clipping only the bottom edge (≈20% inside) → kept.
+    assert text_block_in_region((100, 380, 400, 480), [region]) is False
+    # Fully outside → kept.
+    assert text_block_in_region((100, 500, 400, 520), [region]) is False
 
 
 def test_find_regions_in_report_known_diagram_page(report_pdf: Path):

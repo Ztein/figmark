@@ -11,7 +11,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-005](T-005-pdf-annotations.md) | **Closed** | Medium | Embed descriptions as text annotations in the PDF (MVP accessibility) |
 | [T-006](T-006-text-context-around-images.md) | **Closed** | Medium | Send text context around the image (100 words before/after) to the description |
 | [T-007](T-007-description-language-follows-document.md) | **Closed** | Medium | Description language is hardcoded to Swedish — should follow the document |
-| [T-008](T-008-diagram-internal-text-leaks-into-body.md) | Open | Low | Vector-diagram internal text leaks into the body text (needs a decision first) |
+| [T-008](T-008-diagram-internal-text-leaks-into-body.md) | **Closed** | Low | Vector-diagram internal text leaks into the body text (drop ≥80%-contained text) |
 | [T-009](T-009-starlette-badhost-cve.md) | **Closed** | HIGH | Starlette BadHost CVE in the lockfile — fixed before first push |
 | [T-010](T-010-provider-agnostic-llm-key.md) | **Closed** | Medium | Purge provider-specific references — figmark is provider-neutral |
 | [T-011](T-011-codeql-sast.md) | **Closed** | Medium | Enable CodeQL (SAST) |
@@ -29,11 +29,11 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-023](T-023-significance-gate-for-diagrams.md) | **Closed** | Low | Apply the significance gate to vector-diagram regions (2 % logo-as-diagram in eval) |
 | [T-024](T-024-audit-silent-fallbacks-and-hidden-defaults.md) | **Closed** | Medium | Audit for further principle violations — silent fallbacks and hidden defaults |
 | [T-025](T-025-selectable-output-format.md) | **Closed** | Low | Let the client choose the response format (JSON, Markdown, or both) on /v1/convert |
-| [T-026](T-026-tables-flattened-to-text.md) | Open | High | Tables are flattened to loose text lines — un-parked: corpus now has real tables (split into T-030/T-031) |
+| [T-026](T-026-tables-flattened-to-text.md) | **Closed** | High | Tables are flattened to loose text lines — delivered via T-030/T-031 |
 | [T-027](T-027-per-page-scan-decision.md) | **Closed** | High | A scanned/image-only page inside a text PDF is never OCR'd (document-level scan decision) |
 | [T-028](T-028-evaluate-garbled-text-prevalence.md) | **Closed** | Low | Measure how often PDFs have garbled (present-but-broken) text before building OCR handling |
 | [T-029](T-029-report-conversion-cost.md) | **Closed** | Medium | Report token usage (and an optional cost estimate) for a conversion |
-| [T-030](T-030-labelled-table-bench.md) | Open | High | Labelled table bench — scored: PyMuPDF+filter 100%/99%, beats pdfplumber → ship PyMuPDF-only |
+| [T-030](T-030-labelled-table-bench.md) | **Closed** | High | Labelled table bench — scored: PyMuPDF+filter 100%/99%, beats pdfplumber → ship PyMuPDF-only |
 | [T-031](T-031-conservative-table-extraction.md) | **Closed** | High | Conservative table extraction → Markdown via a TableBlock (PyMuPDF-only) |
 | [T-032](T-032-loud-warnings-silenced-under-quiet.md) | **Closed** | High | Loud pipeline warnings silenced in container/API mode (quiet=True → _noop) |
 | [T-033](T-033-truncated-descriptions-undetected.md) | **Closed** | Medium | Truncated descriptions never detected (finish_reason ignored); empty response not retried |

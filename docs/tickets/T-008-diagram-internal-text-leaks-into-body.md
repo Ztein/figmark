@@ -1,6 +1,12 @@
 # T-008: Vector-diagram internal text leaks into the body text
 
-**Status:** Open — **needs a decision first** (see note below)
+**Status:** Closed — implemented 2026-06-24 (PR #37). **Decision: Option 1 (drop
+in-region text), conservatively.** Per the maintainer's call, text blocks are
+suppressed only when **≥80 % contained** in a diagram region, so the diagram's own
+labels are removed while body text merely abutting the (expanded) region is kept —
+guarding against the false-deletion risk the note below warns about. A unit test
+asserts adjacent body text survives. (This diverges from the ticket's earlier
+"prefer Option 2" lean, by explicit decision.)
 **Priority:** Low — cosmetic; affects only vector diagrams with embedded text
 **Discovered:** 2026-06-09 reviewing `output/paper/paper.md` (U-Net Fig. 1, page 2)
 
