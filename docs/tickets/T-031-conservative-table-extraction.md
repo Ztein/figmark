@@ -1,8 +1,12 @@
 # T-031: Conservative table extraction → Markdown via a TableBlock
 
-**Status:** Open — unblocked. [T-030](T-030-labelled-table-bench.md) chose
-**PyMuPDF-only** (detection 100 %, cell-recall 99 %, zero control leaks;
-pdfplumber lost on both recall and false positives). No new dependency.
+**Status:** Closed — implemented 2026-06-24. New `tables.py` ports the validated
+3-gate filter; `TableBlock` flows through `pdf_loader` → `pipeline` → `output.py`
+as a GitHub Markdown table; text spans consumed by a kept table are dropped from
+the loose flow; `find_tables` errors are logged loudly, never swallowed. Gated by
+`tables.enabled` in config. Annotation: tables are **not** embedded as PDF text
+annotations (they are text content carried by the Markdown, not visual alt-text).
+No new runtime dependency (PyMuPDF only, per [T-030](T-030-labelled-table-bench.md)).
 **Priority:** High — the data-fidelity payoff of [T-026](T-026-tables-flattened-to-text.md)
 **Parent:** [T-026](T-026-tables-flattened-to-text.md)
 

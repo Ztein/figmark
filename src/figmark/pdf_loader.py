@@ -36,7 +36,14 @@ class DiagramBlock:
     kind: str = "diagram"
 
 
-Block = TextBlock | ImageBlock | DiagramBlock
+@dataclass
+class TableBlock:
+    bbox: tuple[float, float, float, float]
+    rows: list[list[str]]  # row-major cell text; "" for an empty cell
+    kind: str = "table"
+
+
+Block = TextBlock | ImageBlock | DiagramBlock | TableBlock
 
 # Technical threshold — if a PDF averages fewer characters per page than this,
 # the whole document is classified as scanned and the OCR pipeline kicks in.

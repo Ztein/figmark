@@ -57,6 +57,11 @@ diagrams:
 
     Hitta inte på siffror. Om något är otydligt eller avskuret, skriv det.
 
+tables:
+  # Detect ruled data tables and emit them as Markdown tables. Conservative
+  # filters keep it silent on chart-heavy docs (no garbage). No API calls.
+  enabled: true
+
 concurrency:
   max_workers: 8
 

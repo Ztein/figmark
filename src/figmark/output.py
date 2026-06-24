@@ -14,12 +14,31 @@ from .config import Config
 from .describe import is_skip
 from .diagrams import PLACEHOLDER as DIAGRAM_PLACEHOLDER
 from .images import ExtractedImage
-from .pdf_loader import Block, DiagramBlock, ImageBlock, TextBlock
+from .pdf_loader import Block, DiagramBlock, ImageBlock, TableBlock, TextBlock
 
 
 def _shown(description: str) -> str:
     """A description that should appear in the output, or "" if it's a skip marker."""
     return "" if is_skip(description) else description
+
+
+def _markdown_table(rows: list[list[str]]) -> str:
+    """Render a detected table as a GitHub-flavoured Markdown table.
+
+    The first row is the header. Ragged rows are padded; ``|`` is escaped. Returns
+    "" for an empty grid.
+    """
+    if not rows:
+        return ""
+    ncols = max(len(r) for r in rows)
+
+    def fmt(row: list[str]) -> str:
+        cells = list(row) + [""] * (ncols - len(row))
+        return "| " + " | ".join((c or "").replace("|", "\\|") for c in cells) + " |"
+
+    lines = [fmt(rows[0]), "| " + " | ".join(["---"] * ncols) + " |"]
+    lines += [fmt(r) for r in rows[1:]]
+    return "\n".join(lines)
 
 
 # Inline template for raster images + page separator, used in the plain-text
@@ -81,6 +100,13 @@ def assemble(pages: list[PageData], cfg: Config) -> tuple[str, str]:
                     desc = _shown(page.diagram_descriptions.get(block.region_index, ""))
                     if desc:
                         page_full.append(DIAGRAM_PLACEHOLDER.format(description=desc))
+                elif isinstance(block, TableBlock):
+                    # A table is content, not an AI description — keep it in both
+                    # the raw and full text so the data is not lost.
+                    table_md = _markdown_table(block.rows)
+                    if table_md:
+                        page_raw.append(table_md)
+                        page_full.append(table_md)
             raw_parts.append("\n\n".join(page_raw))
             full_parts.append("\n\n".join(page_full))
 
@@ -148,5 +174,9 @@ def to_markdown(pages: list[PageData]) -> str:
                             f"{block.region_index:02d}.png"
                         )
                         parts.append(_figure("Diagram", page.page_num, rel, desc))
+                elif isinstance(block, TableBlock):
+                    table_md = _markdown_table(block.rows)
+                    if table_md:
+                        parts.append(table_md)
 
     return "\n\n".join(p for p in parts if p).strip() + "\n"
