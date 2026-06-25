@@ -142,10 +142,12 @@ constants in `src/figmark/<module>.py`.
 
 ## How it works
 
-A PDF is classified as text-encoded or scanned, its text is extracted (or OCR'd),
-images and vector diagrams are found, the document's language and a short summary
-are determined, and every figure is described in parallel and woven back into the
-text in reading order. For the full pipeline, module map, and outputs, see
+A PDF is classified as text-encoded or scanned and its text extracted (or OCR'd),
+then given structure (headings/lists inferred from typography), ruled tables
+reconstructed as Markdown, running headers/footers stripped, hyperlinks preserved,
+and images + vector diagrams found and described in parallel — all woven back into
+the text in column-aware reading order. A `figures.json` indexes every figure. For
+the full pipeline, module map, outputs, and the open Phase-2 items, see
 **[docs/architecture.md](docs/architecture.md)**.
 
 ## Known limitations
@@ -156,9 +158,14 @@ text in reading order. For the full pipeline, module map, and outputs, see
   silently swallow this — pages whose text looks broken are flagged with a loud
   warning — but it does not yet auto-OCR them. For such files, re-export from the
   source or pre-OCR them before converting.
-- **Data tables.** Quantitative data drawn as charts is captured by the figure
-  descriptions; ruled/borderless *text* tables are not yet reconstructed as
-  Markdown tables (see `docs/tickets/T-026`).
+- **Tables.** Ruled data tables are reconstructed as Markdown behind a conservative
+  filter (`docs/tickets/T-031`); borderless/spanning tables and complex multi-line
+  cells are not yet handled. Quantitative data drawn as a *chart* is captured by the
+  figure description instead.
+- **Footnotes.** Footnote text is kept (in reading order, at the page bottom) but
+  not yet segregated/marked as footnotes (`docs/tickets/T-044`, Phase 2).
+- **Tagged PDF.** `--tagged-pdf` writes the structure-tree *foundation* (figure
+  `/Alt`); full PDF/UA conformance is not yet claimed (`docs/tickets/T-004`).
 
 ## Tests
 
@@ -180,6 +187,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Issues and PRs welcome.
 - **0.2 — configurable pipeline.** Per-task provider/model selection (a different
   model for image description, diagram description, and vision-OCR) via a
   `providers` / `tasks` config, plus all technical knobs exposed in config.
+- **Document model + more formats.** A typed block model
+  (`heading`/`paragraph`/`list`/`table`/`figure`) that PDF maps into and Markdown
+  renders out of (`docs/tickets/T-042`), so the same structure work carries over to
+  Word/Excel/PowerPoint inputs.
 
 ## License
 
