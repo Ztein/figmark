@@ -54,7 +54,9 @@ def test_pipeline_paper_full_roundtrip(
 ):
     """The full round trip against the real API: PDF → Markdown + described images.
 
-    The sample paper is small — the cheapest fixture to run for real.
+    The sample paper is small — the cheapest fixture to run for real. It also
+    guards T-007: with language.output: auto the English paper is described in
+    English (the document's language), not the prompt's Swedish register.
     """
     output_root = tmp_path / "output"
     exit_code = main_module.run(
@@ -69,6 +71,7 @@ def test_pipeline_paper_full_roundtrip(
     md_path = pdf_out / f"{paper_pdf.stem}.md"
     images_dir = pdf_out / "images"
     descriptions_dir = pdf_out / "descriptions"
+    language_path = pdf_out / "document_language.txt"
 
     # Artifacts
     assert raw_path.exists() and raw_path.stat().st_size > 1000
@@ -85,15 +88,20 @@ def test_pipeline_paper_full_roundtrip(
     assert markdown.count("](images/") == len(images)
     assert "](images/" not in raw_text
 
-    # Descriptions should be in Swedish (the prompt is Swedish) and non-empty.
+    # Language follows the document (T-007): with language.output: auto, the
+    # English sample paper must be detected as English — NOT forced to the prompt's
+    # Swedish register. This is the regression guard the old hardcoded-Swedish
+    # assertion contradicted.
+    assert language_path.exists(), "document_language.txt was not written"
+    detected = language_path.read_text(encoding="utf-8").strip()
+    assert detected.lower() == "english", (
+        f"Expected the English paper to be detected as English, got {detected!r}"
+    )
+
+    # Each described image is substantive (non-empty, not a stub).
     for desc_file in descriptions:
         text = desc_file.read_text(encoding="utf-8").strip()
         assert len(text) > 20, f"Description too short in {desc_file.name}: {text!r}"
-        lower = text.lower()
-        has_swedish = any(c in lower for c in "åäö") or any(
-            w in lower for w in [" och ", " att ", " som ", " en ", " ett ", " på "]
-        )
-        assert has_swedish, f"The description in {desc_file.name} does not look Swedish:\n{text}"
 
 
 def test_pipeline_cache_no_extra_api_calls_on_rerun(
