@@ -42,8 +42,14 @@ GROUND_TRUTH = {
         # (p3/p5/p7) are raster microscopy panels → images.py, excluded here.
         "vector_diagrams": {2: 1},
     },
-    # --- genre 2+ goes here once a vector-chart-rich non-central-bank PDF is
-    # sourced (see T-035). The harness already handles any number of docs. ---
+    "examples/recall/transformer-1706.03762.pdf": {
+        "genre": "ML paper (TikZ/vector architecture + attention diagrams) — Vaswani et al.",
+        "pages": 15,
+        # Fig 1 (p3, the Transformer architecture) and Fig 2 (p4, the attention
+        # diagrams) are vector figures; Figs 3-5 (p13-15) are vector attention
+        # visualisations. Fetch with scripts/recall_bench/download.py (gitignored).
+        "vector_diagrams": {3: 1, 4: 1, 13: 1, 14: 1, 15: 1},
+    },
 }
 
 
@@ -95,10 +101,14 @@ def main() -> None:
             f"({grand_hits}/{grand_true}) across {measured} document(s)"
         )
     print(
-        "\n  NOTE: coverage is currently 1 genre / 1 vector diagram — enough to show\n"
-        "  the detector generalises to a non-central-bank vector diagram, but far too\n"
-        "  thin to characterise recall. Add vector-chart-rich non-bank documents\n"
-        "  (genre 2+) to GROUND_TRUTH to make the number meaningful (T-035)."
+        "\n  FINDING (T-035): the detector under-detects on non-central-bank genres.\n"
+        "  Two misses on the ML paper expose distinct root causes:\n"
+        "    - Fig 1 (architecture): a vector Form XObject — page.get_drawings()\n"
+        "      returns 0, so the page is never examined.\n"
+        "    - Fig 2 (attention): only ~8 drawings surface, below\n"
+        "      MIN_DRAWINGS_PER_PAGE=30, so the page is skipped.\n"
+        "  Both are calibration/visibility gaps from tuning on matplotlib charts.\n"
+        "  Fetch genre 2 with scripts/recall_bench/download.py."
     )
 
 

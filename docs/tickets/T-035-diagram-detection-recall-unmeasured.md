@@ -1,15 +1,36 @@
 # T-035: Diagram detection recall is unmeasured (and single-genre calibrated)
 
-**Status:** Open — **Phase 1 done** (2026-06-24, PR #39): recall bench harness
-built ([scripts/recall_bench/bench.py](../../scripts/recall_bench/bench.py)) with
-hand-annotated ground truth, and a first non-central-bank genre measured (the
-U-Net scientific paper: 1 vector diagram, detector recall 1/1 = 100 %; its raster
-figures are images.py's job, excluded). That single diagram shows the detector
-generalises but is far too thin to characterise recall. **Remaining: source a
-vector-chart-rich genre 2** (e.g. a TikZ-heavy paper or an InDesign brochure) and
-annotate it — needs a decision on which public PDFs to use (licensing/repro).
+**Status:** Closed — recall measured on 2 genres (2026-06-24). The bench
+([scripts/recall_bench/bench.py](../../scripts/recall_bench/bench.py), corpus via
+[download.py](../../scripts/recall_bench/download.py)) reports **67 % overall
+recall (4/6)**: U-Net paper 1/1, Transformer paper 3/5. The two misses pin down the
+real causes (below), and the fix is split into [T-040](T-040-diagram-recall-fix.md).
+This ticket — *measure* recall — is done.
 **Priority:** High — the most dangerous blind spot: silent figure loss
 **Source:** External code review (2026-06-24), verified against the code.
+
+## Result (2026-06-24)
+
+| Genre | Doc | Recall | Misses |
+|---|---|---|---|
+| Scientific paper (LaTeX) | U-Net (Ronneberger et al.) | 1/1 | — |
+| ML paper (TikZ + attention) | Transformer (Vaswani et al.) | **3/5** | p3, p4 |
+| | | **4/6 = 67 %** | |
+
+**Two distinct root causes, both from matplotlib-genre calibration:**
+1. **Vector content in a Form XObject is invisible.** Fig 1 (the Transformer
+   architecture) is a vector figure, but `page.get_drawings()` returns **0** on
+   that page — the paths live inside a Form XObject that `get_drawings()` does not
+   recurse into — so the page is never examined. A pure-threshold tweak can't fix
+   this; detection must look inside XObjects (or use a different signal).
+2. **`MIN_DRAWINGS_PER_PAGE=30` is too high for sparse vector figures.** Fig 2
+   surfaces only ~8 drawings, below the gate, so the page is skipped.
+
+**Decision (acceptance #3):** making the constants config-driven helps cause (2)
+but **not** (1), which is a code-visibility bug, not a tuning value. So the answer
+is "config-driven alone is insufficient" — the fix needs both a code change
+(XObject-aware detection) and a tuned/lower page gate. That work is
+[T-040](T-040-diagram-recall-fix.md).
 
 ## Symptom
 
@@ -50,8 +71,10 @@ recall proves genre-sensitive.
 
 ## Acceptance criteria
 
-- [ ] Detection recall reported on ≥2 genres outside the central-bank corpus, against
-      hand-annotated ground-truth figure regions.
-- [ ] Missed-figure cases are documented with the threshold(s) responsible.
-- [ ] A decision is recorded on whether the clustering constants must become
-      configurable (and if so, which).
+- [x] Detection recall reported on ≥2 genres outside the central-bank corpus, against
+      hand-annotated ground-truth figure regions. — 67 % (4/6); see Result above.
+- [x] Missed-figure cases are documented with the threshold(s) responsible. —
+      Form XObject invisibility + `MIN_DRAWINGS_PER_PAGE`.
+- [x] A decision is recorded on whether the clustering constants must become
+      configurable (and if so, which). — config-driven alone is insufficient; the
+      fix needs XObject-aware detection too. Tracked in T-040.
