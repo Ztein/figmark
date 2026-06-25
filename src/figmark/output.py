@@ -113,6 +113,53 @@ def assemble(pages: list[PageData], cfg: Config) -> tuple[str, str]:
     return "".join(raw_parts).strip() + "\n", "".join(full_parts).strip() + "\n"
 
 
+def build_figure_manifest(pages: list[PageData]) -> list[dict]:
+    """A machine-readable index of every extracted figure (T-041).
+
+    One entry per raster image and vector diagram, in page order:
+    ``{id, page, kind, bbox, path, description, skipped}``. ``path`` is relative to
+    the output directory (resolves to the file the Markdown also embeds).
+    Significance-skipped figures are kept with ``skipped: true`` and an empty
+    description, so nothing silently disappears from the index.
+    """
+    figures: list[dict] = []
+    for page in pages:
+        for img in page.images:
+            desc = page.descriptions.get(img.xref, "")
+            if not desc.strip():
+                continue  # extracted but never described (e.g. an extraction error)
+            figures.append(
+                {
+                    "id": img.path.stem,
+                    "page": page.page_num,
+                    "kind": "image",
+                    "bbox": list(img.bbox) if img.bbox else None,
+                    "path": f"images/{img.path.name}",
+                    "description": _shown(desc),
+                    "skipped": is_skip(desc),
+                }
+            )
+        for block in page.blocks:
+            if not isinstance(block, DiagramBlock):
+                continue
+            desc = page.diagram_descriptions.get(block.region_index, "")
+            if not desc.strip():
+                continue
+            name = f"page-{page.page_num:03d}-diagram-{block.region_index:02d}.png"
+            figures.append(
+                {
+                    "id": name[:-4],
+                    "page": page.page_num,
+                    "kind": "diagram",
+                    "bbox": list(block.bbox),
+                    "path": f"diagrams/{name}",
+                    "description": _shown(desc),
+                    "skipped": is_skip(desc),
+                }
+            )
+    return figures
+
+
 def _blockquote(text: str) -> str:
     """Render a (possibly multi-paragraph) description as a Markdown blockquote."""
     out: list[str] = []

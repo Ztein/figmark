@@ -25,6 +25,7 @@ def _result(estimated_cost=None, currency=None) -> ConversionResult:
         markdown="# Title\n\nBody text.",
         markdown_path=Path("out.md"),
         raw_text_path=Path("raw.txt"),
+        figures_manifest_path=Path("out.figures.json"),
         output_dir=Path("out"),
         images_dir=Path("out/images"),
         annotated_pdf_path=None,

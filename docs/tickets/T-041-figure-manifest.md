@@ -1,6 +1,10 @@
 # T-041: Extracted figures aren't machine-addressable for follow-up questions
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24. `convert` writes `<stem>.figures.json`
+(via `build_figure_manifest` in [output.py](../../src/figmark/output.py)): one entry
+per image/diagram with `id, page, kind, bbox, path, description, skipped`; paths are
+relative and resolve to the embedded files; skipped figures are flagged, not
+dropped. Exposed as `ConversionResult.figures_manifest_path`.
 **Priority:** Medium — small, and it unlocks the "ask more about this figure" direction
 
 ## Symptom
