@@ -1,6 +1,14 @@
 # T-042: Output is a flat wall of paragraphs — headings and lists are lost
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24 (Option 1, the typography heuristic).
+`TextBlock` now carries font `size`/`bold`; [structure.py](../../src/figmark/structure.py)
+infers the body size and ranks short, horizontal, larger-or-bold blocks into
+Markdown heading levels; `to_markdown` renders headings (`#`/`##`/`###`) and
+normalises bullet lists. Bench
+([scripts/structure_bench/bench.py](../../scripts/structure_bench/bench.py)) on the
+U-Net paper: **100 % heading precision and recall (9/9)** with correct levels and
+the rotated arXiv stamp correctly excluded (the horizontal gate). The document
+model (Option 2) remains the natural evolution when the Word/PPT work starts.
 **Priority:** High — the single biggest lever for a faithful whole-document representation
 
 ## Symptom

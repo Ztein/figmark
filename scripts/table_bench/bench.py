@@ -74,8 +74,13 @@ GROUND_TRUTH = {
     ("fed-mpr-202407.pdf", 53): {  # Federal Reserve balance sheet
         "title": "Fed — balance-sheet comparison",
         "grid": [
-            ["", "June 19, 2024", "February 28, 2024", "Change (since February 2024)",
-             "Memo: Change (since June 1, 2022)"],
+            [
+                "",
+                "June 19, 2024",
+                "February 28, 2024",
+                "Change (since February 2024)",
+                "Memo: Change (since June 1, 2022)",
+            ],
             ["Assets", "", "", "", ""],
             ["Total securities", "", "", "", ""],
             ["Treasury securities", "4453", "4661", "-208", "-1318"],
@@ -112,12 +117,36 @@ GROUND_TRUTH = {
             ["UK", "15", "1.1 (0)", "1.4 (0.1)", "1 (-0.1)", "1.4 (0.1)", "1.2 (0.1)"],
             ["Sweden", "18", "0.9 (0.1)", "1.9 (0.7)", "2.3 (0.2)", "1.9 (-0.2)", "2.1 (0)"],
             ["China", "8", "5 (0.1)", "4.9 (0.1)", "4.4 (0.3)", "4.1 (0)", "3.8 (0)"],
-            ["5 trading partners", "100", "1.5 (0.1)", "1.8 (0.2)", "1.7 (0.1)", "1.7 (-0.1)", "1.7 (0)"],
+            [
+                "5 trading partners",
+                "100",
+                "1.5 (0.1)",
+                "1.8 (0.2)",
+                "1.7 (0.1)",
+                "1.7 (-0.1)",
+                "1.7 (0)",
+            ],
             ["Prices", "", "", "", "", "", ""],
             ["Underlying inflation", "", "3 (0)", "2.7 (0.1)", "2.3 (0)", "2.1 (0)", "2.2 (0)"],
             ["Wage growth", "", "4.3 (-0.1)", "3.8 (0.3)", "3.3 (0.1)", "3.1 (0.1)", "2.9 (0)"],
-            ["Prices for consumer goods imported to Norway", "", "2.7 (0)", "0.1 (0)", "0 (0)", "0.3 (-0.4)", "0.7 (-0.2)"],
-            ["Prices for intermediate goods imported to Norway", "", "0.1 (-0.1)", "0.5 (0)", "0.7 (-0.2)", "1.7 (0.2)", "1.8 (0.3)"],
+            [
+                "Prices for consumer goods imported to Norway",
+                "",
+                "2.7 (0)",
+                "0.1 (0)",
+                "0 (0)",
+                "0.3 (-0.4)",
+                "0.7 (-0.2)",
+            ],
+            [
+                "Prices for intermediate goods imported to Norway",
+                "",
+                "0.1 (-0.1)",
+                "0.5 (0)",
+                "0.7 (-0.2)",
+                "1.7 (0.2)",
+                "1.8 (0.3)",
+            ],
         ],
     },
     ("norges-mpr-2-2025.pdf", 63): {  # regression: same structure, earlier edition
@@ -130,12 +159,36 @@ GROUND_TRUTH = {
             ["UK", "15", "1.1 (0.2)", "1.1 (0.1)", "1.1 (-0.4)", "1.3 (-0.1)", "1.2 (-0.1)"],
             ["Sweden", "18", "1 (0.1)", "1.3 (-0.5)", "2.2 (-0.1)", "2.1 (-0.1)", "2.1 (0.5)"],
             ["China", "8", "5 (0.1)", "4.5 (0)", "3.8 (0)", "4.1 (0.1)", "3.8 (0.1)"],
-            ["5 trading partners", "100", "1.5 (0.1)", "1.4 (-0.5)", "1.6 (-0.2)", "1.8 (-0.1)", "1.7 (0.1)"],
+            [
+                "5 trading partners",
+                "100",
+                "1.5 (0.1)",
+                "1.4 (-0.5)",
+                "1.6 (-0.2)",
+                "1.8 (-0.1)",
+                "1.7 (0.1)",
+            ],
             ["Prices", "", "", "", "", "", ""],
             ["Underlying inflation", "", "3 (0)", "2.6 (0)", "2.3 (0.1)", "2.2 (0.1)", "2.1 (0)"],
             ["Wage growth", "", "4.4 (0)", "3.4 (0)", "3.2 (0)", "3 (0)", "2.9 (0)"],
-            ["Prices for consumer goods imported to Norway", "", "2.7 (0)", "0.2 (-0.8)", "0.4 (0.2)", "0.7 (0)", "0.9 (0)"],
-            ["Prices for intermediate goods imported to Norway", "", "0.1 (0)", "0.7 (-1.1)", "0.8 (-0.9)", "1.5 (0)", "1.5 (0)"],
+            [
+                "Prices for consumer goods imported to Norway",
+                "",
+                "2.7 (0)",
+                "0.2 (-0.8)",
+                "0.4 (0.2)",
+                "0.7 (0)",
+                "0.9 (0)",
+            ],
+            [
+                "Prices for intermediate goods imported to Norway",
+                "",
+                "0.1 (0)",
+                "0.7 (-1.1)",
+                "0.8 (-0.9)",
+                "1.5 (0)",
+                "1.5 (0)",
+            ],
         ],
     },
 }
@@ -220,7 +273,10 @@ def _overlaps_diagram(bbox, diagram_rects) -> bool:
         return False
     for d in diagram_rects:
         inter = a & d
-        if not inter.is_empty and abs(inter.width * inter.height) / abs(a.width * a.height) > DIAGRAM_OVERLAP:
+        if (
+            not inter.is_empty
+            and abs(inter.width * inter.height) / abs(a.width * a.height) > DIAGRAM_OVERLAP
+        ):
             return True
     return False
 
@@ -259,6 +315,7 @@ def kept_tables_on_page(page, pno):
 # ---------------------------------------------------------------------------
 # Scoring
 # ---------------------------------------------------------------------------
+
 
 def score_against_gt(kept, gt_grid):
     """Recall = GT numeric tokens recovered across ALL kept tables on the page
@@ -302,10 +359,14 @@ def run_pymupdf():
         rec_sum += s["recall"]
         renders_ok += s["renders"]
         print(f"  OK    {gt['title']}")
-        print(f"        cell-recall={s['recall']:.0%}  best-shape={s['shape']} (gt{dims(gt['grid'])})  "
-              f"renders={'yes' if s['renders'] else 'NO'}  (kept {len(kept)} on page)")
-    print(f"\n  detection {det}/{n}   mean cell-recall {rec_sum / max(det,1):.0%}   "
-          f"renders {renders_ok}/{n}")
+        print(
+            f"        cell-recall={s['recall']:.0%}  best-shape={s['shape']} (gt{dims(gt['grid'])})  "
+            f"renders={'yes' if s['renders'] else 'NO'}  (kept {len(kept)} on page)"
+        )
+    print(
+        f"\n  detection {det}/{n}   mean cell-recall {rec_sum / max(det, 1):.0%}   "
+        f"renders {renders_ok}/{n}"
+    )
 
     print("\n  -- negative controls (must keep 0) --")
     for doc, pno, why in CONTROLS:
@@ -352,8 +413,10 @@ def run_pdfplumber():
                 best = r
                 bestdims = dims(tb)
         rec_sum += best
-        print(f"  OK    {gt['title']}  cells recall={best:.0%}  shape={bestdims} vs gt{dims(gt['grid'])}")
-    print(f"\n  detection {det}/{n}   mean cell-recall {rec_sum / max(det,1):.0%}")
+        print(
+            f"  OK    {gt['title']}  cells recall={best:.0%}  shape={bestdims} vs gt{dims(gt['grid'])}"
+        )
+    print(f"\n  detection {det}/{n}   mean cell-recall {rec_sum / max(det, 1):.0%}")
     print("\n  -- negative controls (raw, no filter) --")
     for doc in CONTROL_DOCS:
         with pdfplumber.open(EVAL / doc) as pdf:

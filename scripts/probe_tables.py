@@ -85,25 +85,28 @@ def main() -> None:
     extra = root / "examples" / "paper.pdf"
     if extra.exists():
         targets.append(extra)
-    print(f"Probing {len(targets)} PDFs "
-          f"(good = >={MIN_NONEMPTY_RATIO:.0%} non-empty cells, "
-          f">={MIN_ROWS}x{MIN_COLS}, not on a diagram)\n")
+    print(
+        f"Probing {len(targets)} PDFs "
+        f"(good = >={MIN_NONEMPTY_RATIO:.0%} non-empty cells, "
+        f">={MIN_ROWS}x{MIN_COLS}, not on a diagram)\n"
+    )
     rows = []
     for p in targets:
         r = probe_doc(p)
         rows.append(r)
         flag = "  <== TABLE-RICH" if r["good"] >= 5 else ""
-        print(f"{r['name']:<34} total={r['total']:>4}  good={r['good']:>4}  "
-              f"empty={r['empty']:>4}  on_diag={r['on_diagram']:>3}  "
-              f"tiny={r['tiny']:>3}{flag}")
+        print(
+            f"{r['name']:<34} total={r['total']:>4}  good={r['good']:>4}  "
+            f"empty={r['empty']:>4}  on_diag={r['on_diagram']:>3}  "
+            f"tiny={r['tiny']:>3}{flag}"
+        )
         if r["good"]:
             print(f"    good pages: {r['good_pages']}")
     rows.sort(key=lambda r: r["good"], reverse=True)
     print("\nTop candidates for the labelled table bench:")
     for r in rows[:6]:
         if r["good"]:
-            print(f"  {r['name']:<34} {r['good']} good tables, "
-                  f"pages {r['good_pages']}")
+            print(f"  {r['name']:<34} {r['good']} good tables, pages {r['good_pages']}")
 
 
 if __name__ == "__main__":

@@ -10,6 +10,7 @@ Output:
     output/<pdf-stem>/diagram_F/page-NNN/region-NN.png
     output/<pdf-stem>/diagram_F/summary.txt
 """
+
 from __future__ import annotations
 
 import argparse
@@ -18,27 +19,28 @@ from pathlib import Path
 
 import fitz
 
-
 # --- Tröskel/parameter-konstanter (kan flyttas till config senare) -------------
 
-MIN_DRAWING_DIM = 2          # ignorera drawings smaller än så här (decoration)
-MAX_DRAWING_AREA_RATIO = 0.4 # ignorera drawings större än X% av sidan (bakgrunds-/ramrektanglar
-                             # som annars länkar samman alla diagram via clustering)
-MERGE_DISTANCE = 3           # pixels — drawings inom detta avstånd anses tillhöra samma kluster
-                             # Lågt värde undviker att två separata diagram chain:as via närliggande drawings
-MIN_DRAWINGS_PER_CLUSTER = 8 # ett kluster måste ha minst så här många primitiv för att räknas
-MIN_CLUSTER_WIDTH = 80       # ignorera kluster smalare än så här (linjer, tabellramar)
-MIN_CLUSTER_HEIGHT = 60      # ignorera kluster lägre än så här
-INTERNAL_Y_GAP_SPLIT = 40    # om kluster har intern y-lucka större än så här, dela det (separerar staplade diagram)
-PADDING = 6                  # px att inflatera bboxen med innan text-expansion
-TEXT_EXPAND_DISTANCE = 30    # px — text-block inom så här långt över/under diagrammet inkluderas
+MIN_DRAWING_DIM = 2  # ignorera drawings smaller än så här (decoration)
+MAX_DRAWING_AREA_RATIO = 0.4  # ignorera drawings större än X% av sidan (bakgrunds-/ramrektanglar
+# som annars länkar samman alla diagram via clustering)
+MERGE_DISTANCE = 3  # pixels — drawings inom detta avstånd anses tillhöra samma kluster
+# Lågt värde undviker att två separata diagram chain:as via närliggande drawings
+MIN_DRAWINGS_PER_CLUSTER = 8  # ett kluster måste ha minst så här många primitiv för att räknas
+MIN_CLUSTER_WIDTH = 80  # ignorera kluster smalare än så här (linjer, tabellramar)
+MIN_CLUSTER_HEIGHT = 60  # ignorera kluster lägre än så här
+INTERNAL_Y_GAP_SPLIT = (
+    40  # om kluster har intern y-lucka större än så här, dela det (separerar staplade diagram)
+)
+PADDING = 6  # px att inflatera bboxen med innan text-expansion
+TEXT_EXPAND_DISTANCE = 30  # px — text-block inom så här långt över/under diagrammet inkluderas
 RENDER_DPI = 200
 
 
 @dataclass
 class DiagramRegion:
     page_num: int  # 1-indexerat
-    index: int     # 1-indexerat per sida
+    index: int  # 1-indexerat per sida
     bbox: fitz.Rect
     n_drawings: int
 
@@ -259,6 +261,7 @@ Hitta inte på siffror. Om något är otydligt, skriv det."""
 def describe_region(client, image_path: Path, model: str, max_tokens: int) -> str:
     """Skicka en region-bild till Gemma med diagram-prompt."""
     import base64
+
     img_bytes = image_path.read_bytes()
     data_uri = "data:image/png;base64," + base64.b64encode(img_bytes).decode("ascii")
     response = client.chat.completions.create(
@@ -278,18 +281,25 @@ def describe_region(client, image_path: Path, model: str, max_tokens: int) -> st
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Extrahera diagram via PyMuPDF-drawings-clustering")
+    parser = argparse.ArgumentParser(
+        description="Extrahera diagram via PyMuPDF-drawings-clustering"
+    )
     parser.add_argument("pdf", type=Path)
     parser.add_argument(
-        "--pages", type=str, default=None,
+        "--pages",
+        type=str,
+        default=None,
         help="Komma-separerade sidnummer eller intervall, t.ex. '10,11,68-70'",
     )
     parser.add_argument(
-        "--output", type=Path, default=Path("output"),
+        "--output",
+        type=Path,
+        default=Path("output"),
         help="Output-rot (default: output/)",
     )
     parser.add_argument(
-        "--describe", action="store_true",
+        "--describe",
+        action="store_true",
         help="Skicka varje region till Gemma för syntolkning (kostar API-tokens)",
     )
     args = parser.parse_args()
@@ -300,6 +310,7 @@ def main() -> int:
         # Lazy import för att inte kräva config för bara extraction
         from src.config import load_config
         from src.describe import make_client
+
         cfg = load_config()
         client = make_client(cfg)
         print(f"Syntolkning aktiverad — modell: {cfg.api.model}\n")

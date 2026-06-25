@@ -15,6 +15,7 @@ from .describe import is_skip
 from .diagrams import PLACEHOLDER as DIAGRAM_PLACEHOLDER
 from .images import ExtractedImage
 from .pdf_loader import Block, DiagramBlock, ImageBlock, TableBlock, TextBlock
+from .structure import as_list_item, body_font_size, heading_level, heading_levels
 
 
 def _shown(description: str) -> str:
@@ -174,6 +175,17 @@ def _figure(kind: str, page_num: int, rel_path: str, description: str) -> str:
     return f"![{alt}]({rel_path})\n\n{_blockquote(description)}"
 
 
+def _render_text_block(block: TextBlock, body, size_level, bold_body_level) -> str:
+    """Render a text block as a Markdown heading, list item, or paragraph (T-042)."""
+    level = heading_level(block, body, size_level, bold_body_level)
+    if level:
+        return "#" * level + " " + " ".join(block.text.split())
+    item = as_list_item(block.text)
+    if item:
+        return item
+    return block.text.strip()
+
+
 def to_markdown(pages: list[PageData]) -> str:
     """Assemble the primary Markdown output.
 
@@ -182,6 +194,10 @@ def to_markdown(pages: list[PageData]) -> str:
     reading order. Page boundaries are kept as HTML comments for provenance.
     """
     parts: list[str] = []
+
+    # Document-level typography baseline, computed once for heading inference (T-042).
+    body = body_font_size(pages)
+    size_level, bold_body_level = heading_levels(pages, body)
 
     for page in pages:
         parts.append(f"<!-- page {page.page_num} -->")
@@ -202,7 +218,7 @@ def to_markdown(pages: list[PageData]) -> str:
             for block in page.blocks:
                 if isinstance(block, TextBlock):
                     if block.text.strip():
-                        parts.append(block.text.strip())
+                        parts.append(_render_text_block(block, body, size_level, bold_body_level))
                 elif isinstance(block, ImageBlock):
                     desc = _shown(page.descriptions.get(block.xref, ""))
                     if desc:
