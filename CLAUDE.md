@@ -29,6 +29,31 @@ never silently degrade" principle.
   **Options** (numbered trade-offs, not a pre-picked answer), **Acceptance
   criteria**. Statuses seen here: Open / Parked / **Closed** (closed on merge).
 
+## Testing — run for real
+
+The offline suite (`pytest -m "not live"`) runs the whole pipeline against the
+`mockllm` server. It is for fast iteration and is the only thing CI runs — but it
+**cannot** catch a real-model regression, a changed payload contract, or a dead
+endpoint/key. The cached `output/` is likewise just a snapshot of the last real
+run, not evidence that the code still works today.
+
+So **the real end-to-end suite is a local responsibility, and it must actually be
+run** — not assumed green from cache or from the mock:
+
+```bash
+pytest -m live                 # the 9 live tests (real API; needs a valid FIGMARK_API_KEY)
+python examples/run_eval.py    # the full eval corpus against the real model
+```
+
+- **Run it for real at regular intervals — whenever we have reason to think we
+  need it:** before a release, after any change to the pipeline / `describe` /
+  `ocr` / `output` path, and whenever the key or endpoint may have changed. Use
+  judgement on cadence, but a long gap with code changes in between is a smell.
+- **Never hide errors again.** If the live suite cannot run (dead key, no quota,
+  unreachable endpoint), say so **loudly** and treat any cached output as stale —
+  never present cached or mock-backed results as if they were a fresh, verified
+  real run. A degraded or skipped live run is reported, not silently swallowed.
+
 ## Principles to uphold in code
 
 - **Fail loud.** No silent fallbacks or hidden defaults; a degraded path is
