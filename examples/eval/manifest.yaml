@@ -40,9 +40,14 @@ documents:
     url: https://www.ecb.europa.eu/pub/pdf/ecbu/eb202404.en.pdf
     source: ECB Economic Bulletin 4/2024
     language: en
-  - name: ecb-eb-202404-de
-    url: https://www.ecb.europa.eu/pub/pdf/ecbu/eb202404.de.pdf
-    source: EZB Wirtschaftsbericht 4/2024 (German)
+  # Genuinely German central-bank report (T-045). The earlier ecb-eb-202404-de
+  # entry pointed at .../eb202404.de.pdf, which actually serves the *English*
+  # bulletin (ECB publishes the PDF in English only; German is web-HTML), so the
+  # corpus had no real non-English coverage. OeNB Konjunktur aktuell is a stable
+  # direct PDF, verified German.
+  - name: oenb-konjunktur-202309
+    url: https://www.oenb.at/dam/jcr:3aab7be8-7aa9-4921-ac05-4c6386befeb2/Konjunktur-aktuell_09_23.pdf
+    source: OeNB Konjunktur aktuell, September 2023 (German)
     language: de
   - name: ecb-fsr-202411
     url: https://www.ecb.europa.eu/pub/pdf/fsr/ecb.fsr202411~dd60fc02c3.en.pdf

@@ -48,6 +48,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-042](T-042-document-structure-headings-lists.md) | **Closed** | High | Output is a flat wall of paragraphs — headings/lists inferred from typography (100% on bench) |
 | [T-043](T-043-strip-running-headers-footers.md) | **Closed** | Medium | Running headers, footers and page numbers leak into the body text |
 | [T-044](T-044-hyperlinks-and-footnotes.md) | Open (Phase 1) | Medium | Hyperlinks preserved as Markdown links; footnote handling deferred to Phase 2 |
+| [T-045](T-045-eval-corpus-german-case-is-english.md) | **Closed** | Medium | Eval corpus's only "German" doc was actually English (dead .de.pdf URL) — replaced with a real German OeNB report |
 
 ## How a ticket is written
 
