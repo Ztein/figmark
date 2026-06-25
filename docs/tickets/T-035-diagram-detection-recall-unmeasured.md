@@ -2,35 +2,30 @@
 
 **Status:** Closed — recall measured on 2 genres (2026-06-24). The bench
 ([scripts/recall_bench/bench.py](../../scripts/recall_bench/bench.py), corpus via
-[download.py](../../scripts/recall_bench/download.py)) reports **67 % overall
-recall (4/6)**: U-Net paper 1/1, Transformer paper 3/5. The two misses pin down the
-real causes (below), and the fix is split into [T-040](T-040-diagram-recall-fix.md).
-This ticket — *measure* recall — is done.
+[download.py](../../scripts/recall_bench/download.py)) reports **100 % diagram
+recall (4/4) and 100 % figure recall (9/9)** — every figure on both genres is
+covered, vector figures by the clustering and raster figures by images.py. Nothing
+is dropped.
 **Priority:** High — the most dangerous blind spot: silent figure loss
 **Source:** External code review (2026-06-24), verified against the code.
 
-## Result (2026-06-24)
+## Result (2026-06-24, corrected)
 
-| Genre | Doc | Recall | Misses |
+| Genre | Doc | Diagram recall | Figure recall |
 |---|---|---|---|
-| Scientific paper (LaTeX) | U-Net (Ronneberger et al.) | 1/1 | — |
-| ML paper (TikZ + attention) | Transformer (Vaswani et al.) | **3/5** | p3, p4 |
-| | | **4/6 = 67 %** | |
+| Scientific paper (LaTeX) | U-Net (Ronneberger et al.) | 1/1 | 4/4 |
+| ML paper (vector + raster) | Transformer (Vaswani et al.) | 3/3 | 5/5 |
+| | | **4/4 = 100 %** | **9/9 = 100 %** |
 
-**Two distinct root causes, both from matplotlib-genre calibration:**
-1. **Vector content in a Form XObject is invisible.** Fig 1 (the Transformer
-   architecture) is a vector figure, but `page.get_drawings()` returns **0** on
-   that page — the paths live inside a Form XObject that `get_drawings()` does not
-   recurse into — so the page is never examined. A pure-threshold tweak can't fix
-   this; detection must look inside XObjects (or use a different signal).
-2. **`MIN_DRAWINGS_PER_PAGE=30` is too high for sparse vector figures.** Fig 2
-   surfaces only ~8 drawings, below the gate, so the page is skipped.
-
-**Decision (acceptance #3):** making the constants config-driven helps cause (2)
-but **not** (1), which is a code-visibility bug, not a tuning value. So the answer
-is "config-driven alone is insufficient" — the fix needs both a code change
-(XObject-aware detection) and a tuned/lower page gate. That work is
-[T-040](T-040-diagram-recall-fix.md).
+**Correction of a first-pass error.** An earlier draft reported 67 % recall with
+two "Form XObject" misses on the Transformer paper (p3/p4). On verification that
+was a **vector-vs-raster annotation mistake**: the architecture and attention
+figures *look* vector but are embedded as **raster images** (`get_image_info()`
+returns 1–2 images, `get_drawings()` returns 0). They are therefore the image
+path's job, and `extract_images_from_page` does extract them — they are described,
+not lost. So there is no XObject under-detection: the diagram detector finds every
+genuine vector figure, and the image path catches the rest. This is exactly the
+kind of false alarm the bench-before-code step exists to catch.
 
 ## Symptom
 
@@ -72,9 +67,12 @@ recall proves genre-sensitive.
 ## Acceptance criteria
 
 - [x] Detection recall reported on ≥2 genres outside the central-bank corpus, against
-      hand-annotated ground-truth figure regions. — 67 % (4/6); see Result above.
-- [x] Missed-figure cases are documented with the threshold(s) responsible. —
-      Form XObject invisibility + `MIN_DRAWINGS_PER_PAGE`.
+      hand-annotated ground-truth figure regions. — 100 % diagram (4/4) and 100 %
+      figure (9/9); see Result above.
+- [x] Missed-figure cases are documented with the threshold(s) responsible. — none:
+      figures that first appeared "missed" are raster images caught by the image
+      path, not diagram misses.
 - [x] A decision is recorded on whether the clustering constants must become
-      configurable (and if so, which). — config-driven alone is insufficient; the
-      fix needs XObject-aware detection too. Tracked in T-040.
+      configurable (and if so, which). — no change needed on the measured genres;
+      recall is already 100 %. Revisit only if a genre with genuinely-missed *vector*
+      figures turns up.

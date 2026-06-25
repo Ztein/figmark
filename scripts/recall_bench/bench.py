@@ -1,19 +1,15 @@
-"""T-035 diagram-detection RECALL bench.
+"""T-035 figure-recall bench: is any figure silently dropped?
 
-The eval report quantified diagram *precision* (false positives) but never
-*recall* — how many real vector diagrams the clustering misses. The clustering
-constants in diagrams.py are, by their own comment, "empirically calibrated
-against a central-bank monetary-policy report", so recall on other genres is the
-open question.
+A figure reaches the output by one of two paths: a *vector* diagram caught by the
+clustering in diagrams.py, or a *raster* figure caught by images.py. What matters
+for "described, not dropped" is that EVERY figure is covered by one path or the
+other — so this bench measures two things against hand-annotated ground truth:
 
-This harness measures recall against hand-annotated ground truth: for each page,
-the number of *vector* diagrams the detector should find. Raster image figures are
-deliberately excluded — they are images.py's responsibility, not the vector-diagram
-clustering's. Recall = (vector diagrams correctly located) / (vector diagrams that
-exist). Misses are listed so the responsible threshold can be found.
+  - diagram recall  = vector diagrams detected / vector diagrams present
+  - figure recall   = figures covered (diagram OR image) / figures present
 
-Ground truth is committed; the PDFs may not be (guarded with skip), so the bench
-runs wherever the corpus is present and is reproducible elsewhere.
+Ground truth is committed; the PDFs are gitignored (fetch genre 2 with
+download.py), so the bench runs wherever the corpus is present.
 
 Run:  python scripts/recall_bench/bench.py
 """
@@ -21,6 +17,7 @@ Run:  python scripts/recall_bench/bench.py
 from __future__ import annotations
 
 import sys
+import tempfile
 from pathlib import Path
 
 import fitz
@@ -28,87 +25,101 @@ import fitz
 ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from figmark.diagrams import find_diagram_regions  # noqa: E402
+from figmark.images import extract_images_from_page  # noqa: E402
 
 # ---------------------------------------------------------------------------
-# Hand-annotated ground truth. `vector_diagrams` maps a 1-indexed page to the
-# number of *vector* diagrams on it (the detector's target). Pages absent from
-# the map have zero. Raster figures are NOT counted here.
+# Hand-annotated ground truth (1-indexed pages).
+#   figures         -> total figures on the page (vector + raster)
+#   vector_diagrams -> the subset that are VECTOR (the clustering's job); the rest
+#                      are raster figures (images.py's job).
+# Verified by rendering each page and by which path PyMuPDF surfaces the figure on
+# (get_drawings vs get_image_info).
 # ---------------------------------------------------------------------------
 GROUND_TRUTH = {
     "examples/paper.pdf": {
         "genre": "scientific paper (LaTeX) — Ronneberger et al., U-Net",
-        "pages": 8,
-        # Only Fig. 1 (p2, the U-net architecture) is a vector diagram. Fig. 2/3/4
-        # (p3/p5/p7) are raster microscopy panels → images.py, excluded here.
+        # Fig 1 (p2) is a vector architecture diagram; Fig 2/3/4 (p3/p5/p7) are
+        # raster microscopy panels.
+        "figures": {2: 1, 3: 1, 5: 1, 7: 1},
         "vector_diagrams": {2: 1},
     },
     "examples/recall/transformer-1706.03762.pdf": {
-        "genre": "ML paper (TikZ/vector architecture + attention diagrams) — Vaswani et al.",
-        "pages": 15,
-        # Fig 1 (p3, the Transformer architecture) and Fig 2 (p4, the attention
-        # diagrams) are vector figures; Figs 3-5 (p13-15) are vector attention
-        # visualisations. Fetch with scripts/recall_bench/download.py (gitignored).
-        "vector_diagrams": {3: 1, 4: 1, 13: 1, 14: 1, 15: 1},
+        "genre": "ML paper (vector + raster figures) — Vaswani et al., Transformer",
+        # Fig 1 (p3, architecture) and Fig 2 (p4, attention) look vector but are
+        # embedded as RASTER images; Fig 3-5 (p13-15) are genuine vector figures.
+        "figures": {3: 1, 4: 1, 13: 1, 14: 1, 15: 1},
+        "vector_diagrams": {13: 1, 14: 1, 15: 1},
     },
 }
 
 
-def bench_doc(path: Path, truth: dict) -> dict:
+def bench_doc(path: Path, truth: dict, out_dir: Path) -> dict:
     doc = fitz.open(path)
-    true_total = hit_total = false_pos = 0
-    misses: list[int] = []
+    vec_true = vec_hit = fig_true = fig_cov = 0
+    diagram_misses: list[int] = []
+    figure_misses: list[int] = []
     for pno in range(1, len(doc) + 1):
-        true_n = truth["vector_diagrams"].get(pno, 0)
-        detected = len(find_diagram_regions(doc[pno - 1], pno))
-        true_total += true_n
-        hit_total += min(detected, true_n)
-        false_pos += max(0, detected - true_n)
-        if detected < true_n:
-            misses.append(pno)
+        page = doc[pno - 1]
+        n_vec = truth["vector_diagrams"].get(pno, 0)
+        n_fig = truth["figures"].get(pno, 0)
+        if not (n_vec or n_fig):
+            continue
+        detected = len(find_diagram_regions(page, pno))
+        extracted = len(extract_images_from_page(doc, page, pno, out_dir).images)
+        vec_true += n_vec
+        vec_hit += min(detected, n_vec)
+        fig_true += n_fig
+        fig_cov += min(n_fig, detected + extracted)  # covered by either path
+        if detected < n_vec:
+            diagram_misses.append(pno)
+        if detected + extracted < n_fig:
+            figure_misses.append(pno)
     doc.close()
-    recall = hit_total / true_total if true_total else None
     return {
-        "true": true_total,
-        "hits": hit_total,
-        "fp": false_pos,
-        "recall": recall,
-        "misses": misses,
+        "vec_true": vec_true,
+        "vec_hit": vec_hit,
+        "diagram_misses": diagram_misses,
+        "fig_true": fig_true,
+        "fig_cov": fig_cov,
+        "figure_misses": figure_misses,
     }
 
 
 def main() -> None:
-    print("T-035 diagram-detection recall (vector diagrams only)\n")
-    grand_true = grand_hits = 0
-    measured = 0
-    for rel, truth in GROUND_TRUTH.items():
-        path = ROOT / rel
-        if not path.exists():
-            print(f"  SKIP {rel} (not present)")
-            continue
-        measured += 1
-        r = bench_doc(path, truth)
-        grand_true += r["true"]
-        grand_hits += r["hits"]
-        rec = f"{r['recall']:.0%}" if r["recall"] is not None else "n/a"
-        print(f"  {truth['genre']}")
+    print("T-035 figure recall — is any figure dropped?\n")
+    gv_true = gv_hit = gf_true = gf_cov = 0
+    with tempfile.TemporaryDirectory() as td:
+        out_dir = Path(td)
+        for rel, truth in GROUND_TRUTH.items():
+            path = ROOT / rel
+            if not path.exists():
+                print(f"  SKIP {rel} (not present — fetch with download.py)")
+                continue
+            r = bench_doc(path, truth, out_dir)
+            gv_true += r["vec_true"]
+            gv_hit += r["vec_hit"]
+            gf_true += r["fig_true"]
+            gf_cov += r["fig_cov"]
+            print(f"  {truth['genre']}")
+            print(
+                f"    diagram recall {r['vec_hit']}/{r['vec_true']}"
+                f"  (misses {r['diagram_misses'] or '—'})   "
+                f"figure recall {r['fig_cov']}/{r['fig_true']}"
+                f"  (dropped {r['figure_misses'] or '—'})"
+            )
+    if gf_true:
         print(
-            f"    {rel}: recall {rec}  ({r['hits']}/{r['true']} found)  "
-            f"false-positives {r['fp']}  misses on pages {r['misses'] or '—'}"
-        )
-    if grand_true:
-        print(
-            f"\n  overall recall: {grand_hits / grand_true:.0%} "
-            f"({grand_hits}/{grand_true}) across {measured} document(s)"
+            f"\n  OVERALL: diagram recall {gv_hit}/{gv_true} "
+            f"({gv_hit / gv_true:.0%}); figure recall {gf_cov}/{gf_true} "
+            f"({gf_cov / gf_true:.0%}) across the corpus."
         )
     print(
-        "\n  FINDING (T-035): the detector under-detects on non-central-bank genres.\n"
-        "  Two misses on the ML paper expose distinct root causes:\n"
-        "    - Fig 1 (architecture): a vector Form XObject — page.get_drawings()\n"
-        "      returns 0, so the page is never examined.\n"
-        "    - Fig 2 (attention): only ~8 drawings surface, below\n"
-        "      MIN_DRAWINGS_PER_PAGE=30, so the page is skipped.\n"
-        "  Both are calibration/visibility gaps from tuning on matplotlib charts.\n"
-        "  Fetch genre 2 with scripts/recall_bench/download.py."
+        "\n  FINDING (T-035): on both genres every figure is covered — vector\n"
+        "  figures by the clustering, raster figures by images.py — so nothing is\n"
+        "  dropped. (Note: the Transformer 'architecture' figures LOOK vector but are\n"
+        "  embedded as raster images, so they belong to the image path, not the\n"
+        "  diagram detector — hence diagram recall counts only the genuine vector\n"
+        "  figures.) No under-detection found on the measured genres."
     )
 
 
