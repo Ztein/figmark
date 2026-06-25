@@ -34,10 +34,15 @@ continuously (the kind of always-on use that surfaced the 14-day live-test gap).
 - **Local LLM available:** ollama on `:11434` is OpenAI-compatible and on-host — a
   candidate vision endpoint (free, no external key), provided a vision-capable
   model is pulled.
-- **Hard rule:** this setup must process **only public/synthetic PDFs** — never
-  sensitive Riksbank material. TLS terminates at Cloudflare's edge, so genuinely
-  sensitive input must stay off it regardless. This must be stated wherever the
-  endpoint is documented/shared.
+- **Hard rule (clarified 2026-06-25) — this is a non-issue here, not a constraint
+  to police.** The Mini is **not connected to Riksbank's network**, so it can never
+  *receive* sensitive Riksbank data — the air-gap makes that physically impossible,
+  not merely forbidden. figmark is built and run here on public/synthetic/test
+  PDFs; the sensitive phase only ever happens *after* an app is migrated into the
+  bank's own internal environment. So "it might later handle sensitive data" is
+  never a reason to hold back this deployment. (Independently, TLS terminates at
+  Cloudflare's edge — a generic reason to keep genuinely sensitive input off any
+  edge-terminated service — but that input can't reach this host anyway.)
 
 ## Options
 
@@ -73,4 +78,4 @@ continuously (the kind of always-on use that surfaced the 14-day live-test gap).
 - [ ] The chosen LLM backend (Option B) is configured and a figure is actually
   described.
 - [ ] The service is registered in the ztein-infra inventory (hostname, port,
-  access policy) and the public/synthetic-only constraint is documented.
+  access policy).
