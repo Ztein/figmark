@@ -7,6 +7,7 @@ threshold means the OCR pipeline takes over instead of direct text extraction.
 
 from __future__ import annotations
 
+import re
 import unicodedata
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -194,6 +195,7 @@ def iter_page_blocks(page: fitz.Page) -> list[Block]:
     xref needed to match against page.get_images() and doc.extract_image().
     """
     blocks: list[Block] = []
+    links = _uri_links(page)
 
     raw = page.get_text("dict")
     for b in raw.get("blocks", []):
@@ -203,6 +205,7 @@ def iter_page_blocks(page: fitz.Page) -> list[Block]:
         text = _join_text_block(b)
         if text.strip():
             size, bold = _dominant_font(b)
+            text = _linkify(text, bbox, links)
             blocks.append(TextBlock(bbox=bbox, text=text, size=size, bold=bold))
 
     for info in page.get_image_info(xrefs=True):
@@ -213,6 +216,35 @@ def iter_page_blocks(page: fitz.Page) -> list[Block]:
         blocks.append(ImageBlock(bbox=bbox, xref=int(xref)))
 
     return sort_blocks_reading_order(blocks, page.rect.width)
+
+
+def _uri_links(page: fitz.Page) -> list[tuple]:
+    """External (URI) links on the page as (rect, anchor_text, uri). (T-044)"""
+    out: list[tuple] = []
+    for lk in page.get_links():
+        if lk.get("kind") != fitz.LINK_URI or not lk.get("uri"):
+            continue
+        rect = fitz.Rect(lk["from"])
+        anchor = " ".join(page.get_textbox(rect).split())
+        if anchor:
+            out.append((rect, anchor, lk["uri"]))
+    return out
+
+
+def _linkify(text: str, bbox: tuple, links: list[tuple]) -> str:
+    """Wrap a block's link anchors as Markdown ``[anchor](uri)`` so the URL is not
+    lost. Matching is whitespace-tolerant (anchors wrap across lines). (T-044)"""
+    if not links:
+        return text
+    block = fitz.Rect(bbox)
+    for rect, anchor, uri in links:
+        if not block.intersects(rect):
+            continue
+        pattern = re.compile(r"\s+".join(re.escape(tok) for tok in anchor.split()))
+        text = pattern.sub(
+            lambda m, _uri=uri: f"[{' '.join(m.group(0).split())}]({_uri})", text, count=1
+        )
+    return text
 
 
 _BOLD_FLAG = 1 << 4  # span flags bit 4 = bold (PyMuPDF)

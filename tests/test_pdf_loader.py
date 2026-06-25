@@ -7,12 +7,50 @@ import fitz
 from figmark.pdf_loader import (
     ImageBlock,
     TextBlock,
+    _linkify,
     is_scanned,
     iter_page_blocks,
     iter_pages,
     open_pdf,
     sort_blocks_reading_order,
 )
+
+
+def test_linkify_wraps_anchor_as_markdown():
+    links = [(fitz.Rect(0, 0, 500, 20), "https://example.com/", "https://example.com/docs")]
+    out = _linkify("Visit https://example.com/ for more", (0, 0, 500, 20), links)
+    assert "[https://example.com/](https://example.com/docs)" in out
+
+
+def test_linkify_is_whitespace_tolerant_across_line_breaks():
+    links = [(fitz.Rect(0, 0, 500, 40), "github com", "https://github.com")]
+    out = _linkify("see github\ncom now", (0, 0, 500, 40), links)
+    assert "[github com](https://github.com)" in out
+
+
+def test_linkify_ignores_links_outside_the_block():
+    links = [(fitz.Rect(0, 700, 500, 720), "footer link", "https://x.test")]
+    out = _linkify("body text without that anchor", (0, 0, 500, 20), links)
+    assert out == "body text without that anchor"  # link rect doesn't overlap the block
+
+
+def test_pdf_hyperlink_becomes_markdown_link(tmp_path: Path):
+    """A URL link embedded in the PDF survives extraction as a Markdown link. (T-044)"""
+    doc = fitz.open()
+    page = doc.new_page()
+    page.insert_text((72, 100), "See the manual here for details.", fontsize=11)
+    rect = page.search_for("here")[0]
+    page.insert_link({"kind": fitz.LINK_URI, "from": rect, "uri": "https://example.com/manual"})
+    out = tmp_path / "linked.pdf"
+    doc.save(out)
+    doc.close()
+
+    d = open_pdf(out)
+    try:
+        text = " ".join(b.text for b in iter_page_blocks(d[0]) if isinstance(b, TextBlock))
+    finally:
+        d.close()
+    assert "[here](https://example.com/manual)" in text
 
 
 def test_single_column_reading_order_is_plain_y_then_x():
