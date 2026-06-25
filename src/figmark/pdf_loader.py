@@ -20,6 +20,8 @@ class TextBlock:
     bbox: tuple[float, float, float, float]
     text: str
     kind: str = "text"
+    size: float = 0.0  # dominant span font size (pt); 0.0 when unknown
+    bold: bool = False  # dominant span is bold
 
 
 @dataclass
@@ -200,7 +202,8 @@ def iter_page_blocks(page: fitz.Page) -> list[Block]:
         bbox = tuple(b.get("bbox", (0.0, 0.0, 0.0, 0.0)))
         text = _join_text_block(b)
         if text.strip():
-            blocks.append(TextBlock(bbox=bbox, text=text))
+            size, bold = _dominant_font(b)
+            blocks.append(TextBlock(bbox=bbox, text=text, size=size, bold=bold))
 
     for info in page.get_image_info(xrefs=True):
         xref = info.get("xref", 0)
@@ -210,6 +213,22 @@ def iter_page_blocks(page: fitz.Page) -> list[Block]:
         blocks.append(ImageBlock(bbox=bbox, xref=int(xref)))
 
     return sort_blocks_reading_order(blocks, page.rect.width)
+
+
+_BOLD_FLAG = 1 << 4  # span flags bit 4 = bold (PyMuPDF)
+
+
+def _dominant_font(block: dict) -> tuple[float, bool]:
+    """The font size + bold-ness of a text block's longest span (its 'main' run).
+
+    Used to infer headings from typography (T-042). Returns (size, bold); (0.0,
+    False) if the block has no spans.
+    """
+    spans = [s for line in block.get("lines", []) for s in line.get("spans", [])]
+    if not spans:
+        return 0.0, False
+    main = max(spans, key=lambda s: len(s.get("text", "")))
+    return round(float(main.get("size", 0.0)), 1), bool(int(main.get("flags", 0)) & _BOLD_FLAG)
 
 
 def _join_text_block(block: dict) -> str:
