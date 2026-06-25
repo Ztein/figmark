@@ -67,6 +67,7 @@ def run(
     log("\nDone.")
     log(f"  Markdown:     {result.markdown_path}")
     log(f"  Raw text:     {result.raw_text_path}")
+    log(f"  Figures JSON: {result.figures_manifest_path}")
     log(f"  Images:       {result.images_dir}")
     log(f"  Descriptions: {result.output_dir / 'descriptions'}")
     if (result.output_dir / "diagrams").exists():

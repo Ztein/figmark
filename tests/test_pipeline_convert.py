@@ -32,6 +32,28 @@ def test_convert_returns_markdown_and_paths(env_with_key, project_root: Path, tm
     assert result.language == DETECTED_LANGUAGE
 
 
+def test_writes_figure_manifest(env_with_key, project_root: Path, tmp_path: Path):
+    """A figures.json manifest is written and indexes the described figure with a
+    path that resolves to a real file. (T-041)"""
+    import json
+
+    pdf = synthetic_pdf(tmp_path / "doc.pdf")
+    cfg = load_config(project_root / "config.example.yaml")
+    result = convert(pdf, cfg, tmp_path / "output", client=FakeClient("En katt."), quiet=True)
+
+    assert result.figures_manifest_path.exists()
+    figures = json.loads(result.figures_manifest_path.read_text(encoding="utf-8"))
+    assert len(figures) == 1  # the one embedded image
+    fig = figures[0]
+    assert fig["kind"] == "image"
+    assert fig["page"] == 1
+    assert fig["description"] == "En katt."
+    assert fig["skipped"] is False
+    assert fig["bbox"] is not None
+    # the manifest path resolves to a real extracted file
+    assert (result.output_dir / fig["path"]).exists()
+
+
 def test_cache_misses_when_config_changes(env_with_key, project_root: Path, tmp_path: Path):
     """A description is reused only while the config that produced it is unchanged.
     Same config → cache hit (no API call); changed config → miss → regenerate. (T-034)"""

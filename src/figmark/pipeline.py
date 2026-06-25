@@ -8,6 +8,7 @@ API server both call it; the API injects its own client and runs it quietly.
 
 from __future__ import annotations
 
+import json
 import logging
 from dataclasses import dataclass
 from pathlib import Path
@@ -33,7 +34,7 @@ from .ocr import (
     ocr_page_with_vision,
     should_fallback,
 )
-from .output import PageData, assemble, to_markdown
+from .output import PageData, assemble, build_figure_manifest, to_markdown
 from .parallel import Job, run_jobs
 from .pdf_loader import (
     GARBLE_WARN_RATIO,
@@ -62,6 +63,7 @@ class ConversionResult:
     markdown: str
     markdown_path: Path
     raw_text_path: Path
+    figures_manifest_path: Path
     output_dir: Path
     images_dir: Path
     annotated_pdf_path: Path | None
@@ -507,6 +509,14 @@ def convert(
     raw_path.write_text(raw_text, encoding="utf-8")
     md_path.write_text(markdown, encoding="utf-8")
 
+    # Machine-readable index of the extracted figures, for downstream follow-up
+    # questions about a specific figure (T-041).
+    figures_manifest_path = out_dir / f"{pdf_path.stem}.figures.json"
+    figures_manifest_path.write_text(
+        json.dumps(build_figure_manifest(pages), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
     annotated_pdf_path: Path | None = None
     tagged_pdf_path: Path | None = None
     # Same described images/diagrams feed both the annotation and the tagged PDF.
@@ -529,6 +539,7 @@ def convert(
         markdown=markdown,
         markdown_path=md_path,
         raw_text_path=raw_path,
+        figures_manifest_path=figures_manifest_path,
         output_dir=out_dir,
         images_dir=images_dir,
         annotated_pdf_path=annotated_pdf_path,
