@@ -1,6 +1,16 @@
 # T-044: Hyperlinks are dropped and footnotes interrupt the body text
 
-**Status:** Open
+**Status:** Open — **hyperlinks done** (2026-06-24); footnotes deferred to Phase 2.
+`iter_page_blocks` now reads `page.get_links()` and wraps each URI anchor as a
+Markdown `[anchor](url)` (whitespace-tolerant, so anchors that wrap across lines
+still match), so URLs survive into the Markdown and raw text instead of being
+dropped. **Footnotes are deferred on purpose:** a prototype showed reliable
+detection is fragile — body paragraphs sit at ~9.9pt vs a 10pt body, basically
+indistinguishable from the real 8.9pt footnote by size alone, so a simple rule
+would *eat body text*. And reading order (T-036) already sorts a bottom-of-page
+footnote *after* the body, so it does not interrupt mid-paragraph in practice. A
+correct version needs a tighter size threshold + footnote-marker detection + a
+precision bench — not worth the body-text risk for the lower-value half right now.
 **Priority:** Medium — links carry meaning; inlined footnotes break sentence flow
 
 ## Symptom

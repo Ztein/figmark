@@ -47,7 +47,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-041](T-041-figure-manifest.md) | **Closed** | Medium | Extracted figures aren't machine-addressable for follow-up questions (figures.json) |
 | [T-042](T-042-document-structure-headings-lists.md) | **Closed** | High | Output is a flat wall of paragraphs — headings/lists inferred from typography (100% on bench) |
 | [T-043](T-043-strip-running-headers-footers.md) | **Closed** | Medium | Running headers, footers and page numbers leak into the body text |
-| [T-044](T-044-hyperlinks-and-footnotes.md) | Open | Medium | Hyperlinks are dropped and footnotes interrupt the body text |
+| [T-044](T-044-hyperlinks-and-footnotes.md) | Open (Phase 1) | Medium | Hyperlinks preserved as Markdown links; footnote handling deferred to Phase 2 |
 
 ## How a ticket is written
 
