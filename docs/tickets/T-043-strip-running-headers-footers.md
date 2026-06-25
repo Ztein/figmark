@@ -1,6 +1,11 @@
 # T-043: Running headers, footers and page numbers leak into the body text
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-24 (Option 3, repetition + position).
+[boilerplate.py](../../src/figmark/boilerplate.py) `strip_boilerplate` drops a
+margin TextBlock only when its text recurs on ≥ half the pages (running
+header/footer) or it is page-number-shaped; `PageData` gained `page_height` for the
+margin band, and the pipeline runs it before assembly. Verified on the U-Net paper:
+removed exactly the 7 page numbers, no body text. No-op on documents under 4 pages.
 **Priority:** Medium — clean win; reduces noise and wasted tokens
 
 ## Symptom

@@ -16,6 +16,7 @@ from pathlib import Path
 from openai import APIError
 
 from .annotate import AnnotationItem, annotate_pdf
+from .boilerplate import strip_boilerplate
 from .config import Config
 from .context import ContextText, get_text_context_around
 from .describe import cache_fingerprint, describe_image, is_skip, make_client
@@ -254,7 +255,7 @@ def convert(
     for page_num, page in iter_pages(doc):
         emit(f"\nPage {page_num}/{len(doc)}")
         needs_ocr, reason = page_needs_ocr(page)
-        page_data = PageData(page_num=page_num, is_ocr=needs_ocr)
+        page_data = PageData(page_num=page_num, is_ocr=needs_ocr, page_height=page.rect.height)
 
         # Shout when a page is OCR'd inside an otherwise text-encoded document —
         # that is exactly the content that used to be dropped silently.
@@ -499,6 +500,11 @@ def convert(
             run_jobs(jobs, cfg.concurrency.max_workers, header, console=console, quiet=quiet)
         else:
             emit("\nEverything already cached — no API calls needed.")
+
+    # Drop running headers/footers and page numbers before assembly (T-043).
+    n_boilerplate = strip_boilerplate(pages)
+    if n_boilerplate:
+        emit(f"\nRemoved {n_boilerplate} running header/footer/page-number block(s)")
 
     emit("\nAssembling output …")
     raw_text, _full_text = assemble(pages, cfg)
