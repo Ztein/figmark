@@ -44,6 +44,10 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-038](T-038-document-pdf-prompt-injection.md) | **Closed** | Low | Threat model omits PDF-text prompt injection (document in SECURITY.md) |
 | [T-039](T-039-dockerfile-base-comment-drift.md) | **Closed** | Low | Dockerfile base comment drifted (says 3.12, pins 3.14); verify wheel stability |
 | [T-040](T-040-diagram-recall-fix.md) | **Closed** (invalid) | High | Improve diagram recall — withdrawn: the "misses" were raster figures, recall is 100% |
+| [T-041](T-041-figure-manifest.md) | Open | Medium | Extracted figures aren't machine-addressable for follow-up questions (figures.json) |
+| [T-042](T-042-document-structure-headings-lists.md) | Open | High | Output is a flat wall of paragraphs — headings and lists are lost |
+| [T-043](T-043-strip-running-headers-footers.md) | Open | Medium | Running headers, footers and page numbers leak into the body text |
+| [T-044](T-044-hyperlinks-and-footnotes.md) | Open | Medium | Hyperlinks are dropped and footnotes interrupt the body text |
 
 ## How a ticket is written
 
