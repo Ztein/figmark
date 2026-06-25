@@ -52,6 +52,7 @@ PAGE_SEPARATOR = "\n\n--- Page {page} ---\n\n"
 class PageData:
     page_num: int
     is_ocr: bool
+    page_height: float = 0.0  # PDF page height in pt; 0.0 when unknown
     blocks: list[Block] = field(default_factory=list)
     ocr_text: str | None = None
     images: list[ExtractedImage] = field(default_factory=list)
