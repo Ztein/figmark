@@ -38,12 +38,12 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-032](T-032-loud-warnings-silenced-under-quiet.md) | **Closed** | High | Loud pipeline warnings silenced in container/API mode (quiet=True → _noop) |
 | [T-033](T-033-truncated-descriptions-undetected.md) | **Closed** | Medium | Truncated descriptions never detected (finish_reason ignored); empty response not retried |
 | [T-034](T-034-cache-ignores-config.md) | **Closed** | Medium | Description cache ignores config — stale output after a model/prompt/language change |
-| [T-035](T-035-diagram-detection-recall-unmeasured.md) | **Closed** | High | Diagram recall measured — 67% (4/6) on 2 genres; misses → root causes; fix in T-040 |
+| [T-035](T-035-diagram-detection-recall-unmeasured.md) | **Closed** | High | Diagram recall measured — 100% diagram (4/4) + 100% figure (9/9) on 2 genres; nothing dropped |
 | [T-036](T-036-naive-multicolumn-reading-order.md) | **Closed** | Medium | Reading order naive for multi-column pages (interleaves columns; affects T-031) |
 | [T-037](T-037-quadratic-drawing-clustering.md) | **Closed** | Low | O(n²) drawing clustering — hotspot on draw-heavy pages |
 | [T-038](T-038-document-pdf-prompt-injection.md) | **Closed** | Low | Threat model omits PDF-text prompt injection (document in SECURITY.md) |
 | [T-039](T-039-dockerfile-base-comment-drift.md) | **Closed** | Low | Dockerfile base comment drifted (says 3.12, pins 3.14); verify wheel stability |
-| [T-040](T-040-diagram-recall-fix.md) | Open | High | Improve diagram recall — XObject-aware detection + tunable page gate (fixes T-035 misses) |
+| [T-040](T-040-diagram-recall-fix.md) | **Closed** (invalid) | High | Improve diagram recall — withdrawn: the "misses" were raster figures, recall is 100% |
 
 ## How a ticket is written
 
