@@ -1,0 +1,25 @@
+# Single-host deploy override: build the image FROM LOCAL SOURCE (instead of
+# pulling GHCR) and run it against the real config.yaml. Use this on a host where
+# you want a native-arch image built on the box (e.g. Apple Silicon, see T-046)
+# rather than the published amd64 image.
+#
+#   docker compose -f compose.yaml -f compose.deploy.yaml up --build -d
+#
+# Deliberately changes NO ports: the canonical compose.yaml bind
+# (127.0.0.1:8000:8000) is correct and is used as-is. To reach the service from
+# elsewhere, put a proxy in front of loopback rather than widening the bind —
+# e.g. on the Mac Mini it is published tailnet-only over HTTPS with:
+#
+#   tailscale serve --bg --https=8443 http://localhost:8000
+#
+# (See T-049: editing the canonical bind to 0.0.0.0 over-exposed the LAN and was
+# silently revertible by any git operation — don't do that.)
+
+services:
+  app:
+    image: figmark:local
+    build:
+      context: .
+      args:
+        VERSION: ${FIGMARK_VERSION:-0.0.0-source}
+        REVISION: ${FIGMARK_REVISION:-local}
