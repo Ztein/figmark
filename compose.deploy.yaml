@@ -7,13 +7,10 @@
 #
 # Deliberately changes NO ports: the canonical compose.yaml bind
 # (127.0.0.1:8000:8000) is correct and is used as-is. To reach the service from
-# elsewhere, put a proxy in front of loopback rather than widening the bind —
-# e.g. on the Mac Mini it is published tailnet-only over HTTPS with:
-#
-#   tailscale serve --bg --https=8443 http://localhost:8000
-#
-# (See T-049: editing the canonical bind to 0.0.0.0 over-exposed the LAN and was
-# silently revertible by any git operation — don't do that.)
+# another machine, put a proxy in front of loopback rather than widening the bind
+# to 0.0.0.0 — e.g. a reverse proxy (nginx/Caddy) terminating TLS, or
+# `tailscale serve` for a private tailnet. Widening the published bind exposes the
+# host's whole network and is easy to do by accident; prefer the proxy.
 
 services:
   app:
