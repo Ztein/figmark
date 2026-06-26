@@ -51,6 +51,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-045](T-045-eval-corpus-german-case-is-english.md) | **Closed** | Medium | Eval corpus's only "German" doc was actually English (dead .de.pdf URL) — replaced with a real German OeNB report |
 | [T-046](T-046-multiarch-arm64-image.md) | Open | Medium | Published image is amd64-only — no native arm64 for Apple Silicon (Mac Mini) |
 | [T-047](T-047-host-on-macmini-behind-tunnel.md) | Open | Medium | No hosted figmark — run it on the Mac Mini behind the ztein tunnel with an issued API token |
+| [T-048](T-048-upstream-llm-error-leaks-as-500.md) | Open | Medium | Upstream LLM errors surface as HTTP 500 with the provider's raw error body (should be a clean 502) |
 
 ## How a ticket is written
 
