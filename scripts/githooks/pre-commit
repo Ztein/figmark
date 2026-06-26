@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# figmark leak guard — blocks a commit whose staged content matches an
+# instance-specific marker (host, IP, MagicDNS name, token).
+#
+# This script is PUBLIC and generic: it carries no markers itself. The literal
+# patterns live in a local, gitignored file (.leakguard), so a stranger who
+# clones the repo gets the guard but none of our instance data. If .leakguard is
+# absent (e.g. a fresh public clone) the guard no-ops — there is nothing to leak.
+#
+# Install once per clone:  git config core.hooksPath scripts/githooks
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+patterns_file="$repo_root/.leakguard"
+
+[ -f "$patterns_file" ] || exit 0   # no local patterns → nothing to guard
+
+# Build an alternation from the active (non-comment, non-blank) patterns.
+# Plain while-read so this works on the macOS system bash (3.2, no mapfile).
+alt=""
+while IFS= read -r line; do
+  case "$line" in ''|\#*) continue ;; esac
+  alt="${alt:+$alt|}$line"
+done < "$patterns_file"
+[ -n "$alt" ] || exit 0
+
+# Scan the staged diff (added lines only).
+staged="$(git diff --cached --no-color)"
+
+if printf '%s\n' "$staged" | grep -nE "^\+" | grep -E "$alt" >/dev/null 2>&1; then
+  echo "BLOCKED: staged change contains an instance-specific marker." >&2
+  echo "This is a PUBLIC repo — host/IP/token/MagicDNS belong in the private" >&2
+  echo "infra repo or a LOCAL_*.md, never here. Matching lines:" >&2
+  echo >&2
+  printf '%s\n' "$staged" | grep -nE "^\+" | grep -E "$alt" >&2 || true
+  echo >&2
+  echo "If this is a false positive, refine .leakguard; do not bypass blindly." >&2
+  exit 1
+fi
+
+exit 0
