@@ -211,9 +211,7 @@ def _upstream_error_response(e: APIError) -> HTTPException:
             )
     # Loud where the operator sees it; the message carries the upstream status and
     # exception type but is kept out of the client response.
-    logger.error(
-        "upstream LLM error → HTTP %d (%s: %s)", status, type(e).__name__, e
-    )
+    logger.error("upstream LLM error → HTTP %d (%s: %s)", status, type(e).__name__, e)
     return HTTPException(status_code=status, detail=detail)
 
 
