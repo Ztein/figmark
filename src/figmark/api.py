@@ -34,6 +34,7 @@ from fastapi import (
     UploadFile,
 )
 from fastapi.responses import JSONResponse
+from openai import APIError, APITimeoutError
 from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
 
@@ -187,6 +188,35 @@ def format_convert_result(result, fmt: str):
     )
 
 
+# Generic, client-safe details for an upstream LLM failure. The full error (status,
+# provider correlation/request IDs, body) is logged server-side only — never echoed
+# to the caller (T-048).
+def _upstream_error_response(e: APIError) -> HTTPException:
+    """Map an upstream LLM error to a clean gateway status with a generic detail.
+
+    A bad key / no quota / unreachable endpoint is a *bad gateway* (502), not a
+    figmark bug (500). Genuine figmark bugs are non-APIError and stay uncaught →
+    Starlette's 500. Nothing from the upstream body reaches the client.
+    """
+    if isinstance(e, APITimeoutError):
+        status, detail = 504, "LLM backend timed out"
+    else:
+        upstream_status = getattr(e, "status_code", None)
+        if upstream_status == 429:
+            status, detail = 503, "LLM backend is rate-limiting requests — retry later"
+        else:
+            status, detail = (
+                502,
+                "LLM backend rejected the request — check the API key, quota, and endpoint",
+            )
+    # Loud where the operator sees it; the message carries the upstream status and
+    # exception type but is kept out of the client response.
+    logger.error(
+        "upstream LLM error → HTTP %d (%s: %s)", status, type(e).__name__, e
+    )
+    return HTTPException(status_code=status, detail=detail)
+
+
 def _available_ocr_languages() -> list[str]:
     """Languages Tesseract can use; empty list if it cannot be queried."""
     try:
@@ -310,6 +340,11 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
                     )
                 except TimeoutError as e:
                     raise HTTPException(status_code=504, detail="Conversion timed out") from e
+                except APIError as e:
+                    # Upstream LLM fault (bad key/quota, rate limit, unreachable
+                    # endpoint): a bad gateway, not a figmark bug. Generic detail to
+                    # the caller; full error logged server-side (T-048).
+                    raise _upstream_error_response(e) from e
 
             logger.info(
                 "convert ok pages=%d figures=%d skipped=%d language=%s",
