@@ -50,9 +50,9 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-044](T-044-hyperlinks-and-footnotes.md) | Open (Phase 1) | Medium | Hyperlinks preserved as Markdown links; footnote handling deferred to Phase 2 |
 | [T-045](T-045-eval-corpus-german-case-is-english.md) | **Closed** | Medium | Eval corpus's only "German" doc was actually English (dead .de.pdf URL) — replaced with a real German OeNB report |
 | [T-046](T-046-multiarch-arm64-image.md) | Open | Medium | Published image is amd64-only — no native arm64 for Apple Silicon (Mac Mini) |
-| [T-047](T-047-host-on-macmini-behind-tunnel.md) | Open | Medium | No hosted figmark — run it on the Mac Mini behind the ztein tunnel with an issued API token |
+| T-047 | — | — | Reserved — operational/deployment item, tracked outside this repo |
 | [T-048](T-048-upstream-llm-error-leaks-as-500.md) | Open | Medium | Upstream LLM errors surface as HTTP 500 with the provider's raw error body (should be a clean 502) |
-| [T-049](T-049-mini-bind-overexposed-and-fragile.md) | **Closed** | Medium | Mini deploy binds `0.0.0.0` via an uncommitted edit to the canonical `compose.yaml` — over-exposed on the LAN and silently revertible |
+| T-049 | — | — | Reserved — operational/deployment item, tracked outside this repo |
 
 ## How a ticket is written
 

@@ -19,6 +19,24 @@ never silently degrade" principle.
     Only bypass when checks are green or the change is docs/scripts-only.
 - Commit messages end with the `Co-Authored-By: Claude Opus 4.8` trailer.
 
+## This is a PUBLIC repo — keep our deployment out of it
+
+figmark is open source and public. The repo holds only **product-level, generic**
+content — true for anyone who clones it. Anything specific to *our* running
+instance stays out: host names, internal/Tailscale/LAN IPs, MagicDNS names,
+tokens, the `ztein` tunnel, and any employer or data-handling context. Those live
+in the **private** infra repo (`~/Documents/macmini-cloudflare`) or a **local,
+gitignored** doc (`LOCAL_DEPLOY.md`), never here.
+
+- **Litmus test before committing:** *"Would this line be appropriate for a
+  stranger who clones figmark?"* If it names our host, an internal IP, a token, or
+  the employer, it does not belong in this repo.
+- **Tickets:** product issues (bugs, features, the image, error mapping) are
+  public. "Deploy/operate *our* instance" work is infra — track it in the private
+  repo, not `docs/tickets/`.
+- Deployment docs here describe options **generically** (reverse proxy,
+  `tailscale serve`) without our specific names, IPs, or topology.
+
 ## Tickets
 
 - One file per ticket: `docs/tickets/T-NNN-slug.md`, indexed in
