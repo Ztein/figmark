@@ -35,3 +35,7 @@ testfiler/
 
 # Local runtime config — copy config.example.yaml to config.yaml and edit it.
 /config.yaml
+
+# Internal cross-project notes (consumer feedback, etc.) — product-level issues
+# are tracked as public tickets in docs/tickets/; raw internal notes stay local.
+/docs/figmark-feedback.md

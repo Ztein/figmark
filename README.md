@@ -114,6 +114,19 @@ curl -s -X POST http://127.0.0.1:8000/v1/convert \
   -F "file=@document.pdf;type=application/pdf"
 ```
 
+Unlike the CLI (which writes files — `<name>.md`, `figures.json`, …), the HTTP
+surface returns everything **inline as JSON**:
+
+| Field | Meaning |
+|---|---|
+| `markdown` | the converted document (with `<!-- page N -->` markers for provenance) |
+| `page_count` / `figure_count` / `skipped_count` | pages processed, figures described, images skipped by the significance gate |
+| `language` | detected document language |
+| `usage` | `prompt_tokens`, `completion_tokens`, `total_tokens`, `api_calls`, `calls_missing_usage` |
+| `estimated_cost` / `currency` | monetary estimate — **`null` unless both token prices are set** in `config.yaml` (never a misleading `0`) |
+
+Health/metadata endpoints are auth-free: `GET /readyz` and `GET /version`.
+
 The image is non-root, read-only-rootfs compatible, self-contained (Tesseract +
 language data baked in), and passes a hard Trivy scan in CI. Secrets come from
 files (never the image or plaintext env). Full runbook:
@@ -159,9 +172,15 @@ the full pipeline, module map, outputs, and the open Phase-2 items, see
   warning — but it does not yet auto-OCR them. For such files, re-export from the
   source or pre-OCR them before converting.
 - **Tables.** Ruled data tables are reconstructed as Markdown behind a conservative
-  filter (`docs/tickets/T-031`); borderless/spanning tables and complex multi-line
-  cells are not yet handled. Quantitative data drawn as a *chart* is captured by the
-  figure description instead.
+  filter (`docs/tickets/T-031`). Quantitative data drawn as a *chart* is captured by
+  the figure description instead. **Borderless / whitespace-aligned tables** (e.g.
+  forecast appendices with no ruling lines) are *not* detected and fall through to
+  the text path, where they are **flattened**: row labels and cell values land on
+  separate lines and column headers can detach, so the column↔value link is lost in
+  the raw text (`docs/tickets/T-050`). The data is all still present, and a
+  downstream LLM can often recover it — the preserved `<!-- page N -->` markers let
+  you point a model (or a reader) at the source page. For number-critical lookups
+  over such documents, treat tables as a known gap.
 - **Footnotes.** Footnote text is kept (in reading order, at the page bottom) but
   not yet segregated/marked as footnotes (`docs/tickets/T-044`, Phase 2).
 - **Tagged PDF.** `--tagged-pdf` writes the structure-tree *foundation* (figure
