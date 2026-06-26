@@ -39,3 +39,12 @@ testfiler/
 # Internal cross-project notes (consumer feedback, etc.) — product-level issues
 # are tracked as public tickets in docs/tickets/; raw internal notes stay local.
 /docs/figmark-feedback.md
+
+# Our-instance docs — runbook (host/token/network) and local-hygiene tickets.
+# Tracked here (not just .git/info/exclude) so the protection survives a re-clone.
+# The filename pattern is generic; the contents stay out of this public repo.
+/LOCAL_*.md
+
+# Local leak-guard patterns (the literal host/IP/token markers the pre-commit
+# hook blocks on). Instance-specific, so it must never be committed.
+/.leakguard

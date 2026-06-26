@@ -37,6 +37,27 @@ gitignored** doc (`LOCAL_DEPLOY.md`), never here.
 - Deployment docs here describe options **generically** (reverse proxy,
   `tailscale serve`) without our specific names, IPs, or topology.
 
+### Two surfaces — where work goes
+
+There are two distinct concerns. The repo is the *product*; our running service is
+an *instance* of it. Route every change accordingly — when in doubt, apply the
+litmus test above.
+
+| Kind of work | Home | Surfaced as |
+|---|---|---|
+| Product bug / feature / image / error mapping | **This public repo** | `docs/tickets/T-NNN`, code, PRs |
+| Our-instance runbook (host, token, network, bind) | Local `LOCAL_DEPLOY.md` (gitignored) | not committed |
+| Local dev-env hygiene (key files, drift) | Local `LOCAL_TICKETS.md`, **`L-NNN`** series (gitignored) | not committed |
+| Downstream-consumer raw feedback | Local `docs/figmark-feedback.md` (gitignored) → distilled into a public `T-NNN` | not committed |
+| Deploy/operate our instance | **Private** infra repo `~/Documents/macmini-cloudflare` | private |
+| Live service state (what's up, ports, deps) | **`ztein-infra` MCP** (source of truth + write-lease) | — |
+
+- `T-NNN` = public product tickets (monotonic). `L-NNN` = local hygiene, never
+  committed — don't file local-env work as a `T-NNN`.
+- **Leak guard:** a pre-commit hook blocks any commit containing an instance
+  marker. Enable it once per clone: `git config core.hooksPath scripts/githooks`.
+  Markers live in the gitignored `.leakguard`; the hook script itself is generic.
+
 ## Tickets
 
 - One file per ticket: `docs/tickets/T-NNN-slug.md`, indexed in
