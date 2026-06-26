@@ -51,7 +51,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-045](T-045-eval-corpus-german-case-is-english.md) | **Closed** | Medium | Eval corpus's only "German" doc was actually English (dead .de.pdf URL) — replaced with a real German OeNB report |
 | [T-046](T-046-multiarch-arm64-image.md) | Open | Medium | Published image is amd64-only — no native arm64 for Apple Silicon (Mac Mini) |
 | T-047 | — | — | Reserved — operational/deployment item, tracked outside this repo |
-| [T-048](T-048-upstream-llm-error-leaks-as-500.md) | Open | Medium | Upstream LLM errors surface as HTTP 500 with the provider's raw error body (should be a clean 502) |
+| [T-048](T-048-upstream-llm-error-leaks-as-500.md) | **Closed** | Medium | Upstream LLM errors surface as HTTP 500 with the provider's raw error body (should be a clean 502) |
 | T-049 | — | — | Reserved — operational/deployment item, tracked outside this repo |
 | [T-050](T-050-borderless-forecast-tables-flattened.md) | Open | Medium | Borderless forecast tables are flattened, scrambling column↔value attribution |
 | [T-051](T-051-fast-text-mode-min-api-calls.md) | Open | Low | A figure-less text PDF still spends baseline API calls (no fast text mode) |

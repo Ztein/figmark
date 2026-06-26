@@ -1,6 +1,15 @@
 # T-048: Upstream LLM errors surface as HTTP 500 with the provider's raw error body
 
-**Status:** Open
+**Status:** Closed — implemented 2026-06-26. `convert_endpoint` now catches
+`openai.APIError` next to the existing `TimeoutError` and maps it via
+`_upstream_error_response`: `APITimeoutError` → **504**, upstream **429** → **503**,
+everything else (auth/quota 401/402/403, upstream 5xx, connection errors) → **502
+Bad Gateway**. The client gets a generic detail only; the full upstream error
+(status, type, message, provider IDs) is logged server-side via `logger.error`.
+Genuine figmark bugs are non-`APIError` and still surface as 500. Offline-covered
+by `tests/test_api_upstream_errors.py` (a fake client raising the real openai
+exceptions; asserts the mapped status, no `correlation_id`/`request_id` leak, and a
+500 for a non-LLM bug).
 **Priority:** Medium — wrong status class for an upstream/config fault, plus a
 minor info leak of provider internals to the caller.
 
