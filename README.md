@@ -179,8 +179,12 @@ the full pipeline, module map, outputs, and the open Phase-2 items, see
   separate lines and column headers can detach, so the column↔value link is lost in
   the raw text (`docs/tickets/T-050`). The data is all still present, and a
   downstream LLM can often recover it — the preserved `<!-- page N -->` markers let
-  you point a model (or a reader) at the source page. For number-critical lookups
-  over such documents, treat tables as a known gap.
+  you point a model (or a reader) at the source page. This is deliberate: forcing
+  detection on these pages (PyMuPDF's whitespace strategy) does find a grid, but
+  mis-aligns its columns — chopping labels and splitting numbers — so it would emit
+  a table asserting the *wrong* column↔value mapping, which is worse than honest
+  flat text. We keep the raw text rather than guess a structure. For
+  number-critical lookups over such documents, treat tables as a known gap.
 - **Footnotes.** Footnote text is kept (in reading order, at the page bottom) but
   not yet segregated/marked as footnotes (`docs/tickets/T-044`, Phase 2).
 - **Tagged PDF.** `--tagged-pdf` writes the structure-tree *foundation* (figure
