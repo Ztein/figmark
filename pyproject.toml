@@ -106,3 +106,4 @@ select = ["E", "F", "I", "UP", "B", "W"]
 # FastAPI's dependency-injection idiom puts Depends()/File()/Form() in argument
 # defaults — B008 ("no function call in defaults") is a false positive here.
 "src/figmark/api.py" = ["B008"]
+"src/figmark/ocr_compat.py" = ["B008"]
