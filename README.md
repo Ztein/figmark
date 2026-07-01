@@ -127,6 +127,25 @@ surface returns everything **inline as JSON**:
 
 Health/metadata endpoints are auth-free: `GET /readyz` and `GET /version`.
 
+### LibreChat / Mistral-OCR-compatible endpoint
+
+The server also speaks the **Mistral OCR** wire format, so tools that expect that
+API — [LibreChat](https://www.librechat.ai/docs/features/ocr) in particular — can
+use figmark as a self-hosted, air-gappable OCR backend. Point the client's
+`OCR_BASEURL` at `http(s)://<figmark-host>/v1` and set its `OCR_API_KEY` to the
+figmark bearer token. figmark implements the four calls LibreChat's default
+strategy makes: `POST /v1/files` → `GET /v1/files/{id}/url` → `POST /v1/ocr` →
+`DELETE /v1/files/{id}`, returning `{ "pages": [ { "index", "markdown", "images" } ] }`
+(`docs/tickets/T-052`).
+
+Why figmark specifically: for **born-digital, figure/diagram-heavy** documents it
+*describes* figures and diagrams with a vision model instead of OCR'ing them into
+broken text — and keeps the data on your own network. **Limitation:** figmark's
+raster OCR is Tesseract, not a vision-language model, so this backend is strongest
+on born-digital / figure-heavy PDFs and **weaker than a VLM on messy scans and
+handwriting**. It is PDF-first: non-PDF inputs (e.g. an image via `image_url`)
+return `415`. Do not deploy it expecting VLM-grade scan fidelity.
+
 The image is non-root, read-only-rootfs compatible, self-contained (Tesseract +
 language data baked in), and passes a hard Trivy scan in CI. Secrets come from
 files (never the image or plaintext env). Full runbook:

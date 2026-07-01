@@ -1,6 +1,8 @@
 # T-052: LibreChat/Mistral-OCR clients can't point at figmark (no compatible endpoint)
 
-**Status:** Open
+**Status:** Open — **implemented (Option 1); pending live bench against a real
+LibreChat instance** (being stood up separately). The endpoint + tests ship; the
+`OCR_BASEURL` round-trip must still be verified end-to-end before we call it done.
 **Priority:** Medium
 
 ## Symptom
@@ -95,14 +97,41 @@ at all — so returning `images: []` is fully functional.
 
 ## Acceptance criteria
 
-- [ ] Bench first: point a real LibreChat instance at figmark via `OCR_BASEURL` and
-      confirm the four-call flow round-trips (upload → signed URL → `/ocr` → delete)
-      on a representative figure-heavy PDF. Record the request/response in the PR.
-- [ ] `POST /ocr` returns a valid `{ "pages": [...] }` with per-page `markdown`
-      derived from the existing pipeline; `usage_info` reflects real token spend.
-- [ ] Auth parity: a wrong/absent bearer token is rejected exactly as `/v1/convert`.
-- [ ] The scan-fidelity limitation is documented in the README (figmark-as-OCR is
-      for born-digital / figure-heavy docs; not VLM-grade on messy scans) — fail
-      loud about the boundary, per our principles.
-- [ ] Contract source is pinned: note the LibreChat version the shape was verified
-      against, since Mistral OCR is evolving (OCR 3 shipped recently).
+- [ ] **Live bench (pending):** point a real LibreChat instance at figmark via
+      `OCR_BASEURL` and confirm the four-call flow round-trips (upload → signed URL →
+      `/ocr` → delete) on a representative figure-heavy PDF. Record the
+      request/response. *This is the one criterion the offline suite can't cover;
+      the LibreChat instance is being stood up separately.*
+- [x] `POST /ocr` returns a valid `{ "pages": [...] }` with per-page `markdown`
+      derived from the existing pipeline (split on the `<!-- page N -->` markers);
+      `usage_info` carries `pages_processed` + `doc_size_bytes`. Covered by
+      `tests/test_api_ocr_compat.py::test_full_mistral_flow_roundtrips`.
+- [x] Auth parity: a wrong/absent bearer token is rejected exactly as `/v1/convert`
+      (`test_ocr_and_files_require_auth`); signed file URLs are HMAC'd against the
+      server token (`test_tampered_signature_is_403`).
+- [x] The scan-fidelity limitation is documented in the README (figmark-as-OCR is
+      for born-digital / figure-heavy docs; not VLM-grade on messy scans; PDF-first,
+      non-PDF → 415) — fail loud about the boundary, per our principles.
+- [x] Contract source is pinned: the shape was verified against LibreChat `main`
+      (`packages/api/src/files/mistral/crud.ts`), noted above. Re-check when bumping
+      the paired LibreChat version, since Mistral OCR is evolving (OCR 3 shipped).
+
+## Implementation notes (2026-07-01)
+
+Shipped **Option 1** — a thin Mistral-compat router, no change to the conversion
+code:
+
+- New module [`src/figmark/ocr_compat.py`](../../src/figmark/ocr_compat.py):
+  `POST /v1/files`, `GET /v1/files/{id}/url`, `GET /v1/files/{id}/content`,
+  `DELETE /v1/files/{id}`, `POST /v1/ocr`, plus a tiny on-disk `FileStore`.
+- `api.py` refactor: the concurrency-gate + timeout + upstream-error mapping
+  (T-048) and PDF validation were extracted into shared `run_conversion` /
+  `_validate_pdf_document` helpers, so `/v1/convert` and `/v1/ocr` behave
+  identically. No behaviour change to `/v1/convert`.
+- **Air-gap preserved:** document bytes are resolved only from figmark's *own*
+  signed file URLs (the default LibreChat flow) or inline `data:` URLs (the Azure
+  variant). Arbitrary external URLs are rejected (`400`) — no outbound fetch, no
+  SSRF surface. No new runtime dependency.
+- **Deferred:** populating `pages[].images[].image_base64` when
+  `include_image_base64: true` (LibreChat ignores OCR images today, so `images: []`
+  is fully functional); non-PDF `image_url` inputs (currently `415`).

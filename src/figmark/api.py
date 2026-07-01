@@ -215,6 +215,59 @@ def _upstream_error_response(e: APIError) -> HTTPException:
     return HTTPException(status_code=status, detail=detail)
 
 
+def _validate_pdf_document(pdf_path: Path) -> None:
+    """Fail loudly (422) if the on-disk file isn't an openable, unencrypted PDF.
+
+    Shared by ``/v1/convert`` and the Mistral-OCR-compatible ``/v1/ocr`` route so
+    both reject the same inputs the same way.
+    """
+    try:
+        doc = fitz.open(pdf_path)
+        if doc.needs_pass:
+            doc.close()
+            raise HTTPException(status_code=422, detail="Password-protected PDFs unsupported")
+        _ = doc.page_count
+        doc.close()
+    except HTTPException:
+        raise
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=422, detail="File could not be parsed as a PDF") from e
+
+
+async def run_conversion(app: FastAPI, pdf_path: Path, out_dir: Path, *, annotate: bool = False):
+    """Run the pipeline under the concurrency gate + timeout, mapping upstream LLM
+    faults to clean gateway errors (T-048).
+
+    The single place ``convert`` is invoked over HTTP — shared by ``/v1/convert``
+    and the Mistral-OCR-compatible ``/v1/ocr`` route so the busy/timeout/upstream
+    error behaviour stays identical.
+    """
+    settings = app.state.settings
+    sem = app.state.job_semaphore
+    if sem.locked():
+        raise HTTPException(status_code=429, detail="Server busy — too many conversions")
+    async with sem:
+        try:
+            return await asyncio.wait_for(
+                run_in_threadpool(
+                    convert,
+                    pdf_path,
+                    app.state.cfg,
+                    out_dir,
+                    annotate=annotate,
+                    client=app.state.client,
+                    quiet=True,
+                ),
+                timeout=settings.request_timeout_seconds,
+            )
+        except TimeoutError as e:
+            raise HTTPException(status_code=504, detail="Conversion timed out") from e
+        except APIError as e:
+            # Upstream LLM fault (bad key/quota, rate limit, unreachable endpoint):
+            # a bad gateway, not a figmark bug. Full error logged server-side (T-048).
+            raise _upstream_error_response(e) from e
+
+
 def _available_ocr_languages() -> list[str]:
     """Languages Tesseract can use; empty list if it cannot be queried."""
     try:
@@ -303,46 +356,9 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
                     out.write(chunk)
             if not header.startswith(b"%PDF"):
                 raise HTTPException(status_code=422, detail="Not a valid PDF (missing %PDF header)")
-            try:
-                doc = fitz.open(pdf_path)
-                if doc.needs_pass:
-                    doc.close()
-                    raise HTTPException(
-                        status_code=422, detail="Password-protected PDFs unsupported"
-                    )
-                _ = doc.page_count
-                doc.close()
-            except HTTPException:
-                raise
-            except Exception as e:  # noqa: BLE001
-                raise HTTPException(
-                    status_code=422, detail="File could not be parsed as a PDF"
-                ) from e
+            _validate_pdf_document(pdf_path)
 
-            sem = request.app.state.job_semaphore
-            if sem.locked():
-                raise HTTPException(status_code=429, detail="Server busy — too many conversions")
-            async with sem:
-                try:
-                    result = await asyncio.wait_for(
-                        run_in_threadpool(
-                            convert,
-                            pdf_path,
-                            cfg,
-                            work / "out",
-                            annotate=annotate,
-                            client=request.app.state.client,
-                            quiet=True,
-                        ),
-                        timeout=settings.request_timeout_seconds,
-                    )
-                except TimeoutError as e:
-                    raise HTTPException(status_code=504, detail="Conversion timed out") from e
-                except APIError as e:
-                    # Upstream LLM fault (bad key/quota, rate limit, unreachable
-                    # endpoint): a bad gateway, not a figmark bug. Generic detail to
-                    # the caller; full error logged server-side (T-048).
-                    raise _upstream_error_response(e) from e
+            result = await run_conversion(request.app, pdf_path, work / "out", annotate=annotate)
 
             logger.info(
                 "convert ok pages=%d figures=%d skipped=%d language=%s",
@@ -354,6 +370,13 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
             return format_convert_result(result, output_format)
         finally:
             shutil.rmtree(work, ignore_errors=True)
+
+    # LibreChat / Mistral-OCR-compatible surface (/v1/files + /v1/ocr), so clients
+    # that speak that wire format can use figmark as a self-hosted OCR backend
+    # (T-052). Registered here — local import avoids an import cycle with this module.
+    from .ocr_compat import add_mistral_ocr_routes
+
+    add_mistral_ocr_routes(app)
 
     return app
 
