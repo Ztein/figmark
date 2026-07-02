@@ -107,7 +107,10 @@ def test_docx_footnote_text_survives(run_office):
 
 
 def test_docx_pictures_counted_once_each(run_office):
-    """poi-pictures: the converted PDF draws exactly 2 raster images."""
+    """poi-pictures: 2 raster images + 3 vector-rendered pictures (wmf/emf/pict
+    become drawing clusters → diagram regions) — 5 figures, 5 description calls,
+    none double-counted. (Originally asserted 2: a pipeline regression had
+    silently stopped scheduling diagram-description jobs; fixed with T-061.)"""
     result, client = run_office("poi-pictures.docx")
-    assert result.figure_count == 2
-    assert len(client.describe_prompts) == 2
+    assert result.figure_count == 5
+    assert len(client.describe_prompts) == 5

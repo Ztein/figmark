@@ -145,3 +145,22 @@ def test_same_embedded_image_across_pages_is_described_once(
     assert result.markdown.count("En återkommande logotyp.") == 3, (
         "every page still carries the description"
     )
+
+
+def test_diagram_regions_are_scheduled_for_description(
+    env_with_key, project_root: Path, tmp_path: Path
+):
+    """Regression guard: a detected diagram region MUST produce a description
+    job. (A refactor once left the diagram loop outside the per-page loop —
+    diagrams silently stopped being described, and no offline test caught it.)"""
+    from .test_shared_description_cache import _pdf_with_diagram
+
+    pdf = _pdf_with_diagram(tmp_path / "chart.pdf", "Quarterly figures. ")
+    cfg = load_config(project_root / "config.example.yaml")
+    client = FakeClient("Ett stapeldiagram.")
+
+    result = convert(pdf, cfg, tmp_path / "output", client=client, quiet=True)
+
+    assert len(client.describe_prompts) >= 1, "the diagram region must be described"
+    assert result.figure_count >= 1
+    assert "Ett stapeldiagram." in result.markdown

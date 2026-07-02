@@ -134,3 +134,28 @@ class CacheStore:
             "max_bytes": self.max_bytes,
             "max_age_hours": self.max_age_hours,
         }
+
+
+class SharedDescriptionCache:
+    """The pipeline's view of the store for figure descriptions (T-061).
+
+    Keys are content-based (image/rendered-region digest + config fingerprint),
+    so the same pixels reuse one description across requests AND documents.
+    Entries are attributed to the document that first created them
+    (``doc_digest``): purging that document also purges the descriptions it
+    introduced — later documents that relied on them simply regenerate.
+    """
+
+    def __init__(self, store: CacheStore, doc_digest: str) -> None:
+        self._store = store
+        self._doc_digest = doc_digest
+
+    def get(self, key: str) -> str | None:
+        payload = self._store.get(key)
+        return payload.decode("utf-8") if payload is not None else None
+
+    def put(self, key: str, text: str) -> None:
+        if text.strip():
+            self._store.put(
+                key, text.encode("utf-8"), doc_digest=self._doc_digest, kind="description"
+            )

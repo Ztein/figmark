@@ -43,7 +43,7 @@ from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
 
 from . import __version__
-from .cache import CacheStore
+from .cache import CacheStore, SharedDescriptionCache
 from .config import load_config
 from .describe import make_client
 from .input_formats import EXTENSION_FORMATS, OFFICE_FORMATS, sniff_format
@@ -425,7 +425,14 @@ async def prepare_office_document(doc_path: Path, fmt: str, cfg) -> Path:
         ) from e
 
 
-async def run_conversion(app: FastAPI, pdf_path: Path, out_dir: Path, *, annotate: bool = False):
+async def run_conversion(
+    app: FastAPI,
+    pdf_path: Path,
+    out_dir: Path,
+    *,
+    annotate: bool = False,
+    doc_digest: str | None = None,
+):
     """Run the pipeline under the concurrency gate + timeout, mapping upstream LLM
     faults to clean gateway errors (T-048).
 
@@ -437,6 +444,11 @@ async def run_conversion(app: FastAPI, pdf_path: Path, out_dir: Path, *, annotat
     sem = app.state.job_semaphore
     if sem.locked():
         raise HTTPException(status_code=429, detail="Server busy — too many conversions")
+    # Shared description cache (T-061): descriptions created for this document
+    # are attributed to its digest, so purging the document purges them too.
+    shared = None
+    if app.state.cache_store is not None and doc_digest:
+        shared = SharedDescriptionCache(app.state.cache_store, doc_digest)
     async with sem:
         try:
             return await asyncio.wait_for(
@@ -448,6 +460,7 @@ async def run_conversion(app: FastAPI, pdf_path: Path, out_dir: Path, *, annotat
                     annotate=annotate,
                     client=app.state.client,
                     quiet=True,
+                    shared_cache=shared,
                 ),
                 timeout=settings.request_timeout_seconds,
             )
@@ -605,7 +618,9 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
             doc_path = await prepare_office_document(doc_path, fmt, cfg)
             _validate_pdf_document(doc_path)
 
-            result = await run_conversion(request.app, doc_path, work / "out", annotate=annotate)
+            result = await run_conversion(
+                request.app, doc_path, work / "out", annotate=annotate, doc_digest=doc_digest
+            )
 
             if store is not None:
                 store.put(

@@ -1,6 +1,19 @@
 # T-061: Figure descriptions are not reused when the same image appears in new requests or other documents
 
-**Status:** Open
+**Status:** Closed — **implemented (2026-07-02).** `SharedDescriptionCache`
+rides the T-060 store: images share by content digest, diagrams by the digest
+of their rendered pixels (position-independent), `[SKIP]` verdicts are cached
+too. Entries are attributed to the document that first created them, so purging
+a document (T-060's `DELETE /v1/cache/{sha256}`) also purges its descriptions.
+Same size/TTL/LRU/clear policies; the CLI is unchanged (per-document cache
+only). Cross-document context trade-off: reuse is ON (the description of a
+figure is overwhelmingly image-driven; partial fidelity beats re-spend — the
+product goal), documented in the security analysis; a per-deployment toggle was
+considered and deferred until someone needs it. Found & fixed while testing: a
+pipeline refactor had left the diagram-job loop outside the per-page loop, so
+diagram regions had silently stopped being described — restored, with a CI
+regression test (`test_diagram_regions_are_scheduled_for_description`).
+Tests: `tests/test_shared_description_cache.py`.
 **Priority:** Medium — the document-level cache (T-060) only helps when the
 *whole document* is identical. The same figure recurring in different documents
 (an organisation's logo, a shared chart, a report template's header art, a new
