@@ -271,7 +271,9 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
             doc_path = upload_path.rename(work / f"input.{fmt}")
             doc_path = await prepare_office_document(doc_path, fmt, cfg)
             _validate_pdf_document(doc_path)
-            result = await run_conversion(request.app, doc_path, work / "out")
+            result = await run_conversion(
+                request.app, doc_path, work / "out", doc_digest=doc_digest
+            )
             if store is not None:
                 store.put(
                     document_cache_key(doc_digest, cfg),

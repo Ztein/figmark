@@ -29,8 +29,11 @@ class ExtractedImage:
     index: int
     xref: int
     bbox: tuple[float, float, float, float] | None
-    # Content hash (sha1, 12 hex chars) — keys the description cache so the same
-    # embedded image is described once, whatever page or xref it appears under.
+    # Content hash (sha256, 32 hex chars = 128 bits) — keys the description
+    # cache so the same embedded image is described once, whatever page or xref
+    # it appears under. Kept long: with the shared cross-request cache (T-061) a
+    # truncated digest would let a crafted collision poison another document's
+    # description.
     digest: str = ""
 
 
@@ -131,7 +134,7 @@ def extract_images_from_page(
                 index=index,
                 xref=xref,
                 bbox=bbox,
-                digest=hashlib.sha1(img_bytes).hexdigest()[:12],
+                digest=hashlib.sha256(img_bytes).hexdigest()[:32],
             )
         )
 

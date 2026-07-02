@@ -8,6 +8,7 @@ API server both call it; the API injects its own client and runs it quietly.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 from dataclasses import dataclass
@@ -195,11 +196,15 @@ def convert(
     client=None,
     console=None,
     quiet: bool = False,
+    shared_cache=None,
 ) -> ConversionResult:
     """Run the full conversion and return the Markdown + artifact paths.
 
     ``client`` defaults to a fresh OpenAI client from ``cfg``; the API injects its
     own (or a fake in tests). ``quiet`` suppresses progress output for non-TTY use.
+    ``shared_cache`` (a ``SharedDescriptionCache``, T-061) lets figure/diagram
+    descriptions be reused across requests and documents; ``None`` (the CLI)
+    keeps the per-document disk cache only.
     """
     if not pdf_path.exists():
         raise FileNotFoundError(f"PDF not found: {pdf_path}")
@@ -468,18 +473,35 @@ def convert(
     # the same embedded image (repeated logos/headers; LibreOffice-converted
     # documents repeat images across pages) is described once and reused. Within
     # a run, duplicate instances chain onto the first job instead of scheduling
-    # their own API call (T-054).
+    # their own API call (T-054). With a shared cross-request cache (T-061) the
+    # same content is also reused across requests and other documents.
     pending_image_jobs: dict[str, Job] = {}
     duplicate_instances = 0
+    shared_hits = 0
+
+    def _with_shared_put(job: Job, shared_key: str) -> Job:
+        def _put(text, _prev=job.on_done, _key=shared_key):
+            _prev(text)
+            shared_cache.put(_key, text)
+
+        job.on_done = _put
+        return job
+
     for page_data in pages:
         for img in page_data.images:
-            cache_key = img.digest or img.path.stem
-            desc_path = descriptions_dir / f"img-{cache_key}-{image_fp}.txt"
+            cache_key = f"img-{img.digest or img.path.stem}-{image_fp}"
+            desc_path = descriptions_dir / f"{cache_key}.txt"
             cached = desc_path.exists() and desc_path.read_text(encoding="utf-8").strip()
             if cached:
                 page_data.descriptions[img.xref] = cached
                 cache_hits += 1
                 continue
+            if shared_cache is not None:
+                text = shared_cache.get(cache_key)
+                if text:
+                    page_data.descriptions[img.xref] = text
+                    shared_hits += 1
+                    continue
             pending = pending_image_jobs.get(cache_key)
             if pending is not None:
                 duplicate_instances += 1
@@ -503,13 +525,10 @@ def convert(
                 doc_summary,
                 resolved_language,
             )
+            if shared_cache is not None:
+                job = _with_shared_put(job, cache_key)
             pending_image_jobs[cache_key] = job
             jobs.append(job)
-    if duplicate_instances:
-        emit(
-            f"\n{duplicate_instances} repeated embedded image instance(s) share "
-            "one description call each"
-        )
 
         for region in page_regions.get(page_data.page_num, []):
             desc_path = diagram_descriptions_dir / f"{region.path.stem}-{diagram_fp}.txt"
@@ -518,21 +537,50 @@ def convert(
                 page_data.diagram_descriptions[region.index] = cached
                 cache_hits += 1
                 continue
+            # Diagrams share by the digest of their RENDERED pixels — position-
+            # independent, so the same chart in another document reuses it.
+            shared_key = None
+            if shared_cache is not None:
+                try:
+                    render_digest = hashlib.sha256(region.path.read_bytes()).hexdigest()[:32]
+                    shared_key = f"diag-{render_digest}-{diagram_fp}"
+                except OSError:
+                    shared_key = None
+                if shared_key:
+                    text = shared_cache.get(shared_key)
+                    if text:
+                        page_data.diagram_descriptions[region.index] = text
+                        shared_hits += 1
+                        continue
             label = f"page {page_data.page_num:>3} diagram {region.index:>2}"
-            ctx = _maybe_context(region.bbox)
-            jobs.append(
-                _make_diagram_job(
-                    label,
-                    client,
-                    region,
-                    desc_path,
-                    cfg,
-                    page_data,
-                    ctx,
-                    doc_summary,
-                    resolved_language,
-                )
+            job = _make_diagram_job(
+                label,
+                client,
+                region,
+                desc_path,
+                cfg,
+                page_data,
+                _maybe_context(region.bbox),
+                doc_summary,
+                resolved_language,
             )
+            if shared_cache is not None and shared_key:
+                job = _with_shared_put(job, shared_key)
+            jobs.append(job)
+
+    if duplicate_instances:
+        emit(
+            f"\n{duplicate_instances} repeated embedded image instance(s) share "
+            "one description call each"
+        )
+    if shared_hits:
+        shared_msg = (
+            f"{shared_hits} description(s) reused from the shared cross-request cache (T-061)"
+        )
+        if quiet:
+            logger.info(shared_msg)
+        else:
+            log(shared_msg)
 
     if total_pending:
         if cache_hits:
