@@ -314,6 +314,8 @@ def convert(
             skip_notes.append(f"{extraction.skipped_small} < {MIN_IMAGE_WIDTH}x{MIN_IMAGE_HEIGHT}")
         if extraction.skipped_full_page:
             skip_notes.append(f"{extraction.skipped_full_page} full-page")
+        if extraction.skipped_not_drawn:
+            skip_notes.append(f"{extraction.skipped_not_drawn} referenced-but-not-drawn")
         note = f" ({', '.join(skip_notes)} filtered)" if skip_notes else ""
         emit(f"  → {len(page_data.images)} image(s) saved{note}")
 
@@ -462,29 +464,52 @@ def convert(
             words_after=cfg.context.words_after,
         )
 
+    # The description cache is keyed by image CONTENT (digest), not page position:
+    # the same embedded image (repeated logos/headers; LibreOffice-converted
+    # documents repeat images across pages) is described once and reused. Within
+    # a run, duplicate instances chain onto the first job instead of scheduling
+    # their own API call (T-054).
+    pending_image_jobs: dict[str, Job] = {}
+    duplicate_instances = 0
     for page_data in pages:
         for img in page_data.images:
-            desc_path = descriptions_dir / f"{img.path.stem}-{image_fp}.txt"
+            cache_key = img.digest or img.path.stem
+            desc_path = descriptions_dir / f"img-{cache_key}-{image_fp}.txt"
             cached = desc_path.exists() and desc_path.read_text(encoding="utf-8").strip()
             if cached:
                 page_data.descriptions[img.xref] = cached
                 cache_hits += 1
                 continue
+            pending = pending_image_jobs.get(cache_key)
+            if pending is not None:
+                duplicate_instances += 1
+
+                def _chain(text, _prev=pending.on_done, _page=page_data, _xref=img.xref):
+                    _prev(text)
+                    _page.descriptions[_xref] = text
+
+                pending.on_done = _chain
+                continue
             label = f"page {page_data.page_num:>3} image   {img.index:>2}"
             ctx = _maybe_context(img.bbox)
-            jobs.append(
-                _make_image_job(
-                    label,
-                    client,
-                    img,
-                    desc_path,
-                    cfg,
-                    page_data,
-                    ctx,
-                    doc_summary,
-                    resolved_language,
-                )
+            job = _make_image_job(
+                label,
+                client,
+                img,
+                desc_path,
+                cfg,
+                page_data,
+                ctx,
+                doc_summary,
+                resolved_language,
             )
+            pending_image_jobs[cache_key] = job
+            jobs.append(job)
+    if duplicate_instances:
+        emit(
+            f"\n{duplicate_instances} repeated embedded image instance(s) share "
+            "one description call each"
+        )
 
         for region in page_regions.get(page_data.page_num, []):
             desc_path = diagram_descriptions_dir / f"{region.path.stem}-{diagram_fp}.txt"

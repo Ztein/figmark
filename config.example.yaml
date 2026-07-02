@@ -29,10 +29,20 @@ input:
   # figmark looks at what the bytes actually are, not the filename — and an
   # upload outside this list gets a clean 415 naming the supported set.
   #   Native (no extra dependency): pdf, epub, xps, fb2, cbz, mobi
-  #   Office (docx, xlsx, pptx): requires the LibreOffice image variant
+  #   Office (docx, xlsx, pptx): requires LibreOffice (the Office image
+  #   variant, or a local soffice install) — startup fails loud without it.
   formats:
     - pdf
     - epub
+    # - docx
+    # - xlsx
+    # - pptx
+  # Required when any Office format is listed. soffice_path is optional
+  # (auto-detected on $PATH); the per-file timeout is not — a hung conversion
+  # is killed and reported, never left hanging.
+  # office:
+  #   timeout_seconds: 120
+  #   soffice_path: ""
 
 ocr:
   language: "swe"

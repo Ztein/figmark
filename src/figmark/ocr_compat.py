@@ -40,7 +40,13 @@ from urllib.parse import parse_qs, urlparse
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, Response, UploadFile
 
 from . import __version__
-from .api import _require_auth, _validate_pdf_document, gate_document_format, run_conversion
+from .api import (
+    _require_auth,
+    _validate_pdf_document,
+    gate_document_format,
+    prepare_office_document,
+    run_conversion,
+)
 
 logger = logging.getLogger("figmark.ocr")
 
@@ -240,6 +246,7 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
             # item and fails loud here.
             fmt = gate_document_format(upload_path, None, request.app.state.cfg.input.formats)
             doc_path = upload_path.rename(work / f"input.{fmt}")
+            doc_path = await prepare_office_document(doc_path, fmt, request.app.state.cfg)
             _validate_pdf_document(doc_path)
             result = await run_conversion(request.app, doc_path, work / "out")
             pages = split_pages(result.markdown)

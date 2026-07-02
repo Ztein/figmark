@@ -41,8 +41,9 @@ from starlette.concurrency import run_in_threadpool
 from . import __version__
 from .config import load_config
 from .describe import make_client
-from .input_formats import EXTENSION_FORMATS, sniff_format
+from .input_formats import EXTENSION_FORMATS, OFFICE_FORMATS, sniff_format
 from .ocr import VisionOCRError
+from .office import OfficeConversionError, convert_office_to_pdf
 from .pipeline import convert
 
 logger = logging.getLogger("figmark.api")
@@ -306,6 +307,33 @@ def gate_document_format(path: Path, claimed: str | None, allowed: list[str]) ->
     return fmt
 
 
+async def prepare_office_document(doc_path: Path, fmt: str, cfg) -> Path:
+    """Convert an allowlisted Office upload to PDF before it enters the pipeline.
+
+    Non-Office formats pass through untouched. The allowlist guarantees
+    ``cfg.input.office`` is set when an Office format got this far (enforced at
+    config load); conversion failures surface as a clean 422 — the document is
+    the client's — with the full error logged server-side.
+    """
+    if fmt not in OFFICE_FORMATS:
+        return doc_path
+    office = cfg.input.office
+    try:
+        return await run_in_threadpool(
+            convert_office_to_pdf,
+            doc_path,
+            doc_path.parent,
+            soffice=office.soffice_path,
+            timeout=office.timeout_seconds,
+        )
+    except OfficeConversionError as e:
+        logger.error("office conversion failed: %s", e)
+        raise HTTPException(
+            status_code=422,
+            detail=f"The {fmt} document could not be converted for processing.",
+        ) from e
+
+
 async def run_conversion(app: FastAPI, pdf_path: Path, out_dir: Path, *, annotate: bool = False):
     """Run the pipeline under the concurrency gate + timeout, mapping upstream LLM
     faults to clean gateway errors (T-048).
@@ -389,7 +417,10 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
         tesseract = shutil.which("tesseract") is not None
         language_ok = cfg.ocr.language in _available_ocr_languages()
         checks = {"tesseract": tesseract, "ocr_language": language_ok}
-        ready = tesseract and language_ok
+        if cfg.input.office is not None:
+            # Office formats are configured — the resolved soffice must still exist.
+            checks["libreoffice"] = Path(cfg.input.office.soffice_path).exists()
+        ready = all(checks.values())
         return JSONResponse({"ready": ready, "checks": checks}, status_code=200 if ready else 503)
 
     @app.get("/version", response_model=VersionResponse)
@@ -448,6 +479,7 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
             # PyMuPDF picks its loader from the extension — name the file for
             # what its content actually is.
             doc_path = upload_path.rename(work / f"input.{fmt}")
+            doc_path = await prepare_office_document(doc_path, fmt, cfg)
             _validate_pdf_document(doc_path)
 
             result = await run_conversion(request.app, doc_path, work / "out", annotate=annotate)
