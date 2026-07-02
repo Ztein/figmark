@@ -41,6 +41,7 @@ from starlette.concurrency import run_in_threadpool
 from . import __version__
 from .config import load_config
 from .describe import make_client
+from .ocr import VisionOCRError
 from .pipeline import convert
 
 logger = logging.getLogger("figmark.api")
@@ -262,6 +263,13 @@ async def run_conversion(app: FastAPI, pdf_path: Path, out_dir: Path, *, annotat
             )
         except TimeoutError as e:
             raise HTTPException(status_code=504, detail="Conversion timed out") from e
+        except VisionOCRError as e:
+            # A scanned page couldn't be OCR'd (too large for the vision model, or
+            # rejected/empty). This is a property of the uploaded document, not a
+            # backend outage or a figmark bug — surface it as an actionable 422 with
+            # the page-specific, provider-body-free detail rather than a generic 502.
+            logger.error("vision-OCR failure → HTTP 422 (%s)", e)
+            raise HTTPException(status_code=422, detail=str(e)) from e
         except APIError as e:
             # Upstream LLM fault (bad key/quota, rate limit, unreachable endpoint):
             # a bad gateway, not a figmark bug. Full error logged server-side (T-048).

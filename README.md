@@ -146,6 +146,12 @@ on born-digital / figure-heavy PDFs and **weaker than a VLM on messy scans and
 handwriting**. It is PDF-first: non-PDF inputs (e.g. an image via `image_url`)
 return `415`. Do not deploy it expecting VLM-grade scan fidelity.
 
+When a *scanned* page can't be OCR'd — the rendered page is too large for the
+vision model even after figmark downscales it, or the model rejects/returns nothing
+— the request fails **loud** with a `422` naming the page and the reason (and the
+remedy: lower the OCR render DPI, or use a model with a larger image-input limit),
+rather than a misleading generic backend error (`docs/tickets/T-053`).
+
 The image is non-root, read-only-rootfs compatible, self-contained (Tesseract +
 language data baked in), and passes a hard Trivy scan in CI. Secrets come from
 files (never the image or plaintext env). Full runbook:

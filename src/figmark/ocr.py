@@ -14,9 +14,11 @@ from dataclasses import dataclass
 
 import fitz
 import pytesseract
+from openai import APIError
 from PIL import Image
 
 from .config import Config
+from .describe import MAX_IMAGE_DIM, MAX_PAYLOAD_BYTES
 
 # ============================================================================
 # Technical constants — tune here if you need different behaviour.
@@ -47,6 +49,22 @@ OCR_PROMPT = (
 class OcrResult:
     text: str
     mean_confidence: float
+
+
+class VisionOCRError(RuntimeError):
+    """Vision-model OCR of a scanned page failed in a way the operator can act on.
+
+    Carries the page number and a specific, figmark-authored reason — the page image
+    is too large for the model, the model rejected it, or it returned nothing — so
+    the failure surfaces as an actionable message instead of a generic backend fault
+    (T-048) or an opaque 500. The message is safe to show a client: it names the page
+    and payload size, never the provider's raw error body.
+    """
+
+    def __init__(self, page_num: int, detail: str) -> None:
+        self.page_num = page_num
+        self.detail = detail
+        super().__init__(f"Vision-OCR failed on page {page_num}: {detail}")
 
 
 _tesseract_checked = False
@@ -121,30 +139,90 @@ def should_fallback(result: OcrResult) -> bool:
     return False
 
 
-def ocr_page_with_vision(page: fitz.Page, client, cfg: Config) -> str:
-    # Lower DPI + JPEG to keep the payload under the vision API's limit.
-    image = render_page(page, VISION_DPI)
+def _encode_page_under_cap(image: Image.Image, page_num: int) -> bytes:
+    """JPEG-encode a rendered page under the vision API's payload cap.
+
+    Mirrors ``describe._prepare_image_for_api`` (resize to ``MAX_IMAGE_DIM``, then
+    step the quality down). Unlike a figure — where an over-cap payload is sent
+    best-effort — a *page* that still won't fit is a loud, actionable failure: we do
+    not ship an over-cap payload only to get an opaque 413 back from the provider.
+    """
+    if max(image.size) > MAX_IMAGE_DIM:
+        image = image.copy()
+        image.thumbnail((MAX_IMAGE_DIM, MAX_IMAGE_DIM))
+
+    quality = VISION_JPEG_QUALITY
     buf = io.BytesIO()
-    image.save(buf, format="JPEG", quality=VISION_JPEG_QUALITY, optimize=True)
-    img_bytes = buf.getvalue()
+    image.save(buf, format="JPEG", quality=quality, optimize=True)
+    while len(buf.getvalue()) > MAX_PAYLOAD_BYTES and quality > 30:
+        quality -= 15
+        buf = io.BytesIO()
+        image.save(buf, format="JPEG", quality=quality, optimize=True)
+
+    size = len(buf.getvalue())
+    if size > MAX_PAYLOAD_BYTES:
+        raise VisionOCRError(
+            page_num,
+            f"the rendered page is still {size // 1024} KB after maximum downscaling "
+            f"({image.size[0]}x{image.size[1]} JPEG q={quality}), above the "
+            f"{MAX_PAYLOAD_BYTES // 1024} KB the vision model accepts. Lower the OCR "
+            f"render DPI, or use a model with a larger image-input limit.",
+        )
+    return buf.getvalue()
+
+
+def ocr_page_with_vision(
+    page: fitz.Page, client, cfg: Config, *, page_num: int | None = None
+) -> str:
+    """Transcribe a scanned page with the vision model. Fails loud on a too-large or
+    rejected page (``VisionOCRError``), never a bare provider 413 or an empty string.
+    """
+    page_num = page_num if page_num is not None else page.number + 1
+    # Lower DPI + JPEG to keep the payload under the vision API's limit; the cap is
+    # then enforced (and shrunk into) rather than assumed.
+    image = render_page(page, VISION_DPI)
+    img_bytes = _encode_page_under_cap(image, page_num)
     print(
         f"    Vision payload: {len(img_bytes) / 1024:.0f} KB JPEG "
-        f"({image.width}x{image.height} @ {VISION_DPI} DPI, q={VISION_JPEG_QUALITY})",
+        f"({image.width}x{image.height} @ {VISION_DPI} DPI, q≤{VISION_JPEG_QUALITY})",
         flush=True,
     )
     data_uri = "data:image/jpeg;base64," + base64.b64encode(img_bytes).decode("ascii")
 
-    response = client.chat.completions.create(
-        model=cfg.api.model,
-        max_tokens=OCR_MAX_TOKENS,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": OCR_PROMPT},
-                    {"type": "image_url", "image_url": {"url": data_uri}},
-                ],
-            }
-        ],
-    )
-    return (response.choices[0].message.content or "").strip()
+    try:
+        response = client.chat.completions.create(
+            model=cfg.api.model,
+            max_tokens=OCR_MAX_TOKENS,
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": OCR_PROMPT},
+                        {"type": "image_url", "image_url": {"url": data_uri}},
+                    ],
+                }
+            ],
+        )
+    except APIError as e:
+        # A rejection here is most often the page image exceeding the model's limit,
+        # or a model that does not accept image input. Re-raise with page context and
+        # a provider-body-free message (T-048) so the caller can map it cleanly.
+        status = getattr(e, "status_code", None)
+        raise VisionOCRError(
+            page_num,
+            f"the vision model rejected the {len(img_bytes) // 1024} KB page image "
+            f"({type(e).__name__}"
+            f"{f', HTTP {status}' if status else ''}). The page may exceed the "
+            f"model's image-size limit, or the model may not accept image input.",
+        ) from e
+
+    text = (response.choices[0].message.content or "").strip()
+    if not text:
+        # An empty completion on the OCR path means no text was recovered — a hard
+        # failure, not a blank page (a blank page never reaches vision fallback).
+        raise VisionOCRError(
+            page_num,
+            f"the vision model returned no text (model={cfg.api.model}). It likely "
+            f"does not support image input, or rejected the page.",
+        )
+    return text
