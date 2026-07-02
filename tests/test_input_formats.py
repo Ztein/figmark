@@ -179,13 +179,16 @@ def test_unknown_format_fails_loudly(env_with_key, project_root: Path, tmp_path:
         load_config(path)
 
 
-def test_office_format_without_office_support_fails_loudly(
-    env_with_key, project_root: Path, tmp_path: Path
+def test_office_format_without_soffice_fails_loudly(
+    env_with_key, project_root: Path, tmp_path: Path, monkeypatch
 ):
-    """Allowlisting docx/xlsx/pptx needs the LibreOffice conversion path — until it
-    exists (T-054 PR2), declaring one must fail at load, not 500 at request time."""
+    """Allowlisting docx/xlsx/pptx needs a working LibreOffice — without one the
+    config must fail at load, not 500 at request time."""
+    import figmark.office as office_mod
+
+    monkeypatch.setattr(office_mod, "find_soffice", lambda configured=None: None)
     path = _config_with_input(project_root, tmp_path, ["pdf", "docx"])
-    with pytest.raises(RuntimeError, match="docx"):
+    with pytest.raises(RuntimeError, match="soffice"):
         load_config(path)
 
 

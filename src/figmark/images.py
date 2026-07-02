@@ -7,6 +7,7 @@ illustration). Vector charts are handled separately in ``diagrams.py``.
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -28,6 +29,9 @@ class ExtractedImage:
     index: int
     xref: int
     bbox: tuple[float, float, float, float] | None
+    # Content hash (sha1, 12 hex chars) — keys the description cache so the same
+    # embedded image is described once, whatever page or xref it appears under.
+    digest: str = ""
 
 
 @dataclass
@@ -38,6 +42,10 @@ class ImageExtraction:
     images: list[ExtractedImage]
     skipped_small: int = 0  # below MIN_IMAGE_WIDTH/HEIGHT (decorative icons)
     skipped_full_page: int = 0  # full-page image skipped in OCR mode
+    # In the page's resource dict but never drawn on the page. LibreOffice-made
+    # PDFs list every document image on every page — extracting those would turn
+    # a 6-image document into hundreds of phantom figures (T-054).
+    skipped_not_drawn: int = 0
 
 
 def extract_images_from_page(
@@ -70,9 +78,13 @@ def extract_images_from_page(
             rect_lookup.setdefault(xref, []).append(tuple(info.get("bbox", (0, 0, 0, 0))))
 
     page_area = page.rect.width * page.rect.height
+    skipped_not_drawn = sum(1 for t in image_list if t[0] not in rect_lookup)
 
     for index, img_tuple in enumerate(image_list, start=1):
         xref = img_tuple[0]
+        if xref not in rect_lookup:
+            # In /Resources but never drawn on this page (counted above).
+            continue
         try:
             base = doc.extract_image(xref)
         except Exception as exc:  # noqa: BLE001 — surface loudly, never drop silently
@@ -119,7 +131,8 @@ def extract_images_from_page(
                 index=index,
                 xref=xref,
                 bbox=bbox,
+                digest=hashlib.sha1(img_bytes).hexdigest()[:12],
             )
         )
 
-    return ImageExtraction(results, skipped_small, skipped_full_page)
+    return ImageExtraction(results, skipped_small, skipped_full_page, skipped_not_drawn)

@@ -15,7 +15,7 @@ from pathlib import Path
 import yaml
 from dotenv import load_dotenv
 
-from .input_formats import validate_formats
+from .input_formats import OFFICE_FORMATS, validate_formats
 
 
 @dataclass
@@ -86,10 +86,19 @@ class LanguageConfig:
 
 
 @dataclass
+class OfficeConfig:
+    # Resolved LibreOffice binary + the per-file conversion timeout. Only present
+    # when Office formats are configured; resolution fails loud at load (T-054).
+    soffice_path: str
+    timeout_seconds: float
+
+
+@dataclass
 class InputConfig:
     # Accepted input document formats (T-054). Enforced by content sniffing at
     # both HTTP surfaces; an upload outside the list gets a 415 naming the set.
     formats: list[str]
+    office: OfficeConfig | None = None
 
 
 @dataclass
@@ -193,7 +202,30 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
     formats_raw = input_raw["formats"]
     if not isinstance(formats_raw, list):
         raise RuntimeError("input.formats must be a list of format names.")
-    input_cfg = InputConfig(formats=validate_formats(formats_raw))
+    # Office formats need a working LibreOffice — resolved at load so a
+    # misconfiguration fails at startup, never as a 500 at request time (T-054).
+    office_cfg: OfficeConfig | None = None
+    wants_office = any(str(f).strip().lower().lstrip(".") in OFFICE_FORMATS for f in formats_raw)
+    if wants_office:
+        from .office import find_soffice
+
+        office_raw = input_raw.get("office") or {}
+        binary = find_soffice(str(office_raw.get("soffice_path") or "") or None)
+        if binary is None:
+            raise RuntimeError(
+                "input.formats includes an Office format (docx/xlsx/pptx) but "
+                "LibreOffice (soffice) was not found. Use the Office image "
+                "variant, install LibreOffice, or set input.office.soffice_path "
+                "(T-054)."
+            )
+        timeout = float(_require(office_raw, "timeout_seconds", "input.office"))
+        if timeout <= 0:
+            raise RuntimeError("input.office.timeout_seconds must be positive.")
+        office_cfg = OfficeConfig(soffice_path=binary, timeout_seconds=timeout)
+    input_cfg = InputConfig(
+        formats=validate_formats(formats_raw, office_available=office_cfg is not None),
+        office=office_cfg,
+    )
 
     ocr_raw = raw.get("ocr") or {}
     ocr = OcrConfig(language=str(_require(ocr_raw, "language", "ocr")))

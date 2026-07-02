@@ -112,3 +112,36 @@ def test_run_jobs_quiet_mode_runs_without_live_view():
     ]
     run_jobs(jobs, max_workers=2, header="test", quiet=True)
     assert results == {"a": "ra", "b": "rb"}
+
+
+def test_same_embedded_image_across_pages_is_described_once(
+    env_with_key, project_root: Path, tmp_path: Path
+):
+    """One embedded image drawn on three pages → one description API call,
+    reused on every page (T-054: LibreOffice PDFs repeat header/logo images
+    on every page; native PDFs repeat watermarks the same way)."""
+    import fitz
+
+    pdf_path = tmp_path / "repeat.pdf"
+    doc = fitz.open()
+    pix = fitz.Pixmap(fitz.csRGB, fitz.IRect(0, 0, 120, 120))
+    pix.set_rect(pix.irect, (200, 120, 40))
+    xref = 0
+    for i in range(3):
+        page = doc.new_page()
+        page.insert_text((72, 60), f"Page {i + 1} body text. " * 20)
+        if i == 0:
+            xref = page.insert_image(fitz.Rect(72, 300, 192, 420), pixmap=pix)
+        else:
+            page.insert_image(fitz.Rect(72, 300, 192, 420), xref=xref)
+    doc.save(pdf_path)
+    doc.close()
+
+    cfg = load_config(project_root / "config.example.yaml")
+    client = FakeClient("En återkommande logotyp.")
+    result = convert(pdf_path, cfg, tmp_path / "output", client=client, quiet=True)
+
+    assert len(client.describe_prompts) == 1, "identical embedded images share one call"
+    assert result.markdown.count("En återkommande logotyp.") == 3, (
+        "every page still carries the description"
+    )

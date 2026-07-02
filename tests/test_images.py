@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import fitz
+
 from figmark.images import extract_images_from_page
 from figmark.pdf_loader import ImageBlock, iter_page_blocks, iter_pages, open_pdf
 
@@ -67,3 +69,48 @@ def test_extract_images_filters_tiny_via_module_constant(
         assert total_skipped >= 1
     finally:
         doc.close()
+
+
+def _pix() -> fitz.Pixmap:
+    pix = fitz.Pixmap(fitz.csRGB, fitz.IRect(0, 0, 100, 100))
+    pix.set_rect(pix.irect, (10, 200, 100))
+    return pix
+
+
+def test_referenced_but_not_drawn_images_are_skipped(tmp_path: Path):
+    """LibreOffice-produced PDFs list every document image in each page's
+    resource dict; only images actually *drawn* on the page may be extracted —
+    otherwise a 6-image, 37-page document yields 222 phantom figures (T-054)."""
+    doc = fitz.open()
+    page1 = doc.new_page()
+    page1.insert_image(fitz.Rect(72, 72, 172, 172), pixmap=_pix())
+    xref = page1.get_images(full=True)[0][0]
+
+    # Page 2: same image in /Resources, but its content stream never draws it.
+    page2 = doc.new_page()
+    page2.insert_image(fitz.Rect(72, 72, 172, 172), xref=xref)
+    for cont_xref in page2.get_contents():
+        doc.update_stream(cont_xref, b" ")
+    page2 = doc.reload_page(page2)
+    assert page2.get_images(full=True), "precondition: the resource entry exists"
+
+    result = extract_images_from_page(doc, page2, 2, tmp_path / "img")
+    assert result.images == [], "an undrawn resource entry must not become a figure"
+    assert result.skipped_not_drawn == 1, "the skip is reported, not silent (T-002)"
+
+    kept = extract_images_from_page(doc, doc[0], 1, tmp_path / "img")
+    assert len(kept.images) == 1, "the genuinely drawn instance is kept"
+    doc.close()
+
+
+def test_extracted_image_carries_content_digest(tmp_path: Path):
+    """The digest keys the description cache, so identical embedded images share
+    one description regardless of page or xref (T-054)."""
+    doc = fitz.open()
+    page = doc.new_page()
+    page.insert_image(fitz.Rect(72, 72, 172, 172), pixmap=_pix())
+    result = extract_images_from_page(doc, page, 1, tmp_path / "img")
+    doc.close()
+    assert len(result.images) == 1
+    digest = result.images[0].digest
+    assert isinstance(digest, str) and len(digest) >= 12

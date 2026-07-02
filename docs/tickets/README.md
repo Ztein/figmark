@@ -58,6 +58,8 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-052](T-052-librechat-mistral-ocr-compat-endpoint.md) | Open | Medium | LibreChat/Mistral-OCR clients can't point at figmark (no compatible endpoint) |
 | [T-053](T-053-vision-ocr-failure-is-opaque.md) | **Closed** | Medium | A scanned page the vision model can't OCR fails with an opaque, misleading error |
 | [T-054](T-054-configurable-input-document-formats.md) | Open | Medium | figmark accepts only PDF — no way to configure other document formats (Word/Excel/PPT/EPUB) |
+| [T-055](T-055-lo-vector-charts-missed-by-diagram-detection.md) | Open | High | Vector charts in LibreOffice-produced PDFs are missed by diagram detection |
+| [T-056](T-056-spreadsheet-input-flattening-and-page-explosion.md) | Open | Medium | Spreadsheet input — borderless sheets flatten, big sheets explode into hundreds of pages |
 
 ## How a ticket is written
 

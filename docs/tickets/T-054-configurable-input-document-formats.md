@@ -12,6 +12,26 @@ and `/v1/ocr`, extension/content mismatch → loud 422, and EPUB end-to-end.
 EPUB bench note: a 211-page Project Gutenberg novel converts in ~8 s with correct
 chapter headings and clean prose; the cover page goes through the OCR-rescue path
 (minor Tesseract noise on decorative type).
+**Office tranche shipped (2026-07-02):** LibreOffice-headless conversion
+(`office.py` — throwaway macro-locked profile per call, hard timeout + kill,
+fails loud), config-gated (`input.office`, soffice resolved at startup), wired
+into both HTTP surfaces, `/readyz` reports the binary. **Corpus fidelity bench**
+(all 29 office-eval files, offline): LO converts every file in 2–4 s; ruled
+tables come through as faithful Markdown tables (CDC pptx, SCB xlsx spot-checked
+cell-by-cell); docx heading hierarchy and footnote text survive; tracked changes
+export as the resolved text; comments are dropped (annotation layer, not
+content). Two systemic findings fixed here: LO PDFs list every document image in
+*every* page's resources → phantom-figure extraction (222 figures from a
+6-image docx) — extraction now keeps only images actually drawn on the page —
+and repeated embedded images (headers/logos, LO repeats them per page) are now
+described **once** via a content-hash-keyed cache + in-run job dedup (a
+143-page docx went from 143 image calls to 1). Remaining gaps filed separately:
+LO-rendered vector charts missed by diagram detection (**T-055**, High),
+borderless-spreadsheet flattening + page explosion (**T-056**). Known upstream
+LO fidelity limits (documented, not figmark bugs): SmartArt renders as shapes
+without text; charts embedded in xlsx are not rendered by `--convert-to pdf`.
+Still open here: the **separate Office image variant** + its Trivy gate, and the
+generated adversarial-input suite.
 **Priority:** Medium
 
 ## Symptom
@@ -159,15 +179,18 @@ Trivy/CodeQL posture, and the conversion is sandboxed.*
       — the cheap, no-dependency tranche — with a bench note (see Status).
 - [x] A recorded decision on Office handling: **LibreOffice headless for
       high-fidelity MS Office** (see "Decision"), conditional on the security work.
-- [ ] MS Office (docx/xlsx/pptx) converts via LibreOffice headless and round-trips
+- [x] MS Office (docx/xlsx/pptx) converts via LibreOffice headless and round-trips
       through the pipeline with a **fidelity bench** — figures/tables/reading order
-      preserved — recorded in the PR (bench-before-code).
+      preserved — recorded in the PR (bench-before-code). Corpus numbers in Status;
+      chart-detection and spreadsheet gaps split to T-055/T-056.
 - [ ] **Office support ships as a separate/opt-in image variant**; the default image
       stays PDF/EPUB-only and does not inherit LibreOffice's CVE surface.
 - [ ] **Trivy hard gate is green on the Office image** (fixable HIGH/CRITICAL = 0),
       and CodeQL stays clean — the security posture is no worse than today's.
 - [ ] The conversion is **sandboxed**: no network, macros disabled, per-file timeout
       + resource limit with a hard kill, non-root + read-only rootfs preserved.
+      *(Process level done: macro-locked throwaway profile + timeout/kill; the
+      no-network / rootfs half lands with the image variant.)*
 - [ ] **Adversarial-document tests** (macro/OLE/DDE/external-ref/decompression-bomb/
       truncated) prove hostile inputs are rejected or safely contained — no code
       execution, no outbound connection, no unbounded resource use.
