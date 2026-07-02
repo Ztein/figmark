@@ -4,19 +4,55 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](pyproject.toml)
 
-**Turn a PDF into Markdown where every figure is described, not dropped.**
+**Turn a document into Markdown where every figure is described, not dropped.**
 
-figmark extracts a PDF's text and replaces each image and vector diagram with an
-AI-generated description, producing one coherent Markdown document. Think Docling,
-but with first-class figure interpretation: charts, photos, and diagrams become
-readable prose in reading order instead of vanishing.
+figmark extracts a document's text and replaces each image and vector diagram
+with an AI-generated description, producing one coherent Markdown document.
+Think Docling, but with first-class figure interpretation: charts, photos, and
+diagrams become readable prose in reading order instead of vanishing.
 
-It was built to produce accessible alt text in formal Swedish
-("myndighetssvenska"). **You need a vision-capable model behind an
-OpenAI-compatible API** — hosted or local (e.g. vLLM or Ollama). Point
-`api.base_url` / `api.model` in `config.yaml` at your endpoint and put its key
-in `FIGMARK_API_KEY` (the variable name is historical; a provider-neutral name
-is tracked in [T-010](docs/tickets/T-010-provider-agnostic-llm-key.md)).
+**You need a vision-capable model behind an OpenAI-compatible API** — hosted or
+local (e.g. vLLM or Ollama). Point `api.base_url` / `api.model` in `config.yaml`
+at your endpoint and put its key in `FIGMARK_API_KEY` (the variable name is
+historical; a provider-neutral name is tracked in
+[T-010](docs/tickets/T-010-provider-agnostic-llm-key.md)).
+
+## What figmark is for
+
+figmark exists to extract **as much valuable information from a document as
+possible, in a form LLM-based products can use effectively** — RAG ingestion,
+a document dropped into an assistant's chat context, or an OCR backend for a
+platform like LibreChat. It speaks the Mistral-OCR wire format
+(`/v1/ocr`) so those products can point at it unchanged — and aims to do the
+job *better* than plain OCR by also interpreting the parts of a document that
+text extraction alone cannot see: charts, diagrams, photos, and other figures
+that carry information.
+
+Three consequences of that goal shape the design:
+
+- **Extraction quality is a spectrum, not a binary.** Plain text extraction
+  already gets a downstream LLM most of the way; every figure description,
+  reconstructed table, and inferred heading on top of that makes the
+  representation better. Partial information about a chart is far more valuable
+  than no information — a downstream LLM is forgiving and works well with an
+  imperfect but honest representation. figmark therefore never withholds the
+  text just because a richer structure could not be recovered, and never
+  asserts structure it isn't sure of (see the table notes under Known
+  limitations).
+- **Figure interpretation is the differentiator.** Anything that would drop a
+  chart or image that carries meaning — a text-only extractor, a converter that
+  rasterises figures away — defeats the purpose. This is why Office documents
+  go through a full-fidelity conversion rather than a lightweight text
+  extractor (T-054).
+- **OCR of scans is a supporting capability, not the product.** figmark handles
+  scanned pages (Tesseract, with a vision-model rescue) so mixed corpora don't
+  fail, but it is not built for large-scale OCR of scanned archives — for
+  born-digital, figure-bearing documents it shines; for messy scans a dedicated
+  VLM-OCR service will beat it (see Known limitations).
+
+The same figure descriptions also serve accessibility — figmark began as an
+alt-text generator for formal Swedish ("myndighetssvenska") and can still emit
+an annotated or tagged PDF alongside the Markdown.
 
 ## What it does
 
@@ -144,9 +180,11 @@ strategy makes: `POST /v1/files` → `GET /v1/files/{id}/url` → `POST /v1/ocr`
 `DELETE /v1/files/{id}`, returning `{ "pages": [ { "index", "markdown", "images" } ] }`
 (`docs/tickets/T-052`).
 
-Why figmark specifically: for **born-digital, figure/diagram-heavy** documents it
-*describes* figures and diagrams with a vision model instead of OCR'ing them into
-broken text — and keeps the data on your own network. **Limitation:** figmark's
+Why figmark rather than the OCR service this contract comes from: figmark
+fulfils the same API but aims to extract **more of the document's information
+value** — for **born-digital, figure/diagram-heavy** documents it *describes*
+figures and diagrams with a vision model instead of OCR'ing them into broken
+text or dropping them — and keeps the data on your own network. **Limitation:** figmark's
 raster OCR is Tesseract, not a vision-language model, so this backend is strongest
 on born-digital / figure-heavy PDFs and **weaker than a VLM on messy scans and
 handwriting**. It accepts the formats in the `input.formats` allowlist (PDF by

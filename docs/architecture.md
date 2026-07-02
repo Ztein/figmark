@@ -1,9 +1,14 @@
 # Architecture
 
-How figmark turns a PDF into a faithful Markdown representation — text with
-structure, tables, and every figure described. This is the map of the pipeline and
-the modules behind it; for *why* a piece exists, the [tickets](tickets/) carry the
-design notes. **New here? Read [Where things stand](#where-things-stand) at the
+How figmark turns a document into a faithful Markdown representation — text with
+structure, tables, and every figure described. The purpose behind every stage:
+**extract as much of the document's information value as possible for an LLM
+consumer** (RAG ingestion, assistant chat context, an OCR backend for platforms
+like LibreChat). Plain text extraction is the floor, not the goal — each layer
+below (structure, tables, figure and diagram descriptions) raises the value of
+the representation, and a partially interpreted figure still beats a dropped
+one. This is the map of the pipeline and the modules behind it; for *why* a
+piece exists, the [tickets](tickets/) carry the design notes. **New here? Read [Where things stand](#where-things-stand) at the
 bottom first** — it summarises the current capabilities, the open Phase-2 items,
 and the bench-before-code discipline.
 

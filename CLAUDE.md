@@ -1,9 +1,21 @@
 # figmark — working agreement for Claude
 
-figmark converts PDFs to Markdown for accessibility, describing figures and vector
-diagrams with a vision model instead of dropping them. Lean and air-gap-friendly
-(PyMuPDF + Tesseract + Pillow + an OpenAI-compatible client), with a "fail loud,
-never silently degrade" principle.
+figmark converts documents (PDF, EPUB, Office) to Markdown, describing figures
+and vector diagrams with a vision model instead of dropping them. Lean and
+air-gap-friendly (PyMuPDF + Tesseract + Pillow + an OpenAI-compatible client),
+with a "fail loud, never silently degrade" principle.
+
+**Product goal — keep this in view when prioritising:** extract as much
+*valuable information* from a document as possible, in a form LLM-based
+products (LibreChat-style platforms, RAG pipelines, assistant chat context)
+can use effectively. figmark fulfils the Mistral-OCR API contract but aims to
+beat plain OCR by *interpreting* content that text extraction can't see —
+charts, diagrams, images that carry information. Extraction quality is a
+spectrum, not 1-or-0: text alone gets a downstream LLM far, every interpreted
+figure/table/heading makes it better, and a partial figure description still
+beats a dropped figure (downstream LLMs are forgiving). Mass OCR of scanned
+archives is a supporting path, **not** the core function; accessibility outputs
+(alt-text/tagged PDF) remain a secondary surface of the same descriptions.
 
 ## Git & PR workflow
 
