@@ -223,10 +223,10 @@ def to_markdown(pages: list[PageData]) -> str:
                 elif isinstance(block, ImageBlock):
                     desc = _shown(page.descriptions.get(block.xref, ""))
                     if desc:
-                        img = img_by_xref.get(block.xref)
+                        matched = img_by_xref.get(block.xref)
                         rel = (
-                            f"images/{img.path.name}"
-                            if img is not None
+                            f"images/{matched.path.name}"
+                            if matched is not None
                             else f"images/page-{page.page_num:03d}-img-xref-{block.xref}.png"
                         )
                         parts.append(_figure("Image", page.page_num, rel, desc))

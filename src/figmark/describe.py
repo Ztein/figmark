@@ -50,7 +50,7 @@ SIGNIFICANCE_INSTRUCTION = (
 
 def is_skip(text: str | None) -> bool:
     """True if a description is the significance-gate skip marker (decorative image)."""
-    return bool(text) and text.strip().upper().startswith(SKIP_MARKER)
+    return text is not None and text.strip().upper().startswith(SKIP_MARKER)
 
 
 def cache_fingerprint(*parts: object) -> str:
@@ -98,7 +98,7 @@ def _prepare_image_for_api(path: Path) -> tuple[bytes, str]:
         mime, _ = mimetypes.guess_type(path.name)
         return raw, mime or "image/png"
 
-    img = Image.open(io.BytesIO(raw))
+    img: Image.Image = Image.open(io.BytesIO(raw))
     if img.mode != "RGB":
         img = img.convert("RGB")
     if max(img.size) > MAX_IMAGE_DIM:

@@ -241,9 +241,11 @@ def _linkify(text: str, bbox: tuple, links: list[tuple]) -> str:
         if not block.intersects(rect):
             continue
         pattern = re.compile(r"\s+".join(re.escape(tok) for tok in anchor.split()))
-        text = pattern.sub(
-            lambda m, _uri=uri: f"[{' '.join(m.group(0).split())}]({_uri})", text, count=1
-        )
+
+        def _linkify(m: re.Match[str], _uri: str = uri) -> str:
+            return f"[{' '.join(m.group(0).split())}]({_uri})"
+
+        text = pattern.sub(_linkify, text, count=1)
     return text
 
 

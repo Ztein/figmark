@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import threading
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -69,7 +70,7 @@ class UsageTracker:
 
 
 class _Completions:
-    def __init__(self, inner: object, tracker: UsageTracker) -> None:
+    def __init__(self, inner: Any, tracker: UsageTracker) -> None:
         self._inner = inner
         self._tracker = tracker
 
@@ -80,7 +81,7 @@ class _Completions:
 
 
 class _Chat:
-    def __init__(self, inner: object, tracker: UsageTracker) -> None:
+    def __init__(self, inner: Any, tracker: UsageTracker) -> None:
         self.completions = _Completions(inner.completions, tracker)
 
 
@@ -91,7 +92,7 @@ class TrackingClient:
     makes. Every other attribute passes straight through to the wrapped client.
     """
 
-    def __init__(self, inner: object, tracker: UsageTracker) -> None:
+    def __init__(self, inner: Any, tracker: UsageTracker) -> None:
         self._inner = inner
         self.chat = _Chat(inner.chat, tracker)
 

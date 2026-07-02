@@ -42,6 +42,9 @@ jobs:
       - name: Format check
         run: ruff format --check src tests
 
+      - name: Type check
+        run: mypy
+
       - name: Lockfile is up to date
         run: |
           pip install uv
@@ -49,5 +52,6 @@ jobs:
             --universal --generate-hashes -o requirements.lock
           git diff --exit-code requirements.lock
 
-      - name: Run tests (offline; excludes live API + Docker-gated)
-        run: pytest -m "not live and not docker"
+      - name: Run tests (offline; excludes live API + Docker-gated) with coverage gate
+        # The floor is set just under the current level (91%) — it may only move up.
+        run: pytest -m "not live and not docker" --cov=src/figmark --cov-report=term --cov-fail-under=88

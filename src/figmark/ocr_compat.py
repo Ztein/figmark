@@ -127,7 +127,7 @@ def split_pages(markdown: str) -> list[dict]:
     return pages
 
 
-def _resolve_document_bytes(request: Request, document: dict) -> bytes:
+def _resolve_document_bytes(request: Request, document: dict | None) -> bytes:
     """Resolve a Mistral ``document`` object to the raw file bytes.
 
     Supports our own signed file URLs (the default LibreChat flow) and inline
