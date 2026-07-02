@@ -388,9 +388,7 @@ def convert(
     # then every description is told that language explicitly. Skipped when there
     # are no figures to describe and no tagged PDF (which needs the document /Lang).
     resolved_language = cfg.language.output
-    if resolved_language.strip().lower() in ("auto", "document", "") and (
-        has_figures or tagged
-    ):
+    if resolved_language.strip().lower() in ("auto", "document", "") and (has_figures or tagged):
         # A real API failure here (bad key, unreachable endpoint, exhausted
         # retries) would break every description call too — abort loudly instead
         # of masking it as a benign "using prompt default" (T-024 F2).
