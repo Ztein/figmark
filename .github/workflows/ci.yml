@@ -12,6 +12,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  # One macOS leg (single Python) so the CLI path many users actually run —
+  # Apple Silicon + Homebrew Tesseract — is covered; the full version matrix
+  # runs on Linux. Not a required check.
+  test-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Tesseract (English + Swedish language packs)
+        run: brew install tesseract tesseract-lang
+      - name: Install package (with dev extras)
+        run: pip install -e ".[dev]"
+      - name: Run tests (offline)
+        run: pytest -m "not live and not docker"
+
   test:
     runs-on: ubuntu-latest
     strategy:
