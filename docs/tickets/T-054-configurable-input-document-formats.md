@@ -1,6 +1,9 @@
 # T-054: figmark accepts only PDF — no way to configure other document formats (Word/Excel/PPT/EPUB)
 
-**Status:** Open
+**Status:** Open — **direction decided (2026-07-02):** aim for **high-fidelity MS
+Office** via **LibreOffice headless** (Option 2), *paired with* a hardened, scanned
+and reviewed image (see "Decision" and "Security requirements"). EPUB and the other
+PyMuPDF-native formats remain the free first tranche.
 **Priority:** Medium
 
 ## Symptom
@@ -74,6 +77,44 @@ Formats split cleanly into "nearly free" and "needs a heavy dependency":
    supported. This is the actual "configure more mimetypes" ask; it is orthogonal to
    which handlers exist and dovetails with the v0.2 config-driven pipeline direction.
 
+## Decision (2026-07-02)
+
+**Office → LibreOffice headless (Option 2). Not the lightweight extractors.** The
+whole point of figmark is preserving layout, tables and embedded charts/figures so
+the vision model can describe them; a text-only extraction (Option 3) throws that
+away and would make figmark no better than LibreChat's `document_parser`. We accept
+the heavier image **on the explicit condition** that it is matched by the security
+work below — the dependency cost is justified by the fidelity goal, not waved
+through. Option 1 (PyMuPDF-native, incl. EPUB) still ships first as the free tranche.
+
+The dependency is only justified if the image stays **secure and auditable**. That
+is a hard part of this ticket, not a footnote — a large binary that parses untrusted
+Office documents is a real attack surface, so the bar is: *no worse than today's
+Trivy/CodeQL posture, and the conversion is sandboxed.*
+
+## Security requirements (LibreOffice image)
+
+- **Trivy hard gate stays green.** figmark already fails CI on fixable HIGH/CRITICAL
+  (`security.yml`, `release.yml`, `ignore-unfixed`). Adding LibreOffice must not
+  breach that. Prefer the **minimal headless component set** (e.g. the
+  `--writer/--calc/--impress` core, no Java/UI/base) over the full suite to keep the
+  package and CVE surface small; keep the base digest-pinned and `apt-get upgrade`d.
+- **Keep a lean PDF-only image.** Ship Office support as a **separate image variant
+  (or optional layer)** so users who only need PDF/EPUB do not inherit LibreOffice's
+  CVE surface. The slim image stays the default.
+- **Sandbox the conversion.** Convert untrusted documents with: **no network**,
+  **macros disabled** and no auto-exec, a locked-down throwaway user profile, a
+  per-file **timeout + memory/CPU limit** with a hard kill of runaway `soffice`,
+  isolated temp dirs, and the existing **non-root (`USER 10001`) + read-only rootfs**
+  posture preserved. A conversion that trips a limit fails loud, it does not hang.
+- **Adversarial-input tests.** A corpus of hostile/malformed inputs — macro-laden,
+  embedded-OLE/DDE, external-reference, decompression-bomb, and truncated files —
+  must be **rejected or safely contained** (no code execution, no outbound
+  connection, no unbounded resource use), each asserted in tests.
+- This hardening is substantial enough that implementation may spin it off into a
+  dedicated companion ticket; the requirement is recorded here so the Office decision
+  is never merged without it.
+
 ## Notes / constraints
 
 - **Content-sniff, don't trust the extension.** The `%PDF` magic check must generalise
@@ -91,6 +132,17 @@ Formats split cleanly into "nearly free" and "needs a heavy dependency":
       loud on an extension/content mismatch.
 - [ ] EPUB (and the other PyMuPDF-native formats) work end-to-end through the pipeline
       — the cheap, no-dependency tranche — with a bench note.
-- [ ] A recorded decision on Office handling: which mechanism, with the dependency
-      cost justified or explicitly deferred per the lean/air-gap constraint, and a
-      fidelity bench behind it (Option 2 vs 3).
+- [x] A recorded decision on Office handling: **LibreOffice headless for
+      high-fidelity MS Office** (see "Decision"), conditional on the security work.
+- [ ] MS Office (docx/xlsx/pptx) converts via LibreOffice headless and round-trips
+      through the pipeline with a **fidelity bench** — figures/tables/reading order
+      preserved — recorded in the PR (bench-before-code).
+- [ ] **Office support ships as a separate/opt-in image variant**; the default image
+      stays PDF/EPUB-only and does not inherit LibreOffice's CVE surface.
+- [ ] **Trivy hard gate is green on the Office image** (fixable HIGH/CRITICAL = 0),
+      and CodeQL stays clean — the security posture is no worse than today's.
+- [ ] The conversion is **sandboxed**: no network, macros disabled, per-file timeout
+      + resource limit with a hard kill, non-root + read-only rootfs preserved.
+- [ ] **Adversarial-document tests** (macro/OLE/DDE/external-ref/decompression-bomb/
+      truncated) prove hostile inputs are rejected or safely contained — no code
+      execution, no outbound connection, no unbounded resource use.
