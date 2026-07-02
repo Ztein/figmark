@@ -2,6 +2,9 @@
 
 figmark ships as a self-contained container image (published to GHCR, also
 exported as a tarball for air-gapped hosts) plus a hardened `compose.yaml`.
+The GHCR image is multi-arch (`linux/amd64` + `linux/arm64`), so `docker pull`
+gets a native image on both x86 and ARM hosts (e.g. Apple Silicon, ARM cloud) —
+no emulation.
 Everything it needs at runtime (Python deps, Tesseract + eng/swe language data)
 is baked in; the only thing it talks to is your OpenAI-compatible vision
 endpoint, set via `api.base_url`.
@@ -23,8 +26,11 @@ docker compose up -d                   # pulls ghcr.io/ztein/figmark:edge
 From a connected machine, take the release bundle (attached to the GitHub
 Release, produced by CI):
 
-- `figmark-<version>.tar.gz` — the scanned image (`docker save`, named
-  `ghcr.io/ztein/figmark:<version>` so it matches `compose.yaml`)
+- `figmark-<version>.tar.gz` — the scanned image for **amd64** hosts
+  (`docker save`, named `ghcr.io/ztein/figmark:<version>` so it matches
+  `compose.yaml`)
+- `figmark-<version>-arm64.tar.gz` — the same image for **arm64** hosts
+  (Apple Silicon, ARM cloud); load this one instead on ARM
 - `SHA256SUMS` — checksums
 - `compose.yaml` — the hardened deployment
 - `config.example.yaml` — copy to `config.yaml` and edit

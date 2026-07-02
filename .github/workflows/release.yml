@@ -59,12 +59,23 @@ jobs:
         id: ver
         run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
-      - name: Build image
+      # Multi-arch (T-046): the arm64 leg builds under QEMU on the amd64 runner;
+      # buildx assembles both legs into a single manifest list on push.
+      - uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
+        with:
+          platforms: arm64
+      - uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
+
+      - name: Build image (amd64, loaded locally) for the Trivy gate
+        # The gate scans before anything is pushed. Vulnerabilities are in the
+        # apt/pip layers, which are identical across arches, so scanning the
+        # amd64 leg gates both. The layer cache is shared with the push below.
         run: |
-          docker build \
+          docker buildx build \
+            --platform linux/amd64 \
             --build-arg VERSION="${{ steps.ver.outputs.version }}" \
             --build-arg REVISION="${GITHUB_SHA::8}" \
-            -t "figmark:${{ steps.ver.outputs.version }}" .
+            --load -t "figmark:${{ steps.ver.outputs.version }}" .
 
       - name: Trivy image gate (must pass before shipping)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
@@ -77,7 +88,7 @@ jobs:
           exit-code: "1"
           trivyignores: .trivyignore
 
-      - name: Publish to GHCR (versioned + latest)
+      - name: Publish multi-arch manifest to GHCR (versioned + latest)
         id: publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -85,14 +96,30 @@ jobs:
         run: |
           owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           echo "$GH_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-          docker tag "figmark:${VERSION}" "ghcr.io/$owner/figmark:${VERSION}"
-          docker tag "figmark:${VERSION}" "ghcr.io/$owner/figmark:latest"
-          docker push "ghcr.io/$owner/figmark:${VERSION}"
-          docker push "ghcr.io/$owner/figmark:latest"
-          # The immutable digest both tags now point at — sign/attest by digest,
-          # not by mutable tag, so the signature can't be swapped under us. (T-016)
-          digest=$(docker inspect --format='{{index .RepoDigests 0}}' "ghcr.io/$owner/figmark:${VERSION}")
-          echo "image=$digest" >> "$GITHUB_OUTPUT"
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --build-arg VERSION="${VERSION}" \
+            --build-arg REVISION="${GITHUB_SHA::8}" \
+            -t "ghcr.io/$owner/figmark:${VERSION}" \
+            -t "ghcr.io/$owner/figmark:latest" \
+            --push \
+            --metadata-file buildx-meta.json .
+          # The immutable manifest-list digest both tags now point at — sign/attest
+          # by digest, not by mutable tag, so the signature can't be swapped under
+          # us. (T-016)
+          digest=$(jq -r '."containerimage.digest"' buildx-meta.json)
+          echo "owner=$owner" >> "$GITHUB_OUTPUT"
+          echo "image=ghcr.io/$owner/figmark@$digest" >> "$GITHUB_OUTPUT"
+
+      - name: Verify the manifest lists both architectures
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          ref="ghcr.io/${{ steps.publish.outputs.owner }}/figmark:${VERSION}"
+          for platform in linux/amd64 linux/arm64; do
+            docker buildx imagetools inspect "$ref" | grep -q "$platform" \
+              || { echo "::error::$ref is missing the $platform leg"; exit 1; }
+          done
 
       # --- Supply-chain provenance: keyless cosign signature + SBOM attestation (T-016) ---
       - name: Install cosign
@@ -114,15 +141,22 @@ jobs:
           cosign sign --yes "$IMAGE"
           cosign attest --yes --type spdxjson --predicate figmark.spdx.json "$IMAGE"
 
-      - name: Export tarball + checksum + deploy bundle
+      - name: Export tarballs (one per arch) + checksum + deploy bundle
         # Save under the GHCR name so `docker load` restores exactly the image
-        # reference compose.yaml uses (with FIGMARK_VERSION=<ver>).
+        # reference compose.yaml uses (with FIGMARK_VERSION=<ver>). Each arch gets
+        # its own tarball — `docker save` can't export a manifest list, and the
+        # air-gapped host loads exactly one arch anyway. Pulling back what we just
+        # pushed also proves the registry serves both legs. The amd64 tarball
+        # keeps its historical name so existing runbooks stay valid.
         env:
           VERSION: ${{ steps.ver.outputs.version }}
         run: |
-          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          owner="${{ steps.publish.outputs.owner }}"
           mkdir -p bundle
+          docker pull --platform linux/amd64 "ghcr.io/$owner/figmark:${VERSION}"
           docker save "ghcr.io/$owner/figmark:${VERSION}" | gzip > "bundle/figmark-${VERSION}.tar.gz"
+          docker pull --platform linux/arm64 "ghcr.io/$owner/figmark:${VERSION}"
+          docker save "ghcr.io/$owner/figmark:${VERSION}" | gzip > "bundle/figmark-${VERSION}-arm64.tar.gz"
           cp compose.yaml config.example.yaml docs/deployment.md bundle/
           cd bundle && sha256sum * > SHA256SUMS
 
