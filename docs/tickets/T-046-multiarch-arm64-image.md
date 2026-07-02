@@ -1,6 +1,16 @@
 # T-046: The published image is amd64-only — no native ARM for Apple Silicon hosts
 
-**Status:** Open
+**Status:** Closed — **implemented as Option 1 (2026-07-02):** `release.yml` now
+builds with buildx + QEMU and pushes a single `linux/amd64,linux/arm64` manifest
+list. The Trivy gate scans the amd64 leg *before* anything is pushed (the vuln
+surface — apt/pip layers — is arch-independent); cosign signs and attests the
+manifest-list digest; a workflow step fails the release if either arch is
+missing from the pushed manifest, and each arch is pulled back and exported as
+its own bundle tarball (`figmark-<v>.tar.gz` amd64 as before, plus
+`figmark-<v>-arm64.tar.gz`). Structural tests:
+`tests/docker/test_release_workflow.py`. First multi-arch artifact lands with
+the next version tag; the in-workflow verify step enforces the acceptance
+criteria there.
 **Priority:** Medium — blocks a clean native deploy on Apple Silicon hosts; the
 image *runs* there today, just emulated.
 
