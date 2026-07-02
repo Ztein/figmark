@@ -54,6 +54,30 @@ The same figure descriptions also serve accessibility — figmark began as an
 alt-text generator for formal Swedish ("myndighetssvenska") and can still emit
 an annotated or tagged PDF alongside the Markdown.
 
+## What the output looks like
+
+A chart page in a Bank of Canada Monetary Policy Report comes out as (real,
+unedited output):
+
+```markdown
+![Diagram, page 4](diagrams/page-004-diagram-01.png)
+
+> **1. What the chart shows**
+> The image contains two side-by-side line charts titled "Inflation has been
+> slowing," showing the year-over-year percentage change of monthly inflation
+> data.
+> *   **X-axis:** Time, spanning from 2019 through the end of 2023.
+> *   **Y-axis:** Percentage change (%). The left chart's scale ranges from
+>     -2% to 12%.
+>
+> **2. Data series**
+> *   **Canada:** Red line. **Canadian core CPI range:** a shaded red area.
+> *   **United States:** Light blue line. **Euro area:** Green line. …
+```
+
+A text-only extractor drops that chart entirely; an OCR engine turns it into
+axis-label noise. figmark hands your LLM the chart's actual content.
+
 ## What it does
 
 - **Text + figures → Markdown.** Output is a single `<name>.md` with figures

@@ -7,8 +7,79 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-07-02
+
+The document-fidelity and integration release: structured Markdown (headings,
+lists, tables, reading order), more input formats (EPUB + Office), a
+Mistral-OCR-compatible API surface, and a cross-request cache.
+
+### ⚠ Breaking — config.yaml needs two new sections
+
+`config.yaml` now **requires** an `input:` and a `cache:` section (the
+no-hidden-defaults contract: the service fails loudly at startup until they
+exist). Minimal migration:
+
+```yaml
+input:
+  formats: [pdf, epub]
+cache:
+  enabled: true
+  max_size_mb: 500
+  max_age_hours: 720
+```
+
+See `config.example.yaml` for the documented versions (including the optional
+`input.office` block for docx/xlsx/pptx).
+
 ### Added
 
+- **Document structure (T-042, T-036, T-043).** Headings and lists are inferred
+  from typography, blocks are ordered column-aware on multi-column pages, and
+  running headers/footers/page numbers are stripped from the body.
+- **Ruled tables as Markdown (T-026/T-030/T-031).** Detected with PyMuPDF behind
+  a conservative filter (benched: 100% precision / 99% cell accuracy on the
+  labelled set; borderless tables deliberately fall through as flat text rather
+  than risk wrong column↔value mappings — see the README's Tables note).
+- **Hyperlinks preserved as Markdown links (T-044 phase 1).**
+- **`figures.json` manifest (T-041).** Every extracted figure is
+  machine-addressable (id, page, bbox, path, description, skip verdict).
+- **Tagged-PDF foundation (T-004 phase 1).** `--tagged-pdf` writes a copy with a
+  `/StructTreeRoot` and `/Figure` elements carrying `/Alt` descriptions.
+- **Mistral-OCR-compatible API surface (T-052).** `POST /v1/files`,
+  `GET /v1/files/{id}/url`, `POST /v1/ocr`, `DELETE /v1/files/{id}` — LibreChat
+  (and other Mistral-OCR clients) can point `OCR_BASEURL` at figmark. Document
+  bytes resolve only from figmark's own signed URLs or inline `data:` URLs (no
+  outbound fetch, no SSRF surface). Known contract gaps are tracked openly in
+  T-057/T-058/T-059.
+- **Configurable input formats with content sniffing (T-054).** A required
+  `input.formats` allowlist; the gate sniffs magic bytes + ZIP containers
+  (OOXML/EPUB/XPS/CBZ/legacy OLE), so a mislabelled file fails loud (422)
+  instead of being mis-parsed, and rejections name the supported set (415).
+  **EPUB** (and the other PyMuPDF-native formats) run end-to-end with no new
+  dependency.
+- **MS Office input via LibreOffice headless (T-054).** docx/xlsx/pptx convert
+  to PDF at full fidelity (layout, tables, embedded figures survive — benched
+  on a 29-file public corpus) and ride the normal pipeline. Sandboxed at the
+  process level: throwaway macro-locked profile per conversion, hard timeout
+  with kill. Requires LibreOffice (resolved at startup, fails loud); the
+  separate Office image variant is still open on the ticket.
+- **Cross-request cache (T-060/T-061).** A re-uploaded identical document is
+  served with zero new model calls (document-level cache keyed by content
+  digest + config fingerprint + version); the same figure appearing in *other*
+  documents reuses its description (content-digest keys, `[SKIP]` verdicts
+  included). LRU-evicted above `cache.max_size_mb`; entries expire
+  `cache.max_age_hours` after last access. Management endpoints:
+  `GET /v1/cache/stats`, `DELETE /v1/cache/{sha256}`, `DELETE /v1/cache`.
+  Measured on a 72-page, 43-figure report: 117 s / €0.026 cold → 0.04 s / €0 on
+  a hit; a *revised* re-upload (one page changed) drops from 48 calls to 2.
+- **Fast text path (T-051).** A document with zero figures/diagrams skips the
+  document-summary and language-detection calls (0 API calls instead of 2),
+  loudly logged.
+- **Multi-arch release image (T-046).** `linux/amd64` + `linux/arm64` manifest
+  list; the air-gap bundle ships one tarball per architecture. The Trivy gate
+  still blocks before push; cosign signs the manifest-list digest.
+- **Signed releases (T-016).** Keyless cosign signature + SPDX SBOM attestation
+  on every released image (GitHub OIDC, Rekor transparency log).
 - **Broken-text-layer warning (T-028).** A page whose extracted text is mostly
   mojibake (Private Use Area glyphs / replacement / control characters — a
   missing or broken font encoding) is now flagged with a loud warning suggesting
@@ -34,6 +105,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Sharper, cheaper figure handling.** Diagram clustering is near-linear
+  (T-037) and the significance gate covers vector-diagram regions (T-023);
+  diagram-internal label text no longer leaks into the body (T-008); the
+  description cache is keyed by config fingerprint (T-034) *and* image content
+  digest, so a model/prompt/language change regenerates while a repeated
+  embedded image (headers, logos — LibreOffice repeats them per page) is
+  described once. Only images actually *drawn* on a page are extracted
+  (LibreOffice PDFs list every document image in every page's resources).
+- **Loud by contract (T-032, T-033, T-048, T-053).** Pipeline warnings survive
+  `quiet=True` into the API's structured logs; truncated/empty model responses
+  are detected and retried/reported; upstream LLM failures map to clean
+  502/503/504 without leaking provider internals; a scanned page the vision
+  model can't OCR fails with the page number, reason, and remedy.
 - **Per-page OCR decision (T-027).** The OCR/text choice is now made per page
   instead of once per document. A page is OCR'd only when it has little
   extractable text **and** a near-full-page image (`page_needs_ocr`), so a scanned

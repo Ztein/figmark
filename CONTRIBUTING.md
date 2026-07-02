@@ -89,12 +89,29 @@ ruff format --check src tests
 ruff check --fix src tests && ruff format src tests
 ```
 
+## Issues and the ticket system
+
+Work is tracked in two connected places:
+
+- **GitHub Issues** are the front door: report bugs, propose features, pick
+  something up. Open items are labelled by priority, and `good first issue`
+  marks well-scoped entry points.
+- **`docs/tickets/T-NNN-*.md`** is the engineering log behind each issue:
+  symptom, root cause, numbered options with trade-offs, and acceptance
+  criteria. Issues titled `[T-NNN] …` link to their canonical ticket — read it
+  before starting; it usually contains the whole design discussion.
+
+If you start a non-trivial piece of work, add a ticket file with the next free
+`T-NNN` number (see [docs/tickets/README.md](docs/tickets/README.md) for the
+format) and keep the index table in sync. Small fixes don't need a ticket.
+
 ## Pull requests
 
 - Branch off `main` and open a PR against `main`.
 - Keep changes focused; one logical change per PR.
 - Add or update tests for behaviour changes.
-- Make sure `ruff check`, `ruff format --check`, and `pytest -m "not live"` pass.
+- Make sure `ruff check`, `ruff format --check`, `mypy`, and
+  `pytest -m "not live"` (which enforces the coverage floor) pass.
 - Follow the project's "fail loudly" principle: no silent fallbacks — when the
   pipeline changes strategy, it should say so clearly.
 
