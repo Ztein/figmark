@@ -1,6 +1,13 @@
 # T-051: A figure-less text PDF still spends baseline API calls (no fast text mode)
 
-**Status:** Open
+**Status:** Closed — **implemented as Option 1 (2026-07-02).** When detection
+finds zero image and zero diagram blocks, the document-summary call and the auto
+language-detection call are skipped (language detection still runs when
+`--tagged` is requested, since the tagged PDF sets the document `/Lang`). The
+skip is logged — `logger.info` in quiet/API mode, stdout interactively — never
+silent (T-024). A 0-figure text document now reports `api_calls: 0` instead of 2;
+the saving is the full baseline (2 calls/document), which at corpus scale was the
+entire reported cost. Tests: `tests/test_fast_text_path.py`.
 **Priority:** Low
 
 ## Symptom
