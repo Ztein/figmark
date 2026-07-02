@@ -40,7 +40,7 @@ from urllib.parse import parse_qs, urlparse
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, Response, UploadFile
 
 from . import __version__
-from .api import _require_auth, _validate_pdf_document, run_conversion
+from .api import _require_auth, _validate_pdf_document, gate_document_format, run_conversion
 
 logger = logging.getLogger("figmark.ocr")
 
@@ -230,20 +230,18 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
         model = body.get("model") or f"figmark-{__version__}"
         data = _resolve_document_bytes(request, body.get("document"))
 
-        if not data.startswith(b"%PDF"):
-            # PDF-first (T-052). Non-PDF (e.g. a scanned image via image_url) is not
-            # yet handled — fail loud rather than mis-OCR it.
-            raise HTTPException(
-                status_code=415,
-                detail="Only PDF documents are supported by this OCR backend",
-            )
-
         work = Path(tempfile.mkdtemp(dir=settings.work_dir))
-        pdf_path = work / "input.pdf"
+        upload_path = work / "upload.bin"
         try:
-            pdf_path.write_bytes(data)
-            _validate_pdf_document(pdf_path)
-            result = await run_conversion(request.app, pdf_path, work / "out")
+            upload_path.write_bytes(data)
+            # There is no trustworthy filename on this surface — the sniffed
+            # content alone decides, against the same allowlist as /v1/convert
+            # (T-054). Raster image input (image_url) is still a T-052 deferred
+            # item and fails loud here.
+            fmt = gate_document_format(upload_path, None, request.app.state.cfg.input.formats)
+            doc_path = upload_path.rename(work / f"input.{fmt}")
+            _validate_pdf_document(doc_path)
+            result = await run_conversion(request.app, doc_path, work / "out")
             pages = split_pages(result.markdown)
             logger.info("ocr ok pages=%d figures=%d", result.page_count, result.figure_count)
             return {

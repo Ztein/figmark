@@ -15,6 +15,8 @@ from pathlib import Path
 import yaml
 from dotenv import load_dotenv
 
+from .input_formats import validate_formats
+
 
 @dataclass
 class ApiConfig:
@@ -84,8 +86,16 @@ class LanguageConfig:
 
 
 @dataclass
+class InputConfig:
+    # Accepted input document formats (T-054). Enforced by content sniffing at
+    # both HTTP surfaces; an upload outside the list gets a 415 naming the set.
+    formats: list[str]
+
+
+@dataclass
 class Config:
     api: ApiConfig
+    input: InputConfig
     ocr: OcrConfig
     description: DescriptionConfig
     diagrams: DiagramsConfig
@@ -174,6 +184,17 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
         currency=(str(api_raw["currency"]).strip() if api_raw.get("currency") else None),
     )
 
+    input_raw = raw.get("input") or {}
+    if "formats" not in input_raw:
+        raise RuntimeError(
+            "input.formats is missing from config.yaml — this field is required. "
+            'List the accepted input document formats, e.g. ["pdf", "epub"].'
+        )
+    formats_raw = input_raw["formats"]
+    if not isinstance(formats_raw, list):
+        raise RuntimeError("input.formats must be a list of format names.")
+    input_cfg = InputConfig(formats=validate_formats(formats_raw))
+
     ocr_raw = raw.get("ocr") or {}
     ocr = OcrConfig(language=str(_require(ocr_raw, "language", "ocr")))
 
@@ -241,6 +262,7 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
 
     return Config(
         api=api,
+        input=input_cfg,
         ocr=ocr,
         description=description,
         diagrams=diagrams,
