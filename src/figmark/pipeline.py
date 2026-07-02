@@ -542,7 +542,7 @@ def convert(
             shared_key = None
             if shared_cache is not None:
                 try:
-                    render_digest = hashlib.sha1(region.path.read_bytes()).hexdigest()[:12]
+                    render_digest = hashlib.sha256(region.path.read_bytes()).hexdigest()[:32]
                     shared_key = f"diag-{render_digest}-{diagram_fp}"
                 except OSError:
                     shared_key = None
