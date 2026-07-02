@@ -97,7 +97,7 @@ An unknown `format` is rejected with `422` (no silent default).
 - **Service/ops knobs (environment):** `FIGMARK_AUTH_TOKEN_FILE`,
   `FIGMARK_API_KEY_FILE`, `FIGMARK_CONFIG_PATH`, `FIGMARK_MAX_UPLOAD_BYTES`,
   `FIGMARK_MAX_CONCURRENT_JOBS`, `FIGMARK_REQUEST_TIMEOUT_SECONDS`,
-  `FIGMARK_WORK_DIR`, `FIGMARK_HOST`, `FIGMARK_PORT`.
+  `FIGMARK_WORK_DIR`, `FIGMARK_CACHE_DIR`, `FIGMARK_HOST`, `FIGMARK_PORT`.
 - **Pipeline knobs (`config.yaml`, mounted read-only):** `api.*`, `ocr.language`,
   `language.output`, the prompts, `concurrency.*`, `context.*`,
   `significance.*`, `document_summary.*`. See the top-level
@@ -107,6 +107,25 @@ The container runs non-root, with a read-only root filesystem (a tmpfs for its
 work dir), `no-new-privileges`, all Linux capabilities dropped, and memory/cpu/pids
 limits — all set in `compose.yaml`. Bind a TLS-terminating reverse proxy in front
 for transport security; the service port is bound to localhost by default.
+
+### The cross-request cache (data at rest)
+
+When `cache.enabled: true` (see `config.example.yaml`), converted results are
+kept on disk under `FIGMARK_CACHE_DIR` (default: inside the work dir), so a
+re-uploaded identical document is served without re-running the pipeline or
+re-spending vision-model calls. Be deliberate about two things:
+
+- **Persistence.** With the default hardened compose, the work dir is a tmpfs —
+  the cache then lives only for the container's uptime. To keep it across
+  restarts, mount a volume and point `FIGMARK_CACHE_DIR` at it.
+- **Data at rest.** The cache stores document-derived content (the Markdown,
+  including figure descriptions). If the documents are sensitive, that content
+  now persists server-side beyond the request. Your controls: the TTL
+  (`cache.max_age_hours`, measured from last access), the size cap
+  (`cache.max_size_mb`, LRU eviction), targeted removal
+  (`DELETE /v1/cache/{document-sha256}`), and a full wipe (`DELETE /v1/cache`).
+  All management calls require the same bearer token as conversion;
+  `GET /v1/cache/stats` shows what the cache currently holds.
 
 ## Try it fully offline (no LLM needed)
 

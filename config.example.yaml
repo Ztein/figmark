@@ -44,6 +44,19 @@ input:
   #   timeout_seconds: 120
   #   soffice_path: ""
 
+cache:
+  # Cross-request cache for the HTTP surface: a re-uploaded identical document
+  # is served from the cache (no pipeline run, no vision-model spend), and
+  # figure descriptions are shared across requests. Entries are LRU-evicted
+  # above max_size_mb and expire max_age_hours after their LAST access (a hit
+  # resets the clock). Manage over HTTP: GET /v1/cache/stats,
+  # DELETE /v1/cache/{document-sha256}, DELETE /v1/cache.
+  # NOTE: cached content persists on disk (FIGMARK_CACHE_DIR) — see
+  # docs/deployment.md for the data-at-rest and volume implications.
+  enabled: true
+  max_size_mb: 500
+  max_age_hours: 720   # 30 days
+
 ocr:
   language: "swe"
 

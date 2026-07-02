@@ -102,9 +102,20 @@ class InputConfig:
 
 
 @dataclass
+class CacheConfig:
+    # Cross-request cache for the HTTP surface (T-060): document results (and,
+    # with T-061, shared figure descriptions). LRU-evicted above max_size_mb;
+    # entries expire max_age_hours after their last access (a hit resets it).
+    enabled: bool
+    max_size_mb: int = 0
+    max_age_hours: float = 0.0
+
+
+@dataclass
 class Config:
     api: ApiConfig
     input: InputConfig
+    cache: CacheConfig
     ocr: OcrConfig
     description: DescriptionConfig
     diagrams: DiagramsConfig
@@ -227,6 +238,20 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
         office=office_cfg,
     )
 
+    cache_raw = raw.get("cache") or {}
+    if "enabled" not in cache_raw:
+        raise RuntimeError("cache.enabled is missing from config.yaml — this field is required.")
+    cache_enabled = bool(cache_raw["enabled"])
+    if cache_enabled:
+        max_size_mb = int(_require(cache_raw, "max_size_mb", "cache"))
+        max_age_hours = float(_require(cache_raw, "max_age_hours", "cache"))
+        if max_size_mb <= 0 or max_age_hours <= 0:
+            raise RuntimeError("cache.max_size_mb and cache.max_age_hours must be positive.")
+    else:
+        max_size_mb = int(cache_raw.get("max_size_mb", 0) or 0)
+        max_age_hours = float(cache_raw.get("max_age_hours", 0) or 0)
+    cache = CacheConfig(enabled=cache_enabled, max_size_mb=max_size_mb, max_age_hours=max_age_hours)
+
     ocr_raw = raw.get("ocr") or {}
     ocr = OcrConfig(language=str(_require(ocr_raw, "language", "ocr")))
 
@@ -295,6 +320,7 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
     return Config(
         api=api,
         input=input_cfg,
+        cache=cache,
         ocr=ocr,
         description=description,
         diagrams=diagrams,
