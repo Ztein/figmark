@@ -367,10 +367,28 @@ def convert(
     if total_diagrams:
         diagram_descriptions_dir.mkdir(parents=True, exist_ok=True)
 
+    # Fast text path (T-051): the document summary and the auto language detection
+    # exist only to contextualise figure descriptions (language is also needed for
+    # the tagged PDF's /Lang). With nothing to describe, both calls are pure
+    # overhead — skip them, and say so (T-024: no silent behaviour change).
+    total_images = sum(len(p.images) for p in pages)
+    has_figures = bool(total_images or total_diagrams)
+    if not has_figures:
+        skip_msg = (
+            "No figures or diagrams detected — skipping the document-summary"
+            + ("" if tagged else " and language-detection")
+            + " API call(s): they only contextualise figure descriptions (T-051)"
+        )
+        if quiet:
+            logger.info(skip_msg)
+        else:
+            log(skip_msg)
+
     # Resolve the output language. "auto" detects the document's own language once,
-    # then every description is told that language explicitly.
+    # then every description is told that language explicitly. Skipped when there
+    # are no figures to describe and no tagged PDF (which needs the document /Lang).
     resolved_language = cfg.language.output
-    if resolved_language.strip().lower() in ("auto", "document", ""):
+    if resolved_language.strip().lower() in ("auto", "document", "") and (has_figures or tagged):
         # A real API failure here (bad key, unreachable endpoint, exhausted
         # retries) would break every description call too — abort loudly instead
         # of masking it as a benign "using prompt default" (T-024 F2).
@@ -387,8 +405,10 @@ def convert(
             emit(f"\nDocument language: {resolved_language}")
 
     # Document-type summary: best-effort context for every figure description.
+    # Its only consumer is the figure prompts, so it is skipped outright when the
+    # document has no figures (logged above, T-051).
     doc_summary = ""
-    if cfg.document_summary.enabled:
+    if cfg.document_summary.enabled and has_figures:
         try:
             doc_summary = summarize_document(
                 client, pages, cfg, out_dir / "document_summary.txt", resolved_language
