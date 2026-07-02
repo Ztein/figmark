@@ -1,6 +1,7 @@
 # figmark
 
 [![CI](https://github.com/Ztein/figmark/actions/workflows/ci.yml/badge.svg)](https://github.com/Ztein/figmark/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/figmark)](https://pypi.org/project/figmark/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](pyproject.toml)
 
@@ -110,10 +111,10 @@ axis-label noise. figmark hands your LLM the chart's actual content.
 ## Install
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e .
+pip install figmark
 ```
+
+(or from source: `git clone` + `pip install -e .`)
 
 For scanned PDFs you also need Tesseract:
 
