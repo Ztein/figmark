@@ -41,6 +41,7 @@ from starlette.concurrency import run_in_threadpool
 from . import __version__
 from .config import load_config
 from .describe import make_client
+from .input_formats import EXTENSION_FORMATS, sniff_format
 from .ocr import VisionOCRError
 from .pipeline import convert
 
@@ -217,22 +218,92 @@ def _upstream_error_response(e: APIError) -> HTTPException:
 
 
 def _validate_pdf_document(pdf_path: Path) -> None:
-    """Fail loudly (422) if the on-disk file isn't an openable, unencrypted PDF.
+    """Fail loudly (422) if the on-disk file isn't openable and unencrypted.
 
     Shared by ``/v1/convert`` and the Mistral-OCR-compatible ``/v1/ocr`` route so
-    both reject the same inputs the same way.
+    both reject the same inputs the same way. Works for every PyMuPDF-native
+    format (the loader is picked from the file extension).
     """
     try:
         doc = fitz.open(pdf_path)
         if doc.needs_pass:
             doc.close()
-            raise HTTPException(status_code=422, detail="Password-protected PDFs unsupported")
+            raise HTTPException(status_code=422, detail="Password-protected documents unsupported")
         _ = doc.page_count
         doc.close()
     except HTTPException:
         raise
     except Exception as e:  # noqa: BLE001
-        raise HTTPException(status_code=422, detail="File could not be parsed as a PDF") from e
+        raise HTTPException(
+            status_code=422,
+            detail=f"File could not be parsed as {pdf_path.suffix.lstrip('.') or 'a document'}",
+        ) from e
+
+
+def _reject_claimed_format(claimed: str | None, allowed: list[str]) -> None:
+    """Fail fast (415) when a *claimed* format (extension) is outside the allowlist.
+
+    ``claimed=None`` means no recognisable claim — sniffing decides later.
+    """
+    supported = ", ".join(allowed)
+    if claimed == "ole":
+        raise HTTPException(
+            status_code=415,
+            detail=(
+                "Legacy binary Office files (.doc/.xls/.ppt) are not supported — "
+                f"save as OOXML or PDF. Supported formats: {supported}."
+            ),
+        )
+    if claimed is not None and claimed not in allowed:
+        raise HTTPException(
+            status_code=415,
+            detail=f"Format '{claimed}' is not enabled here. Supported formats: {supported}.",
+        )
+
+
+def gate_document_format(path: Path, claimed: str | None, allowed: list[str]) -> str:
+    """Sniff the on-disk file's real format and enforce the allowlist (T-054).
+
+    Returns the detected format name. The content decides: an extension/content
+    mismatch is a loud 422, never mis-handled; a real-but-disallowed format is a
+    415 that names both the detected format and the supported set.
+    """
+    fmt = sniff_format(path)
+    supported = ", ".join(allowed)
+    if fmt == "ole":
+        _reject_claimed_format("ole", allowed)
+    if fmt is None:
+        if claimed is None:
+            # No filename claim to contradict (e.g. /v1/ocr) — this is simply an
+            # unsupported media type, not a mismatch.
+            raise HTTPException(
+                status_code=415,
+                detail=(
+                    "Could not identify the document as any supported format. "
+                    f"Supported formats: {supported}."
+                ),
+            )
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"File name claims '{claimed}' but the content is not identifiable "
+                f"as any supported format. Supported formats: {supported}."
+            ),
+        )
+    if claimed is not None and fmt != claimed:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"File name claims '{claimed}' but the content is '{fmt}' — "
+                "extension/content mismatch."
+            ),
+        )
+    if fmt not in allowed:
+        raise HTTPException(
+            status_code=415,
+            detail=f"Detected format '{fmt}' is not enabled here. Supported formats: {supported}.",
+        )
+    return fmt
 
 
 async def run_conversion(app: FastAPI, pdf_path: Path, out_dir: Path, *, annotate: bool = False):
@@ -343,30 +414,43 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
                 status_code=422,
                 detail=f"Unknown format {output_format!r}. Allowed: {', '.join(ALLOWED_FORMATS)}.",
             )
+        # The filename's claim is checked up front (fail fast, before streaming);
+        # the *content* has the final say via gate_document_format below (T-054).
         name = (file.filename or "upload").lower()
-        ctype = (file.content_type or "").lower()
-        if not (name.endswith(".pdf") or ctype == "application/pdf"):
-            raise HTTPException(status_code=415, detail="Only PDF uploads are supported")
+        suffix = Path(name).suffix
+        allowed = cfg.input.formats
+        if suffix:
+            claimed = EXTENSION_FORMATS.get(suffix)
+            if claimed is None:
+                raise HTTPException(
+                    status_code=415,
+                    detail=(
+                        f"Unsupported file type '{suffix}'. "
+                        f"Supported formats: {', '.join(allowed)}."
+                    ),
+                )
+            _reject_claimed_format(claimed, allowed)
+        else:
+            claimed = None
 
         work = Path(tempfile.mkdtemp(dir=settings.work_dir))
-        pdf_path = work / "input.pdf"
+        upload_path = work / "upload.bin"
         try:
             # Stream to disk, enforcing the size cap before buffering the whole body.
             size = 0
-            header = b""
-            with pdf_path.open("wb") as out:
+            with upload_path.open("wb") as out:
                 while chunk := await file.read(_READ_CHUNK):
-                    if not header:
-                        header = chunk[:5]
                     size += len(chunk)
                     if size > settings.max_upload_bytes:
                         raise HTTPException(status_code=413, detail="Upload exceeds the size limit")
                     out.write(chunk)
-            if not header.startswith(b"%PDF"):
-                raise HTTPException(status_code=422, detail="Not a valid PDF (missing %PDF header)")
-            _validate_pdf_document(pdf_path)
+            fmt = gate_document_format(upload_path, claimed, allowed)
+            # PyMuPDF picks its loader from the extension — name the file for
+            # what its content actually is.
+            doc_path = upload_path.rename(work / f"input.{fmt}")
+            _validate_pdf_document(doc_path)
 
-            result = await run_conversion(request.app, pdf_path, work / "out", annotate=annotate)
+            result = await run_conversion(request.app, doc_path, work / "out", annotate=annotate)
 
             logger.info(
                 "convert ok pages=%d figures=%d skipped=%d language=%s",

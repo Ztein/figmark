@@ -27,6 +27,12 @@ is tracked in [T-010](docs/tickets/T-010-provider-agnostic-llm-key.md)).
   diagram-specific prompt.
 - **Scanned PDFs.** Falls back to OCR — Tesseract first, a vision model when
   Tesseract's quality is too low.
+- **Configurable input formats.** PDF by default, plus the PyMuPDF-native
+  formats (EPUB, XPS, FB2, CBZ, MOBI) via an `input.formats` allowlist in
+  config — no extra dependency. The gate sniffs the actual content (magic
+  bytes + container inspection), so a mislabelled file fails loud instead of
+  being mis-parsed. Office formats (docx/xlsx/pptx) are on the roadmap via a
+  separate LibreOffice image variant (T-054).
 - **Context-aware descriptions.** Sends the surrounding text — plus a one-line
   summary of what kind of document it is — to the model, so a chart is interpreted
   in the report's context, not just visually.
@@ -143,8 +149,10 @@ Why figmark specifically: for **born-digital, figure/diagram-heavy** documents i
 broken text — and keeps the data on your own network. **Limitation:** figmark's
 raster OCR is Tesseract, not a vision-language model, so this backend is strongest
 on born-digital / figure-heavy PDFs and **weaker than a VLM on messy scans and
-handwriting**. It is PDF-first: non-PDF inputs (e.g. an image via `image_url`)
-return `415`. Do not deploy it expecting VLM-grade scan fidelity.
+handwriting**. It accepts the formats in the `input.formats` allowlist (PDF by
+default; EPUB and the other PyMuPDF-native formats are free to enable); anything
+else — including raster image input via `image_url` — returns `415`. Do not
+deploy it expecting VLM-grade scan fidelity.
 
 When a *scanned* page can't be OCR'd — the rendered page is too large for the
 vision model even after figmark downscales it, or the model rejects/returns nothing

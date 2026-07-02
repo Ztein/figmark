@@ -4,6 +4,14 @@
 Office** via **LibreOffice headless** (Option 2), *paired with* a hardened, scanned
 and reviewed image (see "Decision" and "Security requirements"). EPUB and the other
 PyMuPDF-native formats remain the free first tranche.
+**Free tranche shipped (2026-07-02):** content sniffing (`input_formats.py` —
+magic bytes + ZIP-container inspection, OOXML/EPUB/XPS/CBZ/OLE aware), the
+`input.formats` config allowlist (required section, fails loud on unknown or
+not-yet-supported formats), a 415 naming the supported set on both `/v1/convert`
+and `/v1/ocr`, extension/content mismatch → loud 422, and EPUB end-to-end.
+EPUB bench note: a 211-page Project Gutenberg novel converts in ~8 s with correct
+chapter headings and clean prose; the cover page goes through the OCR-rescue path
+(minor Tesseract noise on decorative type).
 **Priority:** Medium
 
 ## Symptom
@@ -143,12 +151,12 @@ Trivy/CodeQL posture, and the conversion is sandboxed.*
       docx/xlsx/pptx with real figures/tables + a PD EPUB) and a *generated* adversarial
       set (dev-only authoring deps, nothing hosted). This gates the bench and
       adversarial criteria below; none of them are actionable without it.
-- [ ] A config-driven allowlist of accepted input formats; an unsupported upload gets
+- [x] A config-driven allowlist of accepted input formats; an unsupported upload gets
       a clean `415` that names the supported set (both `/v1/convert` and `/v1/ocr`).
-- [ ] The input gate sniffs actual content (not just `%PDF` / extension) and fails
+- [x] The input gate sniffs actual content (not just `%PDF` / extension) and fails
       loud on an extension/content mismatch.
-- [ ] EPUB (and the other PyMuPDF-native formats) work end-to-end through the pipeline
-      — the cheap, no-dependency tranche — with a bench note.
+- [x] EPUB (and the other PyMuPDF-native formats) work end-to-end through the pipeline
+      — the cheap, no-dependency tranche — with a bench note (see Status).
 - [x] A recorded decision on Office handling: **LibreOffice headless for
       high-fidelity MS Office** (see "Decision"), conditional on the security work.
 - [ ] MS Office (docx/xlsx/pptx) converts via LibreOffice headless and round-trips
