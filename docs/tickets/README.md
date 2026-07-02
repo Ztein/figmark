@@ -54,7 +54,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-048](T-048-upstream-llm-error-leaks-as-500.md) | **Closed** | Medium | Upstream LLM errors surface as HTTP 500 with the provider's raw error body (should be a clean 502) |
 | T-049 | — | — | Reserved — operational/deployment item, tracked outside this repo |
 | [T-050](T-050-borderless-forecast-tables-flattened.md) | Open | Medium | Borderless forecast tables are flattened, scrambling column↔value attribution |
-| [T-051](T-051-fast-text-mode-min-api-calls.md) | Open | Low | A figure-less text PDF still spends baseline API calls (no fast text mode) |
+| [T-051](T-051-fast-text-mode-min-api-calls.md) | **Closed** | Low | A figure-less text PDF still spends baseline API calls (no fast text mode) |
 | [T-052](T-052-librechat-mistral-ocr-compat-endpoint.md) | Open | Medium | LibreChat/Mistral-OCR clients can't point at figmark (no compatible endpoint) |
 | [T-053](T-053-vision-ocr-failure-is-opaque.md) | **Closed** | Medium | A scanned page the vision model can't OCR fails with an opaque, misleading error |
 | [T-054](T-054-configurable-input-document-formats.md) | Open | Medium | figmark accepts only PDF — no way to configure other document formats (Word/Excel/PPT/EPUB) |
