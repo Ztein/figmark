@@ -123,9 +123,26 @@ Trivy/CodeQL posture, and the conversion is sandboxed.*
 - **Bench before code** (project rule): for any Office path, measure fidelity — are
   figures preserved? tables? reading order? — on a small labelled set of real
   docx/xlsx/pptx before committing to a heavy dependency. Record the numbers in the PR.
+- **We have no Office/EPUB test fixtures today.** The whole test corpus is PDF: the
+  sample downloader fetches only PDFs, the eval corpus is 28 PDFs, and the only
+  synthetic generator is `synthetic_pdf` (PyMuPDF can open EPUB but cannot author
+  Office/EPUB). So the bench and adversarial criteria above are empty promises until
+  a corpus exists — it must be built first, in two parts:
+  - **Fidelity set — fetched, not vendored** (mirrors the PDF samples, which are
+    gitignored and downloaded): permissively-licensed / public-domain docx/xlsx/pptx
+    that actually exercise embedded charts/figures, tables, headings/lists, and a
+    Project-Gutenberg EPUB for the free tranche.
+  - **Adversarial set — generated deterministically in-test, never hosted**: craft
+    the hostile OOXML/containers in the test (directly, or via `python-docx` /
+    `openpyxl` / `python-pptx` as **dev-only** test deps — they must not touch the
+    air-gapped runtime image). Generating them is safer than storing real malware.
 
 ## Acceptance criteria
 
+- [ ] **An Office/EPUB test corpus exists** — a *fetched* fidelity set (permissive/PD
+      docx/xlsx/pptx with real figures/tables + a PD EPUB) and a *generated* adversarial
+      set (dev-only authoring deps, nothing hosted). This gates the bench and
+      adversarial criteria below; none of them are actionable without it.
 - [ ] A config-driven allowlist of accepted input formats; an unsupported upload gets
       a clean `415` that names the supported set (both `/v1/convert` and `/v1/ocr`).
 - [ ] The input gate sniffs actual content (not just `%PDF` / extension) and fails
