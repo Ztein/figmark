@@ -11,6 +11,9 @@ input:
     - pdf
     - epub
 
+cache:
+  enabled: false
+
 ocr:
   language: "swe"
 

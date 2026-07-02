@@ -43,8 +43,11 @@ from . import __version__
 from .api import (
     _require_auth,
     _validate_pdf_document,
+    cache_payload_to_result,
+    document_cache_key,
     gate_document_format,
     prepare_office_document,
+    result_to_cache_payload,
     run_conversion,
 )
 
@@ -225,7 +228,7 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
         return {"id": file_id, "object": "file", "deleted": deleted}
 
     @app.post("/v1/ocr", dependencies=[Depends(_require_auth)])
-    async def ocr(request: Request) -> dict:
+    async def ocr(request: Request, response: Response) -> dict:
         try:
             body = await request.json()
         except Exception as e:  # noqa: BLE001
@@ -235,6 +238,26 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
 
         model = body.get("model") or f"figmark-{__version__}"
         data = _resolve_document_bytes(request, body.get("document"))
+        cfg = request.app.state.cfg
+
+        # Shared with /v1/convert (T-060): same document + same config = same
+        # cached result, whichever surface it arrived through.
+        doc_digest = hashlib.sha256(data).hexdigest()
+        store = request.app.state.cache_store
+        if store is not None:
+            hit = store.get(document_cache_key(doc_digest, cfg))
+            if hit is not None:
+                logger.info("ocr cache hit doc=%s…", doc_digest[:12])
+                cached_result = cache_payload_to_result(hit)
+                response.headers["X-Figmark-Cache"] = "hit"
+                return {
+                    "pages": split_pages(cached_result.markdown),
+                    "model": model,
+                    "usage_info": {
+                        "pages_processed": cached_result.page_count,
+                        "doc_size_bytes": len(data),
+                    },
+                }
 
         work = Path(tempfile.mkdtemp(dir=settings.work_dir))
         upload_path = work / "upload.bin"
@@ -244,11 +267,19 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
             # content alone decides, against the same allowlist as /v1/convert
             # (T-054). Raster image input (image_url) is still a T-052 deferred
             # item and fails loud here.
-            fmt = gate_document_format(upload_path, None, request.app.state.cfg.input.formats)
+            fmt = gate_document_format(upload_path, None, cfg.input.formats)
             doc_path = upload_path.rename(work / f"input.{fmt}")
-            doc_path = await prepare_office_document(doc_path, fmt, request.app.state.cfg)
+            doc_path = await prepare_office_document(doc_path, fmt, cfg)
             _validate_pdf_document(doc_path)
             result = await run_conversion(request.app, doc_path, work / "out")
+            if store is not None:
+                store.put(
+                    document_cache_key(doc_digest, cfg),
+                    result_to_cache_payload(result),
+                    doc_digest=doc_digest,
+                    kind="document",
+                )
+            response.headers["X-Figmark-Cache"] = "miss" if store is not None else "off"
             pages = split_pages(result.markdown)
             logger.info("ocr ok pages=%d figures=%d", result.page_count, result.figure_count)
             return {

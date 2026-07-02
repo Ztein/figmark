@@ -109,6 +109,7 @@ def test_missing_api_model_fails_loudly(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  base_url: 'x'\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
@@ -125,6 +126,7 @@ def test_missing_api_base_url_fails_loudly(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  model: 'x'\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
@@ -141,6 +143,7 @@ def test_missing_concurrency_fails_loudly(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  model: 'x'\n  base_url: 'x'\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
@@ -156,6 +159,7 @@ def test_missing_tables_fails_loudly(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  model: 'x'\n  base_url: 'x'\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
@@ -171,6 +175,7 @@ def test_missing_ocr_language_fails_loudly(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  model: 'x'\n  base_url: 'x'\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
         "tables:\n  enabled: false\n"
@@ -186,6 +191,7 @@ def test_diagrams_enabled_requires_prompt(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  model: 'x'\n  base_url: 'x'\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: true\n"
@@ -217,6 +223,7 @@ def test_empty_string_field_fails_loudly(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  base_url: 'x'\n  model: ''\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
@@ -234,6 +241,7 @@ def test_null_value_fails_loudly(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  base_url: 'x'\n  model: null\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
@@ -263,6 +271,7 @@ def test_missing_context_fails_loudly(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  model: 'x'\n  base_url: 'x'\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
@@ -279,6 +288,7 @@ def test_context_words_before_required(env_with_key, tmp_path: Path):
     bad.write_text(
         "api:\n  model: 'x'\n  base_url: 'x'\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'x'\n"
         "diagrams:\n  enabled: false\n"
@@ -296,6 +306,7 @@ def test_diagrams_disabled_skips_prompt_requirement(env_with_key, tmp_path: Path
     cfg_path.write_text(
         "api:\n  model: 'x'\n  base_url: 'x'\n"
         "input:\n  formats: ['pdf']\n"
+        "cache:\n  enabled: false\n"
         "ocr:\n  language: 'swe'\n"
         "description:\n  prompt: 'describe'\n"
         "diagrams:\n  enabled: false\n"
@@ -320,6 +331,7 @@ def test_diagrams_disabled_skips_prompt_requirement(env_with_key, tmp_path: Path
 _FULL_CONFIG = (
     "api:\n  model: 'x'\n  base_url: 'x'\n"
     "input:\n  formats: ['pdf']\n"
+    "cache:\n  enabled: false\n"
     "ocr:\n  language: 'swe'\n"
     "description:\n  prompt: 'x'\n"
     "diagrams:\n  enabled: false\n"

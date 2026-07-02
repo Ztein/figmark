@@ -1,6 +1,16 @@
 # T-060: The HTTP surface re-converts identical documents from scratch — no cross-request cache
 
-**Status:** Open
+**Status:** Closed — **implemented (2026-07-02).** `cache.py` (`CacheStore`):
+SQLite-backed (WAL), LRU eviction above `cache.max_size_mb`, expiry
+`cache.max_age_hours` after *last access* (every hit re-stamps), oversized
+entries never admitted (they must not wipe the cache). Key = document sha256 +
+config fingerprint + figmark version; both `/v1/convert` and `/v1/ocr` share the
+same entries. Hits are labelled (`cached: true` + `X-Figmark-Cache: hit`) and
+echo the original run's usage — never presented as fresh spend. Management:
+`GET /v1/cache/stats`, `DELETE /v1/cache/{sha256}`, `DELETE /v1/cache`, all
+bearer-authed; 404 when caching is disabled. Cache dir via `FIGMARK_CACHE_DIR`
+(persistence/data-at-rest notes in docs/deployment.md). Tests:
+`tests/test_cache_store.py` (12) + `tests/test_api_cache.py` (10).
 **Priority:** High — every repeated upload of the same document (re-upload in a
 new chat, RAG re-ingestion, retries) re-runs the full pipeline and re-spends the
 full vision-model cost. The pipeline's own disk cache exists but is written into

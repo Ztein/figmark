@@ -13,13 +13,17 @@ Run with the ``figmark-server`` entry point (uvicorn, app factory).
 from __future__ import annotations
 
 import asyncio
+import hashlib
+import json
 import logging
 import os
+import re
 import secrets
 import shutil
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
+from types import SimpleNamespace
 
 import fitz
 from fastapi import (
@@ -39,6 +43,7 @@ from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
 
 from . import __version__
+from .cache import CacheStore
 from .config import load_config
 from .describe import make_client
 from .input_formats import EXTENSION_FORMATS, OFFICE_FORMATS, sniff_format
@@ -73,6 +78,9 @@ class ServerSettings:
     work_dir: Path
     request_timeout_seconds: float
     max_concurrent_jobs: int
+    # Where the cross-request cache lives (T-060). Defaults beside work_dir;
+    # mount a persistent volume + set FIGMARK_CACHE_DIR to survive restarts.
+    cache_dir: Path | None = None
 
     @classmethod
     def from_env(cls) -> ServerSettings:
@@ -102,6 +110,11 @@ class ServerSettings:
             max_concurrent_jobs=int(
                 os.environ.get("FIGMARK_MAX_CONCURRENT_JOBS", DEFAULT_MAX_CONCURRENT_JOBS)
             ),
+            cache_dir=(
+                Path(os.environ["FIGMARK_CACHE_DIR"])
+                if os.environ.get("FIGMARK_CACHE_DIR")
+                else None
+            ),
         )
 
 
@@ -123,6 +136,9 @@ class ConvertResponse(BaseModel):
     # Monetary estimate, only when prices are configured; null otherwise (never 0).
     estimated_cost: float | None = None
     currency: str | None = None
+    # True when served from the cross-request cache (T-060). The usage block
+    # then echoes the ORIGINAL run's spend for information — it is not new spend.
+    cached: bool = False
 
 
 class VersionResponse(BaseModel):
@@ -137,7 +153,7 @@ class VersionResponse(BaseModel):
 ALLOWED_FORMATS = ("json", "md", "both")
 
 
-def _convert_response_model(result) -> ConvertResponse:
+def _convert_response_model(result, cached: bool = False) -> ConvertResponse:
     return ConvertResponse(
         markdown=result.markdown,
         page_count=result.page_count,
@@ -153,10 +169,24 @@ def _convert_response_model(result) -> ConvertResponse:
         ),
         estimated_cost=result.estimated_cost,
         currency=result.currency,
+        cached=cached,
     )
 
 
-def format_convert_result(result, fmt: str):
+def _stamp_cache_header(formatted, injected_response, state: str) -> None:
+    """Set X-Figmark-Cache on whichever response object will actually be sent.
+
+    A returned Response instance (the md format) ignores the injected response's
+    headers, so the header goes directly on it; for a model return the injected
+    response carries the headers into the final JSON response.
+    """
+    if isinstance(formatted, Response):
+        formatted.headers["X-Figmark-Cache"] = state
+    else:
+        injected_response.headers["X-Figmark-Cache"] = state
+
+
+def format_convert_result(result, fmt: str, cached: bool = False):
     """Shape a ConversionResult per the requested format.
 
     Returns a ``ConvertResponse`` for ``json``/``both`` (the JSON already carries
@@ -170,7 +200,7 @@ def format_convert_result(result, fmt: str):
             detail=f"Unknown format {fmt!r}. Allowed: {', '.join(ALLOWED_FORMATS)}.",
         )
     if fmt != "md":
-        return _convert_response_model(result)
+        return _convert_response_model(result, cached=cached)
 
     headers = {
         "X-Figmark-Page-Count": str(result.page_count),
@@ -307,6 +337,67 @@ def gate_document_format(path: Path, claimed: str | None, allowed: list[str]) ->
     return fmt
 
 
+def config_cache_fingerprint(cfg) -> str:
+    """Hash every config field that shapes a conversion result, plus the figmark
+    version — a change to any of them must miss the cache (T-034 parity)."""
+    material = repr(
+        (
+            __version__,
+            cfg.api.model,
+            cfg.description.prompt,
+            cfg.diagrams.enabled,
+            cfg.diagrams.prompt,
+            cfg.tables.enabled,
+            cfg.context.enabled,
+            cfg.context.words_before,
+            cfg.context.words_after,
+            cfg.significance.enabled,
+            cfg.document_summary.enabled,
+            cfg.document_summary.sample_words,
+            cfg.document_summary.prompt,
+            cfg.language.output,
+            cfg.ocr.language,
+        )
+    )
+    return hashlib.sha256(material.encode()).hexdigest()[:16]
+
+
+def document_cache_key(doc_digest: str, cfg) -> str:
+    return f"doc-{doc_digest}-{config_cache_fingerprint(cfg)}"
+
+
+def result_to_cache_payload(result) -> bytes:
+    """Serialise the response-relevant slice of a ConversionResult (paths die
+    with the request's temp dir and are deliberately not cached)."""
+    return json.dumps(
+        {
+            "markdown": result.markdown,
+            "page_count": result.page_count,
+            "figure_count": result.figure_count,
+            "skipped_count": result.skipped_count,
+            "language": result.language,
+            "usage": {
+                "prompt_tokens": result.usage.prompt_tokens,
+                "completion_tokens": result.usage.completion_tokens,
+                "total_tokens": result.usage.total_tokens,
+                "api_calls": result.usage.api_calls,
+                "calls_missing_usage": result.usage.calls_missing_usage,
+            },
+            "estimated_cost": result.estimated_cost,
+            "currency": result.currency,
+        },
+        ensure_ascii=False,
+    ).encode("utf-8")
+
+
+def cache_payload_to_result(payload: bytes) -> SimpleNamespace:
+    """Rebuild an object attribute-compatible with ConversionResult for the
+    response formatters."""
+    data = json.loads(payload.decode("utf-8"))
+    data["usage"] = SimpleNamespace(**data["usage"])
+    return SimpleNamespace(**data)
+
+
 async def prepare_office_document(doc_path: Path, fmt: str, cfg) -> Path:
     """Convert an allowlisted Office upload to PDF before it enters the pipeline.
 
@@ -407,6 +498,22 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
     app.state.cfg = cfg
     app.state.client = client
     app.state.job_semaphore = asyncio.Semaphore(max(1, settings.max_concurrent_jobs))
+    # Cross-request cache (T-060). None when disabled — every consumer checks.
+    if cfg.cache.enabled:
+        cache_dir = settings.cache_dir or (settings.work_dir / "cache")
+        app.state.cache_store = CacheStore(
+            cache_dir,
+            max_bytes=cfg.cache.max_size_mb * 1024 * 1024,
+            max_age_hours=cfg.cache.max_age_hours,
+        )
+        logger.info(
+            "document cache enabled at %s (max %d MB, max age %.0f h)",
+            cache_dir,
+            cfg.cache.max_size_mb,
+            cfg.cache.max_age_hours,
+        )
+    else:
+        app.state.cache_store = None
 
     @app.get("/healthz")
     def healthz() -> dict:
@@ -434,6 +541,7 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
     )
     async def convert_endpoint(
         request: Request,
+        response: Response,
         file: UploadFile = File(...),
         annotate: bool = Form(default=False),
         output_format: str = Form(default="json", alias="format"),
@@ -467,15 +575,30 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
         work = Path(tempfile.mkdtemp(dir=settings.work_dir))
         upload_path = work / "upload.bin"
         try:
-            # Stream to disk, enforcing the size cap before buffering the whole body.
+            # Stream to disk, enforcing the size cap before buffering the whole
+            # body; the sha256 (the cache key's document half) rides along.
             size = 0
+            hasher = hashlib.sha256()
             with upload_path.open("wb") as out:
                 while chunk := await file.read(_READ_CHUNK):
                     size += len(chunk)
                     if size > settings.max_upload_bytes:
                         raise HTTPException(status_code=413, detail="Upload exceeds the size limit")
+                    hasher.update(chunk)
                     out.write(chunk)
             fmt = gate_document_format(upload_path, claimed, allowed)
+            doc_digest = hasher.hexdigest()
+
+            store: CacheStore | None = request.app.state.cache_store
+            if store is not None:
+                hit = store.get(document_cache_key(doc_digest, cfg))
+                if hit is not None:
+                    logger.info("convert cache hit doc=%s…", doc_digest[:12])
+                    cached_result = cache_payload_to_result(hit)
+                    formatted = format_convert_result(cached_result, output_format, cached=True)
+                    _stamp_cache_header(formatted, response, "hit")
+                    return formatted
+
             # PyMuPDF picks its loader from the extension — name the file for
             # what its content actually is.
             doc_path = upload_path.rename(work / f"input.{fmt}")
@@ -484,6 +607,14 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
 
             result = await run_conversion(request.app, doc_path, work / "out", annotate=annotate)
 
+            if store is not None:
+                store.put(
+                    document_cache_key(doc_digest, cfg),
+                    result_to_cache_payload(result),
+                    doc_digest=doc_digest,
+                    kind="document",
+                )
+
             logger.info(
                 "convert ok pages=%d figures=%d skipped=%d language=%s",
                 result.page_count,
@@ -491,9 +622,39 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
                 result.skipped_count,
                 result.language,
             )
-            return format_convert_result(result, output_format)
+            formatted = format_convert_result(result, output_format)
+            _stamp_cache_header(formatted, response, "miss" if store is not None else "off")
+            return formatted
         finally:
             shutil.rmtree(work, ignore_errors=True)
+
+    # --- Cache management (T-060): stats, remove one document, clear all. ---
+    def _require_store(request: Request) -> CacheStore:
+        store = request.app.state.cache_store
+        if store is None:
+            raise HTTPException(status_code=404, detail="Caching is disabled on this server")
+        return store
+
+    @app.get("/v1/cache/stats", dependencies=[Depends(_require_auth)])
+    def cache_stats(request: Request) -> dict:
+        return _require_store(request).stats()
+
+    @app.delete("/v1/cache/{doc_digest}", dependencies=[Depends(_require_auth)])
+    def cache_delete_document(request: Request, doc_digest: str) -> dict:
+        if not re.fullmatch(r"[0-9a-f]{64}", doc_digest):
+            raise HTTPException(
+                status_code=422,
+                detail="doc_digest must be the document's sha256 (64 hex chars)",
+            )
+        deleted = _require_store(request).delete_document(doc_digest)
+        logger.info("cache delete doc=%s… removed %d entries", doc_digest[:12], deleted)
+        return {"doc_digest": doc_digest, "deleted": deleted}
+
+    @app.delete("/v1/cache", dependencies=[Depends(_require_auth)])
+    def cache_clear(request: Request) -> dict:
+        deleted = _require_store(request).clear()
+        logger.info("cache cleared: %d entries removed", deleted)
+        return {"deleted": deleted}
 
     # LibreChat / Mistral-OCR-compatible surface (/v1/files + /v1/ocr), so clients
     # that speak that wire format can use figmark as a self-hosted OCR backend
