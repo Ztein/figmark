@@ -531,6 +531,7 @@ def convert(
             jobs.append(job)
 
         for region in page_regions.get(page_data.page_num, []):
+            assert region.path is not None  # set by render_and_save_region above
             desc_path = diagram_descriptions_dir / f"{region.path.stem}-{diagram_fp}.txt"
             cached = desc_path.exists() and desc_path.read_text(encoding="utf-8").strip()
             if cached:
