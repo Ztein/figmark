@@ -65,7 +65,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-059](T-059-ocr-contract-gaps-pages-filechunk.md) | **Closed** | Medium | /v1/ocr contract gaps — no pages selection, no file_id document reference |
 | [T-060](T-060-no-cross-request-cache-document-level.md) | **Closed** | High | The HTTP surface re-converts identical documents from scratch — no cross-request cache |
 | [T-061](T-061-description-cache-not-shared-across-requests.md) | **Closed** | Medium | Figure descriptions are not reused when the same image appears in new requests or other documents |
-| [T-062](T-062-cache-management-shares-the-conversion-token.md) | Open | Low | Cache management shares the conversion bearer token — no privilege separation, no per-consumer partitioning |
+| [T-062](T-062-cache-management-shares-the-conversion-token.md) | **Closed** | Low | Cache management shares the conversion bearer token — no privilege separation, no per-consumer partitioning |
 | [T-063](T-063-cross-document-description-reuse-not-toggleable.md) | **Closed** | Low | Cross-document description reuse cannot be turned off (context bleed between documents) |
 | [T-064](T-064-cache-savings-invisible-no-hit-miss-telemetry.md) | **Closed** | Low | The cache's savings are invisible in operation — no hit/miss telemetry |
 

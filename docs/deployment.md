@@ -97,7 +97,10 @@ An unknown `format` is rejected with `422` (no silent default).
 - **Service/ops knobs (environment):** `FIGMARK_AUTH_TOKEN_FILE`,
   `FIGMARK_API_KEY_FILE`, `FIGMARK_CONFIG_PATH`, `FIGMARK_MAX_UPLOAD_BYTES`,
   `FIGMARK_MAX_CONCURRENT_JOBS`, `FIGMARK_REQUEST_TIMEOUT_SECONDS`,
-  `FIGMARK_WORK_DIR`, `FIGMARK_CACHE_DIR`, `FIGMARK_HOST`, `FIGMARK_PORT`.
+  `FIGMARK_WORK_DIR`, `FIGMARK_CACHE_DIR`, `FIGMARK_HOST`, `FIGMARK_PORT`,
+  and optionally `FIGMARK_CACHE_ADMIN_TOKEN[_FILE]` (T-062: when set, the
+  `/v1/cache*` management endpoints require this token instead of the
+  conversion token — see [SECURITY.md](../SECURITY.md)).
 - **Pipeline knobs (`config.yaml`, mounted read-only):** `api.*`, `ocr.language`,
   `language.output`, the prompts, `concurrency.*`, `context.*`,
   `significance.*`, `document_summary.*`. See the top-level

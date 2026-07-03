@@ -1,6 +1,12 @@
 # T-062: Cache management shares the conversion bearer token — no privilege separation, no per-consumer partitioning
 
-**Status:** Open
+**Status:** Closed — **Option 2 shipped 2026-07-03** (decision: admin token now,
+partitioning only on concrete multi-consumer demand). Optional
+`FIGMARK_CACHE_ADMIN_TOKEN[_FILE]`: when set, `/v1/cache*` management requires
+it — the conversion token gets a clear 403 (never a silent pass) and the admin
+token cannot convert. Unset = the single-token model, unchanged. Removes the
+wipe vector; the existence oracle remains (needs Option 3 partitioning —
+revisit on demand). SECURITY.md + deployment docs updated.
 **Priority:** Low — figmark's auth model is single-tenant (one token = one trust
 domain), and within that model nothing here is exploitable. The weakness only
 materialises when one instance is shared by consumers that should not affect or
@@ -51,7 +57,7 @@ on concrete demand.
 
 ## Acceptance criteria
 
-- [ ] A decision recorded for the multi-consumer story (admin token and/or
-      partitioning), implemented behind config that leaves the single-tenant
-      default unchanged.
-- [ ] SECURITY.md updated to match whatever ships.
+- [x] A decision recorded for the multi-consumer story (admin token now;
+      partitioning on concrete demand), implemented behind config that leaves
+      the single-tenant default unchanged.
+- [x] SECURITY.md updated to match whatever ships.

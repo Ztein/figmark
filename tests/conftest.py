@@ -151,6 +151,7 @@ def make_api_app(env_with_key, project_root, tmp_path):
         max_concurrent_jobs: int = 2,
         token: str = API_TEST_TOKEN,
         request_timeout_seconds: float = 30.0,
+        cache_admin_token: str | None = None,
     ):
         from figmark.api import ServerSettings, create_app
         from figmark.config import load_config
@@ -163,6 +164,7 @@ def make_api_app(env_with_key, project_root, tmp_path):
             work_dir=tmp_path / "work",
             request_timeout_seconds=request_timeout_seconds,
             max_concurrent_jobs=max_concurrent_jobs,
+            cache_admin_token=cache_admin_token,
         )
         return create_app(settings=settings, cfg=cfg, client=client)
 

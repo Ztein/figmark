@@ -83,6 +83,11 @@ class ServerSettings:
     # Where the cross-request cache lives (T-060). Defaults beside work_dir;
     # mount a persistent volume + set FIGMARK_CACHE_DIR to survive restarts.
     cache_dir: Path | None = None
+    # Optional privilege separation for cache management (T-062). When set
+    # (FIGMARK_CACHE_ADMIN_TOKEN / _FILE), the /v1/cache* management endpoints
+    # require THIS token; the conversion token no longer manages the cache.
+    # Unset = single-token model (the documented single-tenant default).
+    cache_admin_token: str | None = None
 
     @classmethod
     def from_env(cls) -> ServerSettings:
@@ -116,6 +121,9 @@ class ServerSettings:
                 Path(os.environ["FIGMARK_CACHE_DIR"])
                 if os.environ.get("FIGMARK_CACHE_DIR")
                 else None
+            ),
+            cache_admin_token=_read_secret(
+                "FIGMARK_CACHE_ADMIN_TOKEN", "FIGMARK_CACHE_ADMIN_TOKEN_FILE"
             ),
         )
 
@@ -568,6 +576,32 @@ def _require_auth(request: Request, authorization: str | None = Header(default=N
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
+def _require_cache_admin(
+    request: Request, authorization: str | None = Header(default=None)
+) -> None:
+    """Auth for the /v1/cache* management endpoints (T-062).
+
+    With FIGMARK_CACHE_ADMIN_TOKEN set, management requires that token — the
+    conversion token gets a clear 403, not a silent pass. Without it, the
+    single-token model applies unchanged (conversion token manages the cache).
+    """
+    admin = request.app.state.settings.cache_admin_token
+    if not admin:
+        _require_auth(request, authorization)
+        return
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing bearer token")
+    provided = authorization[len("Bearer ") :]
+    if secrets.compare_digest(provided, admin):
+        return
+    if secrets.compare_digest(provided, request.app.state.settings.auth_token):
+        raise HTTPException(
+            status_code=403,
+            detail="Cache management requires the cache admin token on this server",
+        )
+    raise HTTPException(status_code=401, detail="Invalid token")
+
+
 def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None) -> FastAPI:
     """Build the FastAPI app. Loads config once; fails loudly on bad config/secrets."""
     settings = settings or ServerSettings.from_env()
@@ -719,11 +753,11 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
             raise HTTPException(status_code=404, detail="Caching is disabled on this server")
         return store
 
-    @app.get("/v1/cache/stats", dependencies=[Depends(_require_auth)])
+    @app.get("/v1/cache/stats", dependencies=[Depends(_require_cache_admin)])
     def cache_stats(request: Request) -> dict:
         return _require_store(request).stats()
 
-    @app.delete("/v1/cache/{doc_digest}", dependencies=[Depends(_require_auth)])
+    @app.delete("/v1/cache/{doc_digest}", dependencies=[Depends(_require_cache_admin)])
     def cache_delete_document(request: Request, doc_digest: str) -> dict:
         if not re.fullmatch(r"[0-9a-f]{64}", doc_digest):
             raise HTTPException(
@@ -734,7 +768,7 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
         logger.info("cache delete doc=%s… removed %d entries", doc_digest[:12], deleted)
         return {"doc_digest": doc_digest, "deleted": deleted}
 
-    @app.delete("/v1/cache", dependencies=[Depends(_require_auth)])
+    @app.delete("/v1/cache", dependencies=[Depends(_require_cache_admin)])
     def cache_clear(request: Request) -> dict:
         deleted = _require_store(request).clear()
         logger.info("cache cleared: %d entries removed", deleted)
