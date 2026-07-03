@@ -1,10 +1,16 @@
 # T-065: Office support depends entirely on a LibreOffice PDF render — no way to interpret OOXML directly
 
-**Status:** Open
+**Status:** Open — **exploratory, not a committed direction.** Whether we pursue
+this at all is an open question to reason through, not a decision already taken.
+The render-to-PDF path (T-054) was a deliberate choice and works; this ticket
+captures the alternative and its trade-offs so we can weigh them, but "do
+nothing / keep the render" (Option 4) is a fully legitimate outcome. Decide
+*whether* before deciding *how*.
 **Priority:** Medium — the whole Office tranche (T-054) rides one heavyweight
 step; several downstream limitations (T-056 page explosion, borderless flatten,
 dropped comments/notes, the ~1 GB image variant) are consequences of *how* we
-ingest Office, not of the formats themselves.
+ingest Office, not of the formats themselves. (Priority reflects the size of the
+opportunity, not a commitment to act on it.)
 
 ## Symptom
 
@@ -97,6 +103,9 @@ Not mutually exclusive; a format-by-format mix is likely.
 
 ## Acceptance criteria
 
+- [ ] **First, a recorded go / no-go decision** on whether to pursue a native
+      path at all — the render-to-PDF status quo (Option 4) is an acceptable
+      answer. Everything below is conditional on a "go".
 - [ ] A recorded decision on the native path, per format, with a **fidelity
       bench** (figures/charts preserved? tables? reading order? notes/comments?)
       comparing native vs the current LibreOffice render on the office-eval
