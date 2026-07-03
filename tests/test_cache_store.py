@@ -130,3 +130,72 @@ def test_upsert_replaces_payload_and_size(tmp_path: Path):
     store.put("k", b"y" * 10, doc_digest="d", kind="document")
     assert store.get("k") == b"y" * 10
     assert store.stats()["total_bytes"] == 10
+
+
+# --- T-064: hit/miss telemetry ---------------------------------------------
+
+
+def test_hit_and_miss_counters_per_kind(tmp_path: Path):
+    store = make_store(tmp_path)
+    store.put("doc-k", b"v", doc_digest="d1", kind="document")
+    store.put("desc-k", b"t", doc_digest="d1", kind="description")
+    assert store.get("doc-k") is not None  # document hit
+    assert store.get("missing") is None  # document miss
+    assert store.get("desc-k", kind="description") is not None  # description hit
+    assert store.get("nope", kind="description") is None  # description miss
+    s = store.stats()
+    assert s["hits"] == {"document": 1, "description": 1}
+    assert s["misses"] == {"document": 1, "description": 1}
+    assert s["hit_rate"] == {"document": 0.5, "description": 0.5}
+
+
+def test_hit_rate_is_null_before_any_traffic(tmp_path: Path):
+    s = make_store(tmp_path).stats()
+    assert s["hit_rate"] == {"document": None, "description": None}
+    assert s["evictions"] == 0 and s["expirations"] == 0
+
+
+def test_expiry_counts_as_expiration_and_miss(tmp_path: Path):
+    store = make_store(tmp_path, max_age_hours=1.0)
+    store.put("k", b"v", doc_digest="d", kind="document")
+    # Backdate the entry beyond the TTL, as the existing expiry test does.
+    import sqlite3
+
+    with sqlite3.connect(store.db_path) as conn:
+        conn.execute("UPDATE entries SET last_accessed = last_accessed - 7200")
+    assert store.get("k") is None
+    s = store.stats()
+    assert s["expirations"] == 1
+    assert s["misses"]["document"] == 1
+    assert s["total_bytes"] == 0
+
+
+def test_eviction_counter_increments(tmp_path: Path):
+    store = make_store(tmp_path, max_bytes=250)
+    store.put("a", b"x" * 100, doc_digest="da", kind="document")
+    store.put("b", b"x" * 100, doc_digest="db", kind="document")
+    store.put("c", b"x" * 100, doc_digest="dc", kind="document")  # evicts a
+    assert store.stats()["evictions"] == 1
+
+
+def test_counters_survive_reopen(tmp_path: Path):
+    store = make_store(tmp_path)
+    store.put("k", b"v", doc_digest="d", kind="document")
+    assert store.get("k") is not None
+    assert store.get("gone") is None
+    reopened = make_store(tmp_path)
+    s = reopened.stats()
+    assert s["hits"]["document"] == 1 and s["misses"]["document"] == 1
+
+
+def test_running_total_matches_reality_through_churn(tmp_path: Path):
+    """The maintained total_bytes counter (which replaced the per-put SUM)
+    must agree with the real sum after puts, upserts, deletes and clear."""
+    store = make_store(tmp_path)
+    store.put("k1", b"x" * 100, doc_digest="d1", kind="document")
+    store.put("k2", b"y" * 50, doc_digest="d2", kind="document")
+    store.put("k1", b"z" * 10, doc_digest="d1", kind="document")  # upsert smaller
+    store.delete_document("d2")
+    assert store.stats()["total_bytes"] == 10
+    store.clear()
+    assert store.stats()["total_bytes"] == 0

@@ -39,7 +39,37 @@ CREATE TABLE IF NOT EXISTS entries (
 );
 CREATE INDEX IF NOT EXISTS idx_last_accessed ON entries (last_accessed);
 CREATE INDEX IF NOT EXISTS idx_doc_digest ON entries (doc_digest);
+CREATE TABLE IF NOT EXISTS counters (
+    name TEXT PRIMARY KEY,
+    value INTEGER NOT NULL
+);
 """
+
+# Monotonic performance counters (T-064). Persisted in SQLite so "what has the
+# cache saved us" survives restarts on a persistent volume. `total_bytes` is a
+# maintained running total of entry sizes — it replaces the per-put O(n)
+# SUM(size) and is reconciled against the real sum at startup.
+_COUNTER_NAMES = (
+    "hits_document",
+    "misses_document",
+    "hits_description",
+    "misses_description",
+    "evictions",
+    "expirations",
+)
+
+
+def _bump(conn: sqlite3.Connection, name: str, delta: int = 1) -> None:
+    conn.execute(
+        "INSERT INTO counters (name, value) VALUES (?, ?)"
+        " ON CONFLICT(name) DO UPDATE SET value = value + ?",
+        (name, delta, delta),
+    )
+
+
+def _counter(conn: sqlite3.Connection, name: str) -> int:
+    row = conn.execute("SELECT value FROM counters WHERE name = ?", (name,)).fetchone()
+    return int(row[0]) if row else 0
 
 
 class CacheStore:
@@ -54,26 +84,44 @@ class CacheStore:
         self.max_age_hours = float(max_age_hours)
         with self._conn() as conn:
             conn.executescript(_SCHEMA)
+            # Reconcile the running size total with reality (repairs any drift
+            # from a crash mid-transaction or a pre-T-064 database).
+            real_total = conn.execute("SELECT COALESCE(SUM(size), 0) FROM entries").fetchone()[0]
+            conn.execute(
+                "INSERT INTO counters (name, value) VALUES ('total_bytes', ?)"
+                " ON CONFLICT(name) DO UPDATE SET value = ?",
+                (real_total, real_total),
+            )
 
     def _conn(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.db_path, timeout=10.0)
         conn.execute("PRAGMA journal_mode=WAL")
         return conn
 
-    def get(self, key: str) -> bytes | None:
-        """Return the payload, re-stamping last_accessed; None on miss/expiry."""
+    def get(self, key: str, *, kind: str = "document") -> bytes | None:
+        """Return the payload, re-stamping last_accessed; None on miss/expiry.
+
+        ``kind`` attributes the hit/miss to the right counter (T-064):
+        ``document`` for whole-conversion payloads, ``description`` for shared
+        figure descriptions (SharedDescriptionCache passes it).
+        """
         now = time.time()
         with self._conn() as conn:
             row = conn.execute(
-                "SELECT payload, last_accessed FROM entries WHERE key = ?", (key,)
+                "SELECT payload, last_accessed, size FROM entries WHERE key = ?", (key,)
             ).fetchone()
             if row is None:
+                _bump(conn, f"misses_{kind}")
                 return None
-            payload, last_accessed = row
+            payload, last_accessed, size = row
             if now - last_accessed > self.max_age_seconds:
                 conn.execute("DELETE FROM entries WHERE key = ?", (key,))
+                _bump(conn, "expirations")
+                _bump(conn, f"misses_{kind}")
+                _bump(conn, "total_bytes", -size)
                 return None
             conn.execute("UPDATE entries SET last_accessed = ? WHERE key = ?", (now, key))
+            _bump(conn, f"hits_{kind}")
             return payload
 
     def put(self, key: str, payload: bytes, *, doc_digest: str, kind: str) -> None:
@@ -89,6 +137,7 @@ class CacheStore:
             return
         now = time.time()
         with self._conn() as conn:
+            old = conn.execute("SELECT size FROM entries WHERE key = ?", (key,)).fetchone()
             conn.execute(
                 "INSERT INTO entries (key, doc_digest, kind, payload, size, created,"
                 " last_accessed) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(key) DO UPDATE SET"
@@ -96,43 +145,84 @@ class CacheStore:
                 " last_accessed = excluded.last_accessed",
                 (key, doc_digest, kind, payload, len(payload), now, now),
             )
+            _bump(conn, "total_bytes", len(payload) - (old[0] if old else 0))
             self._evict(conn, now)
 
     def _evict(self, conn: sqlite3.Connection, now: float) -> None:
-        conn.execute("DELETE FROM entries WHERE ? - last_accessed > ?", (now, self.max_age_seconds))
+        expired = conn.execute(
+            "SELECT COUNT(*), COALESCE(SUM(size), 0) FROM entries WHERE ? - last_accessed > ?",
+            (now, self.max_age_seconds),
+        ).fetchone()
+        if expired[0]:
+            conn.execute(
+                "DELETE FROM entries WHERE ? - last_accessed > ?", (now, self.max_age_seconds)
+            )
+            _bump(conn, "expirations", expired[0])
+            _bump(conn, "total_bytes", -expired[1])
         while True:
-            total = conn.execute("SELECT COALESCE(SUM(size), 0) FROM entries").fetchone()[0]
-            if total <= self.max_bytes:
+            if _counter(conn, "total_bytes") <= self.max_bytes:
                 return
             oldest = conn.execute(
-                "SELECT key FROM entries ORDER BY last_accessed ASC LIMIT 1"
+                "SELECT key, size FROM entries ORDER BY last_accessed ASC LIMIT 1"
             ).fetchone()
             if oldest is None:
                 return
             conn.execute("DELETE FROM entries WHERE key = ?", (oldest[0],))
+            _bump(conn, "evictions")
+            _bump(conn, "total_bytes", -oldest[1])
 
     def delete_document(self, doc_digest: str) -> int:
         """Remove every entry belonging to a document digest. Returns the count."""
         with self._conn() as conn:
+            removed = conn.execute(
+                "SELECT COALESCE(SUM(size), 0) FROM entries WHERE doc_digest = ?", (doc_digest,)
+            ).fetchone()[0]
             cur = conn.execute("DELETE FROM entries WHERE doc_digest = ?", (doc_digest,))
+            _bump(conn, "total_bytes", -removed)
             return cur.rowcount
 
     def clear(self) -> int:
         """Empty the cache entirely. Returns the number of entries removed."""
         with self._conn() as conn:
             cur = conn.execute("DELETE FROM entries")
+            conn.execute(
+                "INSERT INTO counters (name, value) VALUES ('total_bytes', 0)"
+                " ON CONFLICT(name) DO UPDATE SET value = 0"
+            )
             return cur.rowcount
 
     def stats(self) -> dict:
+        """Storage + performance view (T-064). Counters are monotonic since the
+        cache directory was created; hit rates are derived, null before any
+        traffic (never a fake 0)."""
         with self._conn() as conn:
             entries, total = conn.execute(
                 "SELECT COUNT(*), COALESCE(SUM(size), 0) FROM entries"
             ).fetchone()
+            counters = {name: _counter(conn, name) for name in _COUNTER_NAMES}
+
+        def rate(hits: int, misses: int) -> float | None:
+            return round(hits / (hits + misses), 4) if hits + misses else None
+
         return {
             "entries": entries,
             "total_bytes": total,
             "max_bytes": self.max_bytes,
             "max_age_hours": self.max_age_hours,
+            "hits": {
+                "document": counters["hits_document"],
+                "description": counters["hits_description"],
+            },
+            "misses": {
+                "document": counters["misses_document"],
+                "description": counters["misses_description"],
+            },
+            "hit_rate": {
+                "document": rate(counters["hits_document"], counters["misses_document"]),
+                "description": rate(counters["hits_description"], counters["misses_description"]),
+            },
+            "evictions": counters["evictions"],
+            "expirations": counters["expirations"],
         }
 
 
@@ -151,7 +241,7 @@ class SharedDescriptionCache:
         self._doc_digest = doc_digest
 
     def get(self, key: str) -> str | None:
-        payload = self._store.get(key)
+        payload = self._store.get(key, kind="description")
         return payload.decode("utf-8") if payload is not None else None
 
     def put(self, key: str, text: str) -> None:

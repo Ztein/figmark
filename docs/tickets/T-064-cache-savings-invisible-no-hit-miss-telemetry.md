@@ -1,6 +1,12 @@
 # T-064: The cache's savings are invisible in operation — no hit/miss telemetry
 
-**Status:** Open
+**Status:** Closed — **Option 1 (+ the size-total note) shipped 2026-07-03.**
+Monotonic counters (document/description hits+misses, evictions, expirations)
+live in a SQLite `counters` table, bumped in `get`/`_evict`, and are reported
+by `GET /v1/cache/stats` with derived per-kind hit rates (null before any
+traffic — never a fake 0). Counters persist across restarts with the cache
+directory. `put()`'s per-insert `SUM(size)` was replaced by a maintained
+`total_bytes` running total, reconciled against the real sum at startup.
 **Priority:** Low — the cache works and hits are labelled per response; what is
 missing is the aggregate view an operator needs to *see* what it saves.
 
@@ -47,7 +53,8 @@ never part of the store.
 
 ## Acceptance criteria
 
-- [ ] `GET /v1/cache/stats` reports hits/misses (document + description
+- [x] `GET /v1/cache/stats` reports hits/misses (document + description
       separately), evictions and expirations, and a derived hit rate.
-- [ ] Counters survive a restart when the cache directory is persistent.
-- [ ] Tests cover counter increments for hit, miss, expiry, and eviction.
+- [x] Counters survive a restart when the cache directory is persistent.
+- [x] Tests cover counter increments for hit, miss, expiry, and eviction
+      (`tests/test_cache_store.py`).
