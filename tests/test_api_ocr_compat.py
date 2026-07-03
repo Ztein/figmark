@@ -195,13 +195,9 @@ def test_include_image_base64_true_is_422_false_is_ok(make_api_app, tmp_path):
     pdf = _pdf_bytes(tmp_path)
     data_url = "data:application/pdf;base64," + base64.b64encode(pdf).decode()
     doc = {"type": "document_url", "document_url": data_url}
-    yes = client.post(
-        "/v1/ocr", json={"document": doc, "include_image_base64": True}, headers=AUTH
-    )
+    yes = client.post("/v1/ocr", json={"document": doc, "include_image_base64": True}, headers=AUTH)
     assert yes.status_code == 422 and "include_image_base64" in yes.json()["detail"]
-    no = client.post(
-        "/v1/ocr", json={"document": doc, "include_image_base64": False}, headers=AUTH
-    )
+    no = client.post("/v1/ocr", json={"document": doc, "include_image_base64": False}, headers=AUTH)
     assert no.status_code == 200, no.text
 
 

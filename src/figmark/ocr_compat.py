@@ -119,10 +119,7 @@ def reject_unsupported_params(body: dict) -> None:
             continue
         raise HTTPException(
             status_code=422,
-            detail=(
-                f"Unknown parameter '{key}'. Supported parameters: "
-                f"{_SUPPORTED_SUMMARY}."
-            ),
+            detail=(f"Unknown parameter '{key}'. Supported parameters: {_SUPPORTED_SUMMARY}."),
         )
 
 
