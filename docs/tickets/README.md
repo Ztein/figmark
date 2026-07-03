@@ -74,6 +74,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-068](T-068-speed-up-image-analysis-throughput.md) | Open | Medium | Image/figure analysis is slow end-to-end — measure the bottlenecks and decide how to speed it up |
 | [T-069](T-069-request-queue-bounded-concurrency-backpressure.md) | Open | Medium | The service has no request queue — it rejects the moment all worker slots are busy, instead of queueing with bounded backpressure |
 | [T-070](T-070-mistral-ocr-annotations-unsupported.md) | **Icebox** | Low | Mistral OCR Annotations (bbox / document structured extraction) are unsupported |
+| [T-071](T-071-standalone-image-input.md) | Open | Medium | figmark can't take a standalone image as input — a raster image is rejected, though its whole engine is figure interpretation + OCR |
 
 ## Statuses
 
