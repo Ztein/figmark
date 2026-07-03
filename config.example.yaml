@@ -56,6 +56,12 @@ cache:
   enabled: true
   max_size_mb: 500
   max_age_hours: 720   # 30 days
+  # Reuse a figure description wherever the same image appears, even in other
+  # documents (the cache's main saving — recurring logos, revised documents).
+  # Set false for strict per-document isolation: a description never crosses
+  # documents (no context bleed), while re-uploads of the SAME document still
+  # reuse. See SECURITY.md "The cross-request cache".
+  share_descriptions_across_documents: true
 
 ocr:
   language: "swe"

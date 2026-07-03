@@ -1,6 +1,10 @@
 # T-063: Cross-document description reuse cannot be turned off (context bleed between documents)
 
-**Status:** Open
+**Status:** Closed — **Option 1 shipped 2026-07-03.**
+`cache.share_descriptions_across_documents` (explicit in `config.example.yaml`,
+default `true` = today's behaviour). With `false`, description keys include the
+document digest: within-document and same-document-re-upload reuse still work,
+cross-document reuse stops. SECURITY.md's cache section points at the toggle.
 **Priority:** Low — within figmark's single-tenant model this is a quality
 trade-off, not a leak; the ticket exists so privacy-strict deployments get a
 switch instead of a surprise.
@@ -48,8 +52,9 @@ recurring-logo reuse work.
 
 ## Acceptance criteria
 
-- [ ] The toggle exists (explicit in config, no hidden default), default
+- [x] The toggle exists (explicit in config, no hidden default), default
       preserves today's behaviour.
-- [ ] With it off: same image in two documents → two description calls, and a
-      re-upload of the *same* document still reuses (tests for both).
-- [ ] SECURITY.md's cache section points at the toggle.
+- [x] With it off: same image in two documents → two description calls, and a
+      re-upload of the *same* document still reuses (tests for both,
+      `tests/test_shared_description_cache.py`).
+- [x] SECURITY.md's cache section points at the toggle.

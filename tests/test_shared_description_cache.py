@@ -149,3 +149,67 @@ def test_api_shares_descriptions_across_different_documents(make_api_app, tmp_pa
     assert r2.headers.get("x-figmark-cache") == "miss", "different document → doc-level miss"
     assert len(client.describe_prompts) == calls, "…but the image description is reused"
     assert "En delad bild." in r2.json()["markdown"]
+
+
+# --- T-063: the cross-document reuse toggle ---------------------------------
+
+
+def test_toggle_off_partitions_descriptions_by_document(tmp_path: Path):
+    """Store-level semantics: sharing off → same image key in another document
+    is a clean miss; a re-upload of the SAME document still reuses."""
+    store = CacheStore(tmp_path / "c", max_bytes=10_000_000, max_age_hours=24)
+    doc_a = SharedDescriptionCache(store, "digest-A", share_across_documents=False)
+    doc_a.put("img-abc", "Beskrivning från A.")
+    doc_b = SharedDescriptionCache(store, "digest-B", share_across_documents=False)
+    assert doc_b.get("img-abc") is None, "no cross-document reuse with the toggle off"
+    doc_a_again = SharedDescriptionCache(store, "digest-A", share_across_documents=False)
+    assert doc_a_again.get("img-abc") == "Beskrivning från A.", "same document still reuses"
+    # Default (shared) behaviour is unchanged.
+    shared = SharedDescriptionCache(store, "digest-C")
+    shared.put("img-xyz", "Delad beskrivning.")
+    assert SharedDescriptionCache(store, "digest-D").get("img-xyz") == "Delad beskrivning."
+
+
+def test_toggle_off_two_documents_two_describe_calls(make_api_app, tmp_path: Path):
+    """End-to-end: with sharing off, the same image in a second document costs
+    a new describe call — and a re-upload of the first document does not."""
+    from fastapi.testclient import TestClient
+
+    from .conftest import API_TEST_TOKEN
+
+    a = _pdf_with_image(tmp_path / "a.pdf", "Alpha document. ").read_bytes()
+    b = _pdf_with_image(tmp_path / "b.pdf", "Beta document, different text. ").read_bytes()
+
+    client = FakeClient("En delad bild.")
+    app = make_api_app(client)
+    app.state.cfg.cache.share_descriptions_across_documents = False
+    http = TestClient(app)
+    auth = {"Authorization": f"Bearer {API_TEST_TOKEN}"}
+
+    r1 = http.post("/v1/convert", headers=auth, files={"file": ("a.pdf", a, "application/pdf")})
+    assert r1.status_code == 200 and len(client.describe_prompts) == 1
+
+    r2 = http.post("/v1/convert", headers=auth, files={"file": ("b.pdf", b, "application/pdf")})
+    assert r2.status_code == 200
+    assert len(client.describe_prompts) == 2, "toggle off → second document re-describes"
+
+    # Re-upload of document A: the document-level cache answers outright.
+    r3 = http.post("/v1/convert", headers=auth, files={"file": ("a.pdf", a, "application/pdf")})
+    assert r3.status_code == 200 and r3.headers.get("x-figmark-cache") == "hit"
+    assert len(client.describe_prompts) == 2, "no new spend for a re-upload"
+
+
+def test_config_parses_share_toggle(project_root: Path, tmp_path: Path, env_with_key):
+    cfg_text = (project_root / "config.example.yaml").read_text(encoding="utf-8")
+    assert "share_descriptions_across_documents: true" in cfg_text
+    cfg = load_config(project_root / "config.example.yaml")
+    assert cfg.cache.share_descriptions_across_documents is True
+    off = tmp_path / "off.yaml"
+    off.write_text(
+        cfg_text.replace(
+            "share_descriptions_across_documents: true",
+            "share_descriptions_across_documents: false",
+        ),
+        encoding="utf-8",
+    )
+    assert load_config(off).cache.share_descriptions_across_documents is False

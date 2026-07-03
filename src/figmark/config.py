@@ -109,6 +109,12 @@ class CacheConfig:
     enabled: bool
     max_size_mb: int = 0
     max_age_hours: float = 0.0
+    # T-063: description reuse across documents. True (the default) reuses a
+    # figure description wherever the same image bytes appear — the cache's
+    # main saving. False keys descriptions by document too: a re-upload of the
+    # SAME document still reuses, but context bleed between documents stops
+    # (privacy-strict deployments).
+    share_descriptions_across_documents: bool = True
 
 
 @dataclass
@@ -250,7 +256,14 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
     else:
         max_size_mb = int(cache_raw.get("max_size_mb", 0) or 0)
         max_age_hours = float(cache_raw.get("max_age_hours", 0) or 0)
-    cache = CacheConfig(enabled=cache_enabled, max_size_mb=max_size_mb, max_age_hours=max_age_hours)
+    cache = CacheConfig(
+        enabled=cache_enabled,
+        max_size_mb=max_size_mb,
+        max_age_hours=max_age_hours,
+        share_descriptions_across_documents=bool(
+            cache_raw.get("share_descriptions_across_documents", True)
+        ),
+    )
 
     ocr_raw = raw.get("ocr") or {}
     ocr = OcrConfig(language=str(_require(ocr_raw, "language", "ocr")))

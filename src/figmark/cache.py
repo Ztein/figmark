@@ -236,16 +236,28 @@ class SharedDescriptionCache:
     introduced — later documents that relied on them simply regenerate.
     """
 
-    def __init__(self, store: CacheStore, doc_digest: str) -> None:
+    def __init__(
+        self, store: CacheStore, doc_digest: str, *, share_across_documents: bool = True
+    ) -> None:
         self._store = store
         self._doc_digest = doc_digest
+        self._share = share_across_documents
+
+    def _key(self, key: str) -> str:
+        # T-063: with sharing off, the document digest joins the key — the same
+        # image in another document is a clean miss (no context bleed), while a
+        # re-upload of the SAME document (same digest) still reuses.
+        return key if self._share else f"{key}-doc-{self._doc_digest}"
 
     def get(self, key: str) -> str | None:
-        payload = self._store.get(key, kind="description")
+        payload = self._store.get(self._key(key), kind="description")
         return payload.decode("utf-8") if payload is not None else None
 
     def put(self, key: str, text: str) -> None:
         if text.strip():
             self._store.put(
-                key, text.encode("utf-8"), doc_digest=self._doc_digest, kind="description"
+                self._key(key),
+                text.encode("utf-8"),
+                doc_digest=self._doc_digest,
+                kind="description",
             )

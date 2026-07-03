@@ -65,12 +65,14 @@ on disk and are shared across requests. Security properties, reviewed
   can also wipe the cache (a bounded cost/latency degradation, not data loss).
   Accepted under the single-tenant model; a separate admin credential is
   tracked as T-062.
-- **Cross-document description reuse (T-061).** A description generated with
-  document A's text context may be reused when the same image appears in
+- **Cross-document description reuse (T-061/T-063).** A description generated
+  with document A's text context may be reused when the same image appears in
   document B — so wording influenced by A's context can surface in B's output.
-  Within one trust domain this is a quality trade-off, not a leak; deployments
-  that want strict per-document isolation need the reuse toggle tracked as
-  T-063.
+  Within one trust domain this is a quality trade-off, not a leak. Deployments
+  that want strict per-document isolation set
+  `cache.share_descriptions_across_documents: false` (T-063): descriptions are
+  then keyed by document too — a re-upload of the same document still reuses,
+  but nothing crosses documents.
 - **Data at rest.** Cached content is not additionally encrypted (filesystem
   access already implies full compromise here). Retention is bounded by
   `cache.max_age_hours` + `cache.max_size_mb`, and operators can purge one
