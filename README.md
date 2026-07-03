@@ -208,14 +208,18 @@ strategy makes: `POST /v1/files` → `GET /v1/files/{id}/url` → `POST /v1/ocr`
 
 **Supported `/v1/ocr` request parameters:** `model`, `document`
 (`document_url` — a figmark signed file URL or an inline `data:` URL — or
-`image_url` with the same constraints), and `include_image_base64: false`.
-`model` is echoed back but does not select a model — figmark always runs its own
-pipeline. Every other documented Mistral OCR parameter (`pages`,
-`include_image_base64: true`, `image_limit`, `image_min_size`, the annotation
+`image_url` with the same constraints), `include_image_base64`, `image_limit`,
+and `image_min_size`. `model` is echoed back but does not select a model —
+figmark always runs its own pipeline. The response is contract-shaped
+(`docs/tickets/T-058`): markdown figure refs are ids matching
+`pages[].images[].id`, `images[]` carries bbox coordinates (PDF points; matching
+the `dpi: 72` in `pages[].dimensions`) and a base64 data-URI when
+`include_image_base64: true` — so figures can be re-inlined from the response
+alone. Every other documented Mistral OCR parameter (`pages`, the annotation
 formats, `table_format`, …) is **rejected with a `422` naming the parameter**
 rather than silently ignored, so a client never gets an answer with different
 semantics than it asked for (`docs/tickets/T-057`). Parameters are removed from
-the reject list as they are implemented (`docs/tickets/T-058`, `T-059`).
+the reject list as they are implemented (`T-059` is next: `pages`, `file_id`).
 
 Why figmark rather than the OCR service this contract comes from: figmark
 fulfils the same API but aims to extract **more of the document's information

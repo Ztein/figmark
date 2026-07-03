@@ -13,7 +13,9 @@ Run with the ``figmark-server`` entry point (uvicorn, app factory).
 from __future__ import annotations
 
 import asyncio
+import base64
 import hashlib
+import io
 import json
 import logging
 import os
@@ -363,12 +365,71 @@ def config_cache_fingerprint(cfg) -> str:
 
 
 def document_cache_key(doc_digest: str, cfg) -> str:
-    return f"doc-{doc_digest}-{config_cache_fingerprint(cfg)}"
+    # "doc2": payload shape v2 (T-058 added figures + page_sizes). The version
+    # in the key makes pre-T-058 entries miss cleanly instead of resurfacing
+    # without image data; orphans age out via TTL/eviction.
+    return f"doc2-{doc_digest}-{config_cache_fingerprint(cfg)}"
+
+
+_FIGURE_MIME = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png"}
+
+
+def collect_figure_images(result) -> list[dict]:
+    """Read the figure manifest (T-041) and the extracted image files into a
+    serialisable list for the OCR surface (T-058).
+
+    Each entry carries ``id`` (the artifact filename — the id the rewritten
+    markdown refs use), page number, bbox in PDF points, pixel size, mime type
+    and the raw base64 payload. Skipped (decorative) figures are never embedded
+    in the markdown and are left out. A manifest entry whose file is missing is
+    logged loudly and dropped — its markdown ref is stripped downstream, so no
+    unreachable ref survives into a response.
+    """
+    from PIL import Image  # runtime dep already; imported here to keep api.py's surface lean
+
+    try:
+        manifest = json.loads(Path(result.figures_manifest_path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        logger.warning("figure manifest unreadable (%s) — no images in the OCR response", e)
+        return []
+    figures: list[dict] = []
+    for entry in manifest:
+        if entry.get("skipped"):
+            continue
+        path = Path(result.output_dir) / entry["path"]
+        if not path.is_file():
+            logger.warning(
+                "figure file missing for manifest id=%s — dropped from images[]", entry["id"]
+            )
+            continue
+        data = path.read_bytes()
+        width_px: int | None
+        height_px: int | None
+        try:
+            with Image.open(io.BytesIO(data)) as im:
+                width_px, height_px = im.size
+        except OSError:
+            width_px = height_px = None
+        figures.append(
+            {
+                "id": path.name,
+                "page": entry["page"],
+                "bbox": entry.get("bbox"),
+                "width_px": width_px,
+                "height_px": height_px,
+                "mime": _FIGURE_MIME.get(
+                    path.suffix.lower().lstrip("."), "application/octet-stream"
+                ),
+                "base64": base64.b64encode(data).decode("ascii"),
+            }
+        )
+    return figures
 
 
 def result_to_cache_payload(result) -> bytes:
     """Serialise the response-relevant slice of a ConversionResult (paths die
-    with the request's temp dir and are deliberately not cached)."""
+    with the request's temp dir and are deliberately not cached — the figure
+    *bytes* are cached instead, so a cache hit can still serve images)."""
     return json.dumps(
         {
             "markdown": result.markdown,
@@ -385,6 +446,8 @@ def result_to_cache_payload(result) -> bytes:
             },
             "estimated_cost": result.estimated_cost,
             "currency": result.currency,
+            "figures": collect_figure_images(result),
+            "page_sizes": list(result.page_sizes),
         },
         ensure_ascii=False,
     ).encode("utf-8")
@@ -395,6 +458,8 @@ def cache_payload_to_result(payload: bytes) -> SimpleNamespace:
     response formatters."""
     data = json.loads(payload.decode("utf-8"))
     data["usage"] = SimpleNamespace(**data["usage"])
+    data.setdefault("figures", [])
+    data.setdefault("page_sizes", [])
     return SimpleNamespace(**data)
 
 

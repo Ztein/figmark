@@ -65,7 +65,9 @@ def test_full_mistral_flow_roundtrips(make_api_app, tmp_path):
     assert payload["pages"], "expected at least one page"
     assert payload["pages"][0]["index"] == 0
     assert DESC in payload["pages"][0]["markdown"]
-    assert payload["pages"][0]["images"] == []
+    # include_image_base64=false: image entries exist (id + bbox) without data.
+    assert payload["pages"][0]["images"]
+    assert all(img["image_base64"] is None for img in payload["pages"][0]["images"])
     assert payload["usage_info"]["pages_processed"] == 1
     assert payload["usage_info"]["doc_size_bytes"] == len(pdf)
 
@@ -166,9 +168,8 @@ def test_unsupported_documented_param_is_422_naming_it(make_api_app, tmp_path):
     data_url = "data:application/pdf;base64," + base64.b64encode(pdf).decode()
     for param, value in [
         ("pages", [0, 2]),
-        ("image_limit", 5),
-        ("image_min_size", 100),
         ("table_format", "html"),
+        ("extract_header", True),
         ("document_annotation_format", {"type": "json_schema"}),
     ]:
         r = client.post(
@@ -188,17 +189,69 @@ def test_unsupported_documented_param_is_422_naming_it(make_api_app, tmp_path):
         assert ok.status_code == 200, f"{param}=null: {ok.status_code} {ok.text}"
 
 
-def test_include_image_base64_true_is_422_false_is_ok(make_api_app, tmp_path):
-    """`false` matches what we return (no image data) and is what LibreChat sends;
-    `true` would silently get no images, so it is rejected until T-058."""
+def _ocr(client, pdf, **params):
+    data_url = "data:application/pdf;base64," + base64.b64encode(pdf).decode()
+    return client.post(
+        "/v1/ocr",
+        json={"document": {"type": "document_url", "document_url": data_url}, **params},
+        headers=AUTH,
+    )
+
+
+def test_include_image_base64_returns_inlinable_images(make_api_app, tmp_path):
+    """T-058: markdown refs match images[].id, and base64 is the real file bytes."""
+    client = _client(make_api_app)
+    r = _ocr(client, _pdf_bytes(tmp_path), include_image_base64=True)
+    assert r.status_code == 200, r.text
+    page = r.json()["pages"][0]
+    assert page["images"], "the synthetic PDF's figure should be in images[]"
+    img = page["images"][0]
+    # Mistral cookbook correlation: the markdown embeds ![id](id).
+    assert f"![{img['id']}]({img['id']})" in page["markdown"]
+    assert "](images/" not in page["markdown"] and "](diagrams/" not in page["markdown"]
+    assert img["image_base64"].startswith("data:image/")
+    base64.b64decode(img["image_base64"].split(",", 1)[1], validate=True)
+    # bbox in PDF points (the fixture embeds at rect 72,200–172,300).
+    assert img["top_left_x"] == 72 and img["bottom_right_y"] == 300
+    dims = page["dimensions"]
+    assert dims["dpi"] == 72 and dims["width"] > 0 and dims["height"] > 0
+
+
+def test_image_limit_and_min_size_are_honoured(make_api_app, tmp_path):
     client = _client(make_api_app)
     pdf = _pdf_bytes(tmp_path)
-    data_url = "data:application/pdf;base64," + base64.b64encode(pdf).decode()
-    doc = {"type": "document_url", "document_url": data_url}
-    yes = client.post("/v1/ocr", json={"document": doc, "include_image_base64": True}, headers=AUTH)
-    assert yes.status_code == 422 and "include_image_base64" in yes.json()["detail"]
-    no = client.post("/v1/ocr", json={"document": doc, "include_image_base64": False}, headers=AUTH)
-    assert no.status_code == 200, no.text
+    # limit 0: no images, and the now-unresolvable ref is stripped, not left dead.
+    r = _ocr(client, pdf, image_limit=0)
+    page = r.json()["pages"][0]
+    assert page["images"] == []
+    assert "![" not in page["markdown"] and "](images/" not in page["markdown"]
+    assert DESC in page["markdown"], "the description caption must survive"
+    # min_size larger than the fixture's 100x100 px image: filtered the same way.
+    r2 = _ocr(client, pdf, image_min_size=101)
+    assert r2.json()["pages"][0]["images"] == []
+    # min_size the image satisfies: kept.
+    r3 = _ocr(client, pdf, image_min_size=100)
+    assert r3.json()["pages"][0]["images"]
+
+
+def test_cache_hit_still_serves_images(make_api_app, tmp_path):
+    """The cached payload carries the figure bytes — a hit is not image-less."""
+    client = _client(make_api_app)
+    pdf = _pdf_bytes(tmp_path)
+    first = _ocr(client, pdf, include_image_base64=True)
+    assert first.status_code == 200 and first.headers["X-Figmark-Cache"] == "miss"
+    second = _ocr(client, pdf, include_image_base64=True)
+    assert second.status_code == 200 and second.headers["X-Figmark-Cache"] == "hit"
+    imgs = second.json()["pages"][0]["images"]
+    assert imgs and imgs[0]["image_base64"].startswith("data:image/")
+
+
+def test_image_param_type_validation(make_api_app, tmp_path):
+    client = _client(make_api_app)
+    pdf = _pdf_bytes(tmp_path)
+    assert _ocr(client, pdf, image_limit=-1).status_code == 422
+    assert _ocr(client, pdf, image_limit="five").status_code == 422
+    assert _ocr(client, pdf, include_image_base64="yes").status_code == 422
 
 
 def test_unknown_param_is_422(make_api_app, tmp_path):

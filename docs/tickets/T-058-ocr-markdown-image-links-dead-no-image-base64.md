@@ -1,6 +1,15 @@
 # T-058: /v1/ocr markdown references images that are unreachable — no `include_image_base64`, no id-matched `images[]`
 
-**Status:** Open
+**Status:** Closed — **Option 1 shipped (2026-07-03):** `pages[].images[]` is
+populated from the figure manifest (T-041). Markdown refs are rewritten to bare
+figure ids matching `images[].id` (cookbook-style `![id](id)`); `images[]`
+carries bbox coordinates in PDF points, consistent with the new
+`pages[].dimensions` (`dpi: 72`); `image_base64` is a data-URI when
+`include_image_base64: true`; `image_limit`/`image_min_size` are honoured (a
+filtered figure's ref is stripped, its description caption stays — never a dead
+link). The figure bytes ride in the document-cache payload, so cache hits serve
+images too; the cache key was version-bumped (`doc2-`) so pre-T-058 entries miss
+cleanly instead of resurfacing image-less.
 **Priority:** High — this is the product goal (maximum information value for an
 LLM consumer) leaking away on the main integration surface: the figure
 *descriptions* arrive, but the figures themselves are dead links.
@@ -58,11 +67,11 @@ if it ships together with T-057's loud rejection of `include_image_base64`.
 
 ## Acceptance criteria
 
-- [ ] Markdown image refs in the OCR response match `pages[].images[].id`
+- [x] Markdown image refs in the OCR response match `pages[].images[].id`
       (no unreachable relative paths).
-- [ ] `include_image_base64: true` returns base64 image data; `image_limit` /
+- [x] `include_image_base64: true` returns base64 image data; `image_limit` /
       `image_min_size` are honoured (and removed from T-057's reject list).
-- [ ] `pages[].images[]` carries bbox coordinates and `pages[].dimensions` is
+- [x] `pages[].images[]` carries bbox coordinates and `pages[].dimensions` is
       populated, matching the Mistral schema.
-- [ ] The offline suite covers a figure-bearing document round-tripping with
-      and without `include_image_base64`.
+- [x] The offline suite covers a figure-bearing document round-tripping with
+      and without `include_image_base64` (`tests/test_api_ocr_compat.py`).

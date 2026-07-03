@@ -61,7 +61,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-055](T-055-lo-vector-charts-missed-by-diagram-detection.md) | Open | High | Vector charts in LibreOffice-produced PDFs are missed by diagram detection |
 | [T-056](T-056-spreadsheet-input-flattening-and-page-explosion.md) | Open | Medium | Spreadsheet input — borderless sheets flatten, big sheets explode into hundreds of pages |
 | [T-057](T-057-ocr-endpoint-silently-ignores-request-parameters.md) | **Closed** | High | /v1/ocr silently ignores Mistral-OCR request parameters it doesn't support |
-| [T-058](T-058-ocr-markdown-image-links-dead-no-image-base64.md) | Open | High | /v1/ocr markdown references images that are unreachable — no include_image_base64, no id-matched images[] |
+| [T-058](T-058-ocr-markdown-image-links-dead-no-image-base64.md) | **Closed** | High | /v1/ocr markdown references images that are unreachable — no include_image_base64, no id-matched images[] |
 | [T-059](T-059-ocr-contract-gaps-pages-filechunk.md) | Open | Medium | /v1/ocr contract gaps — no pages selection, no file_id document reference |
 | [T-060](T-060-no-cross-request-cache-document-level.md) | **Closed** | High | The HTTP surface re-converts identical documents from scratch — no cross-request cache |
 | [T-061](T-061-description-cache-not-shared-across-requests.md) | **Closed** | Medium | Figure descriptions are not reused when the same image appears in new requests or other documents |
