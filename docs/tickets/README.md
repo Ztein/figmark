@@ -73,6 +73,19 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-067](T-067-audit-for-more-silent-degradation-paths.md) | Open | Medium | Audit for further silent-degradation paths — where else does bad input or a degraded run produce a confident-looking result? |
 | [T-068](T-068-speed-up-image-analysis-throughput.md) | Open | Medium | Image/figure analysis is slow end-to-end — measure the bottlenecks and decide how to speed it up |
 | [T-069](T-069-request-queue-bounded-concurrency-backpressure.md) | Open | Medium | The service has no request queue — it rejects the moment all worker slots are busy, instead of queueing with bounded backpressure |
+| [T-070](T-070-mistral-ocr-annotations-unsupported.md) | **Icebox** | Low | Mistral OCR Annotations (bbox / document structured extraction) are unsupported |
+
+## Statuses
+
+- **Open** — an active bug or improvement we intend to do; the default.
+- **Parked** — cannot proceed yet because it is *blocked* on something external
+  (a missing corpus, an upstream fix, a live signal). Un-parks when the blocker
+  clears. Not a judgement on the idea — a dependency.
+- **Icebox** — a *good idea we are deliberately not scheduling now*, by choice,
+  not because it's blocked. It is written down so the reasoning is preserved and
+  it can be picked up if priorities change; the ticket names the trigger that
+  would move it back to Open.
+- **Closed** — done (closed on merge) or withdrawn (with the reason recorded).
 
 ## How a ticket is written
 
