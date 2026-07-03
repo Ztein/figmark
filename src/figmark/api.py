@@ -513,7 +513,11 @@ async def run_conversion(
     # are attributed to its digest, so purging the document purges them too.
     shared = None
     if app.state.cache_store is not None and doc_digest:
-        shared = SharedDescriptionCache(app.state.cache_store, doc_digest)
+        shared = SharedDescriptionCache(
+            app.state.cache_store,
+            doc_digest,
+            share_across_documents=app.state.cfg.cache.share_descriptions_across_documents,
+        )
     async with sem:
         try:
             return await asyncio.wait_for(
