@@ -68,6 +68,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-062](T-062-cache-management-shares-the-conversion-token.md) | **Closed** | Low | Cache management shares the conversion bearer token — no privilege separation, no per-consumer partitioning |
 | [T-063](T-063-cross-document-description-reuse-not-toggleable.md) | **Closed** | Low | Cross-document description reuse cannot be turned off (context bleed between documents) |
 | [T-064](T-064-cache-savings-invisible-no-hit-miss-telemetry.md) | **Closed** | Low | The cache's savings are invisible in operation — no hit/miss telemetry |
+| [T-065](T-065-interpret-office-natively-without-pdf-render.md) | Open | Medium | Office support depends entirely on a LibreOffice PDF render — no way to interpret OOXML directly |
 
 ## How a ticket is written
 
