@@ -1,9 +1,35 @@
 # T-056: Spreadsheet input — borderless sheets flatten to label/value soup and big sheets explode into hundreds of pages
 
-**Status:** Open
-**Priority:** Medium — xlsx is accepted input once T-054's Office tranche is
-enabled, and *every* spreadsheet is wall-to-wall tables, so weaknesses that are
-occasional for PDFs become the norm for xlsx.
+**Status:** Closed — **guardrail shipped + extraction path decided (2026-07-03).**
+The page-explosion half is fixed loudly: `office.py` counts the produced PDF's
+pages and, for a spreadsheet source over `SPREADSHEET_PAGE_WARN_THRESHOLD`
+(50) pages, logs a **loud warning** naming the file and the flatten cause —
+never a silent 380-page wall (criterion 3). The flatten half (borderless →
+label/value soup) is **decided but deferred to a scoped follow-up**: the bench
+below shows openpyxl (Option 1) is the right extractor, but wiring a
+spreadsheet-native table path that *coexists* with the LO-PDF chart path is a
+real architectural change with its own fidelity bench and a new (Office-variant)
+dependency — it must not be rushed in as a batch tail. Recorded here so the
+next PR starts from the numbers, not a blank page.
+
+## Bench (2026-07-03) — LO-PDF pagination vs openpyxl direct read
+
+Measured across the office-eval xlsx corpus (`--convert-to pdf` page count vs
+`openpyxl` used-range dims):
+
+| File | LO-PDF pages | openpyxl (largest sheet) |
+|---|---|---|
+| `riksbank-monthly-fx.xlsx` | **380** | one `Data` sheet, 9099×7 |
+| `poi-formula-eval.xlsx` | 79 | `EverythingTests` 1504×38 |
+| `socialstyrelsen-covid.xlsx` | 53 | 12 sheets, ≤160 rows each |
+| `poi-many-merges.xlsx` | 1 | `Sheet1` 50000×3 |
+| `ons-accessible-tables.xlsx` | 21 | 7 sheets, clean grids |
+| `scb-amneslarare.xlsx` | 10 | 3 sheets, ruled — already OK |
+
+openpyxl reads each sheet as **one structured grid** (a 380-page FX series is a
+single 9099×7 table); LO-PDF's page count is a print-pagination artefact, not
+content. So Option 1 is the correct data-fidelity path — pending the coexistence
++ dependency work.
 
 ## Symptom
 
@@ -51,9 +77,20 @@ work on the corpus's labelled sheets first (T-030 template).
 
 ## Acceptance criteria
 
-- [ ] A decision (with bench numbers for whichever extraction path is chosen)
-      on borderless-sheet handling.
-- [ ] `ons-accessible-tables.xlsx` yields structured tables (or a recorded,
-      justified decision not to).
-- [ ] A huge single-sheet workbook does not silently produce hundreds of pages
-      of loose numbers — either structured output or a loud, documented limit.
+- [x] A decision (with bench numbers for whichever extraction path is chosen)
+      on borderless-sheet handling — **openpyxl (Option 1)**, numbers above.
+- [x] `ons-accessible-tables.xlsx` yields structured tables (or a recorded,
+      justified decision not to) — **recorded justified deferral**: openpyxl is
+      the chosen extractor, but the coexistence-with-charts + dependency work is
+      a scoped follow-up (bench captured so it starts informed).
+- [x] A huge single-sheet workbook does not silently produce hundreds of pages
+      of loose numbers — **loud, documented limit** (the page-explosion warning
+      in `office.py`, + README "Known limitations").
+
+## Follow-up (scoped, not in this ticket)
+
+Implement the openpyxl spreadsheet-native table path (Office-variant-only
+dependency): one Markdown table per used sheet range, row-capped with a loud
+truncation notice, running *alongside* the LO-PDF path so embedded charts are
+still detected/described. Needs a fidelity bench on the corpus's labelled
+sheets (T-030 template) and the dependency justified in that PR.

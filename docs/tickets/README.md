@@ -59,7 +59,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-053](T-053-vision-ocr-failure-is-opaque.md) | **Closed** | Medium | A scanned page the vision model can't OCR fails with an opaque, misleading error |
 | [T-054](T-054-configurable-input-document-formats.md) | **Closed** | Medium | figmark accepts only PDF — no way to configure other document formats (Word/Excel/PPT/EPUB) |
 | [T-055](T-055-lo-vector-charts-missed-by-diagram-detection.md) | **Closed** | High | Vector charts in LibreOffice-produced PDFs are missed by diagram detection |
-| [T-056](T-056-spreadsheet-input-flattening-and-page-explosion.md) | Open | Medium | Spreadsheet input — borderless sheets flatten, big sheets explode into hundreds of pages |
+| [T-056](T-056-spreadsheet-input-flattening-and-page-explosion.md) | **Closed** | Medium | Spreadsheet input — borderless sheets flatten, big sheets explode into hundreds of pages |
 | [T-057](T-057-ocr-endpoint-silently-ignores-request-parameters.md) | **Closed** | High | /v1/ocr silently ignores Mistral-OCR request parameters it doesn't support |
 | [T-058](T-058-ocr-markdown-image-links-dead-no-image-base64.md) | **Closed** | High | /v1/ocr markdown references images that are unreachable — no include_image_base64, no id-matched images[] |
 | [T-059](T-059-ocr-contract-gaps-pages-filechunk.md) | **Closed** | Medium | /v1/ocr contract gaps — no pages selection, no file_id document reference |
