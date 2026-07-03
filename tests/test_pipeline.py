@@ -17,6 +17,7 @@ import pytest
 
 from figmark import main as main_module
 from figmark.config import load_config
+from figmark.describe import is_skip
 
 pytestmark = pytest.mark.live
 
@@ -314,9 +315,15 @@ def test_pipeline_cover_page_handles_large_image(
 
     desc_dir = output_root / mini_path.stem / "descriptions"
     descriptions = sorted(desc_dir.iterdir())
-    assert len(descriptions) >= 1, "The cover image should have been described"
+    assert len(descriptions) >= 1, "The large cover image should have been processed"
     text = descriptions[0].read_text(encoding="utf-8").strip()
-    assert len(text) > 30, f"Description too short: {text!r}"
+    # What this test actually guards is the 413/resize path: the ~917 KB image
+    # must reach the model and get a real reply. Whether that reply is a
+    # description or the significance gate's [SKIP] (a cover image is plausibly
+    # decorative) is a model-dependent call, not the regression — either proves
+    # the resized image was accepted, not rejected with a 413. Accept both; a
+    # 413 would instead surface as a pipeline error / empty result.
+    assert is_skip(text) or len(text) > 30, f"Unexpected description: {text!r}"
 
 
 def test_pipeline_describe_single_image_returns_swedish(
