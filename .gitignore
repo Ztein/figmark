@@ -21,6 +21,7 @@ dist/
 
 # Pipeline output
 output/
+corpus-run-output/
 
 # OS
 .DS_Store
