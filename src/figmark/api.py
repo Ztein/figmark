@@ -403,6 +403,8 @@ def collect_figure_images(result) -> list[dict]:
             )
             continue
         data = path.read_bytes()
+        width_px: int | None
+        height_px: int | None
         try:
             with Image.open(io.BytesIO(data)) as im:
                 width_px, height_px = im.size
