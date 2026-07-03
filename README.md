@@ -302,6 +302,13 @@ the full pipeline, module map, outputs, and the open Phase-2 items, see
   a table asserting the *wrong* column↔value mapping, which is worse than honest
   flat text. We keep the raw text rather than guess a structure. For
   number-critical lookups over such documents, treat tables as a known gap.
+- **Spreadsheets (xlsx).** With the Office variant, a spreadsheet is converted via
+  LibreOffice, which paginates it into print pages: **borderless sheets flatten**
+  the same way as above, and a large sheet (a long time series) can **explode into
+  hundreds of pages** of loose numbers. This is not silent — a spreadsheet that
+  paginates past the threshold logs a loud page-explosion warning. Ruled sheets
+  come through as clean Markdown tables. A spreadsheet-native table extractor is
+  the decided next step (`docs/tickets/T-056`).
 - **Footnotes.** Footnote text is kept (in reading order, at the page bottom) but
   not yet segregated/marked as footnotes (`docs/tickets/T-044`, Phase 2).
 - **Tagged PDF.** `--tagged-pdf` writes the structure-tree *foundation* (figure

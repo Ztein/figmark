@@ -23,9 +23,20 @@ import shutil
 import subprocess
 from pathlib import Path
 
+import fitz
+
 logger = logging.getLogger("figmark.office")
 
 DEFAULT_TIMEOUT_SECONDS = 120.0
+
+# Spreadsheets have no intrinsic page count — LibreOffice paginates a used range
+# into print pages, so a long time series (e.g. a 9000-row FX sheet) explodes
+# into hundreds of PDF pages of loose, flattened numbers (T-056). We can't fix
+# the flatten without a spreadsheet-native extractor (deferred, see the ticket),
+# but we refuse to do it *silently*: above this page count a spreadsheet
+# conversion shouts a loud warning naming the file and the likely cause.
+SPREADSHEET_PAGE_WARN_THRESHOLD = 50
+_SPREADSHEET_SUFFIXES = frozenset({".xlsx", ".xls", ".ods", ".csv"})
 
 # Pre-seeded into the throwaway profile: macro security level 3 = "very high"
 # (only signed macros from trusted locations — and we trust none). LibreOffice
@@ -114,4 +125,31 @@ def convert_office_to_pdf(
         raise OfficeConversionError(
             f"LibreOffice could not convert {source.name} to PDF (exit {proc.returncode})."
         )
+    _warn_on_spreadsheet_page_explosion(source, result)
     return result
+
+
+def _warn_on_spreadsheet_page_explosion(source: Path, pdf: Path) -> None:
+    """Shout (never swallow) when a spreadsheet paginated into a huge PDF (T-056).
+
+    The numbers survive but their table structure is flattened across print
+    pages; a downstream LLM copes far better with a heads-up in the logs than
+    with a silent 380-page wall of loose values.
+    """
+    if source.suffix.lower() not in _SPREADSHEET_SUFFIXES:
+        return
+    try:
+        with fitz.open(pdf) as doc:
+            pages = len(doc)
+    except Exception:  # noqa: BLE001 — a page-count probe must never fail the conversion
+        return
+    if pages > SPREADSHEET_PAGE_WARN_THRESHOLD:
+        logger.warning(
+            "SPREADSHEET PAGE EXPLOSION: %s produced a %d-page PDF (threshold %d). "
+            "LibreOffice paginates large sheets into print pages, so table "
+            "structure is flattened into loose values across those pages. The data "
+            "is present but its column<->value attribution is degraded (T-056).",
+            source.name,
+            pages,
+            SPREADSHEET_PAGE_WARN_THRESHOLD,
+        )
