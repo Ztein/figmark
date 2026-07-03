@@ -91,10 +91,14 @@ axis-label noise. figmark hands your LLM the chart's actual content.
 - **Configurable input formats.** PDF by default, plus the PyMuPDF-native
   formats (EPUB, XPS, FB2, CBZ, MOBI) via an `input.formats` allowlist in
   config — no extra dependency. **MS Office** (docx/xlsx/pptx) works too, via
-  a sandboxed LibreOffice-headless conversion (requires LibreOffice; a
-  separate Office image variant is tracked in T-054). The gate sniffs the
-  actual content (magic bytes + container inspection), so a mislabelled file
-  fails loud instead of being mis-parsed.
+  a sandboxed LibreOffice-headless conversion: use the **`-office` image
+  variant** (`ghcr.io/ztein/figmark:<version>-office` — minimal headless
+  LibreOffice, no Java/UI, same non-root/read-only posture and the same hard
+  Trivy gate) or a local LibreOffice install, and enable the formats in
+  `input.formats`. The default image stays slim — it does not carry
+  LibreOffice's CVE surface. The gate sniffs the actual content (magic bytes +
+  container inspection), so a mislabelled file fails loud instead of being
+  mis-parsed.
 - **Context-aware descriptions.** Sends the surrounding text — plus a one-line
   summary of what kind of document it is — to the model, so a chart is interpreted
   in the report's context, not just visually.

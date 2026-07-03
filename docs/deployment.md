@@ -21,6 +21,23 @@ docker compose up -d                   # pulls ghcr.io/ztein/figmark:edge
 # pin a release instead: FIGMARK_VERSION=<version> docker compose up -d
 ```
 
+### The Office image variant (docx/xlsx/pptx input, T-054)
+
+MS Office input needs LibreOffice, which the default (slim) image deliberately
+does not carry. Use the `-office` tags instead — `edge-office`,
+`<version>-office`, `latest-office` — e.g.
+`FIGMARK_VERSION=<version>-office docker compose up -d`, and enable the
+formats in your `config.yaml` (`input.formats: [pdf, epub, docx, xlsx, pptx]`).
+The variant is the same image plus a **minimal headless LibreOffice**
+(writer/calc/impress cores — no Java, no UI) and keeps the whole posture:
+non-root, read-only-rootfs compatible, and the same hard Trivy gate in CI.
+Conversions run with a macro-locked throwaway profile and a per-file hard
+timeout; hostile-input behaviour is pinned by a generated adversarial test
+suite (`tests/test_office_adversarial.py`). Residual note: `soffice` shares
+the container's network namespace (the service itself needs the LLM
+endpoint), so if you feed it hostile documents, restrict the container's
+egress to your LLM endpoint at the network layer.
+
 ## Air-gapped host (release bundle)
 
 From a connected machine, take the release bundle (attached to the GitHub

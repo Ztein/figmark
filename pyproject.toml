@@ -88,6 +88,7 @@ addopts = "-ra --strict-markers"
 markers = [
     "live: runs against a real LLM API (needs FIGMARK_API_KEY and a config.yaml, costs money, takes minutes)",
     "docker: needs a Docker daemon (builds/runs the image or compose); skipped when absent",
+    "office: needs a local LibreOffice (soffice); the adversarial Office-input suite (T-054)",
 ]
 # Default mode runs EVERYTHING, including live tests — the "run for real" principle.
 # For fast iteration without live calls: pytest -m "not live"
