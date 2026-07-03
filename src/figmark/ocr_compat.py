@@ -14,8 +14,11 @@ The default LibreChat strategy makes four calls (verified against LibreChat ``ma
 4. ``DELETE /v1/files/{id}``                        → cleanup
 
 The only response fields LibreChat consumes are ``pages[].markdown`` and
-``pages[].images[].image_base64``; it ignores everything else and does not currently
-use the OCR images at all — so we return ``images: []`` and stay fully functional.
+``pages[].images[].image_base64``. Beyond that minimum, the response is contract-
+shaped (T-058): markdown figure refs are Mistral-style ids matching
+``pages[].images[].id``, ``images[]`` carries bbox coordinates (and base64 data when
+``include_image_base64`` is set), and ``pages[].dimensions`` is populated — so a
+compliant client can re-inline every figure from the response alone.
 
 Scope (see T-052): PDF-first. We resolve a document to bytes from *our own* signed
 file URLs (the default flow) or an inline ``data:`` URL (LibreChat's Azure variant).
@@ -61,18 +64,20 @@ _PAGE_MARKER_RE = re.compile(r"<!-- page (\d+) -->")
 
 # T-057: every documented Mistral OCR request parameter is either implemented or
 # rejected with a 422 naming it — never accepted-and-ignored. A parameter moves
-# to _IMPLEMENTED_PARAMS in the same PR that implements it (T-058: the image
-# fields, T-059: pages). `model` is read but its value does not select a model —
+# to _IMPLEMENTED_PARAMS in the same PR that implements it (T-058 did the image
+# fields; T-059: pages). `model` is read but its value does not select a model —
 # figmark always runs its own pipeline (documented in the README).
-_IMPLEMENTED_PARAMS = {"model", "document"}
+_IMPLEMENTED_PARAMS = {
+    "model",
+    "document",
+    "include_image_base64",
+    "image_limit",
+    "image_min_size",
+}
 # Documented parameters we do not implement yet: rejected when set to anything
-# non-null. `include_image_base64` is special-cased below — `false` asks for no
-# image data, which the current response satisfies, and it is what LibreChat's
-# default request carries.
+# non-null.
 _NOT_YET_IMPLEMENTED = {
     "pages",  # T-059
-    "image_limit",  # T-058
-    "image_min_size",  # T-058
     "bbox_annotation_format",
     "document_annotation_format",
     "document_annotation_prompt",
@@ -82,7 +87,7 @@ _NOT_YET_IMPLEMENTED = {
     "include_blocks",
     "confidence_scores_granularity",
 }
-_SUPPORTED_SUMMARY = "model, document, include_image_base64=false"
+_SUPPORTED_SUMMARY = "model, document, include_image_base64, image_limit, image_min_size"
 
 
 def reject_unsupported_params(body: dict) -> None:
@@ -93,18 +98,6 @@ def reject_unsupported_params(body: dict) -> None:
     """
     for key, value in body.items():
         if key in _IMPLEMENTED_PARAMS:
-            continue
-        if key == "include_image_base64":
-            if value is True:
-                raise HTTPException(
-                    status_code=422,
-                    detail=(
-                        "'include_image_base64: true' is not supported yet: this "
-                        "backend does not return image data, and honouring the "
-                        "request silently with empty images would be misleading. "
-                        f"Supported parameters: {_SUPPORTED_SUMMARY}."
-                    ),
-                )
             continue
         if key in _NOT_YET_IMPLEMENTED:
             if value is not None:
@@ -187,6 +180,100 @@ def split_pages(markdown: str) -> list[dict]:
                 "images": [],
             }
         )
+    return pages
+
+
+# A figmark markdown figure embed: ![<alt>](images/<name>) or ![...](diagrams/<name>).
+_MD_FIG_REF_RE = re.compile(r"!\[[^\]]*\]\((?:images|diagrams)/(?P<name>[^)]+)\)")
+
+
+def _int_param(body: dict, key: str) -> int | None:
+    value = body.get(key)
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise HTTPException(status_code=422, detail=f"'{key}' must be a non-negative integer")
+    return value
+
+
+def _bool_param(body: dict, key: str) -> bool:
+    value = body.get(key)
+    if value is None:
+        return False
+    if not isinstance(value, bool):
+        raise HTTPException(status_code=422, detail=f"'{key}' must be a boolean")
+    return value
+
+
+def build_ocr_pages(
+    markdown: str,
+    figures: list[dict],
+    page_sizes: list,
+    *,
+    include_image_base64: bool,
+    image_limit: int | None,
+    image_min_size: int | None,
+) -> list[dict]:
+    """Assemble the Mistral-shaped ``pages[]`` from the pipeline output (T-058).
+
+    Markdown figure refs are rewritten from figmark's relative artifact paths to
+    bare figure ids that match ``pages[].images[].id`` (the Mistral cookbook
+    correlation), ``image_limit``/``image_min_size`` are honoured (a filtered
+    figure's ref is stripped — its description caption stays), coordinates are
+    PDF points, matching the ``dpi: 72`` in ``pages[].dimensions``.
+    """
+    selected = [
+        f
+        for f in figures
+        if not (
+            image_min_size
+            and (
+                f.get("width_px") is None
+                or f.get("height_px") is None
+                or f["width_px"] < image_min_size
+                or f["height_px"] < image_min_size
+            )
+        )
+    ]
+    if image_limit is not None:
+        selected = selected[:image_limit]
+    selected_ids = {f["id"] for f in selected}
+    by_page: dict[int, list[dict]] = {}
+    for f in selected:
+        by_page.setdefault(f["page"], []).append(f)
+
+    def _image_entry(f: dict) -> dict:
+        bbox = f.get("bbox") or [None] * 4
+        return {
+            "id": f["id"],
+            "top_left_x": None if bbox[0] is None else int(round(bbox[0])),
+            "top_left_y": None if bbox[1] is None else int(round(bbox[1])),
+            "bottom_right_x": None if bbox[2] is None else int(round(bbox[2])),
+            "bottom_right_y": None if bbox[3] is None else int(round(bbox[3])),
+            "image_base64": (
+                f"data:{f['mime']};base64,{f['base64']}" if include_image_base64 else None
+            ),
+        }
+
+    def _rewrite_ref(m: re.Match) -> str:
+        name = m.group("name")
+        # A ref whose figure was filtered out (or has no artifact) is stripped —
+        # never an unreachable path in the response.
+        return f"![{name}]({name})" if name in selected_ids else ""
+
+    pages = split_pages(markdown)
+    for page in pages:
+        page["markdown"] = _MD_FIG_REF_RE.sub(_rewrite_ref, page["markdown"]).strip()
+        page["images"] = [_image_entry(f) for f in by_page.get(page["index"] + 1, [])]
+        if 0 <= page["index"] < len(page_sizes):
+            width, height = page_sizes[page["index"]]
+            page["dimensions"] = {
+                "dpi": 72,  # coordinates are PDF points; 1 pt = 1 px at 72 dpi
+                "height": int(round(height)),
+                "width": int(round(width)),
+            }
+        else:
+            page["dimensions"] = None
     return pages
 
 
@@ -312,27 +399,40 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
         reject_unsupported_params(body)
 
         model = body.get("model") or f"figmark-{__version__}"
+        include_image_base64 = _bool_param(body, "include_image_base64")
+        image_limit = _int_param(body, "image_limit")
+        image_min_size = _int_param(body, "image_min_size")
         data = _resolve_document_bytes(request, body.get("document"))
         cfg = request.app.state.cfg
 
+        def _ocr_response(norm) -> dict:
+            return {
+                "pages": build_ocr_pages(
+                    norm.markdown,
+                    norm.figures,
+                    norm.page_sizes,
+                    include_image_base64=include_image_base64,
+                    image_limit=image_limit,
+                    image_min_size=image_min_size,
+                ),
+                "model": model,
+                "usage_info": {
+                    "pages_processed": norm.page_count,
+                    "doc_size_bytes": len(data),
+                },
+            }
+
         # Shared with /v1/convert (T-060): same document + same config = same
-        # cached result, whichever surface it arrived through.
+        # cached result, whichever surface it arrived through. The payload
+        # carries the figure bytes (T-058), so a hit serves images too.
         doc_digest = hashlib.sha256(data).hexdigest()
         store = request.app.state.cache_store
         if store is not None:
             hit = store.get(document_cache_key(doc_digest, cfg))
             if hit is not None:
                 logger.info("ocr cache hit doc=%s…", doc_digest[:12])
-                cached_result = cache_payload_to_result(hit)
                 response.headers["X-Figmark-Cache"] = "hit"
-                return {
-                    "pages": split_pages(cached_result.markdown),
-                    "model": model,
-                    "usage_info": {
-                        "pages_processed": cached_result.page_count,
-                        "doc_size_bytes": len(data),
-                    },
-                }
+                return _ocr_response(cache_payload_to_result(hit))
 
         work = Path(tempfile.mkdtemp(dir=settings.work_dir))
         upload_path = work / "upload.bin"
@@ -349,23 +449,18 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
             result = await run_conversion(
                 request.app, doc_path, work / "out", doc_digest=doc_digest
             )
+            # Serialise while the temp output dir (and its figure files) still
+            # exists; hit and miss then answer from the same normalised shape.
+            payload = result_to_cache_payload(result)
             if store is not None:
                 store.put(
                     document_cache_key(doc_digest, cfg),
-                    result_to_cache_payload(result),
+                    payload,
                     doc_digest=doc_digest,
                     kind="document",
                 )
             response.headers["X-Figmark-Cache"] = "miss" if store is not None else "off"
-            pages = split_pages(result.markdown)
             logger.info("ocr ok pages=%d figures=%d", result.page_count, result.figure_count)
-            return {
-                "pages": pages,
-                "model": model,
-                "usage_info": {
-                    "pages_processed": result.page_count,
-                    "doc_size_bytes": len(data),
-                },
-            }
+            return _ocr_response(cache_payload_to_result(payload))
         finally:
             shutil.rmtree(work, ignore_errors=True)

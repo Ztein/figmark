@@ -77,6 +77,9 @@ class ConversionResult:
     usage: Usage
     estimated_cost: float | None
     currency: str | None
+    # (width, height) per page in PDF points, page order — consumed by the OCR
+    # surface's pages[].dimensions (T-058).
+    page_sizes: tuple[tuple[float, float], ...] = ()
 
 
 logger = logging.getLogger("figmark.pipeline")
@@ -260,7 +263,12 @@ def convert(
     for page_num, page in iter_pages(doc):
         emit(f"\nPage {page_num}/{len(doc)}")
         needs_ocr, reason = page_needs_ocr(page)
-        page_data = PageData(page_num=page_num, is_ocr=needs_ocr, page_height=page.rect.height)
+        page_data = PageData(
+            page_num=page_num,
+            is_ocr=needs_ocr,
+            page_height=page.rect.height,
+            page_width=page.rect.width,
+        )
 
         # Shout when a page is OCR'd inside an otherwise text-encoded document —
         # that is exactly the content that used to be dropped silently.
@@ -648,6 +656,7 @@ def convert(
         figure_count=figure_count,
         skipped_count=skipped_count,
         language=resolved_language,
+        page_sizes=tuple((p.page_width, p.page_height) for p in pages),
         usage=usage,
         estimated_cost=(cost.amount if cost else None),
         currency=(cost.currency if cost else None),
