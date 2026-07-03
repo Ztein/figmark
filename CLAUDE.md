@@ -78,7 +78,10 @@ litmus test above.
 - Title describes the **symptom, not the solution**. Body sections:
   **Status**, **Priority**, **Symptom**, **Root cause**, **Impact**,
   **Options** (numbered trade-offs, not a pre-picked answer), **Acceptance
-  criteria**. Statuses seen here: Open / Parked / **Closed** (closed on merge).
+  criteria**. Statuses: **Open** (active), **Parked** (blocked on something
+  external), **Icebox** (a good idea deliberately not scheduled now — names its
+  un-ice trigger), **Closed** (done on merge, or withdrawn). Full legend in
+  `docs/tickets/README.md`.
 
 ## Testing — run for real
 
