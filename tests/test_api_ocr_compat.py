@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import base64
 
+import fitz
 from fastapi.testclient import TestClient
 
 from figmark.ocr_compat import split_pages
@@ -26,6 +27,17 @@ def _client(make_api_app):
 
 def _pdf_bytes(tmp_path):
     return synthetic_pdf(tmp_path / "doc.pdf").read_bytes()
+
+
+def _multipage_pdf_bytes(n=3):
+    """A text-only n-page PDF with distinct, greppable text per page."""
+    doc = fitz.open()
+    for i in range(n):
+        page = doc.new_page()
+        page.insert_text((72, 72), f"Unique text for page number {i}. " * 8)
+    data = doc.tobytes()
+    doc.close()
+    return data
 
 
 def test_full_mistral_flow_roundtrips(make_api_app, tmp_path):
@@ -167,9 +179,9 @@ def test_unsupported_documented_param_is_422_naming_it(make_api_app, tmp_path):
     pdf = _pdf_bytes(tmp_path)
     data_url = "data:application/pdf;base64," + base64.b64encode(pdf).decode()
     for param, value in [
-        ("pages", [0, 2]),
         ("table_format", "html"),
         ("extract_header", True),
+        ("bbox_annotation_format", {"type": "json_schema"}),
         ("document_annotation_format", {"type": "json_schema"}),
     ]:
         r = client.post(
@@ -266,16 +278,82 @@ def test_unknown_param_is_422(make_api_app, tmp_path):
     assert r.status_code == 422 and "frobnicate" in r.json()["detail"]
 
 
-def test_file_reference_document_is_422_with_pointer(make_api_app):
-    """document.type 'file' (T-059) gets a clear 422 pointing at the signed-URL flow."""
+def test_file_id_document_reference_roundtrips(make_api_app, tmp_path):
+    """T-059: document {type: 'file', file_id} resolves against /v1/files directly."""
     client = _client(make_api_app)
+    pdf = _pdf_bytes(tmp_path)
+    file_id = client.post(
+        "/v1/files", files={"file": ("doc.pdf", pdf, "application/pdf")}, headers=AUTH
+    ).json()["id"]
     r = client.post(
         "/v1/ocr",
-        json={"document": {"type": "file", "file_id": "0" * 32}},
+        json={"document": {"type": "file", "file_id": file_id}},
         headers=AUTH,
     )
-    assert r.status_code == 422
-    assert "file_id" in r.json()["detail"] and "document_url" in r.json()["detail"]
+    assert r.status_code == 200, r.text
+    assert DESC in r.json()["pages"][0]["markdown"]
+    # Unknown id: clean 404. Missing id: 422.
+    unknown = client.post(
+        "/v1/ocr", json={"document": {"type": "file", "file_id": "0" * 32}}, headers=AUTH
+    )
+    assert unknown.status_code == 404
+    missing = client.post("/v1/ocr", json={"document": {"type": "file"}}, headers=AUTH)
+    assert missing.status_code == 422
+
+
+def test_pages_selection_returns_exactly_requested(make_api_app):
+    """T-059: pages=[0, 2] → those pages only, original 0-based indices kept."""
+    client = _client(make_api_app)
+    r = _ocr(client, _multipage_pdf_bytes(3), pages=[0, 2])
+    assert r.status_code == 200, r.text
+    pages = r.json()["pages"]
+    assert [p["index"] for p in pages] == [0, 2]
+    assert "page number 0" in pages[0]["markdown"]
+    assert "page number 2" in pages[1]["markdown"]
+    assert all("page number 1" not in p["markdown"] for p in pages)
+    assert r.json()["usage_info"]["pages_processed"] == 2
+
+
+def test_pages_range_string_form(make_api_app):
+    client = _client(make_api_app)
+    r = _ocr(client, _multipage_pdf_bytes(4), pages=["1-2"])
+    assert r.status_code == 200, r.text
+    assert [p["index"] for p in r.json()["pages"]] == [1, 2]
+
+
+def test_pages_out_of_range_is_422(make_api_app):
+    client = _client(make_api_app)
+    r = _ocr(client, _multipage_pdf_bytes(2), pages=[0, 5])
+    assert r.status_code == 422 and "out of range" in r.json()["detail"]
+    # Malformed forms fail loud too.
+    assert _ocr(client, _multipage_pdf_bytes(2), pages=[]).status_code == 422
+    assert _ocr(client, _multipage_pdf_bytes(2), pages=[-1]).status_code == 422
+    assert _ocr(client, _multipage_pdf_bytes(2), pages=["2-1"]).status_code == 422
+
+
+def test_pages_served_from_full_document_cache(make_api_app):
+    """A full-document cache entry answers a pages subset without a pipeline run."""
+    client = _client(make_api_app)
+    pdf = _multipage_pdf_bytes(3)
+    full = _ocr(client, pdf)
+    assert full.status_code == 200 and full.headers["X-Figmark-Cache"] == "miss"
+    subset = _ocr(client, pdf, pages=[2])
+    assert subset.status_code == 200 and subset.headers["X-Figmark-Cache"] == "hit"
+    (page,) = subset.json()["pages"]
+    assert page["index"] == 2 and "page number 2" in page["markdown"]
+    # Out-of-range is still a 422 on the cached path, not a silent shrink.
+    assert _ocr(client, pdf, pages=[7]).status_code == 422
+
+
+def test_pages_sliced_run_is_cached_under_its_selection(make_api_app):
+    client = _client(make_api_app)
+    pdf = _multipage_pdf_bytes(3)
+    first = _ocr(client, pdf, pages=[1])
+    assert first.status_code == 200 and first.headers["X-Figmark-Cache"] == "miss"
+    again = _ocr(client, pdf, pages=[1])
+    assert again.status_code == 200 and again.headers["X-Figmark-Cache"] == "hit"
+    assert [p["index"] for p in again.json()["pages"]] == [1]
+    assert "page number 1" in again.json()["pages"][0]["markdown"]
 
 
 def test_split_pages_uses_page_markers():

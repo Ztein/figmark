@@ -40,6 +40,7 @@ import tempfile
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+import fitz
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, Response, UploadFile
 
 from . import __version__
@@ -70,6 +71,7 @@ _PAGE_MARKER_RE = re.compile(r"<!-- page (\d+) -->")
 _IMPLEMENTED_PARAMS = {
     "model",
     "document",
+    "pages",
     "include_image_base64",
     "image_limit",
     "image_min_size",
@@ -77,7 +79,6 @@ _IMPLEMENTED_PARAMS = {
 # Documented parameters we do not implement yet: rejected when set to anything
 # non-null.
 _NOT_YET_IMPLEMENTED = {
-    "pages",  # T-059
     "bbox_annotation_format",
     "document_annotation_format",
     "document_annotation_prompt",
@@ -87,7 +88,7 @@ _NOT_YET_IMPLEMENTED = {
     "include_blocks",
     "confidence_scores_granularity",
 }
-_SUPPORTED_SUMMARY = "model, document, include_image_base64, image_limit, image_min_size"
+_SUPPORTED_SUMMARY = "model, document, pages, include_image_base64, image_limit, image_min_size"
 
 
 def reject_unsupported_params(body: dict) -> None:
@@ -187,6 +188,65 @@ def split_pages(markdown: str) -> list[dict]:
 _MD_FIG_REF_RE = re.compile(r"!\[[^\]]*\]\((?:images|diagrams)/(?P<name>[^)]+)\)")
 
 
+_PAGE_RANGE_RE = re.compile(r"(\d+)-(\d+)")
+
+
+def _parse_pages_param(body: dict) -> list[int] | None:
+    """Parse the Mistral ``pages`` selection (T-059).
+
+    Accepts a list mixing 0-based indices and inclusive ``"a-b"`` range strings
+    (a bare range string is accepted too). Order is preserved — the response
+    carries the pages in the requested order with their original indices.
+    """
+    value = body.get("pages")
+    if value is None:
+        return None
+    if isinstance(value, str):
+        value = [value]
+    bad = HTTPException(
+        status_code=422,
+        detail="'pages' must be a non-empty list of 0-based page indices and/or 'a-b' ranges",
+    )
+    if not isinstance(value, list) or not value:
+        raise bad
+    pages: list[int] = []
+    for item in value:
+        if isinstance(item, int) and not isinstance(item, bool):
+            if item < 0:
+                raise bad
+            pages.append(item)
+        elif isinstance(item, str) and (m := _PAGE_RANGE_RE.fullmatch(item)):
+            first, last = int(m.group(1)), int(m.group(2))
+            if last < first:
+                raise bad
+            pages.extend(range(first, last + 1))
+        else:
+            raise bad
+    return pages
+
+
+def _slice_pdf_pages(doc_path: Path, requested: list[int]) -> Path:
+    """Cut the requested 0-based pages into a sub-document (PyMuPDF ``select``)
+    so the pipeline only pays for the pages that were asked for (T-059)."""
+    doc = fitz.open(doc_path)
+    try:
+        out_of_range = sorted({p for p in requested if p >= len(doc)})
+        if out_of_range:
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    f"'pages' out of range: {out_of_range} — the document has "
+                    f"{len(doc)} pages (0-based indices)"
+                ),
+            )
+        doc.select(requested)
+        out = doc_path.with_name(f"pages-{doc_path.name}")
+        doc.save(out)
+        return out
+    finally:
+        doc.close()
+
+
 def _int_param(body: dict, key: str) -> int | None:
     value = body.get(key)
     if value is None:
@@ -213,6 +273,7 @@ def build_ocr_pages(
     include_image_base64: bool,
     image_limit: int | None,
     image_min_size: int | None,
+    index_map: list[int] | None = None,
 ) -> list[dict]:
     """Assemble the Mistral-shaped ``pages[]`` from the pipeline output (T-058).
 
@@ -221,6 +282,10 @@ def build_ocr_pages(
     correlation), ``image_limit``/``image_min_size`` are honoured (a filtered
     figure's ref is stripped — its description caption stays), coordinates are
     PDF points, matching the ``dpi: 72`` in ``pages[].dimensions``.
+
+    ``index_map`` translates a sub-document's page position back to the original
+    document's 0-based index when the pipeline ran on a ``pages``-sliced document
+    (T-059).
     """
     selected = [
         f
@@ -274,6 +339,8 @@ def build_ocr_pages(
             }
         else:
             page["dimensions"] = None
+        if index_map is not None and 0 <= page["index"] < len(index_map):
+            page["index"] = index_map[page["index"]]
     return pages
 
 
@@ -287,16 +354,20 @@ def _resolve_document_bytes(request: Request, document: dict | None) -> bytes:
     if not isinstance(document, dict):
         raise HTTPException(status_code=422, detail="'document' object is required")
     if document.get("type") == "file" or "file_id" in document:
-        # T-059 tracks the direct file_id reference; until then, point the caller
-        # at the working flow instead of failing on a missing document_url.
-        raise HTTPException(
-            status_code=422,
-            detail=(
-                "document.type 'file' (file_id reference) is not supported yet. "
-                "Fetch a signed URL via GET /v1/files/{id}/url and pass it as "
-                "document_url."
-            ),
-        )
+        # Direct file reference (T-059). No signature needed: possession of the
+        # id came from an authenticated /v1/files upload, and /v1/ocr itself is
+        # behind the bearer check.
+        file_id = document.get("file_id")
+        if not isinstance(file_id, str) or not file_id:
+            raise HTTPException(
+                status_code=422, detail="document.file_id is required for type 'file'"
+            )
+        path = request.app.state.ocr_file_store.path(file_id)
+        if path is None:
+            raise HTTPException(
+                status_code=404, detail="Referenced file not found or already deleted"
+            )
+        return path.read_bytes()
     url = document.get("document_url") or document.get("image_url")
     if not isinstance(url, str) or not url:
         raise HTTPException(
@@ -402,37 +473,69 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
         include_image_base64 = _bool_param(body, "include_image_base64")
         image_limit = _int_param(body, "image_limit")
         image_min_size = _int_param(body, "image_min_size")
+        requested_pages = _parse_pages_param(body)
         data = _resolve_document_bytes(request, body.get("document"))
         cfg = request.app.state.cfg
 
-        def _ocr_response(norm) -> dict:
+        def _ocr_response(norm, *, index_map=None, only_indices=None) -> dict:
+            pages_out = build_ocr_pages(
+                norm.markdown,
+                norm.figures,
+                norm.page_sizes,
+                include_image_base64=include_image_base64,
+                image_limit=image_limit,
+                image_min_size=image_min_size,
+                index_map=index_map,
+            )
+            if only_indices is not None:
+                by_index = {p["index"]: p for p in pages_out}
+                pages_out = [by_index[i] for i in only_indices]
             return {
-                "pages": build_ocr_pages(
-                    norm.markdown,
-                    norm.figures,
-                    norm.page_sizes,
-                    include_image_base64=include_image_base64,
-                    image_limit=image_limit,
-                    image_min_size=image_min_size,
-                ),
+                "pages": pages_out,
                 "model": model,
                 "usage_info": {
-                    "pages_processed": norm.page_count,
+                    "pages_processed": len(pages_out),
                     "doc_size_bytes": len(data),
                 },
             }
 
         # Shared with /v1/convert (T-060): same document + same config = same
         # cached result, whichever surface it arrived through. The payload
-        # carries the figure bytes (T-058), so a hit serves images too.
+        # carries the figure bytes (T-058), so a hit serves images too. A
+        # `pages` request is answered from a full-document entry when one
+        # exists (the work is already done); a sliced run is cached under its
+        # own selection-suffixed key.
         doc_digest = hashlib.sha256(data).hexdigest()
+        full_key = document_cache_key(doc_digest, cfg)
+        pages_key = (
+            None
+            if requested_pages is None
+            else full_key + "-pages-" + ",".join(map(str, requested_pages))
+        )
         store = request.app.state.cache_store
         if store is not None:
-            hit = store.get(document_cache_key(doc_digest, cfg))
+            hit = store.get(full_key)
             if hit is not None:
+                norm = cache_payload_to_result(hit)
+                if requested_pages is not None:
+                    out_of_range = sorted({p for p in requested_pages if p >= norm.page_count})
+                    if out_of_range:
+                        raise HTTPException(
+                            status_code=422,
+                            detail=(
+                                f"'pages' out of range: {out_of_range} — the document "
+                                f"has {norm.page_count} pages (0-based indices)"
+                            ),
+                        )
                 logger.info("ocr cache hit doc=%s…", doc_digest[:12])
                 response.headers["X-Figmark-Cache"] = "hit"
-                return _ocr_response(cache_payload_to_result(hit))
+                return _ocr_response(norm, only_indices=requested_pages)
+            if pages_key is not None:
+                hit = store.get(pages_key)
+                if hit is not None:
+                    logger.info("ocr cache hit doc=%s… pages=%s", doc_digest[:12], requested_pages)
+                    response.headers["X-Figmark-Cache"] = "hit"
+                    return _ocr_response(cache_payload_to_result(hit), index_map=requested_pages)
 
         work = Path(tempfile.mkdtemp(dir=settings.work_dir))
         upload_path = work / "upload.bin"
@@ -446,6 +549,11 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
             doc_path = upload_path.rename(work / f"input.{fmt}")
             doc_path = await prepare_office_document(doc_path, fmt, cfg)
             _validate_pdf_document(doc_path)
+            if requested_pages is not None:
+                # Slice before the pipeline so unrequested pages cost nothing
+                # (T-059). The description cache still keys on the full-document
+                # digest, so figure reuse across selections keeps working.
+                doc_path = _slice_pdf_pages(doc_path, requested_pages)
             result = await run_conversion(
                 request.app, doc_path, work / "out", doc_digest=doc_digest
             )
@@ -454,13 +562,13 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
             payload = result_to_cache_payload(result)
             if store is not None:
                 store.put(
-                    document_cache_key(doc_digest, cfg),
+                    pages_key if pages_key is not None else full_key,
                     payload,
                     doc_digest=doc_digest,
                     kind="document",
                 )
             response.headers["X-Figmark-Cache"] = "miss" if store is not None else "off"
             logger.info("ocr ok pages=%d figures=%d", result.page_count, result.figure_count)
-            return _ocr_response(cache_payload_to_result(payload))
+            return _ocr_response(cache_payload_to_result(payload), index_map=requested_pages)
         finally:
             shutil.rmtree(work, ignore_errors=True)

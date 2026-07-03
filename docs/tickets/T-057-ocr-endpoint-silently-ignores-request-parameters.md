@@ -66,8 +66,8 @@ pipeline) — that is fine to keep, but document it in the README's OCR section.
 - [x] A request carrying any documented-but-unsupported Mistral OCR parameter
       gets a 422 that names the parameter and the supported set — no silent
       behaviour differences. (`tests/test_api_ocr_compat.py`)
-- [ ] Parameters implemented later (T-058/T-059) are removed from the reject
+- [x] Parameters implemented later (T-058/T-059) are removed from the reject
       list in the same PR that implements them, with tests covering both sides.
-      *(Lands with T-058/T-059 — tracked there.)*
+      *(T-058: image fields; T-059: pages + file_id — both landed.)*
 - [x] The README's LibreChat/Mistral-OCR section documents exactly which
       parameters the surface supports.

@@ -1,6 +1,13 @@
 # T-059: /v1/ocr contract gaps — no `pages` selection, no `file_id` document reference
 
-**Status:** Open
+**Status:** Closed — **shipped 2026-07-03.** `pages` (list and `"a-b"` range
+forms) slices the document at the pipeline boundary (PyMuPDF `select()`), so
+unrequested pages cost nothing; response indices are the original 0-based ones
+(Option 1). A full-document cache entry answers a subset request directly; a
+sliced run is cached under a selection-suffixed key. Out-of-range/malformed
+selections → 422 on both fresh and cached paths. `document: {type: "file",
+file_id}` resolves against the existing `FileStore` (404 unknown, 422 missing
+id). Both left T-057's reject list with tests on both sides; README updated.
 **Priority:** Medium — pure contract completion; nothing returns wrong data once
 T-057 rejects these loudly, but Mistral-OCR clients that use them cannot switch
 to figmark until they exist.
@@ -50,11 +57,11 @@ makes; the rest of the contract was deferred without a tracking ticket.
 
 ## Acceptance criteria
 
-- [ ] `pages` (list and range forms) returns exactly the requested pages, with
+- [x] `pages` (list and range forms) returns exactly the requested pages, with
       correct 0-based `index` values, and skips pipeline work for unrequested
-      pages (or documents why not).
-- [ ] `document: {type: "file", file_id}` works end-to-end after a `/v1/files`
+      pages (PyMuPDF `select()` before the pipeline).
+- [x] `document: {type: "file", file_id}` works end-to-end after a `/v1/files`
       upload, with a clean 404 for unknown ids.
-- [ ] Both are removed from T-057's unsupported-parameter reject list, with
+- [x] Both are removed from T-057's unsupported-parameter reject list, with
       tests for the supported behaviour.
-- [ ] The README OCR section's supported-parameter list is updated.
+- [x] The README OCR section's supported-parameter list is updated.
