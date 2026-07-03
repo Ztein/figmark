@@ -69,10 +69,28 @@ jobs:
             --build-arg REVISION="${GITHUB_SHA::8}" \
             -t figmark:ci .
 
+      - name: Build Office image variant (T-054)
+        run: |
+          docker build --target runtime-office \
+            --build-arg VERSION="${GITHUB_REF_NAME}" \
+            --build-arg REVISION="${GITHUB_SHA::8}" \
+            -t figmark-office:ci .
+
       - name: Trivy image scan (hard gate — fixable HIGH/CRITICAL)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: figmark:ci
+          scan-type: image
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
+
+      - name: Trivy Office-image scan (same hard gate — the LO layer must not breach it)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: figmark-office:ci
           scan-type: image
           scanners: vuln
           severity: HIGH,CRITICAL
@@ -116,6 +134,8 @@ jobs:
           docker tag figmark:ci "ghcr.io/$owner/figmark:main-${GITHUB_SHA::8}"
           docker push "ghcr.io/$owner/figmark:edge"
           docker push "ghcr.io/$owner/figmark:main-${GITHUB_SHA::8}"
+          docker tag figmark-office:ci "ghcr.io/$owner/figmark:edge-office"
+          docker push "ghcr.io/$owner/figmark:edge-office"
 
   # Escalation: a failed SCHEDULED scan means a new vulnerability or drift was
   # found in the published state with no human at the keyboard. File (or update)

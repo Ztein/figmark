@@ -81,3 +81,33 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
 
 ENTRYPOINT ["tini", "--"]
 CMD ["figmark-server"]
+
+# ---- runtime-office: the Office image variant (T-054) ----
+# Adds a minimal headless LibreOffice (writer/calc/impress cores, no Java, no
+# UI) on top of the slim runtime so docx/xlsx/pptx convert with full layout
+# fidelity. Shipped as a SEPARATE opt-in tag — the slim image stays the default
+# and does not inherit LibreOffice's CVE surface. Same non-root user,
+# read-only-rootfs compatible; conversions run macro-locked in a throwaway
+# profile with a hard timeout (src/figmark/office.py).
+# hadolint ignore=DL3008
+FROM runtime AS runtime-office
+USER root
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends \
+        libreoffice-writer-nogui \
+        libreoffice-calc-nogui \
+        libreoffice-impress-nogui \
+        fonts-dejavu-core \
+        fonts-liberation \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+# soffice (dconf/XDG) wants a writable HOME; the non-root user has none, so
+# point it into the tmpfs work dir. The conversion profile itself is already a
+# throwaway under the work dir (office.py).
+ENV HOME=/tmp/figmark
+USER 10001
+
+# Default target LAST on purpose: a bare `docker build .` must yield the slim
+# image. Build the Office variant with `--target runtime-office`.
+FROM runtime

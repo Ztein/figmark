@@ -88,6 +88,26 @@ jobs:
           exit-code: "1"
           trivyignores: .trivyignore
 
+      - name: Build Office image variant (amd64, loaded locally) for its gate (T-054)
+        run: |
+          docker buildx build \
+            --target runtime-office \
+            --platform linux/amd64 \
+            --build-arg VERSION="${{ steps.ver.outputs.version }}" \
+            --build-arg REVISION="${GITHUB_SHA::8}" \
+            --load -t "figmark-office:${{ steps.ver.outputs.version }}" .
+
+      - name: Trivy Office-image gate (the LO layer must not breach the posture)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: figmark-office:${{ steps.ver.outputs.version }}
+          scan-type: image
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
+
       - name: Publish multi-arch manifest to GHCR (versioned + latest)
         id: publish
         env:
@@ -110,15 +130,29 @@ jobs:
           digest=$(jq -r '."containerimage.digest"' buildx-meta.json)
           echo "owner=$owner" >> "$GITHUB_OUTPUT"
           echo "image=ghcr.io/$owner/figmark@$digest" >> "$GITHUB_OUTPUT"
+          # Office variant (T-054): same multi-arch publish under -office tags.
+          docker buildx build \
+            --target runtime-office \
+            --platform linux/amd64,linux/arm64 \
+            --build-arg VERSION="${VERSION}" \
+            --build-arg REVISION="${GITHUB_SHA::8}" \
+            -t "ghcr.io/$owner/figmark:${VERSION}-office" \
+            -t "ghcr.io/$owner/figmark:latest-office" \
+            --push \
+            --metadata-file buildx-meta-office.json .
+          office_digest=$(jq -r '."containerimage.digest"' buildx-meta-office.json)
+          echo "office_image=ghcr.io/$owner/figmark@$office_digest" >> "$GITHUB_OUTPUT"
 
-      - name: Verify the manifest lists both architectures
+      - name: Verify the manifests list both architectures
         env:
           VERSION: ${{ steps.ver.outputs.version }}
         run: |
-          ref="ghcr.io/${{ steps.publish.outputs.owner }}/figmark:${VERSION}"
-          for platform in linux/amd64 linux/arm64; do
-            docker buildx imagetools inspect "$ref" | grep -q "$platform" \
-              || { echo "::error::$ref is missing the $platform leg"; exit 1; }
+          for tag in "${VERSION}" "${VERSION}-office"; do
+            ref="ghcr.io/${{ steps.publish.outputs.owner }}/figmark:$tag"
+            for platform in linux/amd64 linux/arm64; do
+              docker buildx imagetools inspect "$ref" | grep -q "$platform" \
+                || { echo "::error::$ref is missing the $platform leg"; exit 1; }
+            done
           done
 
       # --- Supply-chain provenance: keyless cosign signature + SBOM attestation (T-016) ---
@@ -140,6 +174,20 @@ jobs:
           # public Rekor transparency log. No long-lived keys.
           cosign sign --yes "$IMAGE"
           cosign attest --yes --type spdxjson --predicate figmark.spdx.json "$IMAGE"
+
+      - name: Generate SBOM (SPDX) for the Office image
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
+        with:
+          image: ${{ steps.publish.outputs.office_image }}
+          format: spdx-json
+          output-file: figmark-office.spdx.json
+
+      - name: Sign the Office image and attest its SBOM (keyless)
+        env:
+          IMAGE: ${{ steps.publish.outputs.office_image }}
+        run: |
+          cosign sign --yes "$IMAGE"
+          cosign attest --yes --type spdxjson --predicate figmark-office.spdx.json "$IMAGE"
 
       - name: Export tarballs (one per arch) + checksum + deploy bundle
         # Save under the GHCR name so `docker load` restores exactly the image

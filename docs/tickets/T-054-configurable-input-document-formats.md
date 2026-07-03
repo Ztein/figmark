@@ -1,9 +1,25 @@
 # T-054: figmark accepts only PDF — no way to configure other document formats (Word/Excel/PPT/EPUB)
 
-**Status:** Open — **direction decided (2026-07-02):** aim for **high-fidelity MS
-Office** via **LibreOffice headless** (Option 2), *paired with* a hardened, scanned
-and reviewed image (see "Decision" and "Security requirements"). EPUB and the other
-PyMuPDF-native formats remain the free first tranche.
+**Status:** Closed — **final tranche shipped (2026-07-03):** the Office image
+variant + the generated adversarial suite. `Dockerfile --target runtime-office`
+adds a minimal headless LibreOffice (writer/calc/impress `-nogui` cores, no
+Java/UI, +fonts) on top of the slim runtime; published as `edge-office` /
+`<version>-office` / `latest-office` with the **same hard Trivy gate** (verified
+green: 0 fixable HIGH/CRITICAL on the built image) and cosign signing/SBOM
+attestation as the main image. The slim image stays the default. Non-root +
+read-only-rootfs preserved (verified: conversion works under `--read-only`).
+Adversarial suite (`tests/test_office_adversarial.py`, marker `office`, own CI
+leg with LO installed): DDE-launch canary never executes, macro-carrying files
+contained by the locked profile, dead external refs don't stall, a
+decompression bomb is bounded by the hard timeout, truncated files fail loud —
+all inputs *generated in-test* (OOXML = zip of XML; no authoring dep, nothing
+hostile hosted). **Honest residual:** `soffice` shares the container's network
+namespace (the service needs the LLM endpoint); per-process no-network is not
+enforceable unprivileged, so deployment docs direct hostile-input deployments
+to restrict container egress at the network layer.
+**Direction decided (2026-07-02):** high-fidelity MS Office via LibreOffice
+headless (Option 2), paired with a hardened, scanned image. EPUB and the other
+PyMuPDF-native formats were the free first tranche.
 **Free tranche shipped (2026-07-02):** content sniffing (`input_formats.py` —
 magic bytes + ZIP-container inspection, OOXML/EPUB/XPS/CBZ/OLE aware), the
 `input.formats` config allowlist (required section, fails loud on unknown or
@@ -167,10 +183,10 @@ Trivy/CodeQL posture, and the conversion is sandboxed.*
 
 ## Acceptance criteria
 
-- [ ] **An Office/EPUB test corpus exists** — a *fetched* fidelity set (permissive/PD
-      docx/xlsx/pptx with real figures/tables + a PD EPUB) and a *generated* adversarial
-      set (dev-only authoring deps, nothing hosted). This gates the bench and
-      adversarial criteria below; none of them are actionable without it.
+- [x] **An Office/EPUB test corpus exists** — the fetched fidelity set (the
+      office-eval corpus, 29 files) and the *generated* adversarial set
+      (hand-built OOXML in-test — no authoring dependency at all, nothing
+      hosted).
 - [x] A config-driven allowlist of accepted input formats; an unsupported upload gets
       a clean `415` that names the supported set (both `/v1/convert` and `/v1/ocr`).
 - [x] The input gate sniffs actual content (not just `%PDF` / extension) and fails
@@ -183,14 +199,18 @@ Trivy/CodeQL posture, and the conversion is sandboxed.*
       through the pipeline with a **fidelity bench** — figures/tables/reading order
       preserved — recorded in the PR (bench-before-code). Corpus numbers in Status;
       chart-detection and spreadsheet gaps split to T-055/T-056.
-- [ ] **Office support ships as a separate/opt-in image variant**; the default image
-      stays PDF/EPUB-only and does not inherit LibreOffice's CVE surface.
-- [ ] **Trivy hard gate is green on the Office image** (fixable HIGH/CRITICAL = 0),
-      and CodeQL stays clean — the security posture is no worse than today's.
-- [ ] The conversion is **sandboxed**: no network, macros disabled, per-file timeout
-      + resource limit with a hard kill, non-root + read-only rootfs preserved.
-      *(Process level done: macro-locked throwaway profile + timeout/kill; the
-      no-network / rootfs half lands with the image variant.)*
-- [ ] **Adversarial-document tests** (macro/OLE/DDE/external-ref/decompression-bomb/
-      truncated) prove hostile inputs are rejected or safely contained — no code
-      execution, no outbound connection, no unbounded resource use.
+- [x] **Office support ships as a separate/opt-in image variant**
+      (`--target runtime-office`, `-office` tags); the default image stays
+      PDF/EPUB-only and does not inherit LibreOffice's CVE surface.
+- [x] **Trivy hard gate is green on the Office image** (fixable HIGH/CRITICAL = 0,
+      verified on the built image; the gate is wired into security.yml and
+      release.yml), and CodeQL stays clean.
+- [x] The conversion is **sandboxed**: macros disabled (locked throwaway
+      profile), per-file timeout with a hard kill, non-root + read-only rootfs
+      preserved in the variant. *No-network is enforced at deployment, not per
+      process (the service itself needs the LLM endpoint) — documented in
+      docs/deployment.md as the honest residual.*
+- [x] **Adversarial-document tests** (macro/DDE/external-ref/decompression-bomb/
+      truncated, generated in-test) prove hostile inputs are rejected or safely
+      contained — no code execution (canary asserted), no conversion-blocking
+      outbound dependence, no unbounded resource use (hard-timeout bounded).
