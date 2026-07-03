@@ -59,6 +59,69 @@ _CONTENT_URL_RE = re.compile(r"/v1/files/(?P<id>[0-9a-f]{32})/content")
 # figmark's per-page provenance marker, emitted by output.to_markdown().
 _PAGE_MARKER_RE = re.compile(r"<!-- page (\d+) -->")
 
+# T-057: every documented Mistral OCR request parameter is either implemented or
+# rejected with a 422 naming it — never accepted-and-ignored. A parameter moves
+# to _IMPLEMENTED_PARAMS in the same PR that implements it (T-058: the image
+# fields, T-059: pages). `model` is read but its value does not select a model —
+# figmark always runs its own pipeline (documented in the README).
+_IMPLEMENTED_PARAMS = {"model", "document"}
+# Documented parameters we do not implement yet: rejected when set to anything
+# non-null. `include_image_base64` is special-cased below — `false` asks for no
+# image data, which the current response satisfies, and it is what LibreChat's
+# default request carries.
+_NOT_YET_IMPLEMENTED = {
+    "pages",  # T-059
+    "image_limit",  # T-058
+    "image_min_size",  # T-058
+    "bbox_annotation_format",
+    "document_annotation_format",
+    "document_annotation_prompt",
+    "table_format",
+    "extract_header",
+    "extract_footer",
+    "include_blocks",
+    "confidence_scores_granularity",
+}
+_SUPPORTED_SUMMARY = "model, document, include_image_base64=false"
+
+
+def reject_unsupported_params(body: dict) -> None:
+    """Fail loud (422) on any request parameter whose semantics we would not honour.
+
+    Silently ignoring a documented parameter returns wrong-looking-right results —
+    the silent-degradation class this project bans (T-024).
+    """
+    for key, value in body.items():
+        if key in _IMPLEMENTED_PARAMS:
+            continue
+        if key == "include_image_base64":
+            if value is True:
+                raise HTTPException(
+                    status_code=422,
+                    detail=(
+                        "'include_image_base64: true' is not supported yet: this "
+                        "backend does not return image data, and honouring the "
+                        "request silently with empty images would be misleading. "
+                        f"Supported parameters: {_SUPPORTED_SUMMARY}."
+                    ),
+                )
+            continue
+        if key in _NOT_YET_IMPLEMENTED:
+            if value is not None:
+                raise HTTPException(
+                    status_code=422,
+                    detail=(
+                        f"'{key}' is not supported by this figmark backend; it "
+                        "would be silently ignored, so the request is rejected "
+                        f"instead. Supported parameters: {_SUPPORTED_SUMMARY}."
+                    ),
+                )
+            continue
+        raise HTTPException(
+            status_code=422,
+            detail=(f"Unknown parameter '{key}'. Supported parameters: {_SUPPORTED_SUMMARY}."),
+        )
+
 
 class FileStore:
     """A tiny on-disk store for uploaded OCR files, keyed by an opaque id.
@@ -136,6 +199,17 @@ def _resolve_document_bytes(request: Request, document: dict | None) -> bytes:
     """
     if not isinstance(document, dict):
         raise HTTPException(status_code=422, detail="'document' object is required")
+    if document.get("type") == "file" or "file_id" in document:
+        # T-059 tracks the direct file_id reference; until then, point the caller
+        # at the working flow instead of failing on a missing document_url.
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "document.type 'file' (file_id reference) is not supported yet. "
+                "Fetch a signed URL via GET /v1/files/{id}/url and pass it as "
+                "document_url."
+            ),
+        )
     url = document.get("document_url") or document.get("image_url")
     if not isinstance(url, str) or not url:
         raise HTTPException(
@@ -235,6 +309,7 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
             raise HTTPException(status_code=422, detail="Request body must be JSON") from e
         if not isinstance(body, dict):
             raise HTTPException(status_code=422, detail="Request body must be a JSON object")
+        reject_unsupported_params(body)
 
         model = body.get("model") or f"figmark-{__version__}"
         data = _resolve_document_bytes(request, body.get("document"))

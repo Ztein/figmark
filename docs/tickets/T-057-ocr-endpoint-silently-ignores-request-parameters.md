@@ -1,6 +1,14 @@
 # T-057: /v1/ocr silently ignores Mistral-OCR request parameters it doesn't support
 
-**Status:** Open
+**Status:** Closed — **Option 1 shipped (2026-07-03):** `reject_unsupported_params`
+in `ocr_compat.py` rejects every documented-but-unimplemented Mistral OCR
+parameter (and unknown keys) with a 422 naming the field and the supported set.
+One deliberate nuance: `include_image_base64: false` is *accepted* — it asks for
+no image data, which the response satisfies, and it is what LibreChat's default
+request carries; only `true` is rejected (until T-058). A null value carries no
+request and passes. `document.type: "file"` gets a targeted 422 pointing at the
+signed-URL flow (until T-059). README documents the supported set and that
+`model` is echoed but never selects a model.
 **Priority:** High — the endpoint returns *wrong-looking-right* results: a client
 asks for something specific, gets a 200 with different semantics, and nothing
 tells it. That is exactly the silent-degradation class the project bans (T-024).
@@ -55,10 +63,11 @@ pipeline) — that is fine to keep, but document it in the README's OCR section.
 
 ## Acceptance criteria
 
-- [ ] A request carrying any documented-but-unsupported Mistral OCR parameter
+- [x] A request carrying any documented-but-unsupported Mistral OCR parameter
       gets a 422 that names the parameter and the supported set — no silent
-      behaviour differences.
+      behaviour differences. (`tests/test_api_ocr_compat.py`)
 - [ ] Parameters implemented later (T-058/T-059) are removed from the reject
       list in the same PR that implements them, with tests covering both sides.
-- [ ] The README's LibreChat/Mistral-OCR section documents exactly which
+      *(Lands with T-058/T-059 — tracked there.)*
+- [x] The README's LibreChat/Mistral-OCR section documents exactly which
       parameters the surface supports.
