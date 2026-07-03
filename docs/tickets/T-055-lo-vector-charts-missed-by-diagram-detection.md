@@ -1,6 +1,23 @@
 # T-055: Vector charts in LibreOffice-produced PDFs are missed by diagram detection
 
-**Status:** Open
+**Status:** Closed — **shipped 2026-07-03** (Option 2 + a table-vs-chart
+discriminator, bench-first). Axis-aligned hairlines now *join* clusters but
+don't gate them; a cluster needs ≥ 4 solid (non-line) members. That alone made
+zebra slide tables cluster as diagrams, so a suppression step was added: a
+cluster substantially overlapping a *table-like* `find_tables` candidate
+(≥ 3 rows, ≥ 2 cols, ≥ 45 % filled cells — charts' grid-junk candidates
+measured ≤ 36 %, real tables ≥ 50 %) is dropped — unless the candidate contains
+≥ 3 sloped/curved drawings, which marks a multi-panel *chart grid* (panel
+frames form a ruled "table"); real data tables measured 0 sloped members,
+chart grids ≥ 3. Bench results (`scripts/lo_diagram_bench/bench.py`):
+**chart recall 4/7 → 7/7, false positives 9 → 0**. The T-035 recall bench
+stays 4/4 + 9/9. Eval-corpus sweep (812 draw-heavy pages): regions 760 → 1121;
+gains are hairline-drawn charts (fed-fsr, cnb chartbook, bis-qr pages went
+0 → 2-6); every "down" page spot-checked is a table that was wrongly described
+as a diagram before (boe-mpr forecast tables, oenb/cnb data tables) or
+over-segmentation now merged (a heatmap 5 → 1). Known misses, documented in
+the bench: LO chart types drawn as a handful of path objects (radar ≈ 4
+drawings, sunburst on a 21-drawing page) sit below the page/cluster gates.
 **Priority:** High — this is figmark's headline capability (describe charts), and
 the whole Office path (T-054) routes documents through LibreOffice, so *every*
 chart in a converted docx/xlsx/pptx is exposed to this miss.
@@ -54,10 +71,13 @@ precision/recall for the current rules and the candidate fix in the PR.
 
 ## Acceptance criteria
 
-- [ ] A labelled LO-page bench exists (charts positive, ruled/zebra tables
-      negative) alongside the existing diagram bench.
-- [ ] `poi-bar-chart.pptx` (and the corpus's other LO-rendered charts) produce a
-      described diagram region end-to-end.
-- [ ] Table pages do not regress: no ruled/zebra table in the corpus is consumed
-      as a diagram region (T-031 still owns them).
-- [ ] Bench numbers (before/after) recorded in the PR.
+- [x] A labelled LO-page bench exists (charts positive, ruled/zebra tables
+      negative) alongside the existing diagram bench
+      (`scripts/lo_diagram_bench/bench.py`).
+- [x] `poi-bar-chart.pptx` (and the corpus's other LO-rendered charts) produce a
+      described diagram region end-to-end (7/7 clusterable charts; few-drawing
+      chart types documented as known misses in the bench).
+- [x] Table pages do not regress: no ruled/zebra table in the corpus is consumed
+      as a diagram region (0 false positives; the pre-fix state had 9 — the
+      suppression also *frees* those tables for T-031 extraction).
+- [x] Bench numbers (before/after) recorded in the PR.

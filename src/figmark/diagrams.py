@@ -29,7 +29,11 @@ logger = logging.getLogger("figmark.diagrams")
 
 # Pages with fewer drawings than this are not examined (text-heavy pages)
 MIN_DRAWINGS_PER_PAGE = 30
-# Drawings below this pixel size do not count (decoration)
+# Drawings below this pixel size in BOTH dimensions do not count (specks).
+# A drawing below it in exactly ONE dimension is an axis-aligned hairline —
+# LibreOffice/TikZ draw chart axes and gridlines as zero-thickness strokes
+# (T-055). Lines join clusters (they carry the chart's connectivity) but do
+# not gate them: see MIN_SOLID_DRAWINGS_PER_CLUSTER.
 MIN_DRAWING_DIM = 2
 # Drawings larger than X% of the page area are skipped (background boxes)
 MAX_DRAWING_AREA_RATIO = 0.4
@@ -37,6 +41,34 @@ MAX_DRAWING_AREA_RATIO = 0.4
 MERGE_DISTANCE = 3
 # A cluster must contain at least this many drawings
 MIN_DRAWINGS_PER_CLUSTER = 8
+# ... of which at least this many must be non-line (solid) members. Bar/pie/
+# area charts pass (bars, wedges, legend chips are fills); a pure ruled grid
+# (only hairlines) fails. Bench-derived (T-055): the smallest corpus positive,
+# a 4-bar LO chart, has exactly 4 solids; line-only "charts" (an axis frame
+# with no data marks) are indistinguishable from ruled grids and stay out.
+MIN_SOLID_DRAWINGS_PER_CLUSTER = 4
+# A candidate region is NOT a chart if it substantially overlaps a table-like
+# find_tables candidate — ruled/zebra slide tables cluster exactly like charts
+# (row fills = solids), and T-031's table path owns them. "Table-like" is
+# deliberately laxer than tables.py's keep gates (suppression needs less
+# evidence than emission): >= 3 rows, >= 2 cols, and a cell fill ratio the
+# bench separated cleanly (charts' grid-junk candidates measured <= 36%
+# filled, real tables >= 50% — threshold set between, T-055).
+TABLE_SUPPRESS_MIN_ROWS = 3
+TABLE_SUPPRESS_MIN_COLS = 2
+TABLE_SUPPRESS_MIN_FILL = 0.45
+TABLE_SUPPRESS_MIN_OVERLAP = 0.5
+# A multi-panel chart grid can satisfy the grid test above (panel frames form a
+# ruled 2xN "table" whose cells are full of axis text). What real data tables
+# never contain is *sloped or curved* vector content — their fills and rules
+# are all axis-aligned — while chart panels have line series, fan polygons or
+# pie arcs. Bench: every labelled table candidate measured 0 sloped members
+# inside; every chart-grid candidate measured >= 3 (T-055). A candidate with
+# this many sloped members inside is a chart grid, not a table, and must not
+# suppress. Residual risk: a *pure bar chart* under a table-like candidate has
+# 0 sloped members too — no such page exists in the corpus (bar-chart pages
+# produce no table candidate), noted here for honesty.
+TABLE_SUPPRESS_MAX_SLOPED = 3
 # Clusters must be at least this large (px)
 MIN_CLUSTER_WIDTH = 80
 MIN_CLUSTER_HEIGHT = 60
@@ -119,25 +151,74 @@ def _cluster_rects(rects: list[fitz.Rect], merge_distance: float) -> list[list[i
     return list(groups.values())
 
 
-def _split_by_y_gap(group_rects: list[fitz.Rect], min_gap: float) -> list[list[fitz.Rect]]:
-    """Split a cluster if it has an internal y-gap larger than min_gap."""
+def _split_by_y_gap(
+    group_rects: list[tuple[fitz.Rect, bool]], min_gap: float
+) -> list[list[tuple[fitz.Rect, bool]]]:
+    """Split a cluster if it has an internal y-gap larger than min_gap.
+
+    Items are ``(rect, is_solid)`` pairs so the solid count survives the split.
+    """
     if len(group_rects) < 2:
         return [group_rects]
-    by_y = sorted(group_rects, key=lambda r: r.y0)
-    splits: list[list[fitz.Rect]] = []
+    by_y = sorted(group_rects, key=lambda item: item[0].y0)
+    splits: list[list[tuple[fitz.Rect, bool]]] = []
     current = [by_y[0]]
-    current_max_y = by_y[0].y1
-    for r in by_y[1:]:
+    current_max_y = by_y[0][0].y1
+    for item in by_y[1:]:
+        r = item[0]
         gap = r.y0 - current_max_y
         if gap > min_gap:
             splits.append(current)
-            current = [r]
+            current = [item]
             current_max_y = r.y1
         else:
-            current.append(r)
+            current.append(item)
             current_max_y = max(current_max_y, r.y1)
     splits.append(current)
     return splits
+
+
+def _has_sloped_content(drawing: dict) -> bool:
+    """True if the drawing's path has a curve or a non-axis-aligned line —
+    chart content (line series, fan polygons, pie arcs); data-table fills and
+    rules are always axis-aligned (T-055)."""
+    for item in drawing.get("items", []):
+        op = item[0]
+        if op == "c":
+            return True
+        if op == "l" and abs(item[1].x - item[2].x) > 1 and abs(item[1].y - item[2].y) > 1:
+            return True
+    return False
+
+
+def _table_like_rects(page: fitz.Page) -> list[fitz.Rect]:
+    """Bboxes of find_tables candidates that look like real data tables (T-055).
+
+    Used to suppress diagram clusters over ruled/zebra tables. The bar is laxer
+    than tables.py's keep gates on purpose — and chart-internal grid junk stays
+    below the fill threshold, so genuine charts are not suppressed.
+    """
+    try:
+        finder = page.find_tables()
+    except Exception as e:  # noqa: BLE001 — a page quirk must not kill detection
+        logger.warning("find_tables raised during diagram suppression (%s)", e)
+        return []
+    out: list[fitz.Rect] = []
+    for t in finder.tables:
+        # The full grid, empty rows included: dropping them inflates the fill
+        # ratio of sparse chart grids (transformer attention figures measure
+        # ~20% on the full grid but ~45% row-filtered) and causes real-chart
+        # suppression. Zebra tables measure >= 50% either way.
+        rows = [[(c or "").strip() for c in row] for row in t.extract()]
+        if len(rows) < TABLE_SUPPRESS_MIN_ROWS:
+            continue
+        ncols = max(len(r) for r in rows)
+        cells = [c for row in rows for c in row]
+        if ncols < TABLE_SUPPRESS_MIN_COLS or not cells:
+            continue
+        if sum(1 for c in cells if c) / len(cells) >= TABLE_SUPPRESS_MIN_FILL:
+            out.append(fitz.Rect(t.bbox))
+    return out
 
 
 def _expand_with_neighboring_text(
@@ -183,15 +264,23 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
     max_drawing_area = MAX_DRAWING_AREA_RATIO * page_area
 
     rects: list[fitz.Rect] = []
+    solid: list[bool] = []
+    sloped: list[bool] = []
     for d in drawings:
         r = d.get("rect")
         if r is None:
             continue
-        if r.width < MIN_DRAWING_DIM or r.height < MIN_DRAWING_DIM:
-            continue
+        thin_w = r.width < MIN_DRAWING_DIM
+        thin_h = r.height < MIN_DRAWING_DIM
+        if thin_w and thin_h:
+            continue  # speck/decoration
         if r.width * r.height > max_drawing_area:
             continue  # page background/frame
+        # Axis-aligned hairlines (LO/TikZ axes, gridlines) join clusters but
+        # don't gate them (T-055).
         rects.append(fitz.Rect(r))
+        solid.append(not (thin_w or thin_h))
+        sloped.append(_has_sloped_content(d))
 
     if not rects:
         return []
@@ -202,10 +291,13 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
     for group in groups:
         if len(group) < MIN_DRAWINGS_PER_CLUSTER:
             continue
-        cluster_rects = [rects[i] for i in group]
-        for sub in _split_by_y_gap(cluster_rects, INTERNAL_Y_GAP_SPLIT):
-            if len(sub) < MIN_DRAWINGS_PER_CLUSTER:
+        cluster_items = [(rects[i], solid[i]) for i in group]
+        for sub_items in _split_by_y_gap(cluster_items, INTERNAL_Y_GAP_SPLIT):
+            if len(sub_items) < MIN_DRAWINGS_PER_CLUSTER:
                 continue
+            if sum(1 for _, s in sub_items if s) < MIN_SOLID_DRAWINGS_PER_CLUSTER:
+                continue  # hairlines only ≈ ruled grid, not a chart
+            sub = [r for r, _ in sub_items]
             x0 = min(r.x0 for r in sub)
             y0 = min(r.y0 for r in sub)
             x1 = max(r.x1 for r in sub)
@@ -254,6 +346,35 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
                 n_drawings=n_draw,
             )
         )
+
+    # A region sitting on a real data table is the table path's business
+    # (T-031/T-055) — zebra row fills cluster exactly like chart bars, and
+    # describing a table as a picture double-represents it.
+    if regions:
+        suppressors = []
+        for s in _table_like_rects(page):
+            sloped_inside = sum(
+                1
+                for i, rect in enumerate(rects)
+                if sloped[i] and (rect & s).get_area() >= 0.5 * max(rect.get_area(), 1e-9)
+            )
+            if sloped_inside < TABLE_SUPPRESS_MAX_SLOPED:
+                suppressors.append(s)
+        if suppressors:
+            kept: list[DiagramRegion] = []
+            for r in regions:
+                region_rect = fitz.Rect(r.bbox)
+                area = region_rect.get_area()
+                overlap = max((region_rect & s).get_area() for s in suppressors)
+                if area > 0 and overlap / area >= TABLE_SUPPRESS_MIN_OVERLAP:
+                    logger.info(
+                        "page %d: diagram candidate %s suppressed — overlaps a data table",
+                        page_num,
+                        tuple(round(v) for v in r.bbox),
+                    )
+                    continue
+                kept.append(r)
+            regions = kept
 
     regions.sort(key=lambda r: (round(r.bbox[1] / 10), r.bbox[0]))
     for i, r in enumerate(regions, start=1):
