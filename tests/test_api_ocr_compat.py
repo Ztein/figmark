@@ -159,6 +159,76 @@ def test_ocr_and_files_require_auth(make_api_app, tmp_path):
     assert client.delete("/v1/files/abc").status_code == 401
 
 
+def test_unsupported_documented_param_is_422_naming_it(make_api_app, tmp_path):
+    """T-057: a documented-but-unsupported Mistral parameter must fail loud."""
+    client = _client(make_api_app)
+    pdf = _pdf_bytes(tmp_path)
+    data_url = "data:application/pdf;base64," + base64.b64encode(pdf).decode()
+    for param, value in [
+        ("pages", [0, 2]),
+        ("image_limit", 5),
+        ("image_min_size", 100),
+        ("table_format", "html"),
+        ("document_annotation_format", {"type": "json_schema"}),
+    ]:
+        r = client.post(
+            "/v1/ocr",
+            json={"document": {"type": "document_url", "document_url": data_url}, param: value},
+            headers=AUTH,
+        )
+        assert r.status_code == 422, f"{param}: {r.status_code} {r.text}"
+        assert param in r.json()["detail"]
+        assert "model, document" in r.json()["detail"]  # names the supported set
+        # A null value carries no request, so it passes through.
+        ok = client.post(
+            "/v1/ocr",
+            json={"document": {"type": "document_url", "document_url": data_url}, param: None},
+            headers=AUTH,
+        )
+        assert ok.status_code == 200, f"{param}=null: {ok.status_code} {ok.text}"
+
+
+def test_include_image_base64_true_is_422_false_is_ok(make_api_app, tmp_path):
+    """`false` matches what we return (no image data) and is what LibreChat sends;
+    `true` would silently get no images, so it is rejected until T-058."""
+    client = _client(make_api_app)
+    pdf = _pdf_bytes(tmp_path)
+    data_url = "data:application/pdf;base64," + base64.b64encode(pdf).decode()
+    doc = {"type": "document_url", "document_url": data_url}
+    yes = client.post(
+        "/v1/ocr", json={"document": doc, "include_image_base64": True}, headers=AUTH
+    )
+    assert yes.status_code == 422 and "include_image_base64" in yes.json()["detail"]
+    no = client.post(
+        "/v1/ocr", json={"document": doc, "include_image_base64": False}, headers=AUTH
+    )
+    assert no.status_code == 200, no.text
+
+
+def test_unknown_param_is_422(make_api_app, tmp_path):
+    client = _client(make_api_app)
+    pdf = _pdf_bytes(tmp_path)
+    data_url = "data:application/pdf;base64," + base64.b64encode(pdf).decode()
+    r = client.post(
+        "/v1/ocr",
+        json={"document": {"type": "document_url", "document_url": data_url}, "frobnicate": 1},
+        headers=AUTH,
+    )
+    assert r.status_code == 422 and "frobnicate" in r.json()["detail"]
+
+
+def test_file_reference_document_is_422_with_pointer(make_api_app):
+    """document.type 'file' (T-059) gets a clear 422 pointing at the signed-URL flow."""
+    client = _client(make_api_app)
+    r = client.post(
+        "/v1/ocr",
+        json={"document": {"type": "file", "file_id": "0" * 32}},
+        headers=AUTH,
+    )
+    assert r.status_code == 422
+    assert "file_id" in r.json()["detail"] and "document_url" in r.json()["detail"]
+
+
 def test_split_pages_uses_page_markers():
     md = "<!-- page 1 -->\nHello\n\n<!-- page 2 -->\nWorld\n"
     pages = split_pages(md)
