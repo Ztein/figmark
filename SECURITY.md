@@ -61,10 +61,14 @@ on disk and are shared across requests. Security properties, reviewed
   multiple consumers that should not learn about each other's documents, that
   is outside the current model: partition per consumer (separate instances or
   tokens+caches) — see T-062.
-- **Cache management is not privilege-separated.** The same token that converts
-  can also wipe the cache (a bounded cost/latency degradation, not data loss).
-  Accepted under the single-tenant model; a separate admin credential is
-  tracked as T-062.
+- **Cache management privilege separation is opt-in (T-062).** By default (the
+  single-tenant model) the conversion token also manages the cache — a
+  compromised consumer can wipe it, a bounded cost/latency degradation, not
+  data loss. Setting `FIGMARK_CACHE_ADMIN_TOKEN` (or `_FILE`) separates the
+  roles: the `/v1/cache*` management endpoints then require the admin token
+  (the conversion token gets a clear 403), and the admin token cannot convert.
+  Note the existence oracle below is *not* removed by this — that needs
+  per-consumer partitioning, still tracked in T-062's options.
 - **Cross-document description reuse (T-061/T-063).** A description generated
   with document A's text context may be reused when the same image appears in
   document B — so wording influenced by A's context can surface in B's output.

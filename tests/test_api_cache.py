@@ -191,3 +191,50 @@ def test_disabled_cache_never_hits_and_stats_404(make_api_app, tmp_path: Path, p
     assert r1.status_code == r2.status_code == 200
     assert r2.headers.get("x-figmark-cache") in (None, "off"), "disabled → never a hit"
     assert http.get("/v1/cache/stats", headers=AUTH).status_code == 404
+
+
+# --- T-062: optional cache admin token ---------------------------------------
+
+
+def test_admin_token_separates_cache_management(make_api_app):
+    """With FIGMARK_CACHE_ADMIN_TOKEN set: the conversion token gets a clear
+    403 on management (not a silent pass), the admin token works, and the
+    admin token does NOT convert."""
+    from fastapi.testclient import TestClient
+
+    from .conftest import API_TEST_TOKEN
+    from .fakes import FakeClient
+
+    http = TestClient(make_api_app(FakeClient("x"), cache_admin_token="admin-secret"))
+    convert_auth = {"Authorization": f"Bearer {API_TEST_TOKEN}"}
+    admin_auth = {"Authorization": "Bearer admin-secret"}
+
+    assert http.get("/v1/cache/stats", headers=convert_auth).status_code == 403
+    assert http.delete("/v1/cache", headers=convert_auth).status_code == 403
+    assert http.delete("/v1/cache/" + "0" * 64, headers=convert_auth).status_code == 403
+
+    assert http.get("/v1/cache/stats", headers=admin_auth).status_code == 200
+    assert http.delete("/v1/cache", headers=admin_auth).status_code == 200
+
+    # The admin token is management-only: it cannot convert.
+    r = http.post(
+        "/v1/convert", headers=admin_auth, files={"file": ("d.pdf", b"x", "application/pdf")}
+    )
+    assert r.status_code == 401
+
+    # Garbage token: 401 either way.
+    assert http.get("/v1/cache/stats", headers={"Authorization": "Bearer nope"}).status_code == 401
+
+
+def test_without_admin_token_conversion_token_manages(make_api_app):
+    """Default single-token model unchanged: no admin token configured →
+    the conversion token manages the cache."""
+    from fastapi.testclient import TestClient
+
+    from .conftest import API_TEST_TOKEN
+    from .fakes import FakeClient
+
+    http = TestClient(make_api_app(FakeClient("x")))
+    auth = {"Authorization": f"Bearer {API_TEST_TOKEN}"}
+    assert http.get("/v1/cache/stats", headers=auth).status_code == 200
+    assert http.delete("/v1/cache", headers=auth).status_code == 200
