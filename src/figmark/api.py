@@ -380,6 +380,70 @@ def document_cache_key(doc_digest: str, cfg) -> str:
     return f"doc2-{doc_digest}-{config_cache_fingerprint(cfg)}"
 
 
+class SingleFlight:
+    """In-process request coalescing for conversions (T-073).
+
+    The cache knows hit and miss; this adds the third state, *in flight*: the
+    first requester for a key (document digest + config fingerprint, plus the
+    page selection on the OCR surface) runs the conversion, and every request
+    for the same key that arrives meanwhile awaits that result instead of
+    burning a second full pipeline run. Works with the cache disabled too —
+    coalescing is about not recomputing, not about storage.
+
+    Single-process by design (matching the one-uvicorn deployment): claim() is
+    atomic because it runs on the event loop with no await between the check
+    and the insert. Outcomes travel as ("ok", payload) / ("err", exc) tuples —
+    never bare set_exception, so a leader with no followers doesn't leave an
+    unretrieved-exception warning behind. Failures are never cached and never
+    sticky: finish() always removes the key, so the next request leads afresh.
+    """
+
+    def __init__(self) -> None:
+        self._inflight: dict[str, asyncio.Future] = {}
+
+    def claim(self, key: str) -> tuple[bool, asyncio.Future]:
+        """Return (is_leader, future). Leaders convert; followers await."""
+        fut = self._inflight.get(key)
+        if fut is not None:
+            return False, fut
+        fut = asyncio.get_running_loop().create_future()
+        self._inflight[key] = fut
+        return True, fut
+
+    def finish(
+        self, key: str, fut: asyncio.Future, payload: bytes | None, exc: BaseException | None
+    ) -> None:
+        """Leader's finally-hook: release the key and wake the followers."""
+        self._inflight.pop(key, None)
+        if fut.done():  # defensive — nothing else resolves leader futures
+            return
+        if exc is not None:
+            if isinstance(exc, asyncio.CancelledError):
+                # The leader's client disconnected mid-conversion. Followers
+                # did nothing wrong — tell them to retry (one will lead).
+                exc = HTTPException(
+                    status_code=503,
+                    detail="The in-flight conversion for this document was cancelled — retry",
+                    headers={"Retry-After": "1"},
+                )
+            fut.set_result(("err", exc))
+        else:
+            fut.set_result(("ok", payload))
+
+
+async def await_coalesced(fut: asyncio.Future, timeout_seconds: float) -> bytes:
+    """Follower side of SingleFlight: the leader's payload, or its error."""
+    try:
+        # shield(): a follower timing out must not cancel the shared future
+        # the leader and the other followers still rely on.
+        status, value = await asyncio.wait_for(asyncio.shield(fut), timeout=timeout_seconds)
+    except TimeoutError as e:
+        raise HTTPException(status_code=504, detail="Conversion timed out") from e
+    if status == "err":
+        raise value
+    return value
+
+
 _FIGURE_MIME = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png"}
 
 
@@ -623,6 +687,9 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
     app.state.cfg = cfg
     app.state.client = client
     app.state.job_semaphore = asyncio.Semaphore(max(1, settings.max_concurrent_jobs))
+    # Request coalescing (T-073): concurrent conversions of the same document
+    # + config run the pipeline once. Shared by /v1/convert and /v1/ocr.
+    app.state.single_flight = SingleFlight()
     # Cross-request cache (T-060). None when disabled — every consumer checks.
     if cfg.cache.enabled:
         cache_dir = settings.cache_dir or (settings.work_dir / "cache")
@@ -715,10 +782,11 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
             doc_digest = hasher.hexdigest()
 
             store: CacheStore | None = request.app.state.cache_store
+            cache_key = document_cache_key(doc_digest, cfg)
             if store is not None:
                 # Threadpool hop: SQLite blocks, and the event loop must keep
                 # serving other requests (and /healthz) meanwhile (T-074).
-                hit = await run_in_threadpool(store.get, document_cache_key(doc_digest, cfg))
+                hit = await run_in_threadpool(store.get, cache_key)
                 if hit is not None:
                     logger.info("convert cache hit doc=%s…", doc_digest[:12])
                     cached_result = cache_payload_to_result(hit)
@@ -726,24 +794,43 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
                     _stamp_cache_header(formatted, response, "hit")
                     return formatted
 
-            # PyMuPDF picks its loader from the extension — name the file for
-            # what its content actually is.
-            doc_path = upload_path.rename(work / f"input.{fmt}")
-            doc_path = await prepare_office_document(doc_path, fmt, cfg)
-            _validate_pdf_document(doc_path)
+            # Single-flight (T-073): if this exact conversion is already
+            # running, await its result instead of paying for a second run.
+            flight: SingleFlight = request.app.state.single_flight
+            leader, fut = flight.claim(cache_key)
+            if not leader:
+                logger.info("convert coalesced onto in-flight run doc=%s…", doc_digest[:12])
+                shared = await await_coalesced(fut, settings.request_timeout_seconds)
+                coalesced_result = cache_payload_to_result(shared)
+                formatted = format_convert_result(coalesced_result, output_format, cached=True)
+                _stamp_cache_header(formatted, response, "coalesced")
+                return formatted
 
-            result = await run_conversion(
-                request.app, doc_path, work / "out", annotate=annotate, doc_digest=doc_digest
-            )
+            payload: bytes | None = None
+            err: BaseException | None = None
+            try:
+                # PyMuPDF picks its loader from the extension — name the file
+                # for what its content actually is.
+                doc_path = upload_path.rename(work / f"input.{fmt}")
+                doc_path = await prepare_office_document(doc_path, fmt, cfg)
+                _validate_pdf_document(doc_path)
 
-            if store is not None:
-                await run_in_threadpool(
-                    store.put,
-                    document_cache_key(doc_digest, cfg),
-                    result_to_cache_payload(result),
-                    doc_digest=doc_digest,
-                    kind="document",
+                result = await run_conversion(
+                    request.app, doc_path, work / "out", annotate=annotate, doc_digest=doc_digest
                 )
+                payload = result_to_cache_payload(result)
+
+                if store is not None:
+                    await run_in_threadpool(
+                        store.put, cache_key, payload, doc_digest=doc_digest, kind="document"
+                    )
+            except BaseException as e:
+                err = e
+                raise
+            finally:
+                # Wake followers with the payload (or our error) the moment it
+                # exists — before response formatting.
+                flight.finish(cache_key, fut, payload, err)
 
             logger.info(
                 "convert ok pages=%d figures=%d skipped=%d language=%s",

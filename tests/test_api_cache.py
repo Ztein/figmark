@@ -9,6 +9,7 @@ behind the same bearer auth as conversion.
 from __future__ import annotations
 
 import hashlib
+from contextlib import contextmanager
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -261,3 +262,156 @@ def test_conversion_survives_a_broken_cache_backend(make_api_app, tmp_path: Path
     assert "En bild på en katt." in r.json()["markdown"]
     assert r.headers["x-figmark-cache"] == "miss"
     assert "cache" in caplog.text and "failed" in caplog.text, "degraded loudly, not silently"
+
+
+# --- T-073: single-flight — concurrent identical uploads run one conversion --
+
+
+class _SlowFakeClient(FakeClient):
+    """FakeClient whose figure-description call is slow, so overlapping
+    requests reliably find the first conversion still in flight."""
+
+    def __init__(self, image_reply: str, delay_seconds: float):
+        super().__init__(image_reply)
+        self._delay = delay_seconds
+
+    def _create(self, model, max_tokens, messages, **kwargs):
+        content = messages[0]["content"]
+        if not isinstance(content, str):  # a describe call carries an image
+            import time
+
+            time.sleep(self._delay)
+        return super()._create(model, max_tokens, messages, **kwargs)
+
+
+@contextmanager
+def _running(app):
+    """Serve the app under real uvicorn in a thread and yield its base URL.
+
+    Coalescing happens BETWEEN concurrent requests on one event loop —
+    TestClient can't exercise that (it builds a fresh portal/loop per
+    request), so these tests go over real HTTP, like conftest's
+    mock_llm_server."""
+    import socket
+    import threading
+    import time
+
+    import uvicorn
+
+    sock = socket.socket()
+    sock.bind(("127.0.0.1", 0))
+    port = sock.getsockname()[1]
+    sock.close()
+    server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=port, log_level="warning"))
+    thread = threading.Thread(target=server.run, daemon=True)
+    thread.start()
+    deadline = time.time() + 10
+    while not server.started and time.time() < deadline:
+        time.sleep(0.05)
+    assert server.started, "test app did not start"
+    try:
+        yield f"http://127.0.0.1:{port}"
+    finally:
+        server.should_exit = True
+        thread.join(timeout=5)
+
+
+def _http_post(base: str, pdf: bytes):
+    import httpx
+
+    return httpx.post(
+        f"{base}/v1/convert",
+        headers=AUTH,
+        files={"file": ("doc.pdf", pdf, "application/pdf")},
+        timeout=60,
+    )
+
+
+def _concurrent_posts(base: str, bodies: list[bytes]):
+    import threading
+
+    results: list = [None] * len(bodies)
+
+    def post(i: int) -> None:
+        results[i] = _http_post(base, bodies[i])
+
+    threads = [threading.Thread(target=post, args=(i,)) for i in range(len(bodies))]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    return results
+
+
+def test_concurrent_identical_uploads_run_one_conversion(make_api_app, tmp_path: Path):
+    """T-073: N simultaneous uploads of one document must cost ONE pipeline
+    run — the followers coalesce onto the leader's in-flight conversion and
+    return the same result, labelled as served from cache."""
+    pdf = synthetic_pdf(tmp_path / "doc.pdf").read_bytes()
+    fake = _SlowFakeClient("En bild på en katt.", delay_seconds=2.0)
+    app = make_api_app(fake, max_concurrent_jobs=4)
+
+    with _running(app) as base:
+        results = _concurrent_posts(base, [pdf] * 3)
+
+    assert [r.status_code for r in results] == [200, 200, 200]
+    assert len(fake.describe_prompts) == 1, "one conversion's worth of upstream calls"
+    headers = sorted(r.headers["x-figmark-cache"] for r in results)
+    assert headers == ["coalesced", "coalesced", "miss"]
+    markdowns = {r.json()["markdown"] for r in results}
+    assert len(markdowns) == 1, "followers get the leader's result"
+    assert all(r.json()["cached"] for r in results if r.headers["x-figmark-cache"] == "coalesced")
+
+
+def test_coalesced_follower_receives_the_leaders_error(make_api_app, tmp_path: Path):
+    """A failed leader must not poison or hang followers: they receive the
+    leader's error, and a failure is never cached or sticky."""
+    import time
+
+    class _SlowThenFailingClient:
+        """Language call succeeds; the describe call is slow (so a follower
+        reliably coalesces) and then returns an empty completion — the hard,
+        deliberately-not-retried T-033 error."""
+
+        def __init__(self):
+            from types import SimpleNamespace
+
+            self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._create))
+
+        def _create(self, model, max_tokens, messages, **kwargs):
+            from .fakes import make_response
+
+            content = messages[0]["content"]
+            if isinstance(content, str):
+                return make_response("Swedish")
+            time.sleep(2.0)
+            return make_response("")  # empty completion → hard error, no retry
+
+    pdf = synthetic_pdf(tmp_path / "doc.pdf").read_bytes()
+    app = make_api_app(_SlowThenFailingClient(), max_concurrent_jobs=4)
+
+    with _running(app) as base:
+        results = _concurrent_posts(base, [pdf] * 2)
+        # Leader and follower fail identically — the follower is not hung,
+        # not silently served a partial result.
+        statuses = sorted(r.status_code for r in results)
+        assert statuses == [500, 500], [r.text for r in results]
+        # The failure is not sticky: a fresh upload leads again (and fails
+        # again, honestly) instead of being served a cached error.
+        r = _http_post(base, pdf)
+        assert r.status_code == 500
+
+
+def test_different_documents_do_not_coalesce(make_api_app, tmp_path: Path):
+    """Coalescing keys on the document digest: two different documents
+    uploaded simultaneously both convert."""
+    pdf_a = synthetic_pdf(tmp_path / "a.pdf").read_bytes()
+    pdf_b = synthetic_pdf(tmp_path / "b.pdf").read_bytes() + b"\n%tail"  # distinct digest
+    fake = _SlowFakeClient("En bild på en katt.", delay_seconds=1.0)
+    app = make_api_app(fake, max_concurrent_jobs=4)
+
+    with _running(app) as base:
+        results = _concurrent_posts(base, [pdf_a, pdf_b])
+
+    assert [r.status_code for r in results] == [200, 200]
+    assert {r.headers["x-figmark-cache"] for r in results} == {"miss"}, "no false coalescing"
