@@ -42,11 +42,14 @@ from urllib.parse import parse_qs, urlparse
 
 import fitz
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, Response, UploadFile
+from starlette.concurrency import run_in_threadpool
 
 from . import __version__
 from .api import (
+    SingleFlight,
     _require_auth,
     _validate_pdf_document,
+    await_coalesced,
     cache_payload_to_result,
     document_cache_key,
     gate_document_format,
@@ -514,7 +517,8 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
         )
         store = request.app.state.cache_store
         if store is not None:
-            hit = store.get(full_key)
+            # Threadpool hop for cache I/O, matching /v1/convert (T-074).
+            hit = await run_in_threadpool(store.get, full_key)
             if hit is not None:
                 norm = cache_payload_to_result(hit)
                 if requested_pages is not None:
@@ -531,15 +535,29 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
                 response.headers["X-Figmark-Cache"] = "hit"
                 return _ocr_response(norm, only_indices=requested_pages)
             if pages_key is not None:
-                hit = store.get(pages_key)
+                hit = await run_in_threadpool(store.get, pages_key)
                 if hit is not None:
                     logger.info("ocr cache hit doc=%s… pages=%s", doc_digest[:12], requested_pages)
                     response.headers["X-Figmark-Cache"] = "hit"
                     return _ocr_response(cache_payload_to_result(hit), index_map=requested_pages)
 
+        # Single-flight (T-073), shared with /v1/convert via app state: an
+        # identical in-flight conversion (same document + config — and, here,
+        # the same page selection) is awaited, not recomputed.
+        flight: SingleFlight = request.app.state.single_flight
+        sf_key = pages_key if pages_key is not None else full_key
+        leader, fut = flight.claim(sf_key)
+        if not leader:
+            logger.info("ocr coalesced onto in-flight run doc=%s…", doc_digest[:12])
+            shared = await await_coalesced(fut, settings.request_timeout_seconds)
+            response.headers["X-Figmark-Cache"] = "coalesced"
+            return _ocr_response(cache_payload_to_result(shared), index_map=requested_pages)
+
         work = Path(tempfile.mkdtemp(dir=settings.work_dir))
-        upload_path = work / "upload.bin"
+        payload: bytes | None = None
+        err: BaseException | None = None
         try:
+            upload_path = work / "upload.bin"
             upload_path.write_bytes(data)
             # There is no trustworthy filename on this surface — the sniffed
             # content alone decides, against the same allowlist as /v1/convert
@@ -561,14 +579,15 @@ def add_mistral_ocr_routes(app: FastAPI) -> None:
             # exists; hit and miss then answer from the same normalised shape.
             payload = result_to_cache_payload(result)
             if store is not None:
-                store.put(
-                    pages_key if pages_key is not None else full_key,
-                    payload,
-                    doc_digest=doc_digest,
-                    kind="document",
+                await run_in_threadpool(
+                    store.put, sf_key, payload, doc_digest=doc_digest, kind="document"
                 )
             response.headers["X-Figmark-Cache"] = "miss" if store is not None else "off"
             logger.info("ocr ok pages=%d figures=%d", result.page_count, result.figure_count)
             return _ocr_response(cache_payload_to_result(payload), index_map=requested_pages)
+        except BaseException as e:
+            err = e
+            raise
         finally:
+            flight.finish(sf_key, fut, payload, err)
             shutil.rmtree(work, ignore_errors=True)

@@ -1,6 +1,9 @@
 # T-073: Concurrent uploads of the same document each run a full conversion — the cache does not coalesce in-flight requests
 
-**Status:** Open
+**Status:** Closed — **Option 1 shipped 2026-07-06** (in-process SingleFlight shared
+by /v1/convert and /v1/ocr; followers get the leader's payload as an
+`X-Figmark-Cache: coalesced` response, or its error — never a hang, never a
+cached failure; scorecard S1: 4 conversions → 1).
 **Priority:** High — this is the single most expensive gap in the cache design:
 N simultaneous uploads of one document cost N full vision-model runs. The
 scenario is not exotic; it is exactly what happens in an organisation when a
@@ -71,14 +74,14 @@ Option 1 now; revisit option 2 only if multi-process serving becomes real.
 
 ## Acceptance criteria
 
-- [ ] Two concurrent conversions of the same document result in **one**
+- [x] Two concurrent conversions of the same document result in **one**
       pipeline run; the second request returns the same result, marked as
       served from cache (header/`cached` flag may distinguish "coalesced").
-- [ ] A failed leader does not poison followers: they either run the
+- [x] A failed leader does not poison followers: they either run the
       conversion themselves or receive the leader's error — never hang, and
       failures are never cached.
-- [ ] Waiting followers still honour `request_timeout_seconds`.
-- [ ] Different documents (different digests) are never coalesced; different
+- [x] Waiting followers still honour `request_timeout_seconds`.
+- [x] Different documents (different digests) are never coalesced; different
       config fingerprints for the same document are never coalesced.
-- [ ] A test drives ≥ 2 concurrent uploads of one document against the mockllm
+- [x] A test drives ≥ 2 concurrent uploads of one document against the mockllm
       server and asserts exactly one conversion's worth of upstream calls.

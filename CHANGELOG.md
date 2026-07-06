@@ -17,6 +17,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   kept for inspection) and rebuilt instead of preventing boot. Management
   endpoints still fail loudly — an operator's delete is never a silent no-op.
 
+### Added
+
+- **Concurrent identical conversions run once (T-073).** Requests for the same
+  document + config (and, on `/v1/ocr`, the same page selection) that arrive
+  while that conversion is already in flight now await its result instead of
+  each burning a full pipeline run — N simultaneous uploads of one document
+  cost one set of vision-model calls. Coalesced responses are labelled
+  `X-Figmark-Cache: coalesced` (and `cached: true`). A failed leader's error
+  is delivered to the waiting requests — failures are never cached, and the
+  next fresh request converts anew. In-process by design, matching the
+  single-process deployment.
+
 ### Changed
 
 - **Cache operations are ~100× faster and no longer touch the event loop

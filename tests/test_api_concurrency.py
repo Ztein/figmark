@@ -29,6 +29,10 @@ class BlockingFakeClient(FakeClient):
 
 def test_second_concurrent_request_gets_429(make_api_app, tmp_path):
     pdf = synthetic_pdf(tmp_path / "doc.pdf").read_bytes()
+    # The busy gate applies to a DIFFERENT document — an identical one would
+    # now coalesce onto the in-flight conversion instead (T-073, covered in
+    # test_api_cache).
+    other_pdf = pdf + b"\n%different-digest"
     gate = threading.Event()
     app = make_api_app(BlockingFakeClient("desc", gate), max_concurrent_jobs=1)
 
@@ -40,7 +44,7 @@ def test_second_concurrent_request_gets_429(make_api_app, tmp_path):
             await asyncio.sleep(0.4)  # let the first request enter convert and hold the slot
             second = await ac.post(
                 "/v1/convert",
-                files={"file": ("d2.pdf", pdf, "application/pdf")},
+                files={"file": ("d2.pdf", other_pdf, "application/pdf")},
                 headers=AUTH,
             )
             gate.set()
