@@ -72,7 +72,9 @@ def test_pipeline_paper_full_roundtrip(
     md_path = pdf_out / f"{paper_pdf.stem}.md"
     images_dir = pdf_out / "images"
     descriptions_dir = pdf_out / "descriptions"
-    language_path = pdf_out / "document_language.txt"
+
+    def language_path() -> Path:
+        return next(pdf_out.glob("document_language-*.txt"), None)
 
     # Artifacts
     assert raw_path.exists() and raw_path.stat().st_size > 1000
@@ -93,8 +95,8 @@ def test_pipeline_paper_full_roundtrip(
     # English sample paper must be detected as English — NOT forced to the prompt's
     # Swedish register. This is the regression guard the old hardcoded-Swedish
     # assertion contradicted.
-    assert language_path.exists(), "document_language.txt was not written"
-    detected = language_path.read_text(encoding="utf-8").strip()
+    assert language_path() is not None, "the document-language cache was not written"
+    detected = language_path().read_text(encoding="utf-8").strip()
     assert detected.lower() == "english", (
         f"Expected the English paper to be detected as English, got {detected!r}"
     )

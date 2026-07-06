@@ -437,7 +437,13 @@ def collect_figure_images(result) -> list[dict]:
         try:
             with Image.open(io.BytesIO(data)) as im:
                 width_px, height_px = im.size
-        except OSError:
+        except OSError as e:
+            # T-067: an undecodable figure file is announced, not absorbed —
+            # the entry still ships (the bytes may render elsewhere), but the
+            # operator can see why its dimensions are null.
+            logger.warning(
+                "figure file %s could not be decoded (%s) — dimensions unknown", path.name, e
+            )
             width_px = height_px = None
         figures.append(
             {

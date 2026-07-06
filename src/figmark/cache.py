@@ -172,7 +172,7 @@ class CacheStore:
             # database — never return it to the pool.
             try:
                 conn.close()
-            except Exception:  # noqa: BLE001 — already failing; close is best-effort
+            except Exception:  # noqa: BLE001, S110 — already failing; close is best-effort, original error re-raised
                 pass
             raise
         else:

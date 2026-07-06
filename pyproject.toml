@@ -108,10 +108,16 @@ target-version = "py311"
 src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "W"]
+# BLE001/S110/S112 are the T-067 mechanical guard: a blind `except`, or a
+# swallowed exception, in the shipped package is either announced (a loud log
+# plus a noqa naming the reason) or it does not merge. Test/bench probe
+# helpers legitimately catch everything — exempted below.
+select = ["E", "F", "I", "UP", "B", "W", "BLE", "S110", "S112"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["E501"]
+"tests/*" = ["E501", "BLE001", "S110", "S112"]
+"scripts/*" = ["BLE001", "S110", "S112"]
+"examples/*" = ["BLE001", "S110", "S112"]
 # FastAPI's dependency-injection idiom puts Depends()/File()/Form() in argument
 # defaults — B008 ("no function call in defaults") is a false positive here.
 "src/figmark/api.py" = ["B008"]

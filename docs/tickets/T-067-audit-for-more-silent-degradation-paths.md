@@ -1,6 +1,9 @@
 # T-067: Audit for further silent-degradation paths — where else does bad input or a degraded run produce a confident-looking result?
 
-**Status:** Open
+**Status:** Closed — **audit performed + Option 3 shipped 2026-07-06** (see
+the audit record at the bottom: 7 instances found and fixed inline, the
+remaining surfaces recorded clean, and the mechanical guard adopted as ruff
+rules BLE001/S110/S112 on `src/figmark`).
 **Priority:** Medium — the CLI Office gap (T-066) is proof that the last
 fail-loud audit (T-024) did not cover every surface. One escaped instance means
 the class isn't closed; a fresh, systematic sweep is warranted.
@@ -70,9 +73,63 @@ output instead of a loud failure**." Concrete places to check:
 
 ## Acceptance criteria
 
-- [ ] A recorded pass over the surfaces listed, with each genuine
+- [x] A recorded pass over the surfaces listed, with each genuine
       silent-degradation instance filed as its own ticket (or fixed inline if
       trivial), and an explicit "no further instances found in X" where the
       sweep came up clean.
-- [ ] A decision on a mechanical guard (Option 2) — adopted with a rule, or
+- [x] A decision on a mechanical guard (Option 2) — adopted with a rule, or
       recorded as rejected with a reason.
+
+## Audit record (2026-07-06)
+
+Three parallel sweeps over `src/figmark/` (except-blocks; entry-point gates +
+misconfigured-feature no-ops + quiet mode; model-output handling + cache-key
+correctness), each finding verified by hand before action.
+
+### Instances found — all fixed inline in the closing PR
+
+1. `api.py` figures assembly: a figure file PIL could not decode was absorbed
+   (`except OSError: → None` dims, no log). Now announced at WARNING.
+2. `config.py` `_require`: a whitespace-only prompt passed the missing-field
+   check and stripped to empty — an enabled feature ran with a degenerate
+   task. Whitespace-only now counts as missing (loud RuntimeError).
+3. `summarize.py` language detection: a `finish_reason=length` truncation
+   inside the 8-token cap cached a cut-off sentence as the document language.
+   Now announced + falls back to the document-language instruction; garbage is
+   never cached.
+4. `summarize.py` document summary: a token-capped summary was cached and
+   silently reused. Now announced, used for the current run (T-033 semantics),
+   never cached.
+5. `pipeline.py` description fingerprints: `ocr.language` was missing — a CLI
+   re-run with a changed OCR language reused stale descriptions on scanned
+   documents (the HTTP surface's `config_cache_fingerprint` already included
+   it). Added to `image_fp`/`diagram_fp`.
+6. `pipeline.py` `_summary_fp`: `document_summary.sample_words` was missing —
+   a changed sample size reused descriptions built on a differently-sourced
+   summary. Added.
+7. `pipeline.py` summary/language disk caches: `document_summary.txt` /
+   `document_language.txt` were keyed by path alone — any config change reused
+   the stale file. Both filenames now carry a fingerprint of what shaped them.
+
+### Recorded clean (no further instances found)
+
+- Except-blocks: `office.py`, `ocr_compat.py`, `cache.py`, `input_formats.py`,
+  `images.py`, `diagrams.py`, `tables.py`, `ocr.py`, `pdf_loader.py`,
+  `structure.py`, `output.py`, `boilerplate.py`, `annotate.py`, `tagged.py`,
+  `context.py`, `parallel.py`, `usage.py`, `config.py`, `describe.py`,
+  `main.py` — every degradation is announced or re-raised.
+- Entry-point gates: `/v1/convert` + `/v1/ocr` honour or loudly reject every
+  documented parameter (T-057/T-059 hold); cache management validates digests;
+  Office conversion failures surface as 422; the CLI gate is T-066.
+- Quiet mode: `emit_loud` routes warnings to the structured logs under
+  `quiet=True` (T-032 holds).
+- Model output: describe/diagram/OCR calls all fail loud on empty content;
+  describe/diagram truncation is T-033/T-075.
+- Feature flags: enabled-with-missing-dependency fails at config load.
+
+### Mechanical guard — adopted
+
+Ruff rules `BLE001` (blind except), `S110` (try-except-pass) and `S112`
+(try-except-continue) are now enforced on `src/figmark` (tests/scripts/
+examples exempt): a swallowed exception in the shipped package needs a loud
+log plus a `noqa` naming the reason, or it does not pass CI.
