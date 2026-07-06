@@ -77,6 +77,19 @@ def test_cache_misses_when_config_changes(env_with_key, project_root: Path, tmp_
     convert(pdf, cfg, out, client=changed, quiet=True)
     assert len(changed.describe_prompts) == n_first
 
+    # T-067 additions to the fingerprint: the OCR language shapes context/
+    # detection on scanned pages, the summary sample size shapes the summary
+    # every description receives — both must miss, not silently reuse.
+    cfg.ocr.language = "eng"
+    ocr_changed = FakeClient("A picture of a cat.")
+    convert(pdf, cfg, out, client=ocr_changed, quiet=True)
+    assert len(ocr_changed.describe_prompts) == n_first, "ocr.language change must miss"
+
+    cfg.document_summary.sample_words += 50
+    sample_changed = FakeClient("A picture of a cat.")
+    convert(pdf, cfg, out, client=sample_changed, quiet=True)
+    assert len(sample_changed.describe_prompts) == n_first, "sample_words change must miss"
+
 
 def test_convert_uses_injected_client_without_monkeypatch(
     env_with_key, project_root: Path, tmp_path: Path

@@ -134,12 +134,18 @@ class Config:
 
 
 def _require(section: dict, key: str, section_name: str):
-    """Fetch a required field. Fails loudly if it is missing."""
-    if key not in section or section[key] in (None, ""):
+    """Fetch a required field. Fails loudly if it is missing.
+
+    A whitespace-only string counts as missing (T-067): the loaders strip
+    prompts after this check, and an enabled feature with a blank prompt would
+    otherwise run with a degenerate task — silently.
+    """
+    value = section.get(key)
+    if key not in section or value in (None, "") or (isinstance(value, str) and not value.strip()):
         raise RuntimeError(
             f"{section_name}.{key} is missing from config.yaml — this field is required."
         )
-    return section[key]
+    return value
 
 
 def _optional_price(value, key: str) -> float | None:

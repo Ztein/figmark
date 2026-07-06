@@ -43,13 +43,13 @@ def test_summary_is_computed_and_injected_into_figure_prompt(
     exit_code = main_module.run(pdf, project_root / "config.example.yaml", tmp_path / "output")
     assert exit_code == 0
 
-    # The language was detected once and cached.
+    # The language was detected once and cached (fingerprinted filename, T-067).
     assert len(client.language_prompts) == 1
-    lang_file = tmp_path / "output" / "doc" / "document_language.txt"
+    lang_file = next((tmp_path / "output" / "doc").glob("document_language-*.txt"))
     assert lang_file.read_text(encoding="utf-8").strip() == DETECTED_LANGUAGE
 
     # The summary was generated once and cached to disk.
-    summary_file = tmp_path / "output" / "doc" / "document_summary.txt"
+    summary_file = next((tmp_path / "output" / "doc").glob("document_summary-*.txt"))
     assert summary_file.read_text(encoding="utf-8").strip() == SUMMARY_REPLY
     assert len(client.summary_prompts) == 1
 

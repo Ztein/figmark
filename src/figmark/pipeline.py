@@ -413,8 +413,12 @@ def convert(
         # A real API failure here (bad key, unreachable endpoint, exhausted
         # retries) would break every description call too — abort loudly instead
         # of masking it as a benign "using prompt default" (T-024 F2).
+        # The on-disk answer is keyed by what shaped it (T-067): a model or OCR
+        # language change must re-detect, not reuse a stale answer.
+        lang_fp = cache_fingerprint(cfg.api.model, cfg.ocr.language)
+        lang_cache = out_dir / f"document_language-{lang_fp}.txt"
         try:
-            detected = detect_language(client, pages, cfg, out_dir / "document_language.txt")
+            detected = detect_language(client, pages, cfg, lang_cache)
         except APIError as e:
             emit_loud(
                 f"Language detection call failed ({type(e).__name__}: {e}). Aborting — "
@@ -430,10 +434,20 @@ def convert(
     # document has no figures (logged above, T-051).
     doc_summary = ""
     if cfg.document_summary.enabled and has_figures:
-        try:
-            doc_summary = summarize_document(
-                client, pages, cfg, out_dir / "document_summary.txt", resolved_language
+        # Same rule as the descriptions (T-034/T-067): the cached summary is
+        # keyed by everything that shaped it, so a config change regenerates.
+        summary_cache = out_dir / (
+            "document_summary-"
+            + cache_fingerprint(
+                cfg.api.model,
+                cfg.document_summary.prompt,
+                cfg.document_summary.sample_words,
+                resolved_language,
             )
+            + ".txt"
+        )
+        try:
+            doc_summary = summarize_document(client, pages, cfg, summary_cache, resolved_language)
         except APIError as e:
             emit_loud(
                 f"Document summary call failed ({type(e).__name__}: {e}). Aborting — "
@@ -450,16 +464,23 @@ def convert(
     total_pending = sum(len(p.images) for p in pages) + total_diagrams
 
     # Config fingerprint folded into the cache filename: a change to the model,
-    # prompt, resolved language, significance gate, context window, or document
-    # summary now misses the cache and regenerates, instead of silently reusing a
-    # description produced under the old config. (T-034)
+    # prompt, resolved language, significance gate, context window, document
+    # summary settings, or OCR language now misses the cache and regenerates,
+    # instead of silently reusing a description produced under the old config.
+    # (T-034; sample_words and ocr.language added by the T-067 audit — both
+    # shape the prompt content on scanned/summarised documents.)
     _ctx_fp = (cfg.context.enabled, cfg.context.words_before, cfg.context.words_after)
-    _summary_fp = (cfg.document_summary.enabled, cfg.document_summary.prompt)
+    _summary_fp = (
+        cfg.document_summary.enabled,
+        cfg.document_summary.sample_words,
+        cfg.document_summary.prompt,
+    )
     image_fp = cache_fingerprint(
         cfg.api.model,
         cfg.description.prompt,
         resolved_language,
         cfg.significance.enabled,
+        cfg.ocr.language,
         _ctx_fp,
         _summary_fp,
     )
@@ -468,6 +489,7 @@ def convert(
         cfg.diagrams.prompt,
         resolved_language,
         cfg.significance.enabled,
+        cfg.ocr.language,
         _ctx_fp,
         _summary_fp,
     )

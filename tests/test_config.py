@@ -376,6 +376,34 @@ def test_document_summary_enabled_requires_prompt(env_with_key, tmp_path: Path):
         load_config(bad)
 
 
+def test_whitespace_only_prompt_counts_as_missing(env_with_key, tmp_path: Path):
+    """T-067: an enabled feature with a blank-after-strip prompt would run with
+    a degenerate task — the loader must treat it exactly like a missing field."""
+    bad = tmp_path / "bad.yaml"
+    bad.write_text(
+        _FULL_CONFIG.replace(
+            "document_summary:\n  enabled: true\n  sample_words: 100\n  prompt: 'summarise'\n",
+            "document_summary:\n  enabled: true\n  sample_words: 100\n  prompt: '   '\n",
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(RuntimeError, match="document_summary.prompt is missing"):
+        load_config(bad)
+
+
+def test_whitespace_only_diagrams_prompt_counts_as_missing(env_with_key, tmp_path: Path):
+    bad = tmp_path / "bad.yaml"
+    bad.write_text(
+        _FULL_CONFIG.replace(
+            "diagrams:\n  enabled: false\n",
+            'diagrams:\n  enabled: true\n  prompt: "\\n  \\n"\n',
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(RuntimeError, match="diagrams.prompt is missing"):
+        load_config(bad)
+
+
 def test_missing_language_fails_loudly(env_with_key, tmp_path: Path):
     bad = tmp_path / "bad.yaml"
     bad.write_text(_FULL_CONFIG.replace("language:\n  output: auto\n", ""), encoding="utf-8")
