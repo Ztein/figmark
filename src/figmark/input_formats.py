@@ -2,7 +2,10 @@
 
 The gate trusts bytes, not filenames: magic numbers first, then container
 inspection (OOXML, EPUB and XPS are all ZIP archives). An unrecognised or
-mismatching input fails loud at the HTTP surface instead of being mis-parsed.
+mismatching input fails loud instead of being mis-parsed. The gate is
+transport-neutral (T-066): the HTTP handlers map ``InputFormatError`` to
+415/422 and the CLI to a non-zero exit — the same input is accepted or
+refused identically on both surfaces, never silently under-extracted.
 
 Two tiers of support:
 
@@ -35,6 +38,98 @@ EXTENSION_FORMATS = {f".{fmt}": fmt for fmt in SUPPORTED_FORMATS} | {
 }
 
 _IMAGE_SUFFIXES = (".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp")
+
+
+class InputFormatError(Exception):
+    """A refused input document — unsupported type or a name/content mismatch.
+
+    ``kind`` lets each transport map the refusal faithfully:
+    ``"unsupported"`` → HTTP 415 / CLI exit≠0, ``"mismatch"`` → HTTP 422 /
+    CLI exit≠0. The message always names what was seen and what is supported.
+    """
+
+    def __init__(self, message: str, *, kind: str):
+        super().__init__(message)
+        self.kind = kind
+
+
+def reject_claimed_format(claimed: str | None, allowed: list[str]) -> None:
+    """Fail fast when a *claimed* format (extension) is outside the allowlist.
+
+    ``claimed=None`` means no recognisable claim — sniffing decides later.
+    """
+    supported = ", ".join(allowed)
+    if claimed == "ole":
+        raise InputFormatError(
+            "Legacy binary Office files (.doc/.xls/.ppt) are not supported — "
+            f"save as OOXML or PDF. Supported formats: {supported}.",
+            kind="unsupported",
+        )
+    if claimed is not None and claimed not in allowed:
+        raise InputFormatError(
+            f"Format '{claimed}' is not enabled here. Supported formats: {supported}.",
+            kind="unsupported",
+        )
+
+
+def claimed_format(filename: str, allowed: list[str]) -> str | None:
+    """The format a file *name* claims, gated against the allowlist.
+
+    Returns ``None`` for a name with no extension (content sniffing alone
+    decides); raises for an extension that is unrecognised, legacy-Office, or
+    outside the allowlist — before any expensive work happens.
+    """
+    suffix = Path(filename.lower()).suffix
+    if not suffix:
+        return None
+    claimed = EXTENSION_FORMATS.get(suffix)
+    if claimed is None:
+        raise InputFormatError(
+            f"Unsupported file type '{suffix}'. Supported formats: {', '.join(allowed)}.",
+            kind="unsupported",
+        )
+    reject_claimed_format(claimed, allowed)
+    return claimed
+
+
+def gate_document_format(path: Path, claimed: str | None, allowed: list[str]) -> str:
+    """Sniff the on-disk file's real format and enforce the allowlist (T-054).
+
+    Returns the detected format name. The content decides: an extension/content
+    mismatch is a loud refusal, never mis-handled; a real-but-disallowed format
+    is refused with a message naming both the detected format and the supported
+    set.
+    """
+    fmt = sniff_format(path)
+    supported = ", ".join(allowed)
+    if fmt == "ole":
+        reject_claimed_format("ole", allowed)
+    if fmt is None:
+        if claimed is None:
+            # No filename claim to contradict (e.g. /v1/ocr) — this is simply an
+            # unsupported media type, not a mismatch.
+            raise InputFormatError(
+                "Could not identify the document as any supported format. "
+                f"Supported formats: {supported}.",
+                kind="unsupported",
+            )
+        raise InputFormatError(
+            f"File name claims '{claimed}' but the content is not identifiable "
+            f"as any supported format. Supported formats: {supported}.",
+            kind="mismatch",
+        )
+    if claimed is not None and fmt != claimed:
+        raise InputFormatError(
+            f"File name claims '{claimed}' but the content is '{fmt}' — "
+            "extension/content mismatch.",
+            kind="mismatch",
+        )
+    if fmt not in allowed:
+        raise InputFormatError(
+            f"Detected format '{fmt}' is not enabled here. Supported formats: {supported}.",
+            kind="unsupported",
+        )
+    return fmt
 
 
 def _sniff_zip(path: Path) -> str | None:

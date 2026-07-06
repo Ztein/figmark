@@ -69,7 +69,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-063](T-063-cross-document-description-reuse-not-toggleable.md) | **Closed** | Low | Cross-document description reuse cannot be turned off (context bleed between documents) |
 | [T-064](T-064-cache-savings-invisible-no-hit-miss-telemetry.md) | **Closed** | Low | The cache's savings are invisible in operation — no hit/miss telemetry |
 | [T-065](T-065-interpret-office-natively-without-pdf-render.md) | Open | Medium | Office support depends entirely on a LibreOffice PDF render — no way to interpret OOXML directly |
-| [T-066](T-066-cli-degrades-silently-on-non-pdf-input.md) | Open | Medium | The CLI accepts a non-PDF (e.g. an Office file) and emits a near-empty result instead of failing loud |
+| [T-066](T-066-cli-degrades-silently-on-non-pdf-input.md) | **Closed** | Medium | The CLI accepts a non-PDF (e.g. an Office file) and emits a near-empty result instead of failing loud |
 | [T-067](T-067-audit-for-more-silent-degradation-paths.md) | Open | Medium | Audit for further silent-degradation paths — where else does bad input or a degraded run produce a confident-looking result? |
 | [T-068](T-068-speed-up-image-analysis-throughput.md) | Open | Medium | Image/figure analysis is slow end-to-end — measure the bottlenecks and decide how to speed it up |
 | [T-069](T-069-request-queue-bounded-concurrency-backpressure.md) | Open | Medium | The service has no request queue — it rejects the moment all worker slots are busy, instead of queueing with bounded backpressure |
