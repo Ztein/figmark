@@ -33,6 +33,17 @@ an operator deleting a document for compliance must see a failure, not a
 silent no-op. A corrupt database at startup is quarantined
 (``cache.sqlite3.corrupt-<ts>``, kept for inspection) and rebuilt, so a cache
 file can never hold the service down.
+
+**Operational envelope (T-076).** The schema carries a version
+(``PRAGMA user_version``); a database written by a different figmark release is
+dropped and recreated loudly — the cache is disposable derived data, so there
+is no migration machinery. The directory and database are owner-only
+(``0700``/``0600``): they hold every converted document's content in cleartext.
+Freed pages are returned to the filesystem (``auto_vacuum=INCREMENTAL``, an
+incremental vacuum after eviction and a vacuum+WAL-truncate after
+``clear``/``delete_document``), and ``stats()`` reports the actual on-disk
+footprint (``disk_bytes``) next to the logical one. The store assumes one
+writer host on a local filesystem — WAL corrupts over NFS/SMB.
 """
 
 from __future__ import annotations
@@ -48,6 +59,12 @@ from contextlib import contextmanager
 from pathlib import Path
 
 logger = logging.getLogger("figmark.cache")
+
+# Bump on ANY change to _SCHEMA. A mismatching database (older or newer) is
+# dropped and recreated at open — loudly, but with no migration machinery: the
+# cache holds only reproducible derived data (T-076). Version 1 is the first
+# stamped release; a pre-T-076 database reads as 0 and is dropped once.
+_SCHEMA_VERSION = 1
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS entries (
@@ -108,7 +125,11 @@ class CacheStore:
 
     def __init__(self, directory: Path, *, max_bytes: int, max_age_hours: float) -> None:
         self.directory = Path(directory)
-        self.directory.mkdir(parents=True, exist_ok=True)
+        # Owner-only: the cache holds converted document content in cleartext
+        # (T-076). mkdir's mode only applies to a directory we create; an
+        # operator-provided directory with looser bits is tightened, loudly.
+        self.directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+        self._tighten_permissions(self.directory, 0o700)
         self.db_path = self.directory / "cache.sqlite3"
         self.max_bytes = int(max_bytes)
         self.max_age_seconds = float(max_age_hours) * 3600.0
@@ -120,6 +141,7 @@ class CacheStore:
         self._pool: queue.LifoQueue[sqlite3.Connection] = queue.LifoQueue(maxsize=_POOL_SIZE)
         self._pending: Counter[str] = Counter()
         self._pending_lock = threading.Lock()
+        self._create_db_file()
         self._init_db()
 
     # ------------------------------------------------------------ connections
@@ -128,6 +150,11 @@ class CacheStore:
         # another thread, but never concurrently (the pool hands each out to
         # one holder at a time).
         conn = sqlite3.connect(self.db_path, timeout=10.0, check_same_thread=False)
+        # Must run before anything initialises the file (journal_mode=WAL
+        # writes the header): freed pages then go to the freelist where
+        # incremental_vacuum can return them to the OS (T-076). On an
+        # already-initialised database this is a harmless no-op.
+        conn.execute("PRAGMA auto_vacuum=INCREMENTAL")
         conn.execute("PRAGMA journal_mode=WAL")
         conn.execute("PRAGMA synchronous=NORMAL")
         return conn
@@ -154,6 +181,16 @@ class CacheStore:
             except queue.Full:
                 conn.close()
 
+    def _create_db_file(self) -> None:
+        """Create the database file ourselves so it is born ``0600``.
+
+        Left to SQLite it would be created with the umask (typically ``0644``)
+        and hold cleartext document content group/other-readable until the
+        tighten pass. The -wal/-shm sidecars inherit the database file's
+        permissions (T-076). An empty file is a valid new SQLite database.
+        """
+        self.db_path.touch(mode=0o600, exist_ok=True)
+
     def _init_db(self) -> None:
         try:
             self._setup_schema()
@@ -171,13 +208,38 @@ class CacheStore:
             for suffix in ("-wal", "-shm"):
                 side = self.db_path.with_name(self.db_path.name + suffix)
                 side.unlink(missing_ok=True)
+            self._create_db_file()
             self._setup_schema()  # a second failure is not corruption — raise it
 
     def _setup_schema(self) -> None:
         conn = self._new_conn()
         try:
+            # Schema version gate (T-076): a database written by a different
+            # figmark release is not "corrupt" — it is simply disposable. Drop
+            # and recreate loudly; no migration machinery for derived data.
+            version = conn.execute("PRAGMA user_version").fetchone()[0]
+            if version != _SCHEMA_VERSION:
+                tables = conn.execute(
+                    "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table'"
+                ).fetchone()[0]
+                if tables:
+                    conn.close()
+                    logger.warning(
+                        "cache database %s has schema version %d, this release uses %d"
+                        " — dropping and recreating (a cache holds only reproducible"
+                        " derived data)",
+                        self.db_path,
+                        version,
+                        _SCHEMA_VERSION,
+                    )
+                    self.db_path.unlink()
+                    for suffix in ("-wal", "-shm"):
+                        self.db_path.with_name(self.db_path.name + suffix).unlink(missing_ok=True)
+                    self._create_db_file()
+                    conn = self._new_conn()
             with conn:
                 conn.executescript(_SCHEMA)
+                conn.execute(f"PRAGMA user_version = {_SCHEMA_VERSION}")
                 # Reconcile the running size total with reality (repairs any
                 # drift from a crash mid-transaction or a pre-T-064 database).
                 real_total = conn.execute("SELECT COALESCE(SUM(size), 0) FROM entries").fetchone()[
@@ -190,6 +252,36 @@ class CacheStore:
                 )
         finally:
             conn.close()
+        # Owner-only, same rationale as the directory. SQLite gives the -wal
+        # and -shm sidecars the database file's permissions, so tightening the
+        # database here covers all three.
+        self._tighten_permissions(self.db_path, 0o600)
+
+    @staticmethod
+    def _tighten_permissions(path: Path, mode: int) -> None:
+        """Ensure ``path`` has no group/other bits; loud but never fatal.
+
+        Best-effort because the operator may mount a volume we do not own —
+        the cache must still work there, but the exposure is logged (T-076).
+        """
+        try:
+            current = path.stat().st_mode & 0o777
+            if current & 0o077:
+                os.chmod(path, mode)
+                logger.warning(
+                    "cache path %s had permissions %o — tightened to %o"
+                    " (it holds converted document content in cleartext)",
+                    path,
+                    current,
+                    mode,
+                )
+        except OSError:
+            logger.warning(
+                "cache path %s is not owner-only and could not be tightened"
+                " — it holds converted document content in cleartext",
+                path,
+                exc_info=True,
+            )
 
     # --------------------------------------------------------------- counters
     def _note(self, name: str, delta: int = 1) -> None:
@@ -261,18 +353,26 @@ class CacheStore:
             return
         now = time.time()
         try:
-            with self._connection() as conn, conn:
-                old = conn.execute("SELECT size FROM entries WHERE key = ?", (key,)).fetchone()
-                conn.execute(
-                    "INSERT INTO entries (key, doc_digest, kind, payload, size, created,"
-                    " last_accessed) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(key) DO UPDATE SET"
-                    " payload = excluded.payload, size = excluded.size,"
-                    " last_accessed = excluded.last_accessed",
-                    (key, doc_digest, kind, payload, len(payload), now, now),
-                )
-                _bump(conn, "total_bytes", len(payload) - (old[0] if old else 0))
-                self._flush_pending(conn)
-                self._evict(conn, now)
+            with self._connection() as conn:
+                with conn:
+                    old = conn.execute("SELECT size FROM entries WHERE key = ?", (key,)).fetchone()
+                    conn.execute(
+                        "INSERT INTO entries (key, doc_digest, kind, payload, size, created,"
+                        " last_accessed) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(key) DO UPDATE"
+                        " SET payload = excluded.payload, size = excluded.size,"
+                        " last_accessed = excluded.last_accessed",
+                        (key, doc_digest, kind, payload, len(payload), now, now),
+                    )
+                    _bump(conn, "total_bytes", len(payload) - (old[0] if old else 0))
+                    self._flush_pending(conn)
+                    evicted = self._evict(conn, now)
+                if evicted:
+                    # Return the freed pages to the filesystem so the file
+                    # tracks the cap instead of holding its high-water mark
+                    # forever (T-076); the truncation lands at the next WAL
+                    # checkpoint. After the commit, via executescript — see
+                    # _shrink for why.
+                    conn.executescript("PRAGMA incremental_vacuum;")
         except sqlite3.Error:
             self._degraded("put", key)
 
@@ -286,7 +386,9 @@ class CacheStore:
             exc_info=True,
         )
 
-    def _evict(self, conn: sqlite3.Connection, now: float) -> None:
+    def _evict(self, conn: sqlite3.Connection, now: float) -> bool:
+        """Enforce TTL and the size cap. Returns whether anything was removed."""
+        removed = False
         expired = conn.execute(
             "SELECT COUNT(*), COALESCE(SUM(size), 0) FROM entries WHERE ? - last_accessed > ?",
             (now, self.max_age_seconds),
@@ -297,17 +399,31 @@ class CacheStore:
             )
             _bump(conn, "expirations", expired[0])
             _bump(conn, "total_bytes", -expired[1])
-        while True:
-            if _counter(conn, "total_bytes") <= self.max_bytes:
-                return
+            removed = True
+        while _counter(conn, "total_bytes") > self.max_bytes:
             oldest = conn.execute(
                 "SELECT key, size FROM entries ORDER BY last_accessed ASC LIMIT 1"
             ).fetchone()
             if oldest is None:
-                return
+                break
             conn.execute("DELETE FROM entries WHERE key = ?", (oldest[0],))
             _bump(conn, "evictions")
             _bump(conn, "total_bytes", -oldest[1])
+            removed = True
+        return removed
+
+    def _shrink(self, conn: sqlite3.Connection) -> None:
+        """Give deleted pages back to the OS now (after a management delete).
+
+        Runs outside any transaction: the checkpoint must see the commit, and
+        ``wal_checkpoint(TRUNCATE)`` also empties the WAL itself. Via
+        ``executescript`` deliberately: it steps each statement to completion
+        on every Python version, whereas ``execute(...).fetchall()`` on an
+        ``incremental_vacuum`` (which frees one page per step and declares no
+        result columns) steps only once on Python ≤ 3.11 — freeing one page
+        instead of all of them.
+        """
+        conn.executescript("PRAGMA incremental_vacuum; PRAGMA wal_checkpoint(TRUNCATE);")
 
     # ------------------------------------------------------ management surface
     def delete_document(self, doc_digest: str) -> int:
@@ -316,24 +432,29 @@ class CacheStore:
         Management ops raise on failure — an operator must see it, not get a
         silent no-op (T-072 keeps only get/put non-fatal).
         """
-        with self._connection() as conn, conn:
-            removed = conn.execute(
-                "SELECT COALESCE(SUM(size), 0) FROM entries WHERE doc_digest = ?", (doc_digest,)
-            ).fetchone()[0]
-            cur = conn.execute("DELETE FROM entries WHERE doc_digest = ?", (doc_digest,))
-            _bump(conn, "total_bytes", -removed)
-            self._flush_pending(conn)
+        with self._connection() as conn:
+            with conn:
+                removed = conn.execute(
+                    "SELECT COALESCE(SUM(size), 0) FROM entries WHERE doc_digest = ?",
+                    (doc_digest,),
+                ).fetchone()[0]
+                cur = conn.execute("DELETE FROM entries WHERE doc_digest = ?", (doc_digest,))
+                _bump(conn, "total_bytes", -removed)
+                self._flush_pending(conn)
+            self._shrink(conn)
             return cur.rowcount
 
     def clear(self) -> int:
         """Empty the cache entirely. Returns the number of entries removed."""
-        with self._connection() as conn, conn:
-            cur = conn.execute("DELETE FROM entries")
-            conn.execute(
-                "INSERT INTO counters (name, value) VALUES ('total_bytes', 0)"
-                " ON CONFLICT(name) DO UPDATE SET value = 0"
-            )
-            self._flush_pending(conn)
+        with self._connection() as conn:
+            with conn:
+                cur = conn.execute("DELETE FROM entries")
+                conn.execute(
+                    "INSERT INTO counters (name, value) VALUES ('total_bytes', 0)"
+                    " ON CONFLICT(name) DO UPDATE SET value = 0"
+                )
+                self._flush_pending(conn)
+            self._shrink(conn)
             return cur.rowcount
 
     def stats(self) -> dict:
@@ -352,9 +473,20 @@ class CacheStore:
         def rate(hits: int, misses: int) -> float | None:
             return round(hits / (hits + misses), 4) if hits + misses else None
 
+        # The actual filesystem footprint (database + WAL + shm), so an
+        # operator can size the volume from observation, not guesswork (T-076).
+        disk_bytes = 0
+        for suffix in ("", "-wal", "-shm"):
+            side = self.db_path.with_name(self.db_path.name + suffix)
+            try:
+                disk_bytes += side.stat().st_size
+            except OSError:
+                pass  # sidecar absent (no WAL activity yet) — nothing to count
+
         return {
             "entries": entries,
             "total_bytes": total,
+            "disk_bytes": disk_bytes,
             "max_bytes": self.max_bytes,
             "max_age_hours": self.max_age_hours,
             "hits": {

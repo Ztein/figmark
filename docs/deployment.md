@@ -140,12 +140,37 @@ re-spending vision-model calls. Be deliberate about two things:
   restarts, mount a volume and point `FIGMARK_CACHE_DIR` at it.
 - **Data at rest.** The cache stores document-derived content (the Markdown,
   including figure descriptions). If the documents are sensitive, that content
-  now persists server-side beyond the request. Your controls: the TTL
+  now persists server-side beyond the request — treat the cache directory as
+  exactly as sensitive as the documents themselves. figmark creates the
+  directory `0700` and the database `0600` (and tightens looser permissions it
+  finds, with a warning). Your controls: the TTL
   (`cache.max_age_hours`, measured from last access), the size cap
   (`cache.max_size_mb`, LRU eviction), targeted removal
   (`DELETE /v1/cache/{document-sha256}`), and a full wipe (`DELETE /v1/cache`).
   All management calls require the same bearer token as conversion;
-  `GET /v1/cache/stats` shows what the cache currently holds.
+  `GET /v1/cache/stats` shows what the cache currently holds — including
+  `disk_bytes`, the actual filesystem footprint.
+
+#### Deployment assumptions (the cache's operational envelope)
+
+- **One host, one writer, local disk.** The store is SQLite in WAL mode:
+  multiple *local* processes are fine, but WAL corrupts over network
+  filesystems. Do **not** put the cache directory on NFS/SMB, and do not point
+  two service replicas at one shared cache volume — give each replica its own,
+  or disable the cache.
+- **Volume sizing.** `cache.max_size_mb` caps the *payload* bytes. The SQLite
+  file returns freed pages to the filesystem on eviction and clear, but page
+  overhead and the WAL (up to ~4 MB between checkpoints) sit on top —
+  provision the volume with headroom (~1.5× `max_size_mb` is comfortable) and
+  verify against `disk_bytes` in `/v1/cache/stats`.
+- **Backups.** Exclude the cache directory. It holds only reproducible derived
+  data, and file-copying a live SQLite database (plus its `-wal`/`-shm`
+  sidecars) produces a corrupt copy. If you must snapshot it, use the SQLite
+  backup API — but a cold rebuild is the intended recovery path.
+- **Upgrades.** The schema carries a version; a figmark release with a
+  different cache schema drops and recreates the store at startup (logged as a
+  warning). Expect a cold cache after such an upgrade — never a migration, and
+  never a crash.
 
 ## Try it fully offline (no LLM needed)
 
