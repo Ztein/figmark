@@ -21,6 +21,13 @@ So the fail-loud contract holds for the first request and silently degrades
 for every subsequent one that reuses the entry — the situation T-024/T-033
 exist to prevent.
 
+## Measurement
+
+Rows Q1 of the cache scorecard: run
+`scripts/cache_bench/bench.py` and diff against the committed baseline
+(`scripts/cache_bench/BASELINE.md`, same machine). The ticket is done when its
+rows flip to their targets with no regression in the others.
+
 ## Root cause
 
 The shared-cache write path (`_with_shared_put`) has no notion of description
