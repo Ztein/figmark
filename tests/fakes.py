@@ -51,10 +51,13 @@ class FakeClient:
     Text-only calls are either the language-detection call or the summary call;
     calls carrying an image are a figure description. ``image_reply`` is what every
     figure description returns (pass ``"[SKIP]"`` to exercise the significance gate).
+    ``finish_reason`` applies to figure descriptions — pass ``"length"`` to fake
+    a token-cap truncation (T-033/T-075).
     """
 
-    def __init__(self, image_reply: str):
+    def __init__(self, image_reply: str, *, finish_reason: str = "stop"):
         self.image_reply = image_reply
+        self.finish_reason = finish_reason
         self.describe_prompts: list[str] = []
         self.summary_prompts: list[str] = []
         self.language_prompts: list[str] = []
@@ -70,7 +73,7 @@ class FakeClient:
             return make_response(SUMMARY_REPLY)
         text = next(part["text"] for part in content if part["type"] == "text")
         self.describe_prompts.append(text)
-        return make_response(self.image_reply)
+        return make_response(self.image_reply, finish_reason=self.finish_reason)
 
 
 def synthetic_pdf(path: Path) -> Path:

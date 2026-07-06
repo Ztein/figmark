@@ -151,6 +151,74 @@ def test_api_shares_descriptions_across_different_documents(make_api_app, tmp_pa
     assert "En delad bild." in r2.json()["markdown"]
 
 
+# --- T-075: truncated descriptions are not shared ----------------------------
+
+
+def test_truncated_description_is_not_promoted_to_shared_cache(
+    env_with_key, project_root: Path, tmp_path: Path, caplog
+):
+    """A token-cap-truncated description is kept for the document that
+    generated it (T-033) but must NOT become the canonical description served
+    to other documents — the next document regenerates, likely completing."""
+    import logging
+
+    cfg = load_config(project_root / "config.example.yaml")
+    store = CacheStore(tmp_path / "shared-cache", max_bytes=10_000_000, max_age_hours=24)
+
+    a = _pdf_with_image(tmp_path / "a.pdf", "Report about apples. ")
+    client_a = FakeClient("En avhuggen beskrivn", finish_reason="length")
+    with caplog.at_level(logging.WARNING):
+        result_a = convert(
+            a,
+            cfg,
+            tmp_path / "out-a",
+            client=client_a,
+            quiet=True,
+            shared_cache=SharedDescriptionCache(store, "digest-a"),
+        )
+    assert "En avhuggen beskrivn" in result_a.markdown, "the partial still serves THIS document"
+    assert "not stored in the shared cache" in caplog.text, "the skip is loud"
+    assert store.stats()["entries"] == 0, "nothing truncated reaches the shared store"
+
+    # The same image in another document regenerates — and a COMPLETE result
+    # is then shared as before.
+    b = _pdf_with_image(tmp_path / "b.pdf", "Totally different bananas. ")
+    client_b = FakeClient("En komplett beskrivning.")
+    result_b = convert(
+        b,
+        cfg,
+        tmp_path / "out-b",
+        client=client_b,
+        quiet=True,
+        shared_cache=SharedDescriptionCache(store, "digest-b"),
+    )
+    assert len(client_b.describe_prompts) == 1, "the partial was not served from the cache"
+    assert "En komplett beskrivning." in result_b.markdown
+    assert store.stats()["entries"] == 1, "the complete regeneration IS shared"
+
+
+def test_truncated_diagram_description_is_not_promoted_either(
+    env_with_key, project_root: Path, tmp_path: Path
+):
+    """Diagram regions share by rendered-pixel digest — the same rule applies."""
+    cfg = load_config(project_root / "config.example.yaml")
+    store = CacheStore(tmp_path / "shared-cache", max_bytes=10_000_000, max_age_hours=24)
+
+    a = _pdf_with_diagram(tmp_path / "a.pdf", "Quarterly chart report. ")
+    client_a = FakeClient("Ett avhugget diagr", finish_reason="length")
+    result_a = convert(
+        a,
+        cfg,
+        tmp_path / "out-a",
+        client=client_a,
+        quiet=True,
+        shared_cache=SharedDescriptionCache(store, "digest-a"),
+    )
+    assert result_a.figure_count >= 1, "precondition: the synthetic cluster is a diagram"
+    assert len(client_a.describe_prompts) >= 1
+    assert store.stats()["entries"] == 0, "no truncated diagram description is shared"
+
+
 # --- T-063: the cross-document reuse toggle ---------------------------------
 
 
