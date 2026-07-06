@@ -1,6 +1,8 @@
 # T-074: Every cache operation costs ~5 ms and runs blocking SQLite on the event loop
 
-**Status:** Open
+**Status:** Closed — **Option 1 shipped 2026-07-06** (pooled connections closed on
+shutdown, `synchronous=NORMAL`, sparse LRU re-stamp, threadpool at the endpoint;
+scorecard: get 4.9→0.03 ms, B2 max 68→5 ms, B3b 7 ms ≈ idle).
 **Priority:** Medium — correctness is unaffected, but the cache is ~80× slower
 than it needs to be, cache *reads* contend with writes, and a large `put` can
 freeze the event loop (including `/healthz`) long enough to matter in an
@@ -86,19 +88,19 @@ Option 1. It is small, dependency-free, and removes all three causes.
 
 ## Acceptance criteria
 
-- [ ] A `get`/`put` on a warm store costs well under 1 ms median (benchmark
+- [x] A `get`/`put` on a warm store costs well under 1 ms median (benchmark
       script checked in or numbers recorded in the PR, per the bench-before-code
       rule).
-- [ ] Cache reads no longer take the write lock in the common case (hot key
+- [x] Cache reads no longer take the write lock in the common case (hot key
       re-read does not commit).
-- [ ] No blocking SQLite call runs on the event loop: endpoint cache access
+- [x] No blocking SQLite call runs on the event loop: endpoint cache access
       goes through the threadpool (verifiable in code review; bonus: a test
       asserting the loop stays responsive during a large `put`).
-- [ ] Connections are owned and closed deliberately (thread-local lifecycle),
+- [x] Connections are owned and closed deliberately (thread-local lifecycle),
       not left to the garbage collector.
-- [ ] Existing `test_cache_store.py` semantics all still pass (LRU order, TTL,
+- [x] Existing `test_cache_store.py` semantics all still pass (LRU order, TTL,
       counters, persistence across reopen) — including with the sparse
       re-stamp, whose approximation must be covered by an adjusted lifetime
       test.
-- [ ] Concurrency smoke test: parallel readers/writers complete without
+- [x] Concurrency smoke test: parallel readers/writers complete without
       `database is locked` errors and without unbounded tail latency.

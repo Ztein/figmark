@@ -8,21 +8,43 @@ shared figure descriptions) plus the bookkeeping the policies need:
   than the whole cap is never retained (it must not wipe the cache).
 - **Max age (TTL):** entries older than the configured number of hours — since
   their *last access* — are expired.
-- **Hit = youngest:** every ``get`` re-stamps ``last_accessed`` to now, so a
-  frequently-used entry keeps surviving both policies.
+- **Hit = youngest:** a ``get`` re-stamps ``last_accessed``, so a
+  frequently-used entry keeps surviving both policies. The re-stamp is sparse
+  (T-074): a stamp younger than ~1 % of the TTL is left alone, so a hot key is
+  read without taking the write lock. Within that window the LRU order among
+  entries accessed close together is approximate — irrelevant at real TTLs.
 - **Management:** delete all entries for one document digest, or clear all.
 
-SQLite gives atomic bookkeeping under concurrent requests (WAL mode, one
-transaction per operation) and survives restarts when the directory is on a
-persistent volume. Keys are caller-built (document digest + config fingerprint
+SQLite gives atomic bookkeeping under concurrent requests and survives restarts
+when the directory is on a persistent volume. WAL mode with
+``synchronous=NORMAL`` — the WAL-recommended pairing; a power cut can cost at
+most the last commit, which for a cache of reproducible derived data is
+irrelevant (T-074). Connections are pooled and owned by the store: call
+``close()`` (the API server does, on shutdown) to flush telemetry and release
+them deliberately. Keys are caller-built (document digest + config fingerprint
 + version) so a config or version change is a clean miss — T-034 semantics.
+
+**The request path degrades loudly, never fatally (T-072).** ``get``/``put``
+are accelerators: any SQLite fault there is logged at ERROR and counted
+(``stats()["errors"]``), and the call reports a miss / drops the write — a
+broken cache must never fail a conversion that already succeeded. The
+*management* surface (``delete_document``, ``clear``, ``stats``) still raises:
+an operator deleting a document for compliance must see a failure, not a
+silent no-op. A corrupt database at startup is quarantined
+(``cache.sqlite3.corrupt-<ts>``, kept for inspection) and rebuilt, so a cache
+file can never hold the service down.
 """
 
 from __future__ import annotations
 
 import logging
+import os
+import queue
 import sqlite3
+import threading
 import time
+from collections import Counter
+from contextlib import contextmanager
 from pathlib import Path
 
 logger = logging.getLogger("figmark.cache")
@@ -48,7 +70,10 @@ CREATE TABLE IF NOT EXISTS counters (
 # Monotonic performance counters (T-064). Persisted in SQLite so "what has the
 # cache saved us" survives restarts on a persistent volume. `total_bytes` is a
 # maintained running total of entry sizes — it replaces the per-put O(n)
-# SUM(size) and is reconciled against the real sum at startup.
+# SUM(size) and is reconciled against the real sum at startup. Hit/miss counts
+# are buffered in memory and flushed on any write, on stats() and on close()
+# (T-074), so a pure read is not a write transaction; an unclean shutdown can
+# drop a few buffered counts — telemetry, not accounting.
 _COUNTER_NAMES = (
     "hits_document",
     "misses_document",
@@ -56,7 +81,13 @@ _COUNTER_NAMES = (
     "misses_description",
     "evictions",
     "expirations",
+    "errors",
 )
+
+# Connections retained for reuse; excess concurrent ops open a transient
+# connection and close it after use, so this bounds idle handles, not
+# concurrency.
+_POOL_SIZE = 8
 
 
 def _bump(conn: sqlite3.Connection, name: str, delta: int = 1) -> None:
@@ -73,7 +104,7 @@ def _counter(conn: sqlite3.Connection, name: str) -> int:
 
 
 class CacheStore:
-    """SQLite-backed LRU+TTL cache. Thread-safe via one connection per op."""
+    """SQLite-backed LRU+TTL cache. Thread-safe via a small connection pool."""
 
     def __init__(self, directory: Path, *, max_bytes: int, max_age_hours: float) -> None:
         self.directory = Path(directory)
@@ -82,50 +113,143 @@ class CacheStore:
         self.max_bytes = int(max_bytes)
         self.max_age_seconds = float(max_age_hours) * 3600.0
         self.max_age_hours = float(max_age_hours)
-        with self._conn() as conn:
-            conn.executescript(_SCHEMA)
-            # Reconcile the running size total with reality (repairs any drift
-            # from a crash mid-transaction or a pre-T-064 database).
-            real_total = conn.execute("SELECT COALESCE(SUM(size), 0) FROM entries").fetchone()[0]
-            conn.execute(
-                "INSERT INTO counters (name, value) VALUES ('total_bytes', ?)"
-                " ON CONFLICT(name) DO UPDATE SET value = ?",
-                (real_total, real_total),
-            )
+        # Sparse re-stamp window (T-074): a hit younger than this since its
+        # last stamp does not write. 1 % of the TTL keeps the LRU/TTL error
+        # negligible while letting hot keys read lock-free.
+        self._restamp_seconds = max(1.0, self.max_age_seconds * 0.01)
+        self._pool: queue.LifoQueue[sqlite3.Connection] = queue.LifoQueue(maxsize=_POOL_SIZE)
+        self._pending: Counter[str] = Counter()
+        self._pending_lock = threading.Lock()
+        self._init_db()
 
-    def _conn(self) -> sqlite3.Connection:
-        conn = sqlite3.connect(self.db_path, timeout=10.0)
+    # ------------------------------------------------------------ connections
+    def _new_conn(self) -> sqlite3.Connection:
+        # check_same_thread=False: connections are pooled and may be reused by
+        # another thread, but never concurrently (the pool hands each out to
+        # one holder at a time).
+        conn = sqlite3.connect(self.db_path, timeout=10.0, check_same_thread=False)
         conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA synchronous=NORMAL")
         return conn
 
+    @contextmanager
+    def _connection(self):
+        try:
+            conn = self._pool.get_nowait()
+        except queue.Empty:
+            conn = self._new_conn()
+        try:
+            yield conn
+        except BaseException:
+            # The connection may be mid-transaction or attached to a broken
+            # database — never return it to the pool.
+            try:
+                conn.close()
+            except Exception:  # noqa: BLE001 — already failing; close is best-effort
+                pass
+            raise
+        else:
+            try:
+                self._pool.put_nowait(conn)
+            except queue.Full:
+                conn.close()
+
+    def _init_db(self) -> None:
+        try:
+            self._setup_schema()
+        except sqlite3.DatabaseError:
+            # T-072: a corrupt cache file must never hold the service down.
+            # Quarantine it (kept for inspection) and start fresh — loudly.
+            quarantine = self.db_path.with_name(f"{self.db_path.name}.corrupt-{int(time.time())}")
+            logger.error(
+                "cache database %s is corrupt — quarantining to %s and starting fresh",
+                self.db_path,
+                quarantine,
+                exc_info=True,
+            )
+            os.replace(self.db_path, quarantine)
+            for suffix in ("-wal", "-shm"):
+                side = self.db_path.with_name(self.db_path.name + suffix)
+                side.unlink(missing_ok=True)
+            self._setup_schema()  # a second failure is not corruption — raise it
+
+    def _setup_schema(self) -> None:
+        conn = self._new_conn()
+        try:
+            with conn:
+                conn.executescript(_SCHEMA)
+                # Reconcile the running size total with reality (repairs any
+                # drift from a crash mid-transaction or a pre-T-064 database).
+                real_total = conn.execute("SELECT COALESCE(SUM(size), 0) FROM entries").fetchone()[
+                    0
+                ]
+                conn.execute(
+                    "INSERT INTO counters (name, value) VALUES ('total_bytes', ?)"
+                    " ON CONFLICT(name) DO UPDATE SET value = ?",
+                    (real_total, real_total),
+                )
+        finally:
+            conn.close()
+
+    # --------------------------------------------------------------- counters
+    def _note(self, name: str, delta: int = 1) -> None:
+        with self._pending_lock:
+            self._pending[name] += delta
+
+    def _flush_pending(self, conn: sqlite3.Connection) -> None:
+        """Write buffered counters. Call inside a write transaction."""
+        with self._pending_lock:
+            if not self._pending:
+                return
+            items = dict(self._pending)
+            self._pending.clear()
+        for name, delta in items.items():
+            _bump(conn, name, delta)
+
+    # ------------------------------------------------------------ request path
     def get(self, key: str, *, kind: str = "document") -> bytes | None:
-        """Return the payload, re-stamping last_accessed; None on miss/expiry.
+        """Return the payload; None on miss/expiry — and on cache failure.
 
         ``kind`` attributes the hit/miss to the right counter (T-064):
         ``document`` for whole-conversion payloads, ``description`` for shared
         figure descriptions (SharedDescriptionCache passes it).
         """
         now = time.time()
-        with self._conn() as conn:
-            row = conn.execute(
-                "SELECT payload, last_accessed, size FROM entries WHERE key = ?", (key,)
-            ).fetchone()
-            if row is None:
-                _bump(conn, f"misses_{kind}")
-                return None
-            payload, last_accessed, size = row
-            if now - last_accessed > self.max_age_seconds:
-                conn.execute("DELETE FROM entries WHERE key = ?", (key,))
-                _bump(conn, "expirations")
-                _bump(conn, f"misses_{kind}")
-                _bump(conn, "total_bytes", -size)
-                return None
-            conn.execute("UPDATE entries SET last_accessed = ? WHERE key = ?", (now, key))
-            _bump(conn, f"hits_{kind}")
-            return payload
+        try:
+            with self._connection() as conn:
+                row = conn.execute(
+                    "SELECT payload, last_accessed, size FROM entries WHERE key = ?", (key,)
+                ).fetchone()
+                if row is None:
+                    self._note(f"misses_{kind}")
+                    return None
+                payload, last_accessed, size = row
+                if now - last_accessed > self.max_age_seconds:
+                    with conn:
+                        conn.execute("DELETE FROM entries WHERE key = ?", (key,))
+                        _bump(conn, "expirations")
+                        _bump(conn, "total_bytes", -size)
+                        self._note(f"misses_{kind}")
+                        self._flush_pending(conn)
+                    return None
+                self._note(f"hits_{kind}")
+                if now - last_accessed > self._restamp_seconds:
+                    with conn:
+                        conn.execute(
+                            "UPDATE entries SET last_accessed = ? WHERE key = ?", (now, key)
+                        )
+                        self._flush_pending(conn)
+                return payload
+        except sqlite3.Error:
+            self._degraded("get", key)
+            return None
 
     def put(self, key: str, payload: bytes, *, doc_digest: str, kind: str) -> None:
-        """Insert/replace an entry, then enforce TTL and the size cap (LRU)."""
+        """Insert/replace an entry, then enforce TTL and the size cap (LRU).
+
+        A cache failure drops the write loudly — it never raises into the
+        caller, who has a finished (paid-for) result to return (T-072).
+        """
         if len(payload) > self.max_bytes:
             # Never admitted: evicting everything older to make room for an
             # entry that still wouldn't fit would wipe the cache for nothing.
@@ -136,17 +260,31 @@ class CacheStore:
             )
             return
         now = time.time()
-        with self._conn() as conn:
-            old = conn.execute("SELECT size FROM entries WHERE key = ?", (key,)).fetchone()
-            conn.execute(
-                "INSERT INTO entries (key, doc_digest, kind, payload, size, created,"
-                " last_accessed) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(key) DO UPDATE SET"
-                " payload = excluded.payload, size = excluded.size,"
-                " last_accessed = excluded.last_accessed",
-                (key, doc_digest, kind, payload, len(payload), now, now),
-            )
-            _bump(conn, "total_bytes", len(payload) - (old[0] if old else 0))
-            self._evict(conn, now)
+        try:
+            with self._connection() as conn, conn:
+                old = conn.execute("SELECT size FROM entries WHERE key = ?", (key,)).fetchone()
+                conn.execute(
+                    "INSERT INTO entries (key, doc_digest, kind, payload, size, created,"
+                    " last_accessed) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(key) DO UPDATE SET"
+                    " payload = excluded.payload, size = excluded.size,"
+                    " last_accessed = excluded.last_accessed",
+                    (key, doc_digest, kind, payload, len(payload), now, now),
+                )
+                _bump(conn, "total_bytes", len(payload) - (old[0] if old else 0))
+                self._flush_pending(conn)
+                self._evict(conn, now)
+        except sqlite3.Error:
+            self._degraded("put", key)
+
+    def _degraded(self, op: str, key: str) -> None:
+        """A request-path cache failure: loud, counted, never fatal (T-072)."""
+        self._note("errors")
+        logger.error(
+            "cache %s failed for key %s… — request continues without cache",
+            op,
+            key[:32],
+            exc_info=True,
+        )
 
     def _evict(self, conn: sqlite3.Connection, now: float) -> None:
         expired = conn.execute(
@@ -171,31 +309,41 @@ class CacheStore:
             _bump(conn, "evictions")
             _bump(conn, "total_bytes", -oldest[1])
 
+    # ------------------------------------------------------ management surface
     def delete_document(self, doc_digest: str) -> int:
-        """Remove every entry belonging to a document digest. Returns the count."""
-        with self._conn() as conn:
+        """Remove every entry belonging to a document digest. Returns the count.
+
+        Management ops raise on failure — an operator must see it, not get a
+        silent no-op (T-072 keeps only get/put non-fatal).
+        """
+        with self._connection() as conn, conn:
             removed = conn.execute(
                 "SELECT COALESCE(SUM(size), 0) FROM entries WHERE doc_digest = ?", (doc_digest,)
             ).fetchone()[0]
             cur = conn.execute("DELETE FROM entries WHERE doc_digest = ?", (doc_digest,))
             _bump(conn, "total_bytes", -removed)
+            self._flush_pending(conn)
             return cur.rowcount
 
     def clear(self) -> int:
         """Empty the cache entirely. Returns the number of entries removed."""
-        with self._conn() as conn:
+        with self._connection() as conn, conn:
             cur = conn.execute("DELETE FROM entries")
             conn.execute(
                 "INSERT INTO counters (name, value) VALUES ('total_bytes', 0)"
                 " ON CONFLICT(name) DO UPDATE SET value = 0"
             )
+            self._flush_pending(conn)
             return cur.rowcount
 
     def stats(self) -> dict:
         """Storage + performance view (T-064). Counters are monotonic since the
         cache directory was created; hit rates are derived, null before any
-        traffic (never a fake 0)."""
-        with self._conn() as conn:
+        traffic (never a fake 0). ``errors`` counts degraded-loudly request-path
+        failures (T-072)."""
+        with self._connection() as conn:
+            with conn:
+                self._flush_pending(conn)
             entries, total = conn.execute(
                 "SELECT COUNT(*), COALESCE(SUM(size), 0) FROM entries"
             ).fetchone()
@@ -223,7 +371,24 @@ class CacheStore:
             },
             "evictions": counters["evictions"],
             "expirations": counters["expirations"],
+            "errors": counters["errors"],
         }
+
+    def close(self) -> None:
+        """Flush buffered telemetry and close pooled connections deliberately.
+
+        The API server calls this on shutdown. Best-effort: a broken database
+        must not turn shutdown into a crash."""
+        try:
+            with self._connection() as conn, conn:
+                self._flush_pending(conn)
+        except sqlite3.Error:
+            logger.error("cache counter flush on close failed", exc_info=True)
+        while True:
+            try:
+                self._pool.get_nowait().close()
+            except queue.Empty:
+                return
 
 
 class SharedDescriptionCache:

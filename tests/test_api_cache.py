@@ -238,3 +238,26 @@ def test_without_admin_token_conversion_token_manages(make_api_app):
     auth = {"Authorization": f"Bearer {API_TEST_TOKEN}"}
     assert http.get("/v1/cache/stats", headers=auth).status_code == 200
     assert http.delete("/v1/cache", headers=auth).status_code == 200
+
+
+def test_conversion_survives_a_broken_cache_backend(make_api_app, tmp_path: Path, caplog):
+    """T-072: the cache is an accelerator, not a point of failure. With the
+    cache database corrupted under a running app, a conversion must still
+    return 200 (get degrades to a miss, the post-conversion put is dropped) —
+    loudly, in the logs, but never as the client's problem."""
+    import logging
+
+    pdf = synthetic_pdf(tmp_path / "doc.pdf").read_bytes()
+    app = make_api_app(FakeClient("En bild på en katt."))
+    store = app.state.cache_store
+    assert store is not None
+    store.db_path.write_bytes(b"this is not a sqlite database " * 64)
+    for suffix in ("-wal", "-shm"):
+        store.db_path.with_name(store.db_path.name + suffix).unlink(missing_ok=True)
+
+    with caplog.at_level(logging.ERROR, logger="figmark.cache"):
+        r = _post(TestClient(app), pdf)
+    assert r.status_code == 200, r.text
+    assert "En bild på en katt." in r.json()["markdown"]
+    assert r.headers["x-figmark-cache"] == "miss"
+    assert "cache" in caplog.text and "failed" in caplog.text, "degraded loudly, not silently"

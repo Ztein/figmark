@@ -1,6 +1,8 @@
 # T-072: A cache failure fails the customer's request — and a corrupt cache file prevents the service from starting
 
-**Status:** Open
+**Status:** Closed — **Option 1 shipped 2026-07-06** (error-isolated `get`/`put` with an
+`errors` counter in stats, quarantine-and-rebuild at startup; scorecard rows
+R1–R3 flipped to PASS).
 **Priority:** High — the cache is an accelerator for derived, reproducible data,
 yet today it sits on the critical path twice: an I/O error turns a *successful*
 conversion into a 500, and a corrupt `cache.sqlite3` keeps the whole service
@@ -77,16 +79,16 @@ Option 1 is the floor; option 2 can come later, data permitting.
 
 ## Acceptance criteria
 
-- [ ] A cache `get`/`put` failure (request path, both document and shared
+- [x] A cache `get`/`put` failure (request path, both document and shared
       description caches) never fails the request: the conversion runs/serves
       without cache, and the failure is logged at ERROR and counted.
-- [ ] A corrupt or unopenable `cache.sqlite3` at startup is quarantined
+- [x] A corrupt or unopenable `cache.sqlite3` at startup is quarantined
       (renamed, kept for inspection), a fresh store is created, an ERROR log
       names what happened — and the service starts.
-- [ ] `/v1/cache/stats` exposes a cache-error counter so a degraded cache is
+- [x] `/v1/cache/stats` exposes a cache-error counter so a degraded cache is
       visible without log access.
-- [ ] Tests cover: put failure after successful conversion (request still
+- [x] Tests cover: put failure after successful conversion (request still
       succeeds, result returned), get failure (request converts as a miss),
       corrupt file at boot (service starts, file quarantined).
-- [ ] No silent degradation: every degraded path emits exactly the loud signal
+- [x] No silent degradation: every degraded path emits exactly the loud signal
       it is supposed to (assert on logs/counters in the tests).

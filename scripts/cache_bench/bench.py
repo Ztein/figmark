@@ -85,7 +85,12 @@ def bench_latency(tmp: Path) -> None:
         store.put(f"desc-{i}", DESC_PAYLOAD, doc_digest=DIGEST_A, kind="description")
 
     med, p95 = _timeit(lambda: store.get("doc-1"), 300)
-    row("B1a", "T-074", "get hit, 200 kB document payload (median / p95, ms)", f"{med:.2f} / {p95:.2f}")
+    row(
+        "B1a",
+        "T-074",
+        "get hit, 200 kB document payload (median / p95, ms)",
+        f"{med:.2f} / {p95:.2f}",
+    )
     i = [0]
 
     def putter():
@@ -131,11 +136,12 @@ def bench_concurrency(tmp: Path) -> None:
 
 
 def bench_loop_stall(tmp: Path) -> None:
-    """Max gap in a 5 ms asyncio heartbeat while cache ops run ON the loop —
-    the exact pattern of today's convert_endpoint."""
+    """Max gap in a 5 ms asyncio heartbeat while cache ops run: B3 with the
+    store called ON the loop (the pre-T-074 convert_endpoint pattern), B3b via
+    a worker thread (the run_in_threadpool pattern the endpoint uses after)."""
     store = _fresh_store(tmp, "stall", max_mb=512)
 
-    async def measure() -> tuple[float, float]:
+    async def measure() -> tuple[float, float, float]:
         gaps: list[float] = []
         stop = asyncio.Event()
 
@@ -151,19 +157,34 @@ def bench_loop_stall(tmp: Path) -> None:
         await asyncio.sleep(0.05)
         baseline_gap = max(gaps) if gaps else 0.0
         gaps.clear()
-        store.put("big", BIG_PAYLOAD, doc_digest=DIGEST_A, kind="document")  # as the endpoint does
+        store.put("big", BIG_PAYLOAD, doc_digest=DIGEST_A, kind="document")  # on the loop
         store.get("big")
         await asyncio.sleep(0.05)
+        on_loop_gap = max(gaps)
+        gaps.clear()
+        loop = asyncio.get_running_loop()
+        await loop.run_in_executor(
+            None, lambda: store.put("big2", BIG_PAYLOAD, doc_digest=DIGEST_A, kind="document")
+        )
+        await loop.run_in_executor(None, store.get, "big2")
+        await asyncio.sleep(0.05)
+        threadpool_gap = max(gaps)
         stop.set()
         await task
-        return baseline_gap, max(gaps)
+        return baseline_gap, on_loop_gap, threadpool_gap
 
-    idle_gap, op_gap = asyncio.run(measure())
+    idle_gap, op_gap, pool_gap = asyncio.run(measure())
     row(
         "B3",
         "T-074",
         "event-loop heartbeat max gap: idle / during 32 MB put+get (ms)",
         f"{idle_gap:.0f} / {op_gap:.0f}",
+    )
+    row(
+        "B3b",
+        "T-074",
+        "same, but put+get via threadpool (the endpoint pattern after T-074)",
+        f"{pool_gap:.0f}",
     )
 
 
@@ -175,7 +196,8 @@ def _make_app(client, tmp: Path):
     cfg = load_config(ROOT / "config.example.yaml")
     if not cfg.cache.enabled:
         cfg = dataclasses.replace(
-            cfg, cache=dataclasses.replace(cfg.cache, enabled=True, max_size_mb=256, max_age_hours=24)
+            cfg,
+            cache=dataclasses.replace(cfg.cache, enabled=True, max_size_mb=256, max_age_hours=24),
         )
     settings = ServerSettings(
         auth_token="bench",
@@ -216,7 +238,9 @@ class _CountingClient:
             self.describe_calls += 1
         if self.describe_delay:
             time.sleep(self.describe_delay)
-        return self._make_response("A bar chart of quarterly revenue.", finish_reason=self.finish_reason)
+        return self._make_response(
+            "A bar chart of quarterly revenue.", finish_reason=self.finish_reason
+        )
 
 
 def _serve(app):
@@ -239,7 +263,6 @@ def _serve(app):
 
 def bench_stampede(tmp: Path) -> None:
     import httpx
-
     from tests.fakes import synthetic_pdf
 
     pdf = synthetic_pdf(tmp / "doc.pdf").read_bytes()
@@ -301,13 +324,20 @@ def _corrupt(db: Path) -> None:
 def probe_corruption(tmp: Path) -> None:
     # Boot: a corrupt database file at CacheStore construction time.
     d = tmp / "corrupt-boot"
-    _fresh_store(tmp, "corrupt-boot").put("k", DESC_PAYLOAD, doc_digest=DIGEST_A, kind="description")
+    _fresh_store(tmp, "corrupt-boot").put(
+        "k", DESC_PAYLOAD, doc_digest=DIGEST_A, kind="description"
+    )
     _corrupt(d / "cache.sqlite3")
     try:
         _fresh_store(tmp, "corrupt-boot")
         row("R1", "T-072", "corrupt cache.sqlite3 at startup → service still boots", "PASS")
     except Exception as e:  # noqa: BLE001
-        row("R1", "T-072", "corrupt cache.sqlite3 at startup → service still boots", f"FAIL ({type(e).__name__})")
+        row(
+            "R1",
+            "T-072",
+            "corrupt cache.sqlite3 at startup → service still boots",
+            f"FAIL ({type(e).__name__})",
+        )
 
     # Request path: corruption appearing under a running store.
     d = tmp / "corrupt-run"
@@ -318,18 +348,27 @@ def probe_corruption(tmp: Path) -> None:
         store.get("k")
         row("R2", "T-072", "get against corrupted store → returns miss, no raise", "PASS")
     except Exception as e:  # noqa: BLE001
-        row("R2", "T-072", "get against corrupted store → returns miss, no raise", f"FAIL ({type(e).__name__} would 500 the request)")
+        row(
+            "R2",
+            "T-072",
+            "get against corrupted store → returns miss, no raise",
+            f"FAIL ({type(e).__name__} would 500 the request)",
+        )
     try:
         store.put("k2", DESC_PAYLOAD, doc_digest=DIGEST_A, kind="description")
         row("R3", "T-072", "put against corrupted store → dropped loudly, no raise", "PASS")
     except Exception as e:  # noqa: BLE001
-        row("R3", "T-072", "put against corrupted store → dropped loudly, no raise", f"FAIL ({type(e).__name__} would 500 a PAID conversion)")
+        row(
+            "R3",
+            "T-072",
+            "put against corrupted store → dropped loudly, no raise",
+            f"FAIL ({type(e).__name__} would 500 a PAID conversion)",
+        )
 
 
 # ------------------------------------------------- T-075: truncated sharing
 def probe_truncated_share(tmp: Path) -> None:
     import httpx
-
     from tests.fakes import synthetic_pdf
 
     pdf = synthetic_pdf(tmp / "trunc.pdf").read_bytes()
@@ -345,7 +384,9 @@ def probe_truncated_share(tmp: Path) -> None:
         )
         assert r.status_code == 200, r.text
         conn = sqlite3.connect(cache_dir / "cache.sqlite3")
-        shared = conn.execute("SELECT COUNT(*) FROM entries WHERE kind = 'description'").fetchone()[0]
+        shared = conn.execute("SELECT COUNT(*) FROM entries WHERE kind = 'description'").fetchone()[
+            0
+        ]
         conn.close()
         row(
             "Q1",
@@ -372,7 +413,12 @@ def probe_envelope(tmp: Path) -> None:
         store.put("k", DESC_PAYLOAD, doc_digest=DIGEST_A, kind="description")
         row("E1", "T-076", "divergent-schema database → recreated loudly, then works", "PASS")
     except Exception as e:  # noqa: BLE001
-        row("E1", "T-076", "divergent-schema database → recreated loudly, then works", f"FAIL ({type(e).__name__})")
+        row(
+            "E1",
+            "T-076",
+            "divergent-schema database → recreated loudly, then works",
+            f"FAIL ({type(e).__name__})",
+        )
 
     # Permissions: cleartext document content ⇒ owner-only.
     d = tmp / "perms"
@@ -412,7 +458,9 @@ def probe_envelope(tmp: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--write", metavar="FILE", help="also write the report as markdown (relative to this dir)")
+    parser.add_argument(
+        "--write", metavar="FILE", help="also write the report as markdown (relative to this dir)"
+    )
     args = parser.parse_args()
 
     sha = subprocess.run(
