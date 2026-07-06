@@ -30,6 +30,13 @@ stopped, start it → startup exception. Repro (request path): fill the volume t
 cache lives on, convert a fresh document → conversion succeeds upstream, client
 gets 500.
 
+## Measurement
+
+Rows R1–R3 of the cache scorecard: run
+`scripts/cache_bench/bench.py` and diff against the committed baseline
+(`scripts/cache_bench/BASELINE.md`, same machine). The ticket is done when its
+rows flip to their targets with no regression in the others.
+
 ## Root cause
 
 The cache is treated as infrastructure that must work, not as an optional

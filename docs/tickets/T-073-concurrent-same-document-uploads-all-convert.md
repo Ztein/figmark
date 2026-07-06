@@ -24,6 +24,13 @@ pipeline. The description-level cache dedupes repeated images *within* one run
 but two conversions racing each other mostly miss both layers — descriptions are
 only shared once written.
 
+## Measurement
+
+Rows S1–S2 of the cache scorecard: run
+`scripts/cache_bench/bench.py` and diff against the committed baseline
+(`scripts/cache_bench/BASELINE.md`, same machine). The ticket is done when its
+rows flip to their targets with no regression in the others.
+
 ## Root cause
 
 The cache knows two states, hit and miss. A production cache in front of an

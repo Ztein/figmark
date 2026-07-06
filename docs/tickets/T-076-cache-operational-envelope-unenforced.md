@@ -30,6 +30,13 @@ Four related gaps, all "the cache works until the deployment around it moves":
    server currently runs one uvicorn process. Nothing warns the operator who
    points two replicas at one shared volume.
 
+## Measurement
+
+Rows E1–E3 of the cache scorecard: run
+`scripts/cache_bench/bench.py` and diff against the committed baseline
+(`scripts/cache_bench/BASELINE.md`, same machine). The ticket is done when its
+rows flip to their targets with no regression in the others.
+
 ## Root cause
 
 The cache was built (T-060…T-064) for functional correctness on the happy

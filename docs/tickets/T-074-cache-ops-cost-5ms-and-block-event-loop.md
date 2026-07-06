@@ -32,6 +32,13 @@ Where it lands:
   65 ms tail above is the whole process not answering anything, `/healthz`
   included.
 
+## Measurement
+
+Rows B1–B3 of the cache scorecard: run
+`scripts/cache_bench/bench.py` and diff against the committed baseline
+(`scripts/cache_bench/BASELINE.md`, same machine). The ticket is done when its
+rows flip to their targets with no regression in the others.
+
 ## Root cause
 
 Three compounding choices in `cache.py`:
