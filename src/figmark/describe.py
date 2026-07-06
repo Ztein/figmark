@@ -48,6 +48,19 @@ SIGNIFICANCE_INSTRUCTION = (
 )
 
 
+def truncation_marker(description_path: Path) -> Path:
+    """Sidecar file marking a description cut at the token cap (T-075).
+
+    Written next to the per-document description file when the model stopped
+    with ``finish_reason == "length"``. The truncated text is still used for
+    the current document (T-033: a partial beats a dropped figure), but the
+    pipeline checks this marker before promoting the text into the shared
+    cross-request cache — a known-degraded result must not silently become the
+    canonical description for every future document.
+    """
+    return description_path.with_name(description_path.name + ".truncated")
+
+
 def is_skip(text: str | None) -> bool:
     """True if a description is the significance-gate skip marker (decorative image)."""
     return text is not None and text.strip().upper().startswith(SKIP_MARKER)
@@ -208,7 +221,8 @@ def describe_image(
                     f"(model={cfg.api.model}). This usually means the model does "
                     f"not support image input or the prompt was rejected."
                 )
-            if getattr(choice, "finish_reason", None) == "length":
+            truncated = getattr(choice, "finish_reason", None) == "length"
+            if truncated:
                 # Truncated at the token cap — the description is likely cut
                 # mid-sentence. Warn loudly (do not silently cache a partial as if
                 # complete) but still keep what we got. (T-033)
@@ -220,6 +234,8 @@ def describe_image(
                 )
             description_path.parent.mkdir(parents=True, exist_ok=True)
             description_path.write_text(text, encoding="utf-8")
+            if truncated:
+                truncation_marker(description_path).touch()  # keeps it out of the shared cache
             return text
         except (APITimeoutError, RateLimitError, APIError) as e:
             last_error = e

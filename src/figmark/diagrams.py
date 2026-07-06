@@ -17,7 +17,7 @@ import fitz
 
 from .config import Config
 from .context import ContextText
-from .describe import _prepare_image_for_api, compose_prompt
+from .describe import _prepare_image_for_api, compose_prompt, truncation_marker
 
 logger = logging.getLogger("figmark.diagrams")
 
@@ -484,7 +484,8 @@ def describe_diagram(
             f"The API returned empty content for diagram {region.path.name} "
             f"(model={cfg.api.model})."
         )
-    if getattr(choice, "finish_reason", None) == "length":
+    truncated = getattr(choice, "finish_reason", None) == "length"
+    if truncated:
         # Truncated at the token cap — warn, don't silently cache a partial. (T-033)
         logger.warning(
             "Description for diagram %s was truncated at the %d-token cap "
@@ -494,4 +495,6 @@ def describe_diagram(
         )
     description_path.parent.mkdir(parents=True, exist_ok=True)
     description_path.write_text(text, encoding="utf-8")
+    if truncated:
+        truncation_marker(description_path).touch()  # keeps it out of the shared cache
     return text

@@ -20,7 +20,13 @@ from .annotate import AnnotationItem, annotate_pdf
 from .boilerplate import strip_boilerplate
 from .config import Config
 from .context import ContextText, get_text_context_around
-from .describe import cache_fingerprint, describe_image, is_skip, make_client
+from .describe import (
+    cache_fingerprint,
+    describe_image,
+    is_skip,
+    make_client,
+    truncation_marker,
+)
 from .diagrams import (
     DiagramRegion,
     describe_diagram,
@@ -487,9 +493,20 @@ def convert(
     duplicate_instances = 0
     shared_hits = 0
 
-    def _with_shared_put(job: Job, shared_key: str) -> Job:
-        def _put(text, _prev=job.on_done, _key=shared_key):
+    def _with_shared_put(job: Job, shared_key: str, desc_path: Path) -> Job:
+        def _put(text, _prev=job.on_done, _key=shared_key, _path=desc_path):
             _prev(text)
+            # T-075: a generation cut at the token cap (marker written by
+            # describe_image/describe_diagram) is kept for THIS document
+            # (T-033) but never promoted into the shared cross-request cache —
+            # other documents regenerate, likely completing.
+            if truncation_marker(_path).exists():
+                logger.warning(
+                    "truncated description %s not stored in the shared cache — "
+                    "the next document containing this figure regenerates it (T-075)",
+                    _path.name,
+                )
+                return
             shared_cache.put(_key, text)
 
         job.on_done = _put
@@ -534,7 +551,7 @@ def convert(
                 resolved_language,
             )
             if shared_cache is not None:
-                job = _with_shared_put(job, cache_key)
+                job = _with_shared_put(job, cache_key, desc_path)
             pending_image_jobs[cache_key] = job
             jobs.append(job)
 
@@ -574,7 +591,7 @@ def convert(
                 resolved_language,
             )
             if shared_cache is not None and shared_key:
-                job = _with_shared_put(job, shared_key)
+                job = _with_shared_put(job, shared_key, desc_path)
             jobs.append(job)
 
     if duplicate_instances:

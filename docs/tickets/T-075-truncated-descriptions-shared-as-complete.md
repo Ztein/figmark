@@ -1,6 +1,10 @@
 # T-075: A truncated figure description is stored in the shared cross-request cache as if complete
 
-**Status:** Open
+**Status:** Closed — **Option 1 shipped 2026-07-06** (a `.truncated` sidecar
+marker written by `describe_image`/`describe_diagram` keeps token-capped
+descriptions out of the shared cross-request cache; the skip is logged, the
+partial still serves its own document per T-033, and the next document
+regenerates; scorecard row Q1 PASS).
 **Priority:** Low — the warning exists and a partial description still beats a
 dropped figure (product thesis), but the shared cache silently *promotes* a
 known-degraded result into every future document that contains the same figure,
@@ -65,11 +69,11 @@ truncation turns out to be common in practice (worth a counter either way).
 
 ## Acceptance criteria
 
-- [ ] A description generated with `finish_reason == "length"` is **not**
+- [x] A description generated with `finish_reason == "length"` is **not**
       served from the shared cross-request cache to a different request
       *silently* — either it is never stored there (option 1) or every shared
       hit of it is as loud as the original generation (option 2).
-- [ ] The chosen behaviour is covered by a test that fakes a length-capped
+- [x] The chosen behaviour is covered by a test that fakes a length-capped
       completion and asserts the shared-cache contents / logging.
-- [ ] Truncation events are countable (log-derivable or a stats counter), so
+- [x] Truncation events are countable (log-derivable or a stats counter), so
       "how often does this happen" stops being guesswork.
