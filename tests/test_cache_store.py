@@ -400,7 +400,7 @@ def test_pre_existing_loose_directory_is_tightened_loudly(tmp_path: Path, caplog
 
     d = tmp_path / "cache"
     d.mkdir()
-    os.chmod(d, 0o755)
+    os.chmod(d, 0o750)  # any group/other bits count as loose for document content
     with caplog.at_level(logging.WARNING, logger="figmark.cache"):
         make_store(tmp_path)
     assert d.stat().st_mode & 0o777 == 0o700

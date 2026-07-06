@@ -353,18 +353,26 @@ class CacheStore:
             return
         now = time.time()
         try:
-            with self._connection() as conn, conn:
-                old = conn.execute("SELECT size FROM entries WHERE key = ?", (key,)).fetchone()
-                conn.execute(
-                    "INSERT INTO entries (key, doc_digest, kind, payload, size, created,"
-                    " last_accessed) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(key) DO UPDATE SET"
-                    " payload = excluded.payload, size = excluded.size,"
-                    " last_accessed = excluded.last_accessed",
-                    (key, doc_digest, kind, payload, len(payload), now, now),
-                )
-                _bump(conn, "total_bytes", len(payload) - (old[0] if old else 0))
-                self._flush_pending(conn)
-                self._evict(conn, now)
+            with self._connection() as conn:
+                with conn:
+                    old = conn.execute("SELECT size FROM entries WHERE key = ?", (key,)).fetchone()
+                    conn.execute(
+                        "INSERT INTO entries (key, doc_digest, kind, payload, size, created,"
+                        " last_accessed) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(key) DO UPDATE"
+                        " SET payload = excluded.payload, size = excluded.size,"
+                        " last_accessed = excluded.last_accessed",
+                        (key, doc_digest, kind, payload, len(payload), now, now),
+                    )
+                    _bump(conn, "total_bytes", len(payload) - (old[0] if old else 0))
+                    self._flush_pending(conn)
+                    evicted = self._evict(conn, now)
+                if evicted:
+                    # Return the freed pages to the filesystem so the file
+                    # tracks the cap instead of holding its high-water mark
+                    # forever (T-076); the truncation lands at the next WAL
+                    # checkpoint. After the commit, via executescript — see
+                    # _shrink for why.
+                    conn.executescript("PRAGMA incremental_vacuum;")
         except sqlite3.Error:
             self._degraded("put", key)
 
@@ -378,7 +386,8 @@ class CacheStore:
             exc_info=True,
         )
 
-    def _evict(self, conn: sqlite3.Connection, now: float) -> None:
+    def _evict(self, conn: sqlite3.Connection, now: float) -> bool:
+        """Enforce TTL and the size cap. Returns whether anything was removed."""
         removed = False
         expired = conn.execute(
             "SELECT COUNT(*), COALESCE(SUM(size), 0) FROM entries WHERE ? - last_accessed > ?",
@@ -401,23 +410,20 @@ class CacheStore:
             _bump(conn, "evictions")
             _bump(conn, "total_bytes", -oldest[1])
             removed = True
-        if removed:
-            # Return the freed pages to the filesystem so the file tracks the
-            # cap instead of holding its high-water mark forever (T-076). The
-            # truncation lands at the next WAL checkpoint. The pragma yields
-            # one row per freed page and only works while being stepped —
-            # hence the fetchall().
-            conn.execute("PRAGMA incremental_vacuum").fetchall()
+        return removed
 
     def _shrink(self, conn: sqlite3.Connection) -> None:
         """Give deleted pages back to the OS now (after a management delete).
 
         Runs outside any transaction: the checkpoint must see the commit, and
-        ``wal_checkpoint(TRUNCATE)`` also empties the WAL itself. Both pragmas
-        do their work while being stepped — hence the fetchall().
+        ``wal_checkpoint(TRUNCATE)`` also empties the WAL itself. Via
+        ``executescript`` deliberately: it steps each statement to completion
+        on every Python version, whereas ``execute(...).fetchall()`` on an
+        ``incremental_vacuum`` (which frees one page per step and declares no
+        result columns) steps only once on Python ≤ 3.11 — freeing one page
+        instead of all of them.
         """
-        conn.execute("PRAGMA incremental_vacuum").fetchall()
-        conn.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchall()
+        conn.executescript("PRAGMA incremental_vacuum; PRAGMA wal_checkpoint(TRUNCATE);")
 
     # ------------------------------------------------------ management surface
     def delete_document(self, doc_digest: str) -> int:
