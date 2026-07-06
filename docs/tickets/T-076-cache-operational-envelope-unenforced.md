@@ -14,6 +14,15 @@ Four related gaps, all "the cache works until the deployment around it moves":
    will crash at *runtime* (`OperationalError` on the first SELECT) against any
    pre-existing `cache.sqlite3` on a persistent volume — precisely the setup
    the docs recommend.
+   *Update 2026-07-06:* T-072's quarantine-and-rebuild largely covers this at
+   *open* time — scorecard row E1 now PASSes, because the startup reconcile
+   query touches the `entries` columns and a mismatch is treated as corruption
+   (the old file is set aside as `.corrupt-<ts>`). What remains of this item:
+   a mismatch that only surfaces *after* open (e.g. an extra column, or a
+   changed column used by a later query) is not caught, and a merely-old
+   schema being labelled "corrupt" is misleading in the quarantine filename
+   and log. An explicit `schema_version` check stays the honest fix, but it is
+   now a refinement, not a crash fix.
 2. **Disk footprint exceeds `max_size_mb`.** The cap counts payload bytes
    only. The SQLite file is a high-water mark that never shrinks after
    eviction or `/v1/cache` clear (no vacuum), and the WAL adds more. An
