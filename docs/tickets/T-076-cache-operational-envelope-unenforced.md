@@ -1,6 +1,11 @@
 # T-076: The cache's operational envelope is unenforced — no schema version, disk use beyond the configured cap, world-readable directory, undocumented scaling assumptions
 
-**Status:** Open
+**Status:** Closed — **Option 1 shipped 2026-07-06** (`PRAGMA user_version`
+schema gate with loud drop-and-recreate, `0700`/`0600` permissions with a
+tighten-and-warn pass, `auto_vacuum=INCREMENTAL` + vacuum on eviction and
+vacuum+WAL-truncate on clear/delete, `disk_bytes` in `/v1/cache/stats`, and a
+"deployment assumptions" section in the deployment docs; scorecard rows E1/E2
+PASS, E3 after-clear 9.6 → 0.1 MB).
 **Priority:** Medium — none of these bites in a demo; all of them bite in a
 professional deployment, and two (schema, permissions) get more expensive to
 retrofit with every release that ships without them.
@@ -84,12 +89,12 @@ field plus a documented rule; (4) is documentation.
 
 ## Acceptance criteria
 
-- [ ] Opening a cache database written by a different (older/newer) schema
+- [x] Opening a cache database written by a different (older/newer) schema
       version recreates it loudly instead of crashing at first use — covered by
       a test that plants a divergent-schema file.
-- [ ] Cache directory and database file are created owner-only (`0700`/`0600`).
-- [ ] `/v1/cache/stats` (or the docs) makes the *actual* on-disk footprint
+- [x] Cache directory and database file are created owner-only (`0700`/`0600`).
+- [x] `/v1/cache/stats` (or the docs) makes the *actual* on-disk footprint
       visible/predictable; the sizing guidance is written down.
-- [ ] Server/deployment docs state the topology envelope (single host, local
+- [x] Server/deployment docs state the topology envelope (single host, local
       volume, no NFS/SMB, one writer service) and the backup guidance — in
       generic terms, per the public-repo litmus test.

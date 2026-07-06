@@ -79,7 +79,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-073](T-073-concurrent-same-document-uploads-all-convert.md) | **Closed** | High | Concurrent uploads of the same document each run a full conversion — the cache does not coalesce in-flight requests |
 | [T-074](T-074-cache-ops-cost-5ms-and-block-event-loop.md) | **Closed** | Medium | Every cache operation costs ~5 ms and runs blocking SQLite on the event loop |
 | [T-075](T-075-truncated-descriptions-shared-as-complete.md) | Open | Low | A truncated figure description is stored in the shared cross-request cache as if complete |
-| [T-076](T-076-cache-operational-envelope-unenforced.md) | Open | Medium | The cache's operational envelope is unenforced — no schema version, disk use beyond the cap, world-readable directory, undocumented scaling assumptions |
+| [T-076](T-076-cache-operational-envelope-unenforced.md) | **Closed** | Medium | The cache's operational envelope is unenforced — no schema version, disk use beyond the cap, world-readable directory, undocumented scaling assumptions |
 
 ## Statuses
 

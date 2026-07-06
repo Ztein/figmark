@@ -345,3 +345,84 @@ def test_running_total_matches_reality_through_churn(tmp_path: Path):
     assert store.stats()["total_bytes"] == 10
     store.clear()
     assert store.stats()["total_bytes"] == 0
+
+
+# --- T-076: the operational envelope -----------------------------------------
+
+
+def test_schema_version_mismatch_is_dropped_loudly_not_quarantined(tmp_path: Path, caplog):
+    """A database written by another figmark release (different schema version)
+    is disposable derived data: dropped and recreated with a WARNING that says
+    so — not mislabelled 'corrupt', not kept, and never a crash."""
+    import logging
+    import sqlite3
+
+    d = tmp_path / "cache"
+    d.mkdir()
+    conn = sqlite3.connect(d / "cache.sqlite3")
+    conn.execute("CREATE TABLE entries (key TEXT PRIMARY KEY, payload BLOB)")  # an "old" schema
+    conn.execute("INSERT INTO entries VALUES ('stale', x'00')")
+    conn.commit()
+    conn.close()
+
+    with caplog.at_level(logging.WARNING, logger="figmark.cache"):
+        store = make_store(tmp_path)
+    assert "schema version" in caplog.text
+    assert not list(d.glob("cache.sqlite3.corrupt-*")), "an old schema is not corruption"
+    assert store.get("stale") is None, "old-schema data is gone"
+    store.put("k", b"v", doc_digest="d", kind="document")
+    assert store.get("k") == b"v", "the recreated store must work"
+
+
+def test_matching_schema_version_survives_reopen(tmp_path: Path, caplog):
+    """The version gate must not touch a healthy database from this release."""
+    import logging
+
+    make_store(tmp_path).put("k", b"v", doc_digest="d", kind="document")
+    with caplog.at_level(logging.WARNING, logger="figmark.cache"):
+        assert make_store(tmp_path).get("k") == b"v"
+    assert "schema version" not in caplog.text
+
+
+def test_cache_dir_and_db_are_owner_only(tmp_path: Path):
+    """The store holds converted document content in cleartext — the directory
+    and the database (whose permissions SQLite copies onto -wal/-shm) must not
+    be readable by group/other."""
+    store = make_store(tmp_path)
+    store.put("k", b"v", doc_digest="d", kind="document")
+    assert (tmp_path / "cache").stat().st_mode & 0o777 == 0o700
+    assert store.db_path.stat().st_mode & 0o077 == 0
+
+
+def test_pre_existing_loose_directory_is_tightened_loudly(tmp_path: Path, caplog):
+    import logging
+    import os
+
+    d = tmp_path / "cache"
+    d.mkdir()
+    os.chmod(d, 0o755)
+    with caplog.at_level(logging.WARNING, logger="figmark.cache"):
+        make_store(tmp_path)
+    assert d.stat().st_mode & 0o777 == 0o700
+    assert "tightened" in caplog.text
+
+
+def test_clear_returns_disk_space(tmp_path: Path):
+    """The file must not keep its high-water mark after a full wipe: an
+    operator who clears a big cache should see the disk usage drop (T-076)."""
+    store = make_store(tmp_path, max_bytes=5_000_000)
+    for i in range(40):
+        store.put(f"k-{i}", b"z" * 100_000, doc_digest="d", kind="document")
+    before = store.stats()["disk_bytes"]
+    assert before > 4_000_000
+    store.clear()
+    assert store.stats()["disk_bytes"] < 200_000, "freed pages go back to the OS"
+
+
+def test_stats_reports_disk_bytes(tmp_path: Path):
+    """disk_bytes is the real filesystem footprint (db + WAL) — at least the
+    logical payload total, so volume sizing can be done from observation."""
+    store = make_store(tmp_path, max_bytes=1_000_000)
+    store.put("k", b"v" * 10_000, doc_digest="d", kind="document")
+    s = store.stats()
+    assert s["disk_bytes"] >= s["total_bytes"] > 0
