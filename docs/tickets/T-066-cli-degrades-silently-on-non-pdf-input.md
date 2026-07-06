@@ -1,6 +1,10 @@
 # T-066: The CLI accepts a non-PDF (e.g. an Office file) and emits a near-empty result instead of failing loud
 
-**Status:** Open
+**Status:** Closed — **Option 1 shipped 2026-07-06** (the input gate is now
+transport-neutral in `input_formats.py` and shared by both surfaces: the CLI
+sniffs, enforces the allowlist, converts Office input via LibreOffice exactly
+like the service, and refuses unsupported/mismatching input with a clear
+message + exit 2 — never a confident empty run).
 **Priority:** Medium — a silent wrong answer on a public entry point is exactly
 the failure class the project bans (fail loud, never silently degrade — T-024).
 A user who runs `figmark deck.pptx` gets output that *looks* fine and is nearly
@@ -70,10 +74,10 @@ confident empty result** — it is either handled or loudly refused.
 
 ## Acceptance criteria
 
-- [ ] `figmark <office-file>` either converts it (parity with the HTTP surface)
+- [x] `figmark <office-file>` either converts it (parity with the HTTP surface)
       or exits non-zero with a message naming the format and the remedy — never
       `exit 0` with an empty description set.
-- [ ] A content/extension mismatch or an unsupported type on the CLI fails loud,
+- [x] A content/extension mismatch or an unsupported type on the CLI fails loud,
       matching the HTTP surface's behaviour.
-- [ ] A test covers the CLI path for a non-PDF input (asserting the loud
+- [x] A test covers the CLI path for a non-PDF input (asserting the loud
       outcome, not a silent empty run).

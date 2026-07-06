@@ -45,11 +45,11 @@ from openai import APIError, APITimeoutError
 from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
 
-from . import __version__
+from . import __version__, input_formats
 from .cache import CacheStore, SharedDescriptionCache
 from .config import load_config
 from .describe import make_client
-from .input_formats import EXTENSION_FORMATS, OFFICE_FORMATS, sniff_format
+from .input_formats import OFFICE_FORMATS, InputFormatError
 from .ocr import VisionOCRError
 from .office import OfficeConversionError, convert_office_to_pdf
 from .pipeline import convert
@@ -282,25 +282,13 @@ def _validate_pdf_document(pdf_path: Path) -> None:
         ) from e
 
 
-def _reject_claimed_format(claimed: str | None, allowed: list[str]) -> None:
-    """Fail fast (415) when a *claimed* format (extension) is outside the allowlist.
+# The input gate itself is transport-neutral and shared with the CLI (T-066);
+# HTTP maps its two refusal kinds to the T-054 status codes.
+_GATE_STATUS = {"unsupported": 415, "mismatch": 422}
 
-    ``claimed=None`` means no recognisable claim — sniffing decides later.
-    """
-    supported = ", ".join(allowed)
-    if claimed == "ole":
-        raise HTTPException(
-            status_code=415,
-            detail=(
-                "Legacy binary Office files (.doc/.xls/.ppt) are not supported — "
-                f"save as OOXML or PDF. Supported formats: {supported}."
-            ),
-        )
-    if claimed is not None and claimed not in allowed:
-        raise HTTPException(
-            status_code=415,
-            detail=f"Format '{claimed}' is not enabled here. Supported formats: {supported}.",
-        )
+
+def _http_input_error(e: InputFormatError) -> HTTPException:
+    return HTTPException(status_code=_GATE_STATUS[e.kind], detail=str(e))
 
 
 def gate_document_format(path: Path, claimed: str | None, allowed: list[str]) -> str:
@@ -310,42 +298,10 @@ def gate_document_format(path: Path, claimed: str | None, allowed: list[str]) ->
     mismatch is a loud 422, never mis-handled; a real-but-disallowed format is a
     415 that names both the detected format and the supported set.
     """
-    fmt = sniff_format(path)
-    supported = ", ".join(allowed)
-    if fmt == "ole":
-        _reject_claimed_format("ole", allowed)
-    if fmt is None:
-        if claimed is None:
-            # No filename claim to contradict (e.g. /v1/ocr) — this is simply an
-            # unsupported media type, not a mismatch.
-            raise HTTPException(
-                status_code=415,
-                detail=(
-                    "Could not identify the document as any supported format. "
-                    f"Supported formats: {supported}."
-                ),
-            )
-        raise HTTPException(
-            status_code=422,
-            detail=(
-                f"File name claims '{claimed}' but the content is not identifiable "
-                f"as any supported format. Supported formats: {supported}."
-            ),
-        )
-    if claimed is not None and fmt != claimed:
-        raise HTTPException(
-            status_code=422,
-            detail=(
-                f"File name claims '{claimed}' but the content is '{fmt}' — "
-                "extension/content mismatch."
-            ),
-        )
-    if fmt not in allowed:
-        raise HTTPException(
-            status_code=415,
-            detail=f"Detected format '{fmt}' is not enabled here. Supported formats: {supported}.",
-        )
-    return fmt
+    try:
+        return input_formats.gate_document_format(path, claimed, allowed)
+    except InputFormatError as e:
+        raise _http_input_error(e) from e
 
 
 def config_cache_fingerprint(cfg) -> str:
@@ -747,22 +703,11 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
             )
         # The filename's claim is checked up front (fail fast, before streaming);
         # the *content* has the final say via gate_document_format below (T-054).
-        name = (file.filename or "upload").lower()
-        suffix = Path(name).suffix
         allowed = cfg.input.formats
-        if suffix:
-            claimed = EXTENSION_FORMATS.get(suffix)
-            if claimed is None:
-                raise HTTPException(
-                    status_code=415,
-                    detail=(
-                        f"Unsupported file type '{suffix}'. "
-                        f"Supported formats: {', '.join(allowed)}."
-                    ),
-                )
-            _reject_claimed_format(claimed, allowed)
-        else:
-            claimed = None
+        try:
+            claimed = input_formats.claimed_format(file.filename or "upload", allowed)
+        except InputFormatError as e:
+            raise _http_input_error(e) from e
 
         work = Path(tempfile.mkdtemp(dir=settings.work_dir))
         upload_path = work / "upload.bin"
