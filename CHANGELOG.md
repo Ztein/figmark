@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **A broken cache can no longer fail requests or block startup (T-072).**
+  Cache `get`/`put` failures on the request path are logged at ERROR, counted
+  (`/v1/cache/stats` gains an `errors` field) and degrade to a miss / dropped
+  write — a conversion that succeeded is always returned. A corrupt
+  `cache.sqlite3` at startup is quarantined (`cache.sqlite3.corrupt-<ts>`,
+  kept for inspection) and rebuilt instead of preventing boot. Management
+  endpoints still fail loudly — an operator's delete is never a silent no-op.
+
+### Changed
+
+- **Cache operations are ~100× faster and no longer touch the event loop
+  (T-074).** Pooled SQLite connections (owned and closed on shutdown), WAL
+  with `synchronous=NORMAL`, and a sparse LRU re-stamp (a hit younger than
+  ~1 % of the TTL reads without writing) take a cache hit from ~5 ms to
+  ~0.03 ms and remove read/write lock contention; the convert endpoint now
+  performs cache I/O in the threadpool, so a large cached result being
+  written no longer stalls concurrent requests or `/healthz`. Within the
+  re-stamp window the LRU order among near-simultaneous accesses is
+  approximate; hit/miss telemetry is buffered and flushed on writes,
+  `stats()` and shutdown (an unclean kill may drop a few counts).
+
 ## [0.3.0] - 2026-07-02
 
 The document-fidelity and integration release: structured Markdown (headings,

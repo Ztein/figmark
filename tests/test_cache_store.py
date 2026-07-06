@@ -44,16 +44,50 @@ def test_lru_eviction_when_size_cap_exceeded(tmp_path: Path):
     assert store.get("c") is not None
 
 
-def test_hit_restamps_entry_to_youngest(tmp_path: Path):
+def test_hit_restamps_entry_to_youngest(tmp_path: Path, monkeypatch):
     """Accessing an entry must protect it from eviction: touch a, then add c —
-    b (now the oldest by last access) is evicted instead of a."""
-    store = make_store(tmp_path, max_bytes=250)
+    b (now the oldest by last access) is evicted instead of a. The touch
+    happens past the sparse re-stamp window (T-074: ~1 % of the TTL), which is
+    when re-stamping is guaranteed."""
+    import figmark.cache as cache_mod
+
+    now = 1_000_000.0
+    monkeypatch.setattr(cache_mod.time, "time", lambda: now)
+    store = make_store(tmp_path, max_bytes=250)  # TTL 1 h → re-stamp window 36 s
     store.put("a", b"x" * 100, doc_digest="da", kind="document")
+    monkeypatch.setattr(cache_mod.time, "time", lambda: now + 1)
     store.put("b", b"x" * 100, doc_digest="db", kind="document")
-    assert store.get("a") is not None  # re-stamps a to "now"
+    monkeypatch.setattr(cache_mod.time, "time", lambda: now + 60)
+    assert store.get("a") is not None  # 60 s old > 36 s window → re-stamps a
+    monkeypatch.setattr(cache_mod.time, "time", lambda: now + 61)
     store.put("c", b"x" * 100, doc_digest="dc", kind="document")
     assert store.get("a") is not None, "recently-read entry must survive"
     assert store.get("b") is None, "the least-recently-used entry is the one evicted"
+
+
+def test_hot_reread_within_window_does_not_write(tmp_path: Path, monkeypatch):
+    """T-074: a hit younger than the re-stamp window returns without writing —
+    the stamp is unchanged (that is what keeps hot reads off the write lock) —
+    while a hit past the window re-stamps."""
+    import sqlite3
+
+    import figmark.cache as cache_mod
+
+    now = 1_000_000.0
+    monkeypatch.setattr(cache_mod.time, "time", lambda: now)
+    store = make_store(tmp_path)  # TTL 1 h → window 36 s
+
+    def stamp() -> float:
+        with sqlite3.connect(store.db_path) as conn:
+            return conn.execute("SELECT last_accessed FROM entries WHERE key = 'k'").fetchone()[0]
+
+    store.put("k", b"v", doc_digest="d", kind="document")
+    monkeypatch.setattr(cache_mod.time, "time", lambda: now + 5)
+    assert store.get("k") is not None
+    assert stamp() == now, "a hot re-read within the window must not write"
+    monkeypatch.setattr(cache_mod.time, "time", lambda: now + 60)
+    assert store.get("k") is not None
+    assert stamp() == now + 60, "a read past the window must re-stamp"
 
 
 def test_expired_entry_is_a_miss(tmp_path: Path, monkeypatch):
@@ -179,13 +213,125 @@ def test_eviction_counter_increments(tmp_path: Path):
 
 
 def test_counters_survive_reopen(tmp_path: Path):
+    """Hit/miss counts are buffered in memory (T-074) and flushed on writes,
+    stats() and close() — a graceful shutdown persists them."""
     store = make_store(tmp_path)
     store.put("k", b"v", doc_digest="d", kind="document")
     assert store.get("k") is not None
     assert store.get("gone") is None
+    store.close()
     reopened = make_store(tmp_path)
     s = reopened.stats()
     assert s["hits"]["document"] == 1 and s["misses"]["document"] == 1
+
+
+# --- T-072: a broken cache degrades loudly, never fatally ------------------
+
+
+def _corrupt_db(store: CacheStore) -> None:
+    """Overwrite the database with garbage, as disk trouble would."""
+    store.close()  # drop pooled connections — the next one sees the damage
+    store.db_path.write_bytes(b"this is not a sqlite database " * 64)
+    for suffix in ("-wal", "-shm"):
+        store.db_path.with_name(store.db_path.name + suffix).unlink(missing_ok=True)
+
+
+def test_corrupt_db_at_open_is_quarantined_and_rebuilt(tmp_path: Path, caplog):
+    """A corrupt cache file must never hold the service down: it is renamed
+    aside (kept for inspection), a fresh store is created, and the incident is
+    logged at ERROR."""
+    import logging
+
+    first = make_store(tmp_path)
+    first.put("k", b"v", doc_digest="d", kind="document")
+    first.close()
+    _corrupt_db(first)
+    with caplog.at_level(logging.ERROR, logger="figmark.cache"):
+        reopened = make_store(tmp_path)
+    assert "quarantining" in caplog.text
+    assert list((tmp_path / "cache").glob("cache.sqlite3.corrupt-*")), "kept for inspection"
+    reopened.put("k2", b"v2", doc_digest="d", kind="document")
+    assert reopened.get("k2") == b"v2", "the rebuilt store must work"
+
+
+def test_get_on_corrupted_store_is_a_loud_miss_not_an_error(tmp_path: Path, caplog):
+    import logging
+
+    store = make_store(tmp_path)
+    store.put("k", b"v", doc_digest="d", kind="document")
+    _corrupt_db(store)
+    with caplog.at_level(logging.ERROR, logger="figmark.cache"):
+        assert store.get("k") is None, "a broken cache reads as a miss"
+    assert "cache get failed" in caplog.text, "degraded, but loud"
+
+
+def test_put_on_corrupted_store_is_dropped_not_raised(tmp_path: Path, caplog):
+    """The put runs AFTER a successful (paid-for) conversion — it must never
+    throw that result away."""
+    import logging
+
+    store = make_store(tmp_path)
+    store.put("seed", b"v", doc_digest="d", kind="document")
+    _corrupt_db(store)
+    with caplog.at_level(logging.ERROR, logger="figmark.cache"):
+        store.put("k", b"v", doc_digest="d", kind="document")  # must not raise
+    assert "cache put failed" in caplog.text
+
+
+def test_stats_exposes_error_counter(tmp_path: Path):
+    store = make_store(tmp_path)
+    assert store.stats()["errors"] == 0
+
+
+def test_management_ops_still_raise_on_a_broken_store(tmp_path: Path):
+    """Only the request path degrades: an operator deleting for compliance
+    must see the failure (T-072)."""
+    import sqlite3
+
+    import pytest
+
+    store = make_store(tmp_path)
+    store.put("k", b"v", doc_digest="d", kind="document")
+    _corrupt_db(store)
+    with pytest.raises(sqlite3.Error):
+        store.delete_document("d")
+
+
+# --- T-074: behaviour under concurrent access -------------------------------
+
+
+def test_concurrent_readers_and_writers_complete_without_errors(tmp_path: Path):
+    import threading
+
+    store = make_store(tmp_path, max_bytes=1_000_000)
+    for i in range(20):
+        store.put(f"seed-{i}", b"v" * 50, doc_digest="d", kind="description")
+    errors: list[BaseException] = []
+
+    def reader(tid: int) -> None:
+        try:
+            for i in range(50):
+                store.get(f"seed-{(tid + i) % 20}", kind="description")
+        except BaseException as e:  # noqa: BLE001 — the count IS the assertion
+            errors.append(e)
+
+    def writer(tid: int) -> None:
+        try:
+            for i in range(25):
+                store.put(f"w-{tid}-{i}", b"x" * 50, doc_digest="d", kind="description")
+        except BaseException as e:  # noqa: BLE001
+            errors.append(e)
+
+    threads = [threading.Thread(target=reader, args=(t,)) for t in range(6)] + [
+        threading.Thread(target=writer, args=(t,)) for t in range(2)
+    ]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    assert not errors
+    assert store.stats()["errors"] == 0, "no degraded ops under plain concurrency"
+    assert store.get("seed-0", kind="description") is not None
 
 
 def test_running_total_matches_reality_through_churn(tmp_path: Path):

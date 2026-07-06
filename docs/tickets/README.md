@@ -75,9 +75,9 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-069](T-069-request-queue-bounded-concurrency-backpressure.md) | Open | Medium | The service has no request queue — it rejects the moment all worker slots are busy, instead of queueing with bounded backpressure |
 | [T-070](T-070-mistral-ocr-annotations-unsupported.md) | **Icebox** | Low | Mistral OCR Annotations (bbox / document structured extraction) are unsupported |
 | [T-071](T-071-standalone-image-input.md) | Open | Medium | figmark can't take a standalone image as input — a raster image is rejected, though its whole engine is figure interpretation + OCR |
-| [T-072](T-072-cache-failure-fails-requests-and-boot.md) | Open | High | A cache failure fails the customer's request — and a corrupt cache file prevents the service from starting |
+| [T-072](T-072-cache-failure-fails-requests-and-boot.md) | **Closed** | High | A cache failure fails the customer's request — and a corrupt cache file prevents the service from starting |
 | [T-073](T-073-concurrent-same-document-uploads-all-convert.md) | Open | High | Concurrent uploads of the same document each run a full conversion — the cache does not coalesce in-flight requests |
-| [T-074](T-074-cache-ops-cost-5ms-and-block-event-loop.md) | Open | Medium | Every cache operation costs ~5 ms and runs blocking SQLite on the event loop |
+| [T-074](T-074-cache-ops-cost-5ms-and-block-event-loop.md) | **Closed** | Medium | Every cache operation costs ~5 ms and runs blocking SQLite on the event loop |
 | [T-075](T-075-truncated-descriptions-shared-as-complete.md) | Open | Low | A truncated figure description is stored in the shared cross-request cache as if complete |
 | [T-076](T-076-cache-operational-envelope-unenforced.md) | Open | Medium | The cache's operational envelope is unenforced — no schema version, disk use beyond the cap, world-readable directory, undocumented scaling assumptions |
 

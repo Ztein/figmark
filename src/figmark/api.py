@@ -23,6 +23,7 @@ import re
 import secrets
 import shutil
 import tempfile
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
@@ -609,7 +610,15 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
     client = client if client is not None else make_client(cfg)
     settings.work_dir.mkdir(parents=True, exist_ok=True)
 
-    app = FastAPI(title="figmark", version=__version__)
+    @asynccontextmanager
+    async def _lifespan(app: FastAPI):
+        yield
+        # Deliberate connection lifecycle (T-074): flush buffered telemetry and
+        # close the pool instead of leaving handles to the garbage collector.
+        if app.state.cache_store is not None:
+            app.state.cache_store.close()
+
+    app = FastAPI(title="figmark", version=__version__, lifespan=_lifespan)
     app.state.settings = settings
     app.state.cfg = cfg
     app.state.client = client
@@ -707,7 +716,9 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
 
             store: CacheStore | None = request.app.state.cache_store
             if store is not None:
-                hit = store.get(document_cache_key(doc_digest, cfg))
+                # Threadpool hop: SQLite blocks, and the event loop must keep
+                # serving other requests (and /healthz) meanwhile (T-074).
+                hit = await run_in_threadpool(store.get, document_cache_key(doc_digest, cfg))
                 if hit is not None:
                     logger.info("convert cache hit doc=%s…", doc_digest[:12])
                     cached_result = cache_payload_to_result(hit)
@@ -726,7 +737,8 @@ def create_app(*, settings: ServerSettings | None = None, cfg=None, client=None)
             )
 
             if store is not None:
-                store.put(
+                await run_in_threadpool(
+                    store.put,
                     document_cache_key(doc_digest, cfg),
                     result_to_cache_payload(result),
                     doc_digest=doc_digest,
