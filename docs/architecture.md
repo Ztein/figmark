@@ -175,6 +175,8 @@ Two optional accessibility artifacts are produced on demand:
 | `main.py` | CLI entry point (`run`); flags `--annotate-pdf`, `--tagged-pdf` |
 | `pipeline.py` | The shared `convert` orchestration (CLI + API call into it) |
 | `config.py` | Load/validate `config.yaml` into typed dataclasses (no hidden defaults) |
+| `input_formats.py` | Content-sniff input (magic bytes + ZIP/OOXML inspection); enforce the `input.formats` allowlist, fail loud on unknown (T-054) |
+| `office.py` | Convert Office (docx/xlsx/pptx) to PDF via headless LibreOffice — throwaway locked profile, hard timeout (T-054) |
 | `pdf_loader.py` | Open PDF; page → ordered blocks (font size/bold, hyperlinks, column-aware order); scanned classification |
 | `images.py` | Extract embedded raster images; report filtered count |
 | `diagrams.py` | Detect/render vector charts; describe them; significance gate |
@@ -191,6 +193,8 @@ Two optional accessibility artifacts are produced on demand:
 | `tagged.py` | Write a PDF/UA structure-tree copy (pikepdf) |
 | `usage.py` | Token-usage tracking + optional cost estimate |
 | `api.py` | FastAPI service (`/v1/convert`); auth, validation, concurrency, timeouts |
+| `ocr_compat.py` | Mistral-OCR-compatible surface (`/v1/files`, `/v1/ocr`) so LibreChat can use figmark as a self-hosted OCR backend (T-052) |
+| `cache.py` | Cross-request SQLite cache (document + description payloads); config/version-keyed, fail-loud (T-060/T-076) |
 
 ## Outputs
 

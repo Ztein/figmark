@@ -80,6 +80,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-074](T-074-cache-ops-cost-5ms-and-block-event-loop.md) | **Closed** | Medium | Every cache operation costs ~5 ms and runs blocking SQLite on the event loop |
 | [T-075](T-075-truncated-descriptions-shared-as-complete.md) | **Closed** | Low | A truncated figure description is stored in the shared cross-request cache as if complete |
 | [T-076](T-076-cache-operational-envelope-unenforced.md) | **Closed** | Medium | The cache's operational envelope is unenforced — no schema version, disk use beyond the cap, world-readable directory, undocumented scaling assumptions |
+| [T-077](T-077-doc-drift-guard.md) | Open | Medium | Hand-maintained docs drift from code — no guard catches a stale index, module map, or metadata |
 
 ## Statuses
 
