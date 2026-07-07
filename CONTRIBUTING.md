@@ -13,6 +13,13 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
+Optional but recommended — enable the leak-guard pre-commit hook, which blocks
+commits containing instance-specific markers (hostnames, internal IPs, tokens):
+
+```bash
+git config core.hooksPath scripts/githooks
+```
+
 System dependency for the OCR path (scanned PDFs):
 
 ```bash

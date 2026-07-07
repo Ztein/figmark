@@ -18,6 +18,10 @@ at your endpoint and put its key in `FIGMARK_API_KEY` (the variable name is
 historical; a provider-neutral name is tracked in
 [T-010](docs/tickets/T-010-provider-agnostic-llm-key.md)).
 
+> **`T-NNN` references** throughout these docs are numbered design tickets under
+> [docs/tickets/](docs/tickets/) — the engineering log behind each GitHub issue.
+> See [CONTRIBUTING](CONTRIBUTING.md#issues-and-the-ticket-system) for the convention.
+
 ## What figmark is for
 
 figmark exists to extract **as much valuable information from a document as
