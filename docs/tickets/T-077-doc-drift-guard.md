@@ -1,6 +1,8 @@
 # T-077: Hand-maintained docs drift from code — no guard catches a stale index, module map, or metadata
 
-**Status:** Open
+**Status:** Open — **title policy decided 2026-07-07: Option B** (curated index
+titles stay; the guard does **not** check title-equality). Implementation of the
+guard itself is still to do.
 **Priority:** Medium — cosmetic individually, but as a public project gaining
 readers the cumulative drift undercuts the "handover-grade docs" bar. This is
 the systemic follow-up to the Tier 2 doc-accuracy sweep (which fixed the
@@ -59,7 +61,13 @@ degradation" principle rejects everywhere else in the codebase.
 3. **Do nothing structural**; rely on the Tier 2 one-time fix + review vigilance.
    Cheapest now, guarantees recurrence.
 
-### Sub-decision — ticket-index title policy (blocks Option 1, informs Option 2)
+### Sub-decision — ticket-index title policy — **DECIDED: (B), 2026-07-07**
+
+The index intentionally carries curated outcome annotations, which are worth more
+to a reader than a machine-generated symptom title. So **(B)** is chosen: the
+guard checks presence + status + numbering + module-map completeness (the Option 2
+set) and leaves the `Title` column to review. The strict-mirror alternative (A)
+is recorded below for context but not pursued.
 
 - **(A) Strict mirror:** index `Title` == file `# T-NNN:` heading, machine-
   generated. Simple and fully checkable, but **flattens the curated outcome
@@ -73,11 +81,11 @@ degradation" principle rejects everywhere else in the codebase.
 
 ## Acceptance criteria
 
-- A documented decision on the title policy (A vs B) recorded in this ticket.
+- ~~A documented decision on the title policy (A vs B).~~ **Done: (B), 2026-07-07.**
 - CI fails on: (a) a ticket file with no index row or an index row with no file;
   (b) an index `Status`/`Priority` that disagrees with the ticket file; (c) a
   `src/figmark/*.py` module absent from the architecture module map. (Title-
-  equality included only if policy A is chosen.)
+  equality is **not** checked, per policy B.)
 - The check runs in the existing offline CI leg (no new required services) and
   names the exact drifting file/row on failure — fail loud.
 - README documents how to run the check locally.
