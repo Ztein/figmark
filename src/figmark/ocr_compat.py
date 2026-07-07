@@ -23,7 +23,9 @@ compliant client can re-inline every figure from the response alone.
 Scope (see T-052): PDF-first. We resolve a document to bytes from *our own* signed
 file URLs (the default flow) or an inline ``data:`` URL (LibreChat's Azure variant).
 Arbitrary external URLs are rejected — that keeps the air-gapped image free of an
-outbound fetch (and its SSRF surface). Non-PDF inputs get a clean 415.
+outbound fetch (and its SSRF surface). Inputs outside the configured
+``input.formats`` allowlist (PDF by default; EPUB/Office when enabled) get a
+clean 415.
 """
 
 from __future__ import annotations
