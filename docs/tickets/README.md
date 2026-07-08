@@ -82,6 +82,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-076](T-076-cache-operational-envelope-unenforced.md) | **Closed** | Medium | The cache's operational envelope is unenforced — no schema version, disk use beyond the cap, world-readable directory, undocumented scaling assumptions |
 | [T-077](T-077-doc-drift-guard.md) | **Closed** | Medium | Hand-maintained docs drift from code — no guard catches a stale index, module map, or metadata |
 | [T-078](T-078-vector-bar-charts-dropped.md) | Open | High | Vector bar and combo charts are silently dropped by the diagram detector (line charts only) |
+| [T-079](T-079-raster-charts-get-alt-text-prompt.md) | Open | Medium | Charts embedded as raster images are described with the alt-text prompt, losing most of their information |
 
 ## Statuses
 
