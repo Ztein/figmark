@@ -145,6 +145,10 @@ documents:
     url: https://www.riksbank.se/globalassets/media/rapporter/fsr/svenska/2025/250528/finansiell-stabilitetsrapport-2025_1.pdf
     source: Riksbanken Finansiell stabilitetsrapport 2025:1, våren 2025 (Swedish)
     language: sv
+  - name: riksbank-betalningsrapport-202503
+    url: https://www.riksbank.se/globalassets/media/rapporter/betalningsrapport/2025/svensk/betalningsrapport-2025.pdf
+    source: Riksbanken Betalningsrapport 2025 (Swedish)
+    language: sv
 
   # Norges Bank (English editions)
   - name: norges-mpr-2-2025
