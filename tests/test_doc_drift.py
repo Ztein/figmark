@@ -24,7 +24,9 @@ def _load():
 
 
 def test_docs_are_in_sync():
-    assert _load().main() == 0, "doc-drift guard reported drift; run python scripts/check_doc_drift.py"
+    assert _load().main() == 0, (
+        "doc-drift guard reported drift; run python scripts/check_doc_drift.py"
+    )
 
 
 def test_guard_detects_injected_drift(monkeypatch):
