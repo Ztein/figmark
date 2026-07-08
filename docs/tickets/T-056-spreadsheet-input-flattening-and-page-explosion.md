@@ -11,6 +11,8 @@ spreadsheet-native table path that *coexists* with the LO-PDF chart path is a
 real architectural change with its own fidelity bench and a new (Office-variant)
 dependency — it must not be rushed in as a batch tail. Recorded here so the
 next PR starts from the numbers, not a blank page.
+**Priority:** Medium — the page-explosion guardrail shipped; the borderless-flatten
+extraction path is a scoped follow-up.
 
 ## Bench (2026-07-03) — LO-PDF pagination vs openpyxl direct read
 

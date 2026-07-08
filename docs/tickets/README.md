@@ -80,7 +80,7 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-074](T-074-cache-ops-cost-5ms-and-block-event-loop.md) | **Closed** | Medium | Every cache operation costs ~5 ms and runs blocking SQLite on the event loop |
 | [T-075](T-075-truncated-descriptions-shared-as-complete.md) | **Closed** | Low | A truncated figure description is stored in the shared cross-request cache as if complete |
 | [T-076](T-076-cache-operational-envelope-unenforced.md) | **Closed** | Medium | The cache's operational envelope is unenforced — no schema version, disk use beyond the cap, world-readable directory, undocumented scaling assumptions |
-| [T-077](T-077-doc-drift-guard.md) | Open | Medium | Hand-maintained docs drift from code — no guard catches a stale index, module map, or metadata |
+| [T-077](T-077-doc-drift-guard.md) | **Closed** | Medium | Hand-maintained docs drift from code — no guard catches a stale index, module map, or metadata |
 | [T-078](T-078-vector-bar-charts-dropped.md) | Open | High | Vector bar and combo charts are silently dropped by the diagram detector (line charts only) |
 
 ## Statuses
@@ -103,3 +103,17 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 - **Impact**: who notices it and how
 - **Options**: numbered solution paths with trade-offs — not a pre-chosen solution
 - **Acceptance criteria**: how we know the ticket is done
+
+## Keeping this index honest
+
+A guard (`scripts/check_doc_drift.py`, T-077) keeps this table in sync with the
+ticket files and the architecture module map. It checks that every ticket file
+has a row (and vice-versa), that each row's **Status**/**Priority** matches the
+file, that the numbering is contiguous (reserved rows fill the gaps), and that
+every `src/figmark` module is in the module map. It does **not** check the
+`Title` column — the index deliberately annotates closed tickets with their
+outcome. It runs in the offline test suite; to run it by hand:
+
+```bash
+python scripts/check_doc_drift.py
+```

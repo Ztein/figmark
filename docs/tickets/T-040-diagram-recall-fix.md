@@ -2,6 +2,7 @@
 
 **Status:** Closed — **invalid** (2026-06-24). Filed on a measurement error and
 withdrawn after verification; no fix shipped.
+**Priority:** High — filed as a recall gap, withdrawn before any work shipped.
 
 ## Why it was closed
 

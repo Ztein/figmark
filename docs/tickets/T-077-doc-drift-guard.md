@@ -1,8 +1,12 @@
 # T-077: Hand-maintained docs drift from code — no guard catches a stale index, module map, or metadata
 
-**Status:** Open — **title policy decided 2026-07-07: Option B** (curated index
-titles stay; the guard does **not** check title-equality). Implementation of the
-guard itself is still to do.
+**Status:** Closed — **guard shipped 2026-07-07.** `scripts/check_doc_drift.py`
+enforces (a) index↔file presence, (b) Status/Priority agreement, (c) contiguous
+numbering, (d) module-map completeness, and runs in the offline suite
+(`tests/test_doc_drift.py`, which also proves it catches injected drift — not a
+no-op). Title policy is **Option B**: curated index titles stay, title-equality
+is not checked. Shipping it immediately caught two malformed tickets (T-040 and
+T-056 lacked a `**Priority:**` line), now fixed.
 **Priority:** Medium — cosmetic individually, but as a public project gaining
 readers the cumulative drift undercuts the "handover-grade docs" bar. This is
 the systemic follow-up to the Tier 2 doc-accuracy sweep (which fixed the
@@ -81,11 +85,11 @@ is recorded below for context but not pursued.
 
 ## Acceptance criteria
 
-- ~~A documented decision on the title policy (A vs B).~~ **Done: (B), 2026-07-07.**
-- CI fails on: (a) a ticket file with no index row or an index row with no file;
-  (b) an index `Status`/`Priority` that disagrees with the ticket file; (c) a
-  `src/figmark/*.py` module absent from the architecture module map. (Title-
-  equality is **not** checked, per policy B.)
-- The check runs in the existing offline CI leg (no new required services) and
-  names the exact drifting file/row on failure — fail loud.
-- README documents how to run the check locally.
+- [x] A documented decision on the title policy (A vs B). **Done: (B), 2026-07-07.**
+- [x] CI fails on: (a) a ticket file with no index row or an index row with no
+  file; (b) an index `Status`/`Priority` that disagrees with the ticket file;
+  (c) a `src/figmark/*.py` module absent from the architecture module map; plus
+  (d) a contiguous-numbering check. Title-equality is **not** checked, per policy B.
+- [x] The check runs in the existing offline CI leg via `tests/test_doc_drift.py`
+  (no new required services) and names the exact drifting file/row — fail loud.
+- [x] Documented how to run the check locally (`docs/tickets/README.md`).
