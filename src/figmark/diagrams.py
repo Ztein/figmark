@@ -466,6 +466,7 @@ def describe_diagram(
 
     response = client.chat.completions.create(
         model=cfg.api.model,
+        temperature=cfg.api.temperature,
         max_tokens=MAX_TOKENS,
         messages=[
             {

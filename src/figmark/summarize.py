@@ -48,6 +48,7 @@ def detect_language(client, pages, cfg: Config, cache_path: Path) -> str:
 
     response = client.chat.completions.create(
         model=cfg.api.model,
+        temperature=cfg.api.temperature,
         max_tokens=LANG_DETECT_MAX_TOKENS,
         messages=[{"role": "user", "content": f"{LANG_DETECT_PROMPT}\n\nText:\n{sample}"}],
     )
@@ -115,6 +116,7 @@ def summarize_document(client, pages, cfg: Config, cache_path: Path, language: s
     )
     response = client.chat.completions.create(
         model=cfg.api.model,
+        temperature=cfg.api.temperature,
         max_tokens=SUMMARY_MAX_TOKENS,
         messages=[{"role": "user", "content": user_text}],
     )
