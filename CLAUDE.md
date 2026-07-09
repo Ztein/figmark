@@ -117,3 +117,9 @@ python examples/run_eval.py    # the full eval corpus against the real model
   (the table work in T-026/T-030 is the template).
 - **Stay lean.** Adding a runtime dependency needs an explicit, justified reason
   in the relevant ticket; the air-gapped Docker image is a hard constraint.
+- **No arbitrary limits.** A hard limit that gates behaviour — an image/payload
+  size cap, a token/DPI ceiling, a timeout, a mimetype allowlist — must have a
+  *validated* reason (measured against the model/endpoint or a bench), not a
+  by-feel guess. Validate against the model; don't assume. When a limit is
+  genuinely operator-specific, make it config-driven rather than frozen in a
+  constant (see T-083/T-084).

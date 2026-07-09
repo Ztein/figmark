@@ -86,6 +86,8 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-080](T-080-capture-regions-stop-classifying.md) | Open | High | figmark misses figures because the code tries to guess which regions are charts |
 | [T-081](T-081-structured-describe-output.md) | Open | High | The skip/keep decision rides on a free-text "[SKIP]" string the model can fail to emit |
 | [T-082](T-082-description-quality-judge.md) | Open | Medium | No way to measure figure-description quality, only whether a figure was captured |
+| [T-083](T-083-image-cap-should-be-config-model-validated.md) | Open | Medium | The image payload cap (1500 px / 500 KB) is a hardcoded guess, not validated against the model |
+| [T-084](T-084-audit-arbitrary-hard-limits.md) | Open | Medium | Audit for hard limits set without a validated reason (sizes, mimetypes, timeouts) |
 
 ## Statuses
 
