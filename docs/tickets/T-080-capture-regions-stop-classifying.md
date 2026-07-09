@@ -36,15 +36,31 @@ premise is wrong: **only a vision model can tell what a region is.**
 
 ## Options
 
-1. **Capture regions, let the model decide (chosen).** Cluster nearby drawings
-   into regions (mechanical), render any region above a size floor, and let the
-   vision model + significance gate decide what it is and whether to describe it.
-   Removes the chart-classification gates (`MIN_SOLID_*`, page-count) and the
-   `solid` machinery. Keeps region-finding + size floor + **table-dedup** (a
-   ruled data table already becomes a Markdown table; suppressing it as a picture
-   avoids double-representation — a de-dup concern, not classification).
-2. Keep tuning the geometric gates. Rejected — the bench shows it is a losing
-   game.
+1. **Capture per-cluster regions, let the model decide.** Cluster nearby drawings
+   into regions (mechanical), render any region above a size floor, let the model
+   decide. Removes the chart-classification gates. **Problem found (2026-07-09):**
+   on big/layout-heavy reports this *explodes* — BIS Annual Report captured **105
+   regions** (each = an API call), and multi-panel figures split into isolated
+   panels that lose their shared title/story. Also re-accumulates heuristics
+   (density floors, figure-band caption parsing) — back toward the mess we removed.
+2. Keep tuning the geometric gates. Rejected — whack-a-mole between magic numbers.
+3. **One box per page (chosen direction).** The whole rule: on each page, union
+   the visual content into one box; split into two only when the content is
+   clearly separate. No clustering thresholds, no caption parsing, no
+   chart-vs-not classification — the model gets the whole visual block and does
+   all the interpreting. Verified: BIS 105→**51** regions (bounded to ~1–2/page,
+   no explosion); Graph 6's three panels land in one box (context preserved); and
+   a downscaled union image read fine axis labels as well as a full-res panel
+   (resolution loss not a practical problem — T-083). The figure *title* need not
+   be inside the box: it's carried by the surrounding-text context figmark
+   already sends.
+
+**Open question (investigation, resolve in the quality review):** is one box per
+page always fine, or should we split when two visuals *don't* belong together?
+The reasonable, non-arbitrary signal is **body text between two visual groups**
+(a real paragraph → separate figures; only whitespace/labels between → same
+figure) — mechanical, uses the reading-order text figmark already has, and is
+understandable. A bare whitespace-gap threshold is a cruder proxy.
 
 ## Bench (prototype, 2026-07-08/09, gemma-4-31B via Berget)
 
