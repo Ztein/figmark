@@ -27,26 +27,24 @@ logger = logging.getLogger("figmark.diagrams")
 # report (vector charts from matplotlib).
 # ============================================================================
 
-# Pages with fewer drawings than this are not examined (text-heavy pages)
-MIN_DRAWINGS_PER_PAGE = 30
+# Cheap early-exit for pure-text pages only. Kept deliberately low: the code does
+# NOT judge whether a region is a chart — it captures any drawing cluster and lets
+# the vision model + significance gate decide (T-080). A real figure page has far
+# more than this; the size/cluster floors below do the actual noise filtering.
+MIN_DRAWINGS_PER_PAGE = 5
 # Drawings below this pixel size in BOTH dimensions do not count (specks).
 # A drawing below it in exactly ONE dimension is an axis-aligned hairline —
 # LibreOffice/TikZ draw chart axes and gridlines as zero-thickness strokes
-# (T-055). Lines join clusters (they carry the chart's connectivity) but do
-# not gate them: see MIN_SOLID_DRAWINGS_PER_CLUSTER.
+# (T-055). These count as ordinary cluster members: line charts are mostly
+# hairlines, and the code no longer tries to tell a chart from a grid (T-080).
 MIN_DRAWING_DIM = 2
 # Drawings larger than X% of the page area are skipped (background boxes)
 MAX_DRAWING_AREA_RATIO = 0.4
 # Drawings within this pixel distance are joined into the same cluster
 MERGE_DISTANCE = 3
-# A cluster must contain at least this many drawings
-MIN_DRAWINGS_PER_CLUSTER = 8
-# ... of which at least this many must be non-line (solid) members. Bar/pie/
-# area charts pass (bars, wedges, legend chips are fills); a pure ruled grid
-# (only hairlines) fails. Bench-derived (T-055): the smallest corpus positive,
-# a 4-bar LO chart, has exactly 4 solids; line-only "charts" (an axis frame
-# with no data marks) are indistinguishable from ruled grids and stay out.
-MIN_SOLID_DRAWINGS_PER_CLUSTER = 4
+# A cluster must contain at least this many drawings to be a region worth
+# rendering. A floor against stray marks — NOT a chart/not-chart judgement.
+MIN_DRAWINGS_PER_CLUSTER = 4
 # A candidate region is NOT a chart if it substantially overlaps a table-like
 # find_tables candidate — ruled/zebra slide tables cluster exactly like charts
 # (row fills = solids), and T-031's table path owns them. "Table-like" is
@@ -151,28 +149,22 @@ def _cluster_rects(rects: list[fitz.Rect], merge_distance: float) -> list[list[i
     return list(groups.values())
 
 
-def _split_by_y_gap(
-    group_rects: list[tuple[fitz.Rect, bool]], min_gap: float
-) -> list[list[tuple[fitz.Rect, bool]]]:
-    """Split a cluster if it has an internal y-gap larger than min_gap.
-
-    Items are ``(rect, is_solid)`` pairs so the solid count survives the split.
-    """
-    if len(group_rects) < 2:
-        return [group_rects]
-    by_y = sorted(group_rects, key=lambda item: item[0].y0)
-    splits: list[list[tuple[fitz.Rect, bool]]] = []
+def _split_by_y_gap(rects: list[fitz.Rect], min_gap: float) -> list[list[fitz.Rect]]:
+    """Split a cluster if it has an internal y-gap larger than min_gap (stacked charts)."""
+    if len(rects) < 2:
+        return [rects]
+    by_y = sorted(rects, key=lambda r: r.y0)
+    splits: list[list[fitz.Rect]] = []
     current = [by_y[0]]
-    current_max_y = by_y[0][0].y1
-    for item in by_y[1:]:
-        r = item[0]
+    current_max_y = by_y[0].y1
+    for r in by_y[1:]:
         gap = r.y0 - current_max_y
         if gap > min_gap:
             splits.append(current)
-            current = [item]
+            current = [r]
             current_max_y = r.y1
         else:
-            current.append(item)
+            current.append(r)
             current_max_y = max(current_max_y, r.y1)
     splits.append(current)
     return splits
@@ -264,7 +256,6 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
     max_drawing_area = MAX_DRAWING_AREA_RATIO * page_area
 
     rects: list[fitz.Rect] = []
-    solid: list[bool] = []
     sloped: list[bool] = []
     for d in drawings:
         r = d.get("rect")
@@ -279,7 +270,6 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
         # Axis-aligned hairlines (LO/TikZ axes, gridlines) join clusters but
         # don't gate them (T-055).
         rects.append(fitz.Rect(r))
-        solid.append(not (thin_w or thin_h))
         sloped.append(_has_sloped_content(d))
 
     if not rects:
@@ -291,13 +281,10 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
     for group in groups:
         if len(group) < MIN_DRAWINGS_PER_CLUSTER:
             continue
-        cluster_items = [(rects[i], solid[i]) for i in group]
-        for sub_items in _split_by_y_gap(cluster_items, INTERNAL_Y_GAP_SPLIT):
-            if len(sub_items) < MIN_DRAWINGS_PER_CLUSTER:
+        cluster = [rects[i] for i in group]
+        for sub in _split_by_y_gap(cluster, INTERNAL_Y_GAP_SPLIT):
+            if len(sub) < MIN_DRAWINGS_PER_CLUSTER:
                 continue
-            if sum(1 for _, s in sub_items if s) < MIN_SOLID_DRAWINGS_PER_CLUSTER:
-                continue  # hairlines only ≈ ruled grid, not a chart
-            sub = [r for r, _ in sub_items]
             x0 = min(r.x0 for r in sub)
             y0 = min(r.y0 for r in sub)
             x1 = max(r.x1 for r in sub)
