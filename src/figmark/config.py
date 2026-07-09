@@ -29,6 +29,9 @@ class ApiConfig:
     input_token_price: float | None = None
     output_token_price: float | None = None
     currency: str | None = None
+    # Sampling temperature for every model call. Defaults to 0 for reproducible
+    # output — the prerequisite for measuring whether a change helped (T-082).
+    temperature: float = 0.0
 
 
 @dataclass
@@ -214,6 +217,7 @@ def load_config(config_path: str | Path = "config.yaml") -> Config:
         input_token_price=in_price,
         output_token_price=out_price,
         currency=(str(api_raw["currency"]).strip() if api_raw.get("currency") else None),
+        temperature=float(api_raw.get("temperature", 0.0) or 0.0),
     )
 
     input_raw = raw.get("input") or {}

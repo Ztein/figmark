@@ -100,7 +100,7 @@ _FIGURE_SCHEMA = {
                 "kind": {"type": "string", "enum": _KIND_ENUM, "description": "what the image is"},
                 "description": {
                     "type": "string",
-                    "description": "the description, following the task; empty string when is_figure is false",
+                    "description": "the description; empty string when is_figure is false",
                 },
             },
             "required": ["is_figure", "kind", "description"],
@@ -144,7 +144,7 @@ def call_vision(
     key = f"{cfg.api.base_url}|{cfg.api.model}"
     if key not in _structured_unsupported:
         try:
-            resp = client.chat.completions.create(
+            resp = client.chat.completions.create(  # type: ignore[call-overload]
                 model=cfg.api.model,
                 temperature=cfg.api.temperature,
                 max_tokens=max_tokens,
@@ -166,11 +166,11 @@ def call_vision(
                     return SKIP_MARKER, False
                 return fr.description.strip(), truncated
 
-    resp = client.chat.completions.create(
+    resp = client.chat.completions.create(  # type: ignore[call-overload]
         model=cfg.api.model,
         temperature=cfg.api.temperature,
         max_tokens=max_tokens,
-        messages=_image_messages(fallback_text, data_uri),
+        messages=_image_messages(fallback_text, data_uri),  # type: ignore[arg-type]
     )
     choice = resp.choices[0]
     text = (choice.message.content or "").strip()

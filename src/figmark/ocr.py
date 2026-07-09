@@ -192,6 +192,7 @@ def ocr_page_with_vision(
     try:
         response = client.chat.completions.create(
             model=cfg.api.model,
+            temperature=cfg.api.temperature,
             max_tokens=OCR_MAX_TOKENS,
             messages=[
                 {

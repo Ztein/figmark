@@ -59,7 +59,7 @@ def _stub_client(text: str, finish_reason: str = "stop"):
 
 
 _CFG = SimpleNamespace(
-    api=SimpleNamespace(model="test-model"),
+    api=SimpleNamespace(model="test-model", temperature=0.0),
     document_summary=SimpleNamespace(sample_words=50, prompt="Summarise."),
 )
 
