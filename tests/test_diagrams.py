@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import random
 from pathlib import Path
 
 import fitz
@@ -10,10 +9,7 @@ import fitz
 from figmark.diagrams import (
     MIN_CLUSTER_HEIGHT,
     MIN_CLUSTER_WIDTH,
-    MIN_DRAWINGS_PER_CLUSTER,
     DiagramRegion,
-    _close,
-    _cluster_rects,
     find_diagram_regions,
     render_and_save_region,
     text_block_in_region,
@@ -32,41 +28,78 @@ def test_text_block_in_region_drops_internal_keeps_adjacent():
     assert text_block_in_region((100, 500, 400, 520), [region]) is False
 
 
-def test_find_regions_in_report_known_diagram_page(report_pdf: Path):
-    """Page 11 of the monetary-policy report has two known charts side by side."""
+def test_paragraph_never_suppressed_even_inside_region():
+    """T-080: a one-box band can legitimately cover flowing text (column
+    layouts, bridged bands). A body paragraph is kept in the body even when
+    fully inside a region — mild duplication beats silent deletion — while
+    short label text and punctuation-free tick-label runs are still claimed."""
+    region = DiagramRegion(page_num=1, index=1, bbox=(100, 100, 400, 400), n_drawings=20)
+    inside = (150, 150, 350, 250)
+    paragraph = (
+        "Global inflation continued to recede from the peak it reached in 2022, "
+        "and monetary policy stayed restrictive across most advanced economies."
+    )
+    assert text_block_in_region(inside, [region], text=paragraph) is False
+    # A short axis label inside the region is still suppressed.
+    assert text_block_in_region(inside, [region], text="Index, 2019 = 100") is True
+    # A long punctuation-free tick-label run is furniture, not prose.
+    tick_run = "RO CL MX CZ IL ID BR PE IN CN NO AT US NZ NL IE DE GB PT CA DK CO"
+    assert text_block_in_region(inside, [region], text=tick_run) is True
+
+
+def test_find_regions_splits_on_body_paragraph(report_pdf: Path):
+    """Page 11 has two charts with a body paragraph between them — the only
+    signal that splits two visual bands into separate regions (T-080)."""
     doc = fitz.open(report_pdf)
     try:
         page = doc.load_page(10)
         regions = find_diagram_regions(page, 11)
-        assert len(regions) == 2, f"Expected 2 diagrams on page 11, got {len(regions)}"
+        assert len(regions) == 2, f"Expected 2 regions on page 11, got {len(regions)}"
+        regions_sorted = sorted(regions, key=lambda r: r.bbox[1])
+        assert regions_sorted[0].bbox[3] < regions_sorted[1].bbox[1]
         for r in regions:
             assert r.bbox[2] - r.bbox[0] >= MIN_CLUSTER_WIDTH
             assert r.bbox[3] - r.bbox[1] >= MIN_CLUSTER_HEIGHT
-            assert r.n_drawings >= MIN_DRAWINGS_PER_CLUSTER
     finally:
         doc.close()
 
 
-def test_find_regions_splits_stacked_diagrams(report_pdf: Path):
-    """Page 68 has two charts stacked vertically."""
+def test_find_regions_merges_stacked_charts_without_paragraph_between(report_pdf: Path):
+    """Page 68 has two charts stacked vertically with only figure furniture
+    (captions/source lines) between them: one box — the model gets the whole
+    visual block with its shared context (T-080). Under the old detector this
+    page split in two; the merge is the intended design change."""
     doc = fitz.open(report_pdf)
     try:
         page = doc.load_page(67)
         regions = find_diagram_regions(page, 68)
-        assert len(regions) == 2, f"Expected 2 stacked diagrams on page 68, got {len(regions)}"
-        regions_sorted = sorted(regions, key=lambda r: r.bbox[1])
-        assert regions_sorted[0].bbox[3] < regions_sorted[1].bbox[1]
+        assert len(regions) == 1, f"Expected 1 merged region on page 68, got {len(regions)}"
+        # The box must span both charts, not just one.
+        assert regions[0].bbox[3] - regions[0].bbox[1] > 300
     finally:
         doc.close()
 
 
-def test_find_regions_skips_table_page(report_pdf: Path):
-    """Page 70 is a data table, not a chart — should yield 0 regions."""
+def test_find_regions_captures_table_the_table_path_misses(report_pdf: Path):
+    """Page 70 is a ruled data table that ``find_tables`` does not detect — the
+    table path emits nothing and the cells flatten to loose text (the T-050
+    symptom). The band capture hands it to the vision model instead of dropping
+    it (T-080); tables the table path DOES own are excluded before banding. The
+    box must cover the table area, not the whole page (the full-height margin
+    rule is filtered as page furniture)."""
     doc = fitz.open(report_pdf)
     try:
         page = doc.load_page(69)
+        from figmark.tables import find_table_blocks
+
+        assert find_table_blocks(page, 70) == [], (
+            "find_tables now detects this table — restore the 0-region "
+            "expectation and let the table path own the page"
+        )
         regions = find_diagram_regions(page, 70)
-        assert regions == [], f"A table page should yield no regions, got {len(regions)}"
+        assert len(regions) == 1, f"Expected 1 captured region on page 70, got {len(regions)}"
+        x0, y0, x1, y1 = regions[0].bbox
+        assert y1 - y0 < 0.8 * page.rect.height, "region must not swallow the full page"
     finally:
         doc.close()
 
@@ -168,44 +201,41 @@ def test_large_diagram_payload_is_capped(tmp_path: Path, env_with_key, project_r
     )
 
 
-def _rand_rect(rng: random.Random) -> fitz.Rect:
-    x = rng.uniform(0, 500)
-    y = rng.uniform(0, 500)
-    return fitz.Rect(x, y, x + rng.uniform(1, 60), y + rng.uniform(1, 60))
+def _two_chart_page(gap_text: list[str]) -> fitz.Document:
+    """A synthetic page with two drawing groups and the given text lines in the
+    vertical gap between them."""
+    doc = fitz.open()
+    page = doc.new_page(width=595, height=842)
+    for y0 in (100, 500):  # two chart-like groups of stacked bars
+        for i in range(12):
+            y = y0 + i * 12
+            page.draw_rect(fitz.Rect(100, y, 400, y + 8), fill=(0.5, 0.5, 0.9))
+    for i, line in enumerate(gap_text):
+        page.insert_text((100, 320 + i * 14), line)
+    return doc
 
 
-def _bruteforce_partition(rects: list[fitz.Rect], slack: float) -> set[frozenset[int]]:
-    """All-pairs union-find — the reference the x-sweep must reproduce exactly."""
-    n = len(rects)
-    parent = list(range(n))
+def test_body_paragraph_between_bands_splits_them(tmp_path: Path):
+    """T-080's split signal: a body paragraph between two visual bands means
+    they are separate figures; caption-like furniture (or nothing) means one."""
+    para = [
+        "Economic growth is forecast to pick up gradually over the projection",
+        "horizon, supported by lower interest rates and rising real incomes in",
+        "most households, while inflation returns towards the two per cent target.",
+    ]
+    doc = _two_chart_page(para)
+    try:
+        assert len(find_diagram_regions(doc[0], 1)) == 2
+    finally:
+        doc.close()
 
-    def find(x: int) -> int:
-        while parent[x] != x:
-            parent[x] = parent[parent[x]]
-            x = parent[x]
-        return x
-
-    for i in range(n):
-        for j in range(i + 1, n):
-            if _close(rects[i], rects[j], slack):
-                a, b = find(i), find(j)
-                if a != b:
-                    parent[a] = b
-    groups: dict[int, list[int]] = {}
-    for i in range(n):
-        groups.setdefault(find(i), []).append(i)
-    return {frozenset(g) for g in groups.values()}
-
-
-def test_cluster_rects_matches_bruteforce_partition():
-    """T-037: the near-linear x-sweep clustering must yield the identical partition
-    as the original O(n²) all-pairs version, across many random layouts."""
-    rng = random.Random(20260624)
-    for _ in range(25):
-        rects = [_rand_rect(rng) for _ in range(90)]
-        slack = rng.uniform(0, 12)
-        swept = {frozenset(g) for g in _cluster_rects(rects, slack)}
-        assert swept == _bruteforce_partition(rects, slack)
+    for furniture in ([], ["Chart 4: GDP growth and contributions"]):
+        doc = _two_chart_page(furniture)
+        try:
+            regions = find_diagram_regions(doc[0], 1)
+            assert len(regions) == 1, f"gap text {furniture!r} must not split"
+        finally:
+            doc.close()
 
 
 def test_render_region_produces_png(report_pdf: Path, tmp_path: Path):
