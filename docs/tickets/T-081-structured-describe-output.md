@@ -1,6 +1,6 @@
 # T-081: the skip/keep decision rides on a free-text "[SKIP]" string the model can fail to emit
 
-**Status:** Open — **keystone; unblocks T-080.**
+**Status:** Open — **partially landed (#145); keystone; unblocks T-080.**
 **Priority:** High — the fragile contract leaks junk into output and blocks the
 capture-100 % work.
 
@@ -49,6 +49,32 @@ legacy `[SKIP]` string. figmark can't assume one endpoint.
 removing the vector→diagram / raster→image *prompt* routing entirely (the code
 would no longer decide which prompt to use). Deferred to the quality track
 (T-082), but the field lands now.
+
+## Progress
+
+**Landed (#145, 2026-07-22).** The raster path only:
+
+- `describe.call_vision()` tries `response_format: json_schema` (strict) first,
+  validates the reply with `FigureResult` (pydantic), and returns `SKIP_MARKER`
+  when `is_figure` is false — no marker string reaches the output.
+- Fallback is per-endpoint and sticky: a `BadRequestError` records
+  `base_url|model` in `_structured_unsupported` and every later call for that
+  endpoint goes straight to the legacy free-text prompt (which still carries the
+  `[SKIP]` instruction). Covered by `tests/test_structured_describe.py`.
+- Truncation, the empty-completion hard error, retries and caching are unchanged.
+
+**Remaining:**
+
+1. **The diagram path still bypasses it.** `diagrams.py` calls the client
+   directly, so an over-captured *vector* region cannot skip cleanly — which is
+   precisely what T-080 needs. Route it through `call_vision` too.
+2. **Cache fingerprint does not cover the response format** (open AC). Both
+   `image_fp` and `diagram_fp` in `pipeline.py` hash the prompt, model, language
+   and significance flag — but not whether the structured schema was used. The
+   structured path drops the `[SKIP]` instruction from the prompt, so the same
+   fingerprint now maps to two different prompts, and a cache written before
+   #145 is silently reused. Add the format to both fingerprints (T-034
+   semantics: a switch must be a clean miss).
 
 ## Acceptance criteria
 
