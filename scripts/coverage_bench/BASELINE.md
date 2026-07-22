@@ -63,12 +63,13 @@ extraction + T-081 structured skip:
 |---|---|---|---|---|---|---|
 | boc-mpr-202410.pdf | caption | 26 captions | 26 | **100 %** (was 58 %) | 32 figs | 3 (cover/decoration) |
 | boj-outlook-2410.pdf | caption | 58 captions | 58 | **100 %** (was 79 %) | 55 figs | 4 |
-| **Aggregate (caption)** | | **84** | **84** | **100 %** (was 73 %) | | |
+| riksbank-fsr-202505.pdf | caption | 28 captions | 28 | **100 %** (3 charts dropped before, T-078) | 38 figs | — |
+| **Aggregate (caption)** | | **112** | **112** | **100 %** | | |
 
 **Missed figures: none.**
 
 **Cost** (per full conversion, live): BoC 37 calls / 46.8k tokens ≈ 0.016 EUR,
-BoJ 61 calls / 86.1k tokens ≈ 0.030 EUR. Aggregate regions across seven corpus
+BoJ 61 calls / 86.1k tokens ≈ 0.030 EUR, FSR 40 calls / 56.7k ≈ 0.019 EUR. Aggregate regions across seven corpus
 docs are 301→284 vs main (BIS AR halves as multi-panel figures merge into one
 box; BoC/Fed roughly double — exactly where main dropped 1 in 4 figures), so
 capture-100 % costs about the same as the old gated detector overall.
@@ -78,5 +79,6 @@ title-page rules) return `is_figure=false` and are cleanly skipped — 3/35 on
 BoC, 4/59 on BoJ, no junk in the Markdown.
 
 Geometric (extraction-side) coverage is also 100 % on bis-ar-2024,
-fed-mpr-202407, riksbank-ppr-202503 and riksbank-fsr-202505 — including the
-three FSR bar/combo charts T-078 reported dropped (pages 27/37/41).
+fed-mpr-202407 and riksbank-ppr-202503. The three FSR bar/combo charts T-078
+reported dropped (pages 27/37/41) are captured *and described correctly* in
+the live FSR run — T-078 closes with this baseline.
