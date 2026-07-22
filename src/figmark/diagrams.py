@@ -1,9 +1,13 @@
-"""Diagram extraction via PyMuPDF drawing clustering.
+"""Diagram extraction: one box per page-band of vector content (T-080).
 
 Central-bank and similar agency reports embed vector charts (matplotlib exported
-to PDF path commands) that page.get_images() does not catch. This module finds
-diagram regions by clustering drawings spatially and expands the bbox to capture
-axis titles and source lines.
+to PDF path commands) that page.get_images() does not catch. Earlier versions
+tried to *classify* which drawing clusters are charts (solid-fill counts, cluster
+gates) and silently dropped ~1 in 4 figures. The premise was wrong: only a vision
+model can tell what a region is. So this module now unions a page's vector
+content into one box per vertical band, splitting bands only where a body-text
+paragraph sits between them, and lets the model decide what each box is
+(T-081's structured is_figure decision skips the non-figures).
 """
 
 from __future__ import annotations
@@ -27,29 +31,43 @@ logger = logging.getLogger("figmark.diagrams")
 # report (vector charts from matplotlib).
 # ============================================================================
 
-# Pages with fewer drawings than this are not examined (text-heavy pages)
-MIN_DRAWINGS_PER_PAGE = 30
+# Cheap early-exit for pure-text pages only. Kept deliberately low: the code does
+# NOT judge whether a region is a chart — it captures any drawing cluster and lets
+# the vision model + significance gate decide (T-080). A real figure page has far
+# more than this; the size/cluster floors below do the actual noise filtering.
+MIN_DRAWINGS_PER_PAGE = 5
 # Drawings below this pixel size in BOTH dimensions do not count (specks).
 # A drawing below it in exactly ONE dimension is an axis-aligned hairline —
 # LibreOffice/TikZ draw chart axes and gridlines as zero-thickness strokes
-# (T-055). Lines join clusters (they carry the chart's connectivity) but do
-# not gate them: see MIN_SOLID_DRAWINGS_PER_CLUSTER.
+# (T-055). These count as ordinary cluster members: line charts are mostly
+# hairlines, and the code no longer tries to tell a chart from a grid (T-080).
 MIN_DRAWING_DIM = 2
 # Drawings larger than X% of the page area are skipped (background boxes)
 MAX_DRAWING_AREA_RATIO = 0.4
-# Drawings within this pixel distance are joined into the same cluster
-MERGE_DISTANCE = 3
-# A cluster must contain at least this many drawings
-MIN_DRAWINGS_PER_CLUSTER = 8
-# ... of which at least this many must be non-line (solid) members. Bar/pie/
-# area charts pass (bars, wedges, legend chips are fills); a pure ruled grid
-# (only hairlines) fails. Bench-derived (T-055): the smallest corpus positive,
-# a 4-bar LO chart, has exactly 4 solids; line-only "charts" (an axis frame
-# with no data marks) are indistinguishable from ruled grids and stay out.
-MIN_SOLID_DRAWINGS_PER_CLUSTER = 4
-# A candidate region is NOT a chart if it substantially overlaps a table-like
-# find_tables candidate — ruled/zebra slide tables cluster exactly like charts
-# (row fills = solids), and T-031's table path owns them. "Table-like" is
+# A drawing spanning nearly a full page dimension is page furniture (margin
+# rules, section frames, header-to-footer borders), not figure content — and
+# because banding is vertical-overlap based, one full-height margin rule would
+# bridge every band on the page into a single full-page box (seen on ruled
+# table pages: a 5 px margin bar unioned the page). No corpus figure spans
+# edge to edge; coverage stays 100 % on the T-080 bench with this filter.
+MAX_DRAWING_SPAN_RATIO = 0.9
+# A text block is a *body paragraph* (not figure furniture — captions, source
+# lines, axis notes) at this many words and lines. Bench on BoC MPR 2024-10 +
+# BoJ Outlook 2024-10 + BIS AR 2024 (T-080): furniture and body word counts
+# overlap heavily (BIS panel-title rows run 15–44 words), so no clean threshold
+# exists — 20 words / 2 lines is the point where caption coverage stays 100 %
+# on all three docs while region counts stay bounded (34/56/81). Used for two
+# decisions: a paragraph between two visual bands splits them, and a paragraph
+# inside a region is never suppressed from the body text (see
+# ``text_block_in_region``).
+PARA_MIN_WORDS = 20
+PARA_MIN_LINES = 2
+# A gap block must lie at least this fraction inside the gap to count as
+# *between* the bands (rather than belonging to one of them).
+GAP_CONTAINMENT = 0.7
+# A drawing mostly inside a table-like find_tables candidate is the table
+# path's content, not visual-band material — ruled/zebra tables draw row fills
+# exactly like chart bars, and T-031's table path owns them. "Table-like" is
 # deliberately laxer than tables.py's keep gates (suppression needs less
 # evidence than emission): >= 3 rows, >= 2 cols, and a cell fill ratio the
 # bench separated cleanly (charts' grid-junk candidates measured <= 36%
@@ -69,12 +87,11 @@ TABLE_SUPPRESS_MIN_OVERLAP = 0.5
 # 0 sloped members too — no such page exists in the corpus (bar-chart pages
 # produce no table candidate), noted here for honesty.
 TABLE_SUPPRESS_MAX_SLOPED = 3
-# Clusters must be at least this large (px)
+# Size floor: a band smaller than this (px) is stray marks (rules, decorations),
+# not a renderable figure.
 MIN_CLUSTER_WIDTH = 80
 MIN_CLUSTER_HEIGHT = 60
-# Internal y-gaps larger than this split the cluster (stacked charts)
-INTERNAL_Y_GAP_SPLIT = 40
-# Extra px around the clustering bbox before text expansion
+# Extra px around the band bbox before text expansion
 PADDING = 6
 # Neighbouring text blocks (axis title/source line) within this many px are included
 TEXT_EXPAND_DISTANCE = 30
@@ -95,87 +112,72 @@ class DiagramRegion:
     path: Path | None = None  # filled in when the image is saved
 
 
-def _close(r1: fitz.Rect, r2: fitz.Rect, slack: float) -> bool:
-    return not (
-        r1.x1 + slack < r2.x0
-        or r2.x1 + slack < r1.x0
-        or r1.y1 + slack < r2.y0
-        or r2.y1 + slack < r1.y0
-    )
+def _is_paragraph(text: str, n_lines: int | None = None) -> bool:
+    """Body paragraph vs figure furniture (caption/source line/axis note) —
+    the bench-validated word/line floor (see PARA_MIN_WORDS). Prose always
+    carries sentence punctuation; tick-label runs ("RO CL MX …", "23 22 21 …")
+    can exceed the word floor but never do — measured junk leakage drops from
+    107 to ~0 words on BIS AR 2024 with this test. ``n_lines`` is checked only
+    when the caller has it (page dicts do; pipeline TextBlocks don't)."""
+    if len(text.split()) < PARA_MIN_WORDS:
+        return False
+    if n_lines is not None and n_lines < PARA_MIN_LINES:
+        return False
+    return "." in text or "," in text
 
 
-def _cluster_rects(rects: list[fitz.Rect], merge_distance: float) -> list[list[int]]:
-    """Union-find clustering of rectangles by spatial proximity.
+def _page_text_blocks(page: fitz.Page) -> list[tuple[fitz.Rect, str, int]]:
+    """(bbox, text, line count) for every non-empty text block on the page."""
+    out: list[tuple[fitz.Rect, str, int]] = []
+    for block in page.get_text("dict").get("blocks", []):
+        if block.get("type") != 0:
+            continue
+        tb = fitz.Rect(block.get("bbox", (0, 0, 0, 0)))
+        if tb.width <= 0 or tb.height <= 0:
+            continue
+        text = " ".join(
+            span["text"] for line in block.get("lines", []) for span in line.get("spans", [])
+        ).strip()
+        if text:
+            out.append((tb, text, len(block.get("lines", []))))
+    return out
 
-    Connectivity is the ``_close`` relation (bboxes within ``merge_distance``).
-    Rather than test all O(n²) pairs, sweep left to right by ``x0`` keeping an
-    "active" set of rects whose right edge is still within reach; a rect can only
-    be close to an active one. This yields the *identical* connected components as
-    the brute-force pairing (a pair pruned by the sweep can never satisfy
-    ``_close``), but is near-linear when drawings are spatially spread — the common
-    case on a chart page — instead of quadratic. (T-037)
+
+def _vertical_bands(rects: list[fitz.Rect]) -> list[list[fitz.Rect]]:
+    """Maximal runs of vertically overlapping/touching drawings.
+
+    No gap threshold: any vertical whitespace is a *potential* split point, but
+    a split only happens when a body paragraph sits in the gap (see caller).
     """
-    n = len(rects)
-    parent = list(range(n))
-
-    def find(x: int) -> int:
-        while parent[x] != x:
-            parent[x] = parent[parent[x]]
-            x = parent[x]
-        return x
-
-    def union(x: int, y: int) -> None:
-        px, py = find(x), find(y)
-        if px != py:
-            parent[px] = py
-
-    order = sorted(range(n), key=lambda i: rects[i].x0)
-    active: list[int] = []  # indices whose right edge may still reach a later rect
-    for idx in order:
-        r = rects[idx]
-        still_active: list[int] = []
-        for j in active:
-            # Once a rect's right edge + slack is left of r.x0, it (and every later
-            # rect, all with larger x0) can never be close again — drop it.
-            if rects[j].x1 + merge_distance < r.x0:
-                continue
-            still_active.append(j)
-            if _close(rects[j], r, merge_distance):
-                union(j, idx)
-        still_active.append(idx)
-        active = still_active
-
-    groups: dict[int, list[int]] = {}
-    for i in range(n):
-        groups.setdefault(find(i), []).append(i)
-    return list(groups.values())
-
-
-def _split_by_y_gap(
-    group_rects: list[tuple[fitz.Rect, bool]], min_gap: float
-) -> list[list[tuple[fitz.Rect, bool]]]:
-    """Split a cluster if it has an internal y-gap larger than min_gap.
-
-    Items are ``(rect, is_solid)`` pairs so the solid count survives the split.
-    """
-    if len(group_rects) < 2:
-        return [group_rects]
-    by_y = sorted(group_rects, key=lambda item: item[0].y0)
-    splits: list[list[tuple[fitz.Rect, bool]]] = []
-    current = [by_y[0]]
-    current_max_y = by_y[0][0].y1
-    for item in by_y[1:]:
-        r = item[0]
-        gap = r.y0 - current_max_y
-        if gap > min_gap:
-            splits.append(current)
-            current = [item]
-            current_max_y = r.y1
+    by_y = sorted(rects, key=lambda r: r.y0)
+    bands: list[list[fitz.Rect]] = [[by_y[0]]]
+    y_max = by_y[0].y1
+    for r in by_y[1:]:
+        if r.y0 <= y_max:
+            bands[-1].append(r)
         else:
-            current.append(item)
-            current_max_y = max(current_max_y, r.y1)
-    splits.append(current)
-    return splits
+            bands.append([r])
+        y_max = max(y_max, r.y1)
+    return bands
+
+
+def _union(rects: list[fitz.Rect]) -> fitz.Rect:
+    box = fitz.Rect(rects[0])
+    for r in rects[1:]:
+        box |= r
+    return box
+
+
+def _paragraph_in_gap(
+    blocks: list[tuple[fitz.Rect, str, int]], y_top: float, y_bot: float
+) -> bool:
+    """True if a body paragraph lies (mostly) between y_top and y_bot —
+    the signal that two visual bands are separate figures, not one."""
+    for tb, text, n_lines in blocks:
+        inside = min(tb.y1, y_bot) - max(tb.y0, y_top)
+        if inside / tb.height >= GAP_CONTAINMENT and _is_paragraph(text, n_lines):
+            return True
+    return False
 
 
 def _has_sloped_content(drawing: dict) -> bool:
@@ -251,10 +253,13 @@ def _expand_with_neighboring_text(
 
 
 def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
-    """Find diagram regions on a page.
+    """Find visual regions on a page — one box per band of vector content.
 
-    Pipeline: filter drawings → cluster spatially → split on internal y-gap →
-    expand bbox with neighbouring text → return sorted in reading order.
+    Pipeline: filter drawings (specks, background) → drop table-owned drawings →
+    group into vertical bands, splitting only where a body paragraph sits between
+    two bands → union each band, expand with neighbouring text → return sorted in
+    reading order. No chart/not-chart judgement happens here: the vision model
+    decides what each box is (T-080/T-081).
     """
     drawings = page.get_drawings()
     if len(drawings) < MIN_DRAWINGS_PER_PAGE:
@@ -264,7 +269,6 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
     max_drawing_area = MAX_DRAWING_AREA_RATIO * page_area
 
     rects: list[fitz.Rect] = []
-    solid: list[bool] = []
     sloped: list[bool] = []
     for d in drawings:
         r = d.get("rect")
@@ -276,52 +280,87 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
             continue  # speck/decoration
         if r.width * r.height > max_drawing_area:
             continue  # page background/frame
-        # Axis-aligned hairlines (LO/TikZ axes, gridlines) join clusters but
-        # don't gate them (T-055).
+        if (
+            r.height >= MAX_DRAWING_SPAN_RATIO * page.rect.height
+            or r.width >= MAX_DRAWING_SPAN_RATIO * page.rect.width
+        ):
+            continue  # page furniture (margin rule/border) — would bridge all bands
+        # Axis-aligned hairlines (LO/TikZ axes, gridlines) are ordinary band
+        # members (T-055).
         rects.append(fitz.Rect(r))
-        solid.append(not (thin_w or thin_h))
         sloped.append(_has_sloped_content(d))
 
     if not rects:
         return []
 
-    groups = _cluster_rects(rects, MERGE_DISTANCE)
+    # A drawing on a real data table is the table path's business (T-031/T-055)
+    # — zebra row fills draw exactly like chart bars, and describing a table as
+    # a picture double-represents it. Dropped *before* banding so table rows
+    # cannot bridge two genuine figures into one band.
+    suppressors = []
+    for s in _table_like_rects(page):
+        sloped_inside = sum(
+            1
+            for i, rect in enumerate(rects)
+            if sloped[i] and (rect & s).get_area() >= 0.5 * max(rect.get_area(), 1e-9)
+        )
+        if sloped_inside < TABLE_SUPPRESS_MAX_SLOPED:
+            suppressors.append(s)
+    if suppressors:
+        before = len(rects)
+        rects = [
+            r
+            for r in rects
+            if not any(
+                (r & s).get_area() >= TABLE_SUPPRESS_MIN_OVERLAP * max(r.get_area(), 1e-9)
+                for s in suppressors
+            )
+        ]
+        if len(rects) < before:
+            logger.info(
+                "page %d: %d drawing(s) on a data table left to the table path",
+                page_num,
+                before - len(rects),
+            )
+    if not rects:
+        return []
+
+    # Band the remaining drawings vertically; merge adjacent bands unless a body
+    # paragraph sits in the gap — the only non-arbitrary "these are separate
+    # figures" signal (T-080). Captions/source lines between two charts do NOT
+    # split: they belong to the figure and land inside the rendered box.
+    text_blocks = _page_text_blocks(page)
+    bands = _vertical_bands(rects)
+    merged: list[list[fitz.Rect]] = [bands[0]]
+    for band in bands[1:]:
+        gap_top = _union(merged[-1]).y1
+        gap_bot = _union(band).y0
+        if _paragraph_in_gap(text_blocks, gap_top, gap_bot):
+            merged.append(band)
+        else:
+            merged[-1].extend(band)
 
     raw_bboxes: list[tuple[fitz.Rect, int]] = []
-    for group in groups:
-        if len(group) < MIN_DRAWINGS_PER_CLUSTER:
-            continue
-        cluster_items = [(rects[i], solid[i]) for i in group]
-        for sub_items in _split_by_y_gap(cluster_items, INTERNAL_Y_GAP_SPLIT):
-            if len(sub_items) < MIN_DRAWINGS_PER_CLUSTER:
-                continue
-            if sum(1 for _, s in sub_items if s) < MIN_SOLID_DRAWINGS_PER_CLUSTER:
-                continue  # hairlines only ≈ ruled grid, not a chart
-            sub = [r for r, _ in sub_items]
-            x0 = min(r.x0 for r in sub)
-            y0 = min(r.y0 for r in sub)
-            x1 = max(r.x1 for r in sub)
-            y1 = max(r.y1 for r in sub)
-            if x1 - x0 < MIN_CLUSTER_WIDTH or y1 - y0 < MIN_CLUSTER_HEIGHT:
-                continue
-            bbox = fitz.Rect(
-                max(0, x0 - PADDING),
-                max(0, y0 - PADDING),
-                min(page.rect.width, x1 + PADDING),
-                min(page.rect.height, y1 + PADDING),
-            )
-            raw_bboxes.append((bbox, len(sub)))
+    for band in merged:
+        box = _union(band)
+        if box.width < MIN_CLUSTER_WIDTH or box.height < MIN_CLUSTER_HEIGHT:
+            continue  # stray marks (rules, decorations) — below the size floor
+        bbox = fitz.Rect(
+            max(0, box.x0 - PADDING),
+            max(0, box.y0 - PADDING),
+            min(page.rect.width, box.x1 + PADDING),
+            min(page.rect.height, box.y1 + PADDING),
+        )
+        raw_bboxes.append((bbox, len(band)))
 
-    raw_bboxes.sort(key=lambda b: b[0].y0)
     regions: list[DiagramRegion] = []
     for i, (bbox, n_draw) in enumerate(raw_bboxes):
+        # Text expansion stops at the neighbouring band so two figures never
+        # merge through a shared caption.
         y_min_limit = 0.0
         y_max_limit = page.rect.height
         for j, (other, _) in enumerate(raw_bboxes):
             if j == i:
-                continue
-            horiz_overlap = min(bbox.x1, other.x1) - max(bbox.x0, other.x0)
-            if horiz_overlap < 0.3 * min(bbox.width, other.width):
                 continue
             if other.y1 <= bbox.y0:
                 y_min_limit = max(y_min_limit, other.y1 + 4)
@@ -332,9 +371,9 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
             page, bbox, TEXT_EXPAND_DISTANCE, y_min_limit, y_max_limit
         )
         expanded &= page.rect
-        # Clusters can lie (partly) outside the page — crop marks, spill-over
+        # Bands can lie (partly) outside the page — crop marks, spill-over
         # content with negative coordinates. After clipping to the page, a
-        # degenerate or tiny remnant is not a chart: rendering it crashes the
+        # degenerate or tiny remnant is not a figure: rendering it crashes the
         # PNG writer ("Invalid bandwriter header dimensions/setup").
         if expanded.is_empty or expanded.width < 1 or expanded.height < 1:
             continue
@@ -346,35 +385,6 @@ def find_diagram_regions(page: fitz.Page, page_num: int) -> list[DiagramRegion]:
                 n_drawings=n_draw,
             )
         )
-
-    # A region sitting on a real data table is the table path's business
-    # (T-031/T-055) — zebra row fills cluster exactly like chart bars, and
-    # describing a table as a picture double-represents it.
-    if regions:
-        suppressors = []
-        for s in _table_like_rects(page):
-            sloped_inside = sum(
-                1
-                for i, rect in enumerate(rects)
-                if sloped[i] and (rect & s).get_area() >= 0.5 * max(rect.get_area(), 1e-9)
-            )
-            if sloped_inside < TABLE_SUPPRESS_MAX_SLOPED:
-                suppressors.append(s)
-        if suppressors:
-            kept: list[DiagramRegion] = []
-            for r in regions:
-                region_rect = fitz.Rect(r.bbox)
-                area = region_rect.get_area()
-                overlap = max((region_rect & s).get_area() for s in suppressors)
-                if area > 0 and overlap / area >= TABLE_SUPPRESS_MIN_OVERLAP:
-                    logger.info(
-                        "page %d: diagram candidate %s suppressed — overlaps a data table",
-                        page_num,
-                        tuple(round(v) for v in r.bbox),
-                    )
-                    continue
-                kept.append(r)
-            regions = kept
 
     regions.sort(key=lambda r: (round(r.bbox[1] / 10), r.bbox[0]))
     for i, r in enumerate(regions, start=1):
@@ -390,11 +400,23 @@ TEXT_IN_REGION_OVERLAP = 0.8
 
 
 def text_block_in_region(
-    bbox, regions: list[DiagramRegion], min_overlap: float = TEXT_IN_REGION_OVERLAP
+    bbox,
+    regions: list[DiagramRegion],
+    min_overlap: float = TEXT_IN_REGION_OVERLAP,
+    text: str | None = None,
 ) -> bool:
     """True if a text block lies mostly inside a diagram region — its content is the
     diagram's internal labels, which leak into the body otherwise. (T-008)
+
+    A body *paragraph* is never claimed, even when fully inside a region: with
+    one-box-per-page bands (T-080), a box can legitimately cover flowing text
+    (column layouts, bridged bands — measured 29/156/538 swallowed paragraph-words
+    on BoC/BoJ/BIS even with per-band boxes). Keeping the paragraph in the body
+    costs mild duplication with the rendered image; deleting it silently loses
+    content — and figmark never silently degrades.
     """
+    if text is not None and _is_paragraph(text):
+        return False
     r = fitz.Rect(bbox)
     area = abs(r.width * r.height)
     if area <= 0:

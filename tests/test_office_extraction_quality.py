@@ -108,9 +108,12 @@ def test_docx_footnote_text_survives(run_office):
 
 def test_docx_pictures_counted_once_each(run_office):
     """poi-pictures: 2 raster images + 3 vector-rendered pictures (wmf/emf/pict
-    become drawing clusters → diagram regions) — 5 figures, 5 description calls,
-    none double-counted. (Originally asserted 2: a pipeline regression had
-    silently stopped scheduling diagram-description jobs; fixed with T-061.)"""
+    become drawings). With one-box banding (T-080) the 3 vector pictures sit in
+    one visual band — no body paragraph between them — so they render as ONE
+    region the model describes together: 3 figures, 3 description calls, none
+    dropped, none double-counted. (Originally asserted 2: a pipeline regression
+    had silently stopped scheduling diagram-description jobs; fixed with T-061.
+    Asserted 5 before T-080 merged the vector band.)"""
     result, client = run_office("poi-pictures.docx")
-    assert result.figure_count == 5
-    assert len(client.describe_prompts) == 5
+    assert result.figure_count == 3
+    assert len(client.describe_prompts) == 3
