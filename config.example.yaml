@@ -16,6 +16,10 @@ api:
   # and has a vision-capable model. REQUIRED — edit before first run.
   base_url: "https://your-llm-endpoint.example/v1"
   model: "your-vision-model-name"
+  # Sampling temperature for every model call. 0 (the default) gives reproducible
+  # output, which is what makes "did this change help?" answerable. Raise only if
+  # you deliberately want variation.
+  temperature: 0
   # OPTIONAL cost estimation. Token usage is always reported; a monetary estimate
   # is only added when BOTH prices below are set (per single token — the unit most
   # OpenAI-compatible /v1/models endpoints use). Provider-neutral: look up your
@@ -90,7 +94,7 @@ diagrams:
 
     Strukturera svaret så här:
     1. Vad diagrammet visar: titel/ämne och vad x- respektive y-axeln mäter (inklusive enheter).
-    2. Vilka serier/data: nämn alla serier som visas (linjer, staplar, etc.) och hur de skiljs åt visuellt.
+    2. Vilka serier/data: nämn alla serier som visas (linjer, staplar, etc.) och hur de skiljs åt visuellt. Beskriv varje serie med hur den utvecklas, helst med konkreta siffror.
     3. De viktigaste observationerna: trender, toppar, bottnar, brytpunkter, divergenser. Var konkret med siffror och årtal.
     4. Eventuella anmärkningar och källor om de finns med i bilden.
 

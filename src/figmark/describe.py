@@ -198,6 +198,7 @@ def describe_image(
         try:
             response = client.chat.completions.create(
                 model=cfg.api.model,
+                temperature=cfg.api.temperature,
                 max_tokens=MAX_TOKENS,
                 messages=[
                     {
