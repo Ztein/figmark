@@ -53,3 +53,30 @@ produced 41 placements that dedupe to 6; one repeated header is correctly
 skipped). The docx's open questions are *quality* (two logos over-described), not
 coverage — so it belongs to the LLM-judge track, but it now has a real coverage
 number instead of N/A.
+
+## After T-080 — one-box-per-page extraction (2026-07-22, gemma-4-31B via Berget)
+
+Same yardstick, same documents, live end-to-end runs with the T-080 band
+extraction + T-081 structured skip:
+
+| Document | Mode | Ground truth | Covered | Coverage | Captured | Skipped by model |
+|---|---|---|---|---|---|---|
+| boc-mpr-202410.pdf | caption | 26 captions | 26 | **100 %** (was 58 %) | 32 figs | 3 (cover/decoration) |
+| boj-outlook-2410.pdf | caption | 58 captions | 58 | **100 %** (was 79 %) | 55 figs | 4 |
+| **Aggregate (caption)** | | **84** | **84** | **100 %** (was 73 %) | | |
+
+**Missed figures: none.**
+
+**Cost** (per full conversion, live): BoC 37 calls / 46.8k tokens ≈ 0.016 EUR,
+BoJ 61 calls / 86.1k tokens ≈ 0.030 EUR. Aggregate regions across seven corpus
+docs are 301→284 vs main (BIS AR halves as multi-panel figures merge into one
+box; BoC/Fed roughly double — exactly where main dropped 1 in 4 figures), so
+capture-100 % costs about the same as the old gated detector overall.
+
+**Skip behaviour (T-081):** over-captured non-figures (cover decorations,
+title-page rules) return `is_figure=false` and are cleanly skipped — 3/35 on
+BoC, 4/59 on BoJ, no junk in the Markdown.
+
+Geometric (extraction-side) coverage is also 100 % on bis-ar-2024,
+fed-mpr-202407, riksbank-ppr-202503 and riksbank-fsr-202505 — including the
+three FSR bar/combo charts T-078 reported dropped (pages 27/37/41).

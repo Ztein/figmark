@@ -183,12 +183,13 @@ def test_pipeline_diagrams_extracted_from_report(
     diagram_files = sorted(diagrams_dir.iterdir()) if diagrams_dir.exists() else []
     desc_files = sorted(diagram_desc_dir.iterdir()) if diagram_desc_dir.exists() else []
 
-    # Page 11 = 2 diagrams, page 68 = 2 diagrams → 4 total
-    assert len(diagram_files) == 4, f"Expected 4 diagram images, got {len(diagram_files)}"
-    assert len(desc_files) == 4
+    # Page 11 = 2 regions (body paragraph between the charts splits them);
+    # page 68 = 1 region (only captions between the stacked charts → one box, T-080)
+    assert len(diagram_files) == 3, f"Expected 3 diagram images, got {len(diagram_files)}"
+    assert len(desc_files) == 3
 
     markdown = (pdf_out / f"{mini_path.stem}.md").read_text(encoding="utf-8")
-    assert markdown.count("](diagrams/") == 4
+    assert markdown.count("](diagrams/") == 3
 
     # Verify Swedish myndighetssvenska in each description.
     for desc_file in desc_files:
@@ -207,7 +208,7 @@ def test_pipeline_determinism_workers_1_vs_4(
 ):
     """Output must be identical regardless of worker count (1 vs 4).
 
-    We run a mini PDF (2 pages, 4 diagrams) twice: once with max_workers=1, once
+    We run a mini PDF (2 pages, 3 diagram regions) twice: once with max_workers=1, once
     with max_workers=4. The Markdown output must be identical byte-for-byte.
     """
     import fitz
