@@ -9,6 +9,7 @@ figure description).
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -73,6 +74,18 @@ class FakeClient:
             return make_response(SUMMARY_REPLY)
         text = next(part["text"] for part in content if part["type"] == "text")
         self.describe_prompts.append(text)
+        if "response_format" in kwargs:
+            # Emulate structured output (T-081): is_figure=false for a skip reply,
+            # description carries the canned text otherwise.
+            skip = self.image_reply.strip().upper().startswith("[SKIP]")
+            payload = json.dumps(
+                {
+                    "is_figure": not skip,
+                    "kind": "chart",
+                    "description": "" if skip else self.image_reply,
+                }
+            )
+            return make_response(payload, finish_reason=self.finish_reason)
         return make_response(self.image_reply, finish_reason=self.finish_reason)
 
 

@@ -17,8 +17,9 @@ import mimetypes
 import time
 from pathlib import Path
 
-from openai import APIError, APITimeoutError, OpenAI, RateLimitError
+from openai import APIError, APITimeoutError, BadRequestError, OpenAI, RateLimitError
 from PIL import Image
+from pydantic import BaseModel, ValidationError
 
 from .config import Config
 from .context import ContextText
@@ -64,6 +65,117 @@ def truncation_marker(description_path: Path) -> Path:
 def is_skip(text: str | None) -> bool:
     """True if a description is the significance-gate skip marker (decorative image)."""
     return text is not None and text.strip().upper().startswith(SKIP_MARKER)
+
+
+# --- Structured describe (T-081) -------------------------------------------
+# The skip/keep decision comes from a validated boolean, not a fragile "[SKIP]"
+# string the model must format perfectly. On an endpoint without json_schema
+# support we fall back to the legacy text prompt + is_skip() (air-gap-safe).
+
+_KIND_ENUM = ["chart", "table", "diagram", "photo", "illustration", "decoration", "text", "other"]
+
+
+class FigureResult(BaseModel):
+    is_figure: bool
+    kind: str
+    description: str
+
+
+_FIGURE_SCHEMA = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "figure_result",
+        "strict": True,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "is_figure": {
+                    "type": "boolean",
+                    "description": (
+                        "false if the image is purely decorative — a logo, icon, divider, "
+                        "background or border that carries no information a reader needs; "
+                        "true if it conveys information worth describing"
+                    ),
+                },
+                "kind": {"type": "string", "enum": _KIND_ENUM, "description": "what the image is"},
+                "description": {
+                    "type": "string",
+                    "description": "the description; empty string when is_figure is false",
+                },
+            },
+            "required": ["is_figure", "kind", "description"],
+            "additionalProperties": False,
+        },
+    },
+}
+
+# Endpoints that rejected response_format=json_schema — probed once, then we skip
+# the structured attempt and go straight to the text path.
+_structured_unsupported: set[str] = set()
+
+
+def _image_messages(text: str, data_uri: str) -> list[dict]:
+    return [
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": text},
+                {"type": "image_url", "image_url": {"url": data_uri}},
+            ],
+        }
+    ]
+
+
+def call_vision(
+    client: OpenAI,
+    cfg: Config,
+    structured_text: str,
+    fallback_text: str,
+    data_uri: str,
+    max_tokens: int,
+) -> tuple[str, bool]:
+    """One model round. Returns (text, truncated); text is the description or SKIP_MARKER.
+
+    Structured output first (a validated ``is_figure`` boolean); on an endpoint
+    that doesn't support ``response_format=json_schema`` we fall back to the
+    legacy text prompt (T-081). Transient errors propagate to the caller's retry
+    loop; only the "structured unsupported" 400 is handled here.
+    """
+    key = f"{cfg.api.base_url}|{cfg.api.model}"
+    if key not in _structured_unsupported:
+        try:
+            resp = client.chat.completions.create(  # type: ignore[call-overload]
+                model=cfg.api.model,
+                temperature=cfg.api.temperature,
+                max_tokens=max_tokens,
+                response_format=_FIGURE_SCHEMA,
+                messages=_image_messages(structured_text, data_uri),
+            )
+        except BadRequestError:
+            _structured_unsupported.add(key)  # endpoint lacks json_schema support
+        else:
+            choice = resp.choices[0]
+            content = (choice.message.content or "").strip()
+            truncated = getattr(choice, "finish_reason", None) == "length"
+            try:
+                fr = FigureResult.model_validate_json(content)
+            except (ValidationError, ValueError):
+                pass  # malformed/cut JSON this once — fall through to the text path
+            else:
+                if not fr.is_figure:
+                    return SKIP_MARKER, False
+                return fr.description.strip(), truncated
+
+    resp = client.chat.completions.create(  # type: ignore[call-overload]
+        model=cfg.api.model,
+        temperature=cfg.api.temperature,
+        max_tokens=max_tokens,
+        messages=_image_messages(fallback_text, data_uri),  # type: ignore[arg-type]
+    )
+    choice = resp.choices[0]
+    text = (choice.message.content or "").strip()
+    truncated = getattr(choice, "finish_reason", None) == "length"
+    return text, truncated
 
 
 def cache_fingerprint(*parts: object) -> str:
@@ -185,44 +297,39 @@ def describe_image(
             return cached
 
     data_uri = _image_to_data_uri(image_path)
-    user_text = compose_prompt(
+    lang = language if language is not None else cfg.language.output
+    # Structured prompt drops the [SKIP] instruction — the schema's is_figure
+    # carries the skip decision (T-081); the fallback prompt keeps it.
+    structured_text = compose_prompt(
+        cfg.description.prompt,
+        doc_summary=doc_summary,
+        context=context,
+        significance=False,
+        language=lang,
+    )
+    fallback_text = compose_prompt(
         cfg.description.prompt,
         doc_summary=doc_summary,
         context=context,
         significance=cfg.significance.enabled,
-        language=language if language is not None else cfg.language.output,
+        language=lang,
     )
 
     last_error: Exception | None = None
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            response = client.chat.completions.create(
-                model=cfg.api.model,
-                temperature=cfg.api.temperature,
-                max_tokens=MAX_TOKENS,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {"type": "text", "text": user_text},
-                            {"type": "image_url", "image_url": {"url": data_uri}},
-                        ],
-                    }
-                ],
+            text, truncated = call_vision(
+                client, cfg, structured_text, fallback_text, data_uri, MAX_TOKENS
             )
-            choice = response.choices[0]
-            text = (choice.message.content or "").strip()
             if not text:
-                # An empty completion is a hard error, deliberately NOT retried:
-                # with FAIL_FAST a retry just repeats the same failure, and an empty
-                # body almost always means the model can't take image input or
-                # rejected the prompt — not a transient blip. (T-033)
+                # A figure with no description is a hard error, deliberately NOT
+                # retried: an empty body almost always means the model can't take
+                # image input or rejected the prompt — not a transient blip (T-033).
                 raise RuntimeError(
                     f"The API returned empty content for {image_path.name} "
                     f"(model={cfg.api.model}). This usually means the model does "
                     f"not support image input or the prompt was rejected."
                 )
-            truncated = getattr(choice, "finish_reason", None) == "length"
             if truncated:
                 # Truncated at the token cap — the description is likely cut
                 # mid-sentence. Warn loudly (do not silently cache a partial as if
