@@ -25,3 +25,10 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    groups:
+      # codeql-action/init and codeql-action/analyze are separate update paths,
+      # so ungrouped Dependabot files one PR each — and CodeQL fails the SARIF
+      # upload whenever the two land on different versions. Group them so they
+      # always move together in a single PR.
+      codeql-action:
+        patterns: ["github/codeql-action*"]
