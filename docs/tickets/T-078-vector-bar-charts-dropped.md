@@ -1,6 +1,6 @@
 # T-078: Vector bar and combo charts are silently dropped by the diagram detector (line charts only)
 
-**Status:** Open
+**Status:** Closed — resolved by T-080's one-box-per-page extraction; resolution below.
 **Priority:** High — figure interpretation is figmark's differentiator, and this
 silently loses a whole class of charts. A dropped bar chart leaves only its
 caption text; the data is gone, with no warning — the exact "silent degradation"
@@ -81,3 +81,31 @@ rescuing it.
   not mis-detected as bar regions) — measured, not assumed.
 - A dropped chart is never silent: at minimum a loud warning when a captioned
   chart has no captured region.
+
+## Resolution (2026-07-22, via T-080)
+
+The root cause was the chart-classification gates themselves, and T-080 removed
+them entirely: the detector no longer judges what geometry "looks like a chart"
+— it unions each page's vector content into one box per band and lets the
+vision model decide. There is no line-vs-bar distinction left to fail.
+
+**Verified live** (Riksbank FSR 2025:1, gemma-4-31B via Berget, 2026-07-22):
+all three repro charts are captured *and described correctly, in Swedish*:
+
+| Chart | Page | Outcome |
+|---|---|---|
+| Diagram 10 — Svensk varuexport (stacked bar) | 27 | captured; export split per varugrupp described |
+| Diagram 20 — Likviditetskvoter (grouped bar) | 37 | captured; LCR/NSFR bars described |
+| Diagram 24 — Nettofondflöden (bar + line, dual axis) | 41 | captured; both axes and the time span described |
+
+Coverage on the full document: **28/28 captions (100 %)**, no misses; cost
+0.019 EUR for the full conversion. The controlled contrast is closed: bar
+charts are now handled identically however the publisher embedded them.
+
+**On the "loud gap warning" criterion (option 3):** not implemented, by
+decision. The failure mode it guarded against — a classification gate silently
+rejecting a chart — no longer exists, coverage is measured at 100 % across six
+corpus documents (`scripts/coverage_bench/BASELINE.md`), and implementing the
+warning would require caption parsing, which T-080 deliberately removed from
+the extraction path. The coverage bench is the ongoing guard: run it when the
+extraction changes.

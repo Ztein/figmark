@@ -81,9 +81,9 @@ Open bugs and improvements for figmark, numbered `T-NNN`.
 | [T-075](T-075-truncated-descriptions-shared-as-complete.md) | **Closed** | Low | A truncated figure description is stored in the shared cross-request cache as if complete |
 | [T-076](T-076-cache-operational-envelope-unenforced.md) | **Closed** | Medium | The cache's operational envelope is unenforced — no schema version, disk use beyond the cap, world-readable directory, undocumented scaling assumptions |
 | [T-077](T-077-doc-drift-guard.md) | **Closed** | Medium | Hand-maintained docs drift from code — no guard catches a stale index, module map, or metadata |
-| [T-078](T-078-vector-bar-charts-dropped.md) | Open | High | Vector bar and combo charts are silently dropped by the diagram detector (line charts only) |
+| [T-078](T-078-vector-bar-charts-dropped.md) | **Closed** | High | Vector bar and combo charts are silently dropped by the diagram detector — resolved by T-080, verified live on FSR 28/28 |
 | [T-079](T-079-raster-charts-get-alt-text-prompt.md) | Open | Medium | Charts embedded as raster images are described with the alt-text prompt, losing most of their information |
-| [T-080](T-080-capture-regions-stop-classifying.md) | Open | High | figmark misses figures because the code tries to guess which regions are charts |
+| [T-080](T-080-capture-regions-stop-classifying.md) | **Closed** | High | figmark misses figures because the code tries to guess which regions are charts — one-box-per-page, coverage 58/79→100 % |
 | [T-081](T-081-structured-describe-output.md) | Open | High | The skip/keep decision rides on a free-text "[SKIP]" string the model can fail to emit |
 | [T-082](T-082-description-quality-judge.md) | Open | Medium | No way to measure figure-description quality, only whether a figure was captured |
 | [T-083](T-083-image-cap-should-be-config-model-validated.md) | Open | Medium | The image payload cap (1500 px / 500 KB) is a hardcoded guess, not validated against the model |

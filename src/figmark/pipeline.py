@@ -358,7 +358,10 @@ def convert(
                 page_data.blocks = [
                     b
                     for b in page_data.blocks
-                    if not (isinstance(b, TextBlock) and text_block_in_region(b.bbox, regions))
+                    if not (
+                        isinstance(b, TextBlock)
+                        and text_block_in_region(b.bbox, regions, text=b.text)
+                    )
                 ]
                 dropped = before - len(page_data.blocks)
                 if dropped:

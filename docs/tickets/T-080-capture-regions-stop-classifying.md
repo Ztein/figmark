@@ -1,9 +1,9 @@
 # T-080: figmark misses figures because the code tries to guess which regions are charts
 
-**Status:** Open — refactor validated on branch `feat/simpler-extraction-t080`
-(commit saved), **blocked on T-081** before merge.
+**Status:** Closed — one-box-per-page shipped (with T-081's structured skip in
+place). Resolution below.
 **Priority:** High — figure interpretation is the product's differentiator, and
-the coverage bench shows we silently drop ~1 in 4 figures.
+the coverage bench showed we silently dropped ~1 in 4 figures.
 
 ## Symptom
 
@@ -82,3 +82,39 @@ That is why this is blocked on **T-081** (structured describe) before merge.
 - `diagrams.py` is *simpler* (fewer constants, no `solid`/classification code),
   not merely detuned.
 - Cost increase measured and documented.
+
+## Resolution (2026-07-22)
+
+Shipped as **one box per page-band** (Option 3), with the open split question
+resolved by bench:
+
+- **Banding:** a page's filtered drawings group into maximal vertically
+  overlapping runs; adjacent bands merge unless a **body paragraph** sits in
+  the gap. Captions/source lines between two charts do not split — they belong
+  to the figure and land inside the rendered box.
+- **Paragraph vs furniture** (the open question): word counts alone do NOT
+  separate them — BIS panel-title rows run 15–44 words. Bench-validated rule:
+  ≥ 20 words AND ≥ 2 lines AND sentence punctuation (`.`/`,` — tick-label runs
+  like "RO CL MX …" never have it; junk leakage 107→0 words on BIS).
+- **Paragraph guard (new, found by the bench):** a one-box band can
+  legitimately cover flowing text (column layouts, bridged bands) — measured
+  29/156/538 swallowed paragraph-words on BoC/BoJ/BIS even with per-band
+  boxes. `text_block_in_region` therefore never claims a body paragraph: mild
+  duplication beats silent deletion. Rescued prose: 831/2016/9350 words on
+  BoC/BoJ/BIS, junk 0.
+- **Page furniture:** a drawing spanning ≥ 90 % of a page dimension (margin
+  rules, borders) is filtered — one 5 px margin bar otherwise bridged every
+  band on a table page into a full-page box.
+- **Tables:** drawings the table path owns are excluded *before* banding. A
+  ruled table `find_tables` misses (the report's p70) is now captured for the
+  model instead of dropped — it addresses the T-050 symptom instead of
+  flattening to loose text.
+
+**Geometric caption coverage** (extraction-side, `scripts/coverage_bench`
+ground truth): BoC **58→100 %**, BoJ **79→100 %**, BIS/Fed/Riksbank PPR/
+Riksbank FSR **100 %** — nothing missed on six docs. Region counts bounded:
+35/54/81/64/44/28 — aggregate **301→284 vs main over seven docs** (BIS halves
+as panels merge; BoC/Fed roughly double, exactly where main dropped figures).
+T-078's three dropped FSR bar/combo charts (p27/37/41) all capture.
+
+Live before→after numbers recorded in `scripts/coverage_bench/BASELINE.md`.
