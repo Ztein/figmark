@@ -1,0 +1,291 @@
+# Riksbank PPR corpus — every Monetary Policy Report/Update on riksbank.se.
+# Maintained by examples/download_ppr.py (scrape + merge); PDFs land in
+# files/ (gitignored) — only this manifest and the script are committed.
+# Purpose: the publisher's hand-written figure alt-texts are an external
+# quality baseline for figure descriptions (T-082).
+documents:
+- name: ppr-2017-02
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2017/penningpolitisk-rapport-februari-2017.pdf
+  source: Riksbanken, Penningpolitisk rapport februari 2017
+  type: rapport
+  language: sv
+- name: ppr-2017-04
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2017/penningpolitisk-rapport-april-2017.pdf
+  source: Riksbanken, Penningpolitisk rapport april 2017
+  type: rapport
+  language: sv
+- name: ppr-2017-07
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2017/penningpolitisk-rapport-juli-2017.pdf
+  source: Riksbanken, Penningpolitisk rapport juli 2017
+  type: rapport
+  language: sv
+- name: ppr-2017-09
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2017/rap_ppr_170907_sve_t99x44reu.pdf
+  source: Riksbanken, Penningpolitisk rapport september 2017
+  type: rapport
+  language: sv
+- name: ppr-2017-10
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2017/penningpolitisk-rapport-oktober-2017.pdf
+  source: Riksbanken, Penningpolitisk rapport oktober 2017
+  type: rapport
+  language: sv
+- name: ppr-2017-12
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2017/penningpolitisk-rapport-december-2017.pdf
+  source: Riksbanken, Penningpolitisk rapport december 2017
+  type: rapport
+  language: sv
+- name: ppr-2018-04
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2018/penningpolitisk-rapport-april-2018.pdf
+  source: Riksbanken, Penningpolitisk rapport april 2018
+  type: rapport
+  language: sv
+- name: ppr-2018-07
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2018/penningpolitisk-rapport-juli-2018.pdf
+  source: Riksbanken, Penningpolitisk rapport juli 2018
+  type: rapport
+  language: sv
+- name: ppr-2018-09
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2018/penningpolitisk-rapport-september-2018.pdf
+  source: Riksbanken, Penningpolitisk rapport september 2018
+  type: rapport
+  language: sv
+- name: ppr-2018-10
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2018/penningpolitisk-rapport-oktober-2018.pdf
+  source: Riksbanken, Penningpolitisk rapport oktober 2018
+  type: rapport
+  language: sv
+- name: ppr-2018-12
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2018/penningpolitisk-rapport-december-2018.pdf
+  source: Riksbanken, Penningpolitisk rapport december 2018
+  type: rapport
+  language: sv
+- name: ppr-2019-02
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2019/penningpolitisk-rapport-februari-2019.pdf
+  source: Riksbanken, Penningpolitisk rapport februari 2019
+  type: rapport
+  language: sv
+- name: ppr-2019-04
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2019/penningpolitisk-rapport-april-2019.pdf
+  source: Riksbanken, Penningpolitisk rapport april 2019
+  type: rapport
+  language: sv
+- name: ppr-2019-07
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2019/penningpolitisk-rapport-juli-2019.pdf
+  source: Riksbanken, Penningpolitisk rapport juli 2019
+  type: rapport
+  language: sv
+- name: ppr-2019-09
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2019/penningpolitisk-rapport-september-2019.pdf
+  source: Riksbanken, Penningpolitisk rapport september 2019
+  type: rapport
+  language: sv
+- name: ppr-2019-10
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2019/penningpolitisk-rapport-oktober-2019.pdf
+  source: Riksbanken, Penningpolitisk rapport oktober 2019
+  type: rapport
+  language: sv
+- name: ppr-2019-12
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2019/penningpolitisk-rapport-december-2019.pdf
+  source: Riksbanken, Penningpolitisk rapport december 2019
+  type: rapport
+  language: sv
+- name: ppr-2020-02
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2020/penningpolitisk-rapport-februari-2020.pdf
+  source: Riksbanken, Penningpolitisk rapport februari 2020
+  type: rapport
+  language: sv
+- name: ppr-2020-04
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2020/penningpolitisk-rapport-april-2020.pdf
+  source: Riksbanken, Penningpolitisk rapport april 2020
+  type: rapport
+  language: sv
+- name: ppr-2020-07
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2020/penningpolitisk-rapport-juli-2020.pdf
+  source: Riksbanken, Penningpolitisk rapport juli 2020
+  type: rapport
+  language: sv
+- name: ppr-2020-09
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2020/penningpolitisk-rapport-september-2020.pdf
+  source: Riksbanken, Penningpolitisk rapport september 2020
+  type: rapport
+  language: sv
+- name: ppr-2020-11
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2020/penningpolitisk-rapport-november-2020.pdf
+  source: Riksbanken, Penningpolitisk rapport november 2020
+  type: rapport
+  language: sv
+- name: ppr-2021-02
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2021/penningpolitisk-rapport-februari-2021.pdf
+  source: Riksbanken, Penningpolitisk rapport februari 2021
+  type: rapport
+  language: sv
+- name: ppr-2021-04
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2021/penningpolitisk-rapport-april-2021.pdf
+  source: Riksbanken, Penningpolitisk rapport april 2021
+  type: rapport
+  language: sv
+- name: ppr-2021-07
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2021/penningpolitisk-rapport-juli-2021.pdf
+  source: Riksbanken, Penningpolitisk rapport juli 2021
+  type: rapport
+  language: sv
+- name: ppr-2021-09
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2021/penningpolitisk-rapport--september-2021.pdf
+  source: Riksbanken, Penningpolitisk rapport september 2021
+  type: rapport
+  language: sv
+- name: ppr-2021-11
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2021/penningpolitisk-rapport-november-2021.pdf
+  source: Riksbanken, Penningpolitisk rapport november 2021
+  type: rapport
+  language: sv
+- name: ppr-2022-02
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2022/penningpolitisk-rapport-februari-2022.pdf
+  source: Riksbanken, Penningpolitisk rapport februari 2022
+  type: rapport
+  language: sv
+- name: ppr-2022-04
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2022/penningpolitisk-rapport-april-2022.pdf
+  source: Riksbanken, Penningpolitisk rapport april 2022
+  type: rapport
+  language: sv
+- name: ppr-2022-06
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2022/penningpolitisk-rapport-juni-2022.pdf
+  source: Riksbanken, Penningpolitisk rapport juni 2022
+  type: rapport
+  language: sv
+- name: ppr-2022-09
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2022/penningpolitisk-rapport-september-2022.pdf
+  source: Riksbanken, Penningpolitisk rapport september 2022
+  type: rapport
+  language: sv
+- name: ppr-2022-11
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2022/penningpolitisk-rapport-november-2022.pdf
+  source: Riksbanken, Penningpolitisk rapport november 2022
+  type: rapport
+  language: sv
+- name: ppr-2023-02
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2023/penningpolitisk-rapport-februari-2023.pdf
+  source: Riksbanken, Penningpolitisk rapport februari 2023
+  type: rapport
+  language: sv
+- name: ppr-2023-04
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2023/penningpolitisk-rapport-april-2023.pdf
+  source: Riksbanken, Penningpolitisk rapport april 2023
+  type: rapport
+  language: sv
+- name: ppr-2023-06
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2023/penningpolitisk-rapport-juni-2023.pdf
+  source: Riksbanken, Penningpolitisk rapport juni 2023
+  type: rapport
+  language: sv
+- name: ppr-2023-09
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2023/penningpolitisk-rapport-september-2023.pdf
+  source: Riksbanken, Penningpolitisk rapport september 2023
+  type: rapport
+  language: sv
+- name: ppr-2023-11
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2023/penningpolitisk-rapport-november-2023.pdf
+  source: Riksbanken, Penningpolitisk rapport november 2023
+  type: rapport
+  language: sv
+- name: ppr-2024-03
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2024/penningpolitisk-rapport-mars-2024.pdf
+  source: Riksbanken, Penningpolitisk rapport mars 2024
+  type: rapport
+  language: sv
+- name: ppr-2024-06
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2024/penningpolitisk-rapport-juni-2024.pdf
+  source: Riksbanken, Penningpolitisk rapport juni 2024
+  type: rapport
+  language: sv
+- name: ppr-2024-09
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2024/penningpolitisk-rapport-september-2024.pdf
+  source: Riksbanken, Penningpolitisk rapport september 2024
+  type: rapport
+  language: sv
+- name: ppr-2024-12
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2024/penningpolitisk-rapport-december-2024.pdf
+  source: Riksbanken, Penningpolitisk rapport december 2024
+  type: rapport
+  language: sv
+- name: ppr-2025-03
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-rapport-mars-2025.pdf
+  source: Riksbanken, Penningpolitisk rapport mars 2025
+  type: rapport
+  language: sv
+- name: ppr-2025-06
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-rapport-juni-2025.pdf
+  source: Riksbanken, Penningpolitisk rapport juni 2025
+  type: rapport
+  language: sv
+- name: ppr-2025-09
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-rapport-september-2025.pdf
+  source: Riksbanken, Penningpolitisk rapport september 2025
+  type: rapport
+  language: sv
+- name: ppr-2025-12
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-rapport-december-2025.pdf
+  source: Riksbanken, Penningpolitisk rapport december 2025
+  type: rapport
+  language: sv
+- name: ppr-2026-03
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2026/penningpolitisk-rapport-mars-2026.pdf
+  source: Riksbanken, Penningpolitisk rapport mars 2026
+  type: rapport
+  language: sv
+- name: ppr-2026-06
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2026/penningpolitisk-rapport-juni-2026.pdf
+  source: Riksbanken, Penningpolitisk rapport juni 2026
+  type: rapport
+  language: sv
+- name: ppu-2024-02
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2024/penningpolitisk-uppdatering-februari-2024.pdf
+  source: Riksbanken, Penningpolitisk uppdatering februari 2024
+  type: uppdatering
+  language: sv
+- name: ppu-2024-05
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2024/penningpolitisk-uppdatering-maj-2024.pdf
+  source: Riksbanken, Penningpolitisk uppdatering maj 2024
+  type: uppdatering
+  language: sv
+- name: ppu-2024-08
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2024/penningpolitisk-uppdatering-augusti-2024.pdf
+  source: Riksbanken, Penningpolitisk uppdatering augusti 2024
+  type: uppdatering
+  language: sv
+- name: ppu-2024-11
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2024/penningpolitisk-uppdatering-november-2024.pdf
+  source: Riksbanken, Penningpolitisk uppdatering november 2024
+  type: uppdatering
+  language: sv
+- name: ppu-2025-01
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-uppdatering-januari-2025.pdf
+  source: Riksbanken, Penningpolitisk uppdatering januari 2025
+  type: uppdatering
+  language: sv
+- name: ppu-2025-05
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-uppdatering-maj-2025.pdf
+  source: Riksbanken, Penningpolitisk uppdatering maj 2025
+  type: uppdatering
+  language: sv
+- name: ppu-2025-08
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-uppdatering-augusti-2025.pdf
+  source: Riksbanken, Penningpolitisk uppdatering augusti 2025
+  type: uppdatering
+  language: sv
+- name: ppu-2025-11
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2025/penningpolitisk-uppdatering-november-2025.pdf
+  source: Riksbanken, Penningpolitisk uppdatering november 2025
+  type: uppdatering
+  language: sv
+- name: ppu-2026-01
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2026/penningpolitisk-uppdatering-januari-2026.pdf
+  source: Riksbanken, Penningpolitisk uppdatering januari 2026
+  type: uppdatering
+  language: sv
+- name: ppu-2026-05
+  url: https://www.riksbank.se/globalassets/media/rapporter/ppr/penningpolitiska-rapporter-och-uppdateringar/svenska/2026/penningpolitisk-uppdatering-maj-2026.pdf
+  source: Riksbanken, Penningpolitisk uppdatering maj 2026
+  type: uppdatering
+  language: sv
