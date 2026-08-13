@@ -168,9 +168,7 @@ def _union(rects: list[fitz.Rect]) -> fitz.Rect:
     return box
 
 
-def _paragraph_in_gap(
-    blocks: list[tuple[fitz.Rect, str, int]], y_top: float, y_bot: float
-) -> bool:
+def _paragraph_in_gap(blocks: list[tuple[fitz.Rect, str, int]], y_top: float, y_bot: float) -> bool:
     """True if a body paragraph lies (mostly) between y_top and y_bot —
     the signal that two visual bands are separate figures, not one."""
     for tb, text, n_lines in blocks:
