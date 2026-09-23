@@ -1,0 +1,623 @@
+# Question set — Riksbank PPR March 2026 (manifest riksbank-ppr.yaml, name ppr-2026-03)
+#
+# Every answer is CATEGORICAL so grading is deterministic (no judge model):
+#   number : the answerer replies with a number at `decimals` precision; correct if
+#            |answer - key| <= tolerance
+#   bool   : ja/nej
+#   choice : one of `options` (verbatim)
+# Keys were read from the rendered figure by a human (2026-09-22), NOT from any
+# model's description — the set must never be derived from the thing it measures.
+# `figure_only: true` marks facts the body text does not state, i.e. the question
+# can only be answered from the figure description.
+# Figure ids are page + figure index on that page (page-010-diagram-01 = first
+# chart on page 10); the caption field identifies the figure independently of
+# any pipeline's numbering.
+#
+# Coverage: 13 of 41 charts so far. Extend with the same discipline; more
+# questions per figure beats cleverer questions — the point is that no single
+# prompt can be tuned to the set.
+
+document: ppr-2026-03
+figures:
+
+- id: page-010-diagram-01
+  caption: "Diagram 1. Svensk styrränta och inflation"
+  questions:
+    - q: "Vilken var styrräntans högsta nivå under 2022–2026, i procent?"
+      type: number
+      decimals: 2
+      key: 4.00
+      tolerance: 0.05
+    - q: "Under vilket år nådde styrräntan sin högsta nivå?"
+      type: number
+      decimals: 0
+      key: 2023
+      tolerance: 0
+    - q: "Vilken nivå i procent låg styrräntan på i början av 2026 (senaste utfall)?"
+      type: number
+      decimals: 2
+      key: 1.75
+      tolerance: 0.05
+    - q: "Enligt prognosen (streckad linje), höjs styrräntan tydligt under 2026? ja/nej"
+      type: bool
+      key: false
+    - q: "Ungefär hur hög var KPIF-inflationen som högst, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 10.1
+      tolerance: 0.5
+    - q: "Under vilket år nådde KPIF-inflationen sin topp?"
+      type: choice
+      options: ["2021", "2022", "2023", "2024"]
+      key: "2022"
+    - q: "Enligt prognosen, faller KPIF-inflationen under 1,5 procent någon gång under 2026–2027? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Enligt prognosen, ligger KPIF-inflationen över 2 procent under 2028? ja/nej"
+      type: bool
+      key: true
+    - q: "I det långa perspektivet (2010–2030): var styrräntan negativ någon gång? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Ungefär hur låg var styrräntan som lägst i det långa perspektivet, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: -0.5
+      tolerance: 0.15
+      figure_only: true
+    - q: "Vilket av inflationsmåtten toppade högst: KPIF eller KPIF exklusive energi?"
+      type: choice
+      options: ["KPIF", "KPIF exklusive energi"]
+      key: "KPIF"
+
+- id: page-014-diagram-01
+  caption: "Diagram 4. Priset på olja och naturgas samt index för geopolitisk risk"
+  questions:
+    - q: "På vilken axel läses Brentoljan av?"
+      type: choice
+      options: ["vänster axel", "höger axel"]
+      key: "höger axel"
+    - q: "Ungefär hur högt var naturgaspriset som högst, i EUR/MWh (heltal)?"
+      type: number
+      decimals: 0
+      key: 340
+      tolerance: 30
+    - q: "Under vilket år toppade naturgaspriset?"
+      type: number
+      decimals: 0
+      key: 2022
+      tolerance: 0
+    - q: "Ligger den nya prognosen för Brentoljan över decemberprognosen (PPR december)? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Ungefär var startar den nya oljeprisprognosen 2026, i dollar per fat (heltal)?"
+      type: number
+      decimals: 0
+      key: 103
+      tolerance: 10
+      figure_only: true
+    - q: "Faller den nya oljeprisprognosen under prognosperioden? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Under vilket år var det geopolitiska riskindexet som högst?"
+      type: number
+      decimals: 0
+      key: 2022
+      tolerance: 0
+    - q: "Ungefär vilken nivå nådde riskindexet som högst (heltal)?"
+      type: number
+      decimals: 0
+      key: 440
+      tolerance: 40
+    - q: "Steg riskindexet kraftigt i början av 2026? ja/nej"
+      type: bool
+      key: true
+    - q: "Ungefär vilken nivå nådde riskindexet vid toppen i början av 2026 (heltal)?"
+      type: number
+      decimals: 0
+      key: 400
+      tolerance: 40
+      figure_only: true
+
+- id: page-015-diagram-01
+  caption: "Diagram 5. Börsutveckling och inflationsswappar"
+  questions:
+    - q: "Vilken börs föll djupast i april 2025?"
+      type: choice
+      options: ["Sverige", "Euroområdet", "USA"]
+      key: "Sverige"
+    - q: "Ungefär vilken indexnivå bottnade den svenska börsen på i april 2025 (heltal)?"
+      type: number
+      decimals: 0
+      key: 85
+      tolerance: 4
+      figure_only: true
+    - q: "Vilken marknad hade högst indexnivå i slutet av perioden (mars 2026)?"
+      type: choice
+      options: ["Sverige", "Euroområdet", "USA"]
+      key: "Euroområdet"
+    - q: "Ungefär vilken indexnivå nådde euroområdets börs som högst (heltal)?"
+      type: number
+      decimals: 0
+      key: 128
+      tolerance: 4
+      figure_only: true
+    - q: "Hur många serier visas i diagrammet för inflationsswappar?"
+      type: number
+      decimals: 0
+      key: 4
+      tolerance: 0
+    - q: "Ungefär hur hög var USA:s 1-åriga inflationsswap som högst, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 3.5
+      tolerance: 0.2
+    - q: "Under vilken period toppade USA:s 1-åriga inflationsswap?"
+      type: choice
+      options: ["våren 2025", "sommaren 2025", "hösten 2025", "vintern 2025/2026"]
+      key: "sommaren 2025"
+    - q: "Låg USA:s 5-åriga inflationsswap under den 1-åriga under sommaren 2025? ja/nej"
+      type: bool
+      key: true
+    - q: "Steg de 1-åriga inflationsswapparna kraftigt i mars 2026? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Ungefär vilken nivå nådde euroområdets 1-åriga inflationsswap i mars 2026, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 3.1
+      tolerance: 0.3
+      figure_only: true
+    - q: "Ungefär hur låg var euroområdets 1-åriga inflationsswap som lägst under 2025, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 1.2
+      tolerance: 0.2
+      figure_only: true
+
+- id: page-016-diagram-01
+  caption: "Diagram 6. Statsobligationsräntor och kreditspreadar"
+  questions:
+    - q: "Vilket land hade högst 10-årig statsobligationsränta under perioden?"
+      type: choice
+      options: ["Sverige", "Tyskland", "USA"]
+      key: "USA"
+    - q: "Ungefär var låg USA:s 10-åriga ränta i slutet av perioden, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 4.2
+      tolerance: 0.2
+    - q: "Ungefär var låg Sveriges 10-åriga ränta i slutet av perioden, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 2.8
+      tolerance: 0.2
+    - q: "Låg Sveriges 2-åriga ränta under den 10-åriga under hela perioden? ja/nej"
+      type: bool
+      key: true
+    - q: "Under vilken månad 2025 var kreditspreadarna som högst?"
+      type: choice
+      options: ["januari", "april", "juli", "oktober"]
+      key: "april"
+    - q: "Ungefär vilken nivå nådde USA:s kreditspread som högst, i räntepunkter (heltal)?"
+      type: number
+      decimals: 0
+      key: 475
+      tolerance: 30
+      figure_only: true
+    - q: "Vilken region hade högst kreditspreadar under större delen av perioden?"
+      type: choice
+      options: ["Euroområdet", "USA"]
+      key: "USA"
+    - q: "Steg kreditspreadarna kraftigt i mars 2026? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Ungefär var låg euroområdets kreditspread som lägst, i räntepunkter (heltal)?"
+      type: number
+      decimals: 0
+      key: 240
+      tolerance: 20
+      figure_only: true
+
+- id: page-017-diagram-01
+  caption: "Diagram 7. Marknadens förväntningar på styrräntor i framtiden"
+  questions:
+    - q: "Vilket land/område har högst förväntad styrränta under prognosperioden?"
+      type: choice
+      options: ["Sverige", "Euroområdet", "USA", "Storbritannien", "Japan"]
+      key: "Storbritannien"
+    - q: "Vilket land/område har lägst förväntad styrränta?"
+      type: choice
+      options: ["Sverige", "Euroområdet", "USA", "Storbritannien", "Japan"]
+      key: "Japan"
+    - q: "Ungefär vilken nivå bottnar Sveriges förväntade styrränta på, i procent (två decimaler)?"
+      type: number
+      decimals: 2
+      key: 1.75
+      tolerance: 0.1
+    - q: "Förväntas Sveriges styrränta stiga under 2027–2028? ja/nej"
+      type: bool
+      key: true
+    - q: "Ungefär var ligger Sveriges förväntade styrränta i slutet av 2028, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 2.4
+      tolerance: 0.2
+      figure_only: true
+    - q: "Ungefär hur låg blir USA:s förväntade styrränta som lägst, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 3.2
+      tolerance: 0.2
+      figure_only: true
+    - q: "Ungefär var ligger Japans förväntade styrränta i slutet av perioden, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 1.6
+      tolerance: 0.2
+      figure_only: true
+    - q: "Ligger euroområdets förväntade styrränta över Sveriges under 2026–2027? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Förväntas Storbritanniens styrränta sjunka under 3 procent någon gång? ja/nej"
+      type: bool
+      key: false
+
+- id: page-020-diagram-01
+  caption: "Diagram 10. Konsumentpriser i omvärlden"
+  questions:
+    - q: "Vilket område hade högst konsumentprisinflation vid toppen?"
+      type: choice
+      options: ["Sverige", "Euroområdet", "USA"]
+      key: "Euroområdet"
+    - q: "Ungefär hur hög var euroområdets inflation som högst, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 10.6
+      tolerance: 0.5
+    - q: "Vilket land/område var först ner till omkring 3 procents inflation?"
+      type: choice
+      options: ["Sverige", "Euroområdet", "USA"]
+      key: "USA"
+    - q: "Ungefär hur hög var Sveriges inflation exklusive energi som högst, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 9.3
+      tolerance: 0.5
+    - q: "Vilket land/område hade lägst inflation exklusive energi i slutet av perioden?"
+      type: choice
+      options: ["Sverige", "Euroområdet", "USA"]
+      key: "Sverige"
+    - q: "Ungefär var låg Sveriges inflation exklusive energi i slutet av perioden, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 1.4
+      tolerance: 0.3
+      figure_only: true
+    - q: "Vilket prismått används för USA?"
+      type: choice
+      options: ["KPIF", "HIKP", "KPI"]
+      key: "KPI"
+    - q: "Låg USA:s inflation exklusive energi över 2 procent under hela 2025? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+
+- id: page-027-diagram-01
+  caption: "Diagram 16. BNP-tillväxt (bidrag, kvartal) och BNP-nivå mot decemberprognos"
+  questions:
+    - q: "Hur många kvartal i diagrammet hade negativ BNP-tillväxt (kvartalstakt)?"
+      type: number
+      decimals: 0
+      key: 4
+      tolerance: 1
+      figure_only: true
+    - q: "Vilken komponent gav det största enskilda negativa bidraget under perioden?"
+      type: choice
+      options: ["Hushållens konsumtion", "Offentlig konsumtion", "Investeringar", "Lagerinvesteringar", "Nettoexport"]
+      key: "Lagerinvesteringar"
+    - q: "Ungefär hur stort var det största negativa lagerbidraget, i procentenheter (en decimal)?"
+      type: number
+      decimals: 1
+      key: -1.9
+      tolerance: 0.4
+      figure_only: true
+    - q: "Ungefär vilken indexnivå hade BNP i slutet av 2025 (index 2021 kv1 = 100, en decimal)?"
+      type: number
+      decimals: 1
+      key: 103.7
+      tolerance: 0.3
+      figure_only: true
+    - q: "Låg BNP-utfallet tydligt över decemberprognosen i slutet av 2025? ja/nej"
+      type: bool
+      key: false
+    - q: "Var BNP-nivån i slutet av 2025 högre än i början av 2023? ja/nej"
+      type: bool
+      key: true
+    - q: "Vilken komponent gav störst positivt bidrag i det sista kvartalet?"
+      type: choice
+      options: ["Hushållens konsumtion", "Offentlig konsumtion", "Investeringar", "Lagerinvesteringar", "Nettoexport"]
+      key: "Investeringar"
+      figure_only: true
+    - q: "Var nettoexportens bidrag negativt i det sista kvartalet? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+
+- id: page-029-diagram-01
+  caption: "Diagram 18. Sysselsättning"
+  questions:
+    - q: "Ungefär hur hög var sysselsättningstillväxten enligt NR som högst, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 4.2
+      tolerance: 0.4
+    - q: "Under vilket år toppade sysselsättningstillväxten?"
+      type: choice
+      options: ["2020", "2021", "2022", "2023"]
+      key: "2022"
+    - q: "Ungefär hur låg var sysselsättningstillväxten enligt AKU som lägst, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: -3.3
+      tolerance: 0.5
+      figure_only: true
+    - q: "Under vilket år var sysselsättningstillväxten som lägst?"
+      type: number
+      decimals: 0
+      key: 2020
+      tolerance: 0
+    - q: "Var sysselsättningstillväxten negativ enligt NR under 2024? ja/nej"
+      type: bool
+      key: true
+    - q: "Stiger sysselsättningstillväxten enligt AKU under 2025? ja/nej"
+      type: bool
+      key: true
+    - q: "Ungefär vilken nivå nådde AKU-serien i slutet av perioden, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 1.7
+      tolerance: 0.4
+      figure_only: true
+    - q: "Vilken serie varierar mest från observation till observation?"
+      type: choice
+      options: ["AKU", "NR"]
+      key: "AKU"
+
+- id: page-038-diagram-01
+  caption: "Diagram 25. KPIF exklusive energi med indikatorer"
+  questions:
+    - q: "Vad visar det ljusblå bandet?"
+      type: choice
+      options: ["percentil 25–75", "lägsta och högsta", "konfidensintervall 90 %"]
+      key: "percentil 25–75"
+    - q: "Ungefär hur högt var KPIF exklusive energi som mest, i standardavvikelser (en decimal)?"
+      type: number
+      decimals: 1
+      key: 4.5
+      tolerance: 0.4
+    - q: "Under vilket år toppade KPIF exklusive energi?"
+      type: number
+      decimals: 0
+      key: 2023
+      tolerance: 0
+    - q: "Låg KPIF exklusive energi under noll i slutet av perioden (2026)? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Låg KPIF exklusive energi över indikatorernas 25–75-percentilband vid toppen 2023? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Var KPIF exklusive energi någon gång under -1 standardavvikelse under 2010–2020? ja/nej"
+      type: bool
+      key: false
+      figure_only: true
+    - q: "Hur långt bakåt i tiden sträcker sig diagrammet (startår)?"
+      type: number
+      decimals: 0
+      key: 2010
+      tolerance: 0
+
+- id: page-043-diagram-01
+  caption: "Diagram 26. Bidrag till BNP-tillväxt (årlig, prognos)"
+  questions:
+    - q: "Vilket år har högst BNP-tillväxt?"
+      type: choice
+      options: ["2024", "2025", "2026", "2027", "2028"]
+      key: "2027"
+    - q: "Ungefär hur hög är BNP-tillväxten 2027, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 2.6
+      tolerance: 0.2
+    - q: "Ungefär hur hög var BNP-tillväxten 2024, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 1.0
+      tolerance: 0.2
+    - q: "Ungefär hur hög är BNP-tillväxten 2028, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 1.3
+      tolerance: 0.2
+      figure_only: true
+    - q: "Vilken komponent bidrog negativt 2024?"
+      type: choice
+      options: ["Hushållens konsumtion", "Offentlig konsumtion", "Bostadsinvesteringar", "Övriga investeringar", "Nettoexport"]
+      key: "Bostadsinvesteringar"
+      figure_only: true
+    - q: "Vilken komponent ger det största bidraget 2027?"
+      type: choice
+      options: ["Hushållens konsumtion", "Offentlig konsumtion", "Bostadsinvesteringar", "Övriga investeringar", "Nettoexport"]
+      key: "Hushållens konsumtion"
+    - q: "Ungefär hur stort är hushållens konsumtionsbidrag 2027, i procentenheter (en decimal)?"
+      type: number
+      decimals: 1
+      key: 1.2
+      tolerance: 0.2
+      figure_only: true
+    - q: "Är nettoexportens bidrag negativt 2027? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Faller BNP-tillväxten 2028 jämfört med 2027? ja/nej"
+      type: bool
+      key: true
+    - q: "Mellan vilka år går gränsen mellan utfall och prognos (den vertikala linjen)? Ange prognosens första år."
+      type: number
+      decimals: 0
+      key: 2026
+      tolerance: 0
+
+- id: page-058-diagram-01
+  caption: "Diagram 36. Prognos för styrräntan"
+  questions:
+    - q: "Vilken är styrräntans högsta nivå i diagrammet, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 4.0
+      tolerance: 0.05
+    - q: "Under vilket år låg styrräntan på sin högsta nivå?"
+      type: number
+      decimals: 0
+      key: 2024
+      tolerance: 0
+    - q: "På vilken nivå bottnar styrräntan innan prognosen vänder upp, i procent (två decimaler)?"
+      type: number
+      decimals: 2
+      key: 1.75
+      tolerance: 0.05
+    - q: "Ungefär var hamnar styrräntan enligt marsprognosen i slutet av prognosperioden (2029), i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 2.2
+      tolerance: 0.2
+      figure_only: true
+    - q: "Skiljer sig marsprognosen tydligt från decemberprognosen? ja/nej"
+      type: bool
+      key: false
+    - q: "Förväntas styrräntan höjas under 2028? ja/nej"
+      type: bool
+      key: true
+    - q: "Överstiger styrräntan 2,5 procent någon gång under prognosperioden? ja/nej"
+      type: bool
+      key: false
+      figure_only: true
+    - q: "Ungefär vad är den övre gränsen i osäkerhetsintervallet till höger, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 3.0
+      tolerance: 0.3
+      figure_only: true
+
+- id: page-060-diagram-01
+  caption: "Diagram 38. Riksbankens innehav av värdepapper"
+  questions:
+    - q: "Ungefär hur stort var det totala innehavet i början av perioden (2022), i miljarder kronor (heltal)?"
+      type: number
+      decimals: 0
+      key: 960
+      tolerance: 50
+    - q: "Ungefär hur stort var det totala innehavet i slutet av 2025, i miljarder kronor (heltal)?"
+      type: number
+      decimals: 0
+      key: 200
+      tolerance: 40
+      figure_only: true
+    - q: "Vilken värdepapperstyp finns kvar längst i prognosen (till 2029)?"
+      type: choice
+      options: ["Statsobligationer", "Säkerställda obligationer", "Kommunobligationer", "Företagsobligationer", "Statsskuldsväxlar"]
+      key: "Statsobligationer"
+    - q: "Vilka två värdepapperstyper dominerade innehavet 2022? Ange den som INTE är statsobligationer."
+      type: choice
+      options: ["Säkerställda obligationer", "Kommunobligationer", "Företagsobligationer", "Statsskuldsväxlar"]
+      key: "Säkerställda obligationer"
+    - q: "Ungefär hur stort var innehavet av statsobligationer 2022, i miljarder kronor (heltal)?"
+      type: number
+      decimals: 0
+      key: 400
+      tolerance: 40
+      figure_only: true
+    - q: "Minskar innehavet varje år under perioden? ja/nej"
+      type: bool
+      key: true
+    - q: "Under vilket år faller det totala innehavet under 500 miljarder kronor?"
+      type: number
+      decimals: 0
+      key: 2024
+      tolerance: 0
+      figure_only: true
+    - q: "Finns det något innehav av säkerställda obligationer kvar 2028? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+
+- id: page-066-diagram-01
+  caption: "Diagram 39. Prognos och alternativscenarier för KPIF exklusive moms / exklusive energi och moms"
+  questions:
+    - q: "Ungefär hur lågt faller KPIF exklusive moms i scenariot med lägre inflation, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 0.5
+      tolerance: 0.2
+    - q: "Under vilket år bottnar scenariot med lägre inflation?"
+      type: number
+      decimals: 0
+      key: 2027
+      tolerance: 0
+    - q: "Ungefär hur högt når KPIF exklusive moms i scenariot med högre inflation, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 4.0
+      tolerance: 0.2
+    - q: "Under vilket år toppar scenariot med högre inflation?"
+      type: number
+      decimals: 0
+      key: 2026
+      tolerance: 0
+    - q: "Finns det en dipp i huvudscenariot för KPIF exklusive moms under 2027, ner mot 1,5 procent? ja/nej"
+      type: bool
+      key: true
+      figure_only: true
+    - q: "Ungefär hur låg är huvudscenariots dipp 2027 (KPIF exklusive moms), i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 1.4
+      tolerance: 0.2
+      figure_only: true
+    - q: "Ungefär var slutar huvudscenariot 2029, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 2.0
+      tolerance: 0.15
+    - q: "Konvergerar de tre scenarierna mot samma nivå i slutet av perioden? ja/nej"
+      type: bool
+      key: true
+    - q: "I det högra diagrammet (exklusive energi och moms): ungefär var bottnar scenariot med lägre inflation, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 1.0
+      tolerance: 0.2
+    - q: "I det högra diagrammet: ungefär hur högt når scenariot med högre inflation, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 3.3
+      tolerance: 0.2
+    - q: "I det högra diagrammet: ungefär var startar huvudscenariot i början av 2025, i procent (en decimal)?"
+      type: number
+      decimals: 1
+      key: 2.9
+      tolerance: 0.2
+      figure_only: true
+    - q: "Ligger huvudscenariot för KPIF exklusive moms över 3 procent någon gång under 2025? ja/nej"
+      type: bool
+      key: true
+      figure_only: true

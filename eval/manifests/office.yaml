@@ -1,0 +1,217 @@
+# Office documents (29 .docx/.pptx/.xlsx). Two kinds, on purpose:
+#   fixture       — Apache POI test fixtures pinned to one commit (immutable URLs),
+#                   exercising hard corners: tracked changes, comments, footnotes,
+#                   merged cells, formulas, charts, pivot tables, SmartArt.
+#   public-sector — real government documents (sv + en).
+# `features` lists what each file stresses. Embedded charts carry their exact
+# values in chart XML — the source of free ground truth for chart reading.
+# Documents keep their original licenses; used for local evaluation only.
+documents:
+  # ============================== docx ==============================
+  - name: poi-tracked-changes
+    format: docx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/document/documentProtection_trackedChanges_no_password.docx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [tracked-changes, document-protection]
+  - name: poi-comments
+    format: docx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/document/testComment.docx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [comments, embedded-image]
+  - name: poi-footnotes
+    format: docx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/document/footnotes.docx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [footnotes, endnotes]
+  - name: poi-pictures
+    format: docx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/document/VariousPictures.docx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [embedded-images]  # 5 bilder i olika format
+  - name: poi-chart-docx
+    format: docx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/document/chartex.docx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [embedded-chart]
+  - name: govuk-tracked-consultation
+    format: docx
+    kind: public-sector
+    url: https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1064094/cpr-revised-pd-16-tracked-consultation.docx
+    source: UK Ministry of Justice, Civil Procedure Rules PD16 consultation draft (Open Government Licence)
+    language: en
+    features: [tracked-changes, legal-styles]  # riktigt dokument med spårade ändringar
+  - name: govuk-social-care-consultation
+    format: docx
+    kind: public-sector
+    url: https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/532343/Future_of_social_care_inspection_-_consultation_document.docx
+    source: Ofsted, Future of social care inspection consultation (Open Government Licence)
+    language: en
+    features: [long-document, toc, headings, embedded-images]  # 840 KB
+  - name: skr-kommunbas
+    format: docx
+    kind: public-sector
+    url: https://skr.se/download/18.3d6041b7199690a4d3d8500a/1758616513027/Kommun-BAS-25-redigerad-240815.docx
+    source: SKR, Kommun-BAS 25 kontoplan
+    language: sv
+    features: [large-tables, long-document]
+  - name: skr-pub-avtal
+    format: docx
+    kind: public-sector
+    url: https://skr.se/download/18.1dbdc66a199139e98c6bd6/1756973995338/PUB-avtal.docx
+    source: SKR, personuppgiftsbiträdesavtal (mall)
+    language: sv
+    features: [tables, headings, footnotes]
+  - name: energi-slutrapport-mall
+    format: docx
+    kind: public-sector
+    url: https://www.energimyndigheten.se/48e929/globalassets/sharepoint-dokument/process-dokument/publicerade-dokument/mall---slutrapport.docx
+    source: Energimyndigheten, mall för slutrapport
+    language: sv
+    features: [styles, headings, toc, template]
+
+  # ============================== xlsx ==============================
+  - name: poi-many-merges
+    format: xlsx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/spreadsheet/57893-many-merges.xlsx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [merged-cells, large-file]  # ~830 KB, extremt många sammanslagningar
+  - name: poi-formula-eval
+    format: xlsx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/spreadsheet/FormulaEvalTestData_Copy.xlsx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [formulas, multiple-sheets]  # 4 blad, bred formeltäckning
+  - name: poi-three-charts
+    format: xlsx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/spreadsheet/WithThreeCharts.xlsx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [charts, multiple-sheets]
+  - name: poi-hidden-sheet
+    format: xlsx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/spreadsheet/TwoSheetsOneHidden.xlsx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [hidden-sheet]
+  - name: poi-pivot-table
+    format: xlsx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/spreadsheet/ExcelPivotTableSample.xlsx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [pivot-table, multiple-sheets]
+  - name: poi-multisheet-refs
+    format: xlsx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/spreadsheet/55906-MultiSheetRefs.xlsx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [cross-sheet-formulas, multiple-sheets]
+  - name: riksbank-monthly-fx
+    format: xlsx
+    kind: public-sector
+    url: https://www.riksbank.se/globalassets/media/statistik/omsattningsstatistik/valutamarknad/monthly_fx.xlsx
+    source: Sveriges Riksbank, månatlig omsättningsstatistik valutamarknaden
+    language: en
+    features: [large-table, statistics]  # ~260 KB, matchar mål-domänen; uppdateras löpande
+  - name: scb-amneslarare
+    format: xlsx
+    kind: public-sector
+    url: https://www.scb.se/contentassets/2c1b085373c04ab2bf41ec328a7500d1/tabell_8_amneslarare_2024l25.xlsx
+    source: SCB, tabell 8 ämneslärare 2024/25
+    language: sv
+    features: [multiple-sheets, statistics, notes-rows]
+  - name: socialstyrelsen-covid
+    format: xlsx
+    kind: public-sector
+    url: https://www.socialstyrelsen.se/globalassets/sharepoint-dokument/dokument-webb/statistik/statistik-covid-19-socioekonomi-vagor.xlsx
+    source: Socialstyrelsen, covid-19-statistik socioekonomi
+    language: sv
+    features: [multiple-sheets, charts, statistics]  # 12 blad + 8 diagram
+  - name: ons-accessible-tables
+    format: xlsx
+    kind: public-sector
+    url: https://www.ons.gov.uk/visualisations/dvc535/downloadthedata.xlsx
+    source: UK Office for National Statistics, visualisation data download (Open Government Licence)
+    language: en
+    features: [multiple-sheets, accessible-tables]  # 7 blad
+
+  # ============================== pptx ==============================
+  - name: poi-bar-chart
+    format: pptx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/slideshow/bar-chart.pptx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [embedded-chart]
+  - name: poi-smartart
+    format: pptx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/slideshow/SmartArt.pptx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [smartart]
+  - name: poi-shapes
+    format: pptx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/slideshow/shapes.pptx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [shapes, multiple-slides]
+  - name: poi-table-pptx
+    format: pptx
+    kind: fixture
+    url: https://raw.githubusercontent.com/apache/poi/11cc6dd6740b47a68164ea6db4558d36b1fec8ae/test-data/slideshow/table_test.pptx
+    source: Apache POI test-data (Apache License 2.0)
+    language: en
+    features: [tables]
+  - name: cdc-vaccine-effectiveness
+    format: pptx
+    kind: public-sector
+    url: https://www.cdc.gov/flu-vaccines-work/media/files/2025/05/vaccine-effectiveness-graphs-2025.pptx
+    source: US CDC, vaccine effectiveness graphs 2025 (public domain)
+    language: en
+    features: [charts, speaker-notes, figure-heavy]  # ~1 MB
+  - name: cdc-epi-lesson
+    format: pptx
+    kind: public-sector
+    url: https://www.cdc.gov/science-ambassador/documents/hs-i-have-a-gut-feeling-2014.pptx
+    source: US CDC Science Ambassador, epidemiology lesson (public domain)
+    language: en
+    features: [many-slides, speaker-notes]  # 19 slides
+  - name: nist-vital
+    format: pptx
+    kind: public-sector
+    url: https://www.nist.gov/system/files/documents/forensics/osac/VITAL-Subcommittee-Presentation-AAFS-2016-18-FEB-16.pptx
+    source: US NIST OSAC, VITAL subcommittee presentation (public domain)
+    language: en
+    features: [many-slides, speaker-notes, large-file]  # 32 slides, ~1 MB
+  - name: skr-patientsakerhet
+    format: pptx
+    kind: public-sector
+    url: https://extra.skr.se/download/18.583b3b0c17e40e303841be4e/1642025771716/FoKUS%20Patients%C3%A4kerhet%20-%20Del%204%20Riskfylld%20behandling.pptx
+    source: SKR, FoKUS Patientsäkerhet del 4
+    language: sv
+    features: [figure-heavy, speaker-notes, large-file]  # ~1.9 MB, 10 slides
+  - name: skr-arsplanering
+    format: pptx
+    kind: public-sector
+    url: https://skr.se/download/18.4d2a888c19913a970f871e7c/1757424415588/Exempel%20%C3%A5rsplanering%20Helsingborgs%20stad.pptx
+    source: SKR, exempel årsplanering Helsingborgs stad
+    language: sv
+    features: [diagram-shapes]

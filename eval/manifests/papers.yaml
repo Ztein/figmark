@@ -1,0 +1,8 @@
+# Academic papers with figures (arXiv grants a non-exclusive licence to distribute;
+# used for local rendering and evaluation only).
+documents:
+  - name: transformer-1706.03762
+    format: pdf
+    url: https://arxiv.org/pdf/1706.03762
+    source: "arXiv:1706.03762 (Vaswani et al., Attention Is All You Need)"
+    language: en
