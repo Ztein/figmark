@@ -1,0 +1,42 @@
+# Keys read from the rendered figure (not from any description, not from alt text)
+# by claude-opus-5-5 on 2026-09-24 — a model from another family than the figure
+# interpreter. PENDING HUMAN REVIEW: the PRD requires every question to be written
+# or reviewed by a person before the set is frozen.
+document: boc-mpr-202501
+manifest: central-banks
+language: en
+figures:
+
+- id: page-043-figure-01
+  caption: "Figure 1: Tariffs on intermediate goods amplify the impacts of tariffs on production costs and prices"
+  kind: flowchart
+  page: 43
+  bbox: [122.5, 340.0, 488.9, 692.7]
+  questions:
+    - q: "In the tariff figure, which government taxes steel shipped from the Canadian steel plant to the US auto parts factory?"
+      type: choice
+      options: ["US government", "Canadian government", "Both governments", "Neither"]
+      key: "US government"
+    - q: "In the tariff figure, where do auto parts from the US auto parts factory go?"
+      type: choice
+      options: ["Canadian car assembly plant", "Canadian steel plant", "US consumers", "US car assembly plant"]
+      key: "Canadian car assembly plant"
+    - q: "In the tariff figure, which government taxes the auto parts shipped from the US factory?"
+      type: choice
+      options: ["US government", "Canadian government", "Both governments", "Neither"]
+      key: "Canadian government"
+    - q: "How many times is a tariff applied along the production chain in the tariff figure (integer)?"
+      type: number
+      decimals: 0
+      key: 3
+      tolerance: 0
+    - q: "In the tariff figure, which government taxes cars shipped from the Canadian assembly plant to US consumers?"
+      type: choice
+      options: ["US government", "Canadian government", "Both governments", "Neither"]
+      key: "US government"
+    - q: "Does the tariff figure show steel going directly from the Canadian steel plant to the Canadian car assembly plant? yes/no"
+      type: bool
+      key: false
+    - q: "According to the tariff figure, do consumers in both Canada and the US face higher car prices? yes/no"
+      type: bool
+      key: true

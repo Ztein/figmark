@@ -1,0 +1,49 @@
+# Keys read from the rendered figure (not from any description, not from alt text)
+# by claude-opus-5-5 on 2026-09-24 — a model from another family than the figure
+# interpreter. PENDING HUMAN REVIEW: the PRD requires every question to be written
+# or reviewed by a person before the set is frozen.
+document: ecb-eb-202502
+manifest: central-banks
+language: en
+figures:
+
+- id: page-054-figure-01
+  caption: "Chart C Market share growth and world value added growth by sector, a) Euro area"
+  kind: scatter_plot
+  page: 54
+  bbox: [180.2, 284.4, 534.8, 498.9]
+  questions:
+    - q: "In Chart C (euro area), which sector had the highest world value added growth in 2019-24?"
+      type: choice
+      options: ["Electronic components", "Pharmaceuticals", "Computers", "Electrical equipment"]
+      key: "Electronic components"
+    - q: "In Chart C (euro area), roughly what was world value added growth in 2019-24 for electronic components, in percent (integer)?"
+      type: number
+      decimals: 0
+      key: 80
+      tolerance: 5
+    - q: "In Chart C (euro area), which sector had the largest fall in export market share in 2019-24?"
+      type: choice
+      options: ["Aerospace", "Motor vehicles and parts", "Computers", "Chemicals"]
+      key: "Aerospace"
+    - q: "In Chart C (euro area), roughly how much did aerospace's export market share change in 2019-24, in percentage points (one decimal)?"
+      type: number
+      decimals: 1
+      key: -6.3
+      tolerance: 0.5
+    - q: "In Chart C (euro area), did pharmaceuticals gain export market share in 2019-24? yes/no"
+      type: bool
+      key: true
+    - q: "In Chart C (euro area), roughly how much did pharmaceuticals' export market share change in 2019-24, in percentage points (one decimal)?"
+      type: number
+      decimals: 1
+      key: 1.5
+      tolerance: 0.4
+    - q: "In Chart C (euro area), is aerospace classified as a high-tech sector? yes/no"
+      type: bool
+      key: true
+    - q: "In Chart C (euro area), roughly what was world value added growth in 2019-24 for computers, in percent (integer)?"
+      type: number
+      decimals: 0
+      key: 36
+      tolerance: 4

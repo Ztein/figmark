@@ -1,0 +1,9 @@
+Diagram 7 visar styrräntor i Sverige, euroområdet, USA, Storbritannien och Japan sedan 2024 samt marknadens förväntningar enligt terminsprissättning fram till 2029; jämfört med strax före januarimötet (streckat) väntar sig marknaden nu (heldraget, 2026-03-17) högre styrräntor, särskilt i euroområdet och Storbritannien där höjningar prisas in under 2026, och färre sänkningar i USA.
+
+Axlar: 2024–2029 (år), procent −1 till 6.
+
+- **Sverige**: Utfall 4,0 procent i början av 2024, sänkningar i steg till 2,25 i början av 2025, 2,0 sommaren 2025 och 1,75 procent från hösten 2025. Förväntningar 2026-03-17 (heldraget): stiger från ca 1,75 till ca 2,0 i början av 2027 och ca 2,4 procent 2029. Streckat (januari): ca 1,75 under 2026, ca 2,4 i slutet av 2028.
+- **Euroområdet**: Utfall 4,0 procent i början av 2024, sänkningar till 2,0 procent i juni 2025, därefter oförändrad. Heldraget: stiger till ca 2,3 i slutet av 2026 och ca 2,45 procent 2029. Streckat: ca 1,9 under 2026, stiger till ca 2,4 i slutet av 2028.
+- **USA**: Utfall ca 5,4 procent (mittpunkt av intervall) under 2024 fram till hösten, sänkt till ca 4,4 i slutet av 2024 och ca 3,6 procent i slutet av 2025. Heldraget: sjunker till ca 3,35 under 2027, ca 3,4 procent 2029. Streckat: sjunker till ca 3,2 under 2027, stiger till ca 3,6 i slutet av 2028.
+- **Storbritannien**: Utfall 5,25 procent i början av 2024, sänkningar till 4,5 (början av 2025), 4,0 (sommaren 2025) och 3,75 procent (december 2025). Heldraget: stiger till ca 3,95 i början av 2027 och ligger kvar kring 4,0 procent till 2029. Streckat: sjunker till ca 3,45 kring årsskiftet 2026/2027, stiger till ca 3,9 i slutet av 2028.
+- **Japan**: Utfall −0,1 procent i början av 2024, höjningar till 0,1, 0,25 (sommaren 2024), 0,5 (början av 2025) och 0,75 procent (december 2025). Heldraget: gradvis uppgång till ca 1,0 i början av 2027 och ca 1,6 procent 2029. Streckat: något högre bana, ca 1,1 i slutet av 2026 och ca 1,6 i slutet av 2028.

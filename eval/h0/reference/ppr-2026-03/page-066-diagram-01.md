@@ -1,0 +1,10 @@
+Diagram 39 visar Riksbankens prognos (huvudscenario) och två alternativscenarier – högre och lägre inflation – för KPIF och KPIF exklusive energi, båda exklusive den direkta effekten av momsförändringen på livsmedel; i huvudscenariot ligger inflationen nära 2 procent under hela prognosperioden, medan scenarierna visar ett spann från ca 4 procent (högre inflation) ned till under 0,5 procent (lägre inflation) för KPIF under 2026–2027, för att sedan konvergera mot ca 2 procent i början av 2029.
+
+Axlar: Båda panelerna 2025–2029 (kvartalsmedelvärden, säsongsrensade); årlig procentuell förändring 0–4.
+
+- **KPIF exklusive moms – Huvudscenario**: Utfall ca 2,5 procent i 2025 kv1–kv2, topp ca 3,1 i 2025 kv3, ca 2,5 i 2025 kv4. Prognos (från 2026 kv1): ca 1,9 (2026 kv1), ca 2,3 (kv2), ca 2,1 (kv3–kv4), lägst ca 1,4 i 2027 kv2, ca 1,65 i 2027 kv4, ca 1,9 under 2028 och ca 2,0 procent i 2029 kv1.
+- **KPIF exklusive moms – Högre inflation**: Scenario ca 1,9 i 2026 kv1, stiger till ca 3,6 (2026 kv2) och topp ca 4,0 procent i 2026 kv4, ca 3,65 i 2027 kv1, faller till ca 2,4 i 2027 kv2 och ca 2,25–2,3 under 2027 kv3–2028 kv1, ca 2,05 i 2029 kv1.
+- **KPIF exklusive moms – Lägre inflation**: Scenario ca 2,0 (2026 kv1), ca 2,2 (2026 kv2), ca 1,5 (2026 kv4), lägst ca 0,45 procent i 2027 kv2, ca 0,9 i 2027 kv4, ca 1,3 i 2028 kv1, ca 1,8 i 2028 kv4 och ca 1,95 i 2029 kv1.
+- **KPIF exklusive energi och moms – Huvudscenario**: Utfall ca 2,95 procent under 2025 kv1–kv3, ca 2,5 i 2025 kv4. Prognos: lägst ca 1,55–1,6 i 2026 kv1–kv2, ca 1,9 i 2026 kv4, ca 2,1 i 2027 kv1, därefter ca 1,9–1,95 och ca 2,0 procent i 2029 kv1.
+- **KPIF exklusive energi och moms – Högre inflation**: Scenario ca 1,7 i 2026 kv1, stiger till ca 2,4 (2026 kv3), ca 2,85 (2026 kv4) och topp ca 3,25 procent i 2027 kv1, därefter gradvis nedgång till ca 2,6 (2027 kv4), ca 2,2 (2028 kv2) och ca 2,05 i 2029 kv1.
+- **KPIF exklusive energi och moms – Lägre inflation**: Scenario ca 1,6 i 2026 kv1, ca 1,45 under 2026 kv3–kv4, lägst ca 1,0 procent i 2027 kv3, ca 1,3 i 2028 kv1, ca 1,7 i 2028 kv4 och ca 1,85 i 2029 kv1.

@@ -1,0 +1,6 @@
+Diagram 18 visar sysselsättningens årliga procentuella förändring enligt arbetskraftsundersökningarna (AKU) och nationalräkenskaperna (NR) 2020–2025/2026; efter fallet under pandemin och en topp kring 4 procent 2022 minskade sysselsättningen svagt under 2024, och under 2025 har tillväxten åter blivit positiv, tydligast enligt den mer volatila AKU-serien.
+
+Axlar: 2020–2026 (år), årlig procentuell förändring −4 till 6. Säsongsrensade data, endast utfall.
+
+- **Arbetskraftsundersökningarna (AKU)** (månadsdata, volatil): Ca 0,3–0,9 procent i början av 2020, lägst ca −3,3 procent sommaren 2020, ca −2 till −2,5 kring årsskiftet 2020/2021, uppgång till ca 1,5 procent i mitten av 2021, topp ca 4,2 procent i mitten av 2022, gradvis nedgång till ca 0 i slutet av 2023, lägst ca −2,1 procent i maj 2024 och kring −0,5 till −1 under andra halvåret 2024, ca 0,5–1 under 2025 och stigande till ca 1,75 procent i början av 2026 (senast).
+- **Nationalräkenskaperna (NR)** (kvartalsdata): Ca 0 procent i 2020 kv1, lägst ca −1,9 i 2020 kv2–kv3, ca −1,5 till och med 2021 kv1, sedan uppgång till topp ca 4,25 procent i 2022 kv2, därefter nedgång till ca 0,4 i 2023 kv4, negativ under 2024 med lägst ca −0,5 i 2024 kv4 och 2025 kv1, ca 0 i 2025 kv3 och ca 0,25 procent i 2025 kv4 (senast).

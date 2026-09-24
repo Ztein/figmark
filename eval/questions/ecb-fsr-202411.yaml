@@ -1,0 +1,42 @@
+# Keys read from the rendered figure (not from any description, not from alt text)
+# by claude-opus-5-5 on 2026-09-24 — a model from another family than the figure
+# interpreter. PENDING HUMAN REVIEW: the PRD requires every question to be written
+# or reviewed by a person before the set is frozen.
+document: ecb-fsr-202411
+manifest: central-banks
+language: en
+figures:
+
+- id: page-107-figure-01
+  caption: "Figure B.1 Transmission channels between credit allocation, productivity and financial stability"
+  kind: flowchart
+  page: 107
+  bbox: [180.0, 408.6, 536.8, 598.7]
+  questions:
+    - q: "In Figure B.1, how many transmission channels start from inefficient credit allocation (integer)?"
+      type: number
+      decimals: 0
+      key: 3
+      tolerance: 0
+    - q: "In Figure B.1, which channel runs via less-productive incumbent firms?"
+      type: choice
+      options: ["Crowding-out channel", "Congestion channel", "Cyclical channel"]
+      key: "Crowding-out channel"
+    - q: "In Figure B.1, which channel runs via productive incumbent or entrant firms?"
+      type: choice
+      options: ["Crowding-out channel", "Congestion channel", "Cyclical channel"]
+      key: "Congestion channel"
+    - q: "In Figure B.1, which channel concerns banks' asset quality and rising defaults in cyclical downturns?"
+      type: choice
+      options: ["Crowding-out channel", "Congestion channel", "Cyclical channel"]
+      key: "Cyclical channel"
+    - q: "In Figure B.1, what is the common starting point of all channels?"
+      type: choice
+      options: ["Inefficient credit allocation", "Subdued economic growth", "Bank funding constraints", "Weak productivity growth"]
+      key: "Inefficient credit allocation"
+    - q: "In Figure B.1, do all channels end in subdued economic growth and lower resilience, to the detriment of financial stability? yes/no"
+      type: bool
+      key: true
+    - q: "In the congestion channel of Figure B.1, do less-productive firms gain market share? yes/no"
+      type: bool
+      key: true

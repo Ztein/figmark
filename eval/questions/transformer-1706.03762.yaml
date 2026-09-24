@@ -1,0 +1,44 @@
+# Keys read from the rendered figure (not from any description, not from alt text)
+# by claude-opus-5-5 on 2026-09-24 — a model from another family than the figure
+# interpreter. PENDING HUMAN REVIEW: the PRD requires every question to be written
+# or reviewed by a person before the set is frozen.
+document: transformer-1706.03762
+manifest: papers
+language: en
+figures:
+
+- id: page-003-figure-01
+  caption: "Figure 1: The Transformer - model architecture."
+  kind: flowchart
+  page: 3
+  bbox: [195.7, 72.8, 416.2, 394.1]
+  questions:
+    - q: "In the Transformer architecture figure, what is the last step before the output probabilities?"
+      type: choice
+      options: ["Softmax", "Linear", "Add & Norm", "Feed Forward"]
+      key: "Softmax"
+    - q: "In the Transformer architecture figure, which step comes directly before the softmax?"
+      type: choice
+      options: ["Linear", "Add & Norm", "Feed Forward", "Multi-Head Attention"]
+      key: "Linear"
+    - q: "In the Transformer architecture figure, how many attention sub-layers does one decoder layer have (integer)?"
+      type: number
+      decimals: 0
+      key: 2
+      tolerance: 0
+    - q: "In the Transformer architecture figure, how many attention sub-layers does one encoder layer have (integer)?"
+      type: number
+      decimals: 0
+      key: 1
+      tolerance: 0
+    - q: "In the Transformer architecture figure, is positional encoding added to the input embedding? yes/no"
+      type: bool
+      key: true
+    - q: "In the Transformer architecture figure, which decoder attention sub-layer is masked?"
+      type: choice
+      options: ["the first (bottom) one", "the second (top) one", "both", "neither"]
+      key: "the first (bottom) one"
+    - q: "In the Transformer architecture figure, in which direction are the decoder's input outputs shifted?"
+      type: choice
+      options: ["right", "left"]
+      key: "right"

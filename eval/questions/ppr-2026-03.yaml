@@ -11,17 +11,22 @@
 # can only be answered from the figure description.
 # Figure ids are page + figure index on that page (page-010-diagram-01 = first
 # chart on page 10); the caption field identifies the figure independently of
-# any pipeline's numbering.
+# any pipeline's numbering. `bbox` is the figure's box in PDF points, origin
+# top-left (from eval/inventory), used to crop the figure for the ceiling.
 #
 # Coverage: 13 of 41 charts so far. Extend with the same discipline; more
 # questions per figure beats cleverer questions — the point is that no single
 # prompt can be tuned to the set.
 
 document: ppr-2026-03
+manifest: riksbank-ppr
+language: sv
 figures:
 
 - id: page-010-diagram-01
   caption: "Diagram 1. Svensk styrränta och inflation"
+  page: 10
+  bbox: [112.4, 127.9, 477.7, 513.8]
   questions:
     - q: "Vilken var styrräntans högsta nivå under 2022–2026, i procent?"
       type: number
@@ -74,6 +79,8 @@ figures:
 
 - id: page-014-diagram-01
   caption: "Diagram 4. Priset på olja och naturgas samt index för geopolitisk risk"
+  page: 14
+  bbox: [117.6, 248.7, 467.3, 466.5]
   questions:
     - q: "På vilken axel läses Brentoljan av?"
       type: choice
@@ -125,6 +132,8 @@ figures:
 
 - id: page-015-diagram-01
   caption: "Diagram 5. Börsutveckling och inflationsswappar"
+  page: 15
+  bbox: [117.5, 181.0, 471.5, 390.8]
   questions:
     - q: "Vilken börs föll djupast i april 2025?"
       type: choice
@@ -182,6 +191,8 @@ figures:
 
 - id: page-016-diagram-01
   caption: "Diagram 6. Statsobligationsräntor och kreditspreadar"
+  page: 16
+  bbox: [117.3, 135.7, 473.0, 365.8]
   questions:
     - q: "Vilket land hade högst 10-årig statsobligationsränta under perioden?"
       type: choice
@@ -227,6 +238,8 @@ figures:
 
 - id: page-017-diagram-01
   caption: "Diagram 7. Marknadens förväntningar på styrräntor i framtiden"
+  page: 17
+  bbox: [112.7, 116.6, 438.4, 308.0]
   questions:
     - q: "Vilket land/område har högst förväntad styrränta under prognosperioden?"
       type: choice
@@ -272,6 +285,8 @@ figures:
 
 - id: page-020-diagram-01
   caption: "Diagram 10. Konsumentpriser i omvärlden"
+  page: 20
+  bbox: [116.5, 135.0, 467.9, 323.1]
   questions:
     - q: "Vilket område hade högst konsumentprisinflation vid toppen?"
       type: choice
@@ -312,6 +327,8 @@ figures:
 
 - id: page-027-diagram-01
   caption: "Diagram 16. BNP-tillväxt (bidrag, kvartal) och BNP-nivå mot decemberprognos"
+  page: 27
+  bbox: [118.4, 148.5, 467.8, 364.8]
   questions:
     - q: "Hur många kvartal i diagrammet hade negativ BNP-tillväxt (kvartalstakt)?"
       type: number
@@ -353,6 +370,8 @@ figures:
 
 - id: page-029-diagram-01
   caption: "Diagram 18. Sysselsättning"
+  page: 29
+  bbox: [116.9, 123.3, 438.6, 309.6]
   questions:
     - q: "Ungefär hur hög var sysselsättningstillväxten enligt NR som högst, i procent (en decimal)?"
       type: number
@@ -393,6 +412,8 @@ figures:
 
 - id: page-038-diagram-01
   caption: "Diagram 25. KPIF exklusive energi med indikatorer"
+  page: 38
+  bbox: [117.4, 124.8, 447.1, 309.0]
   questions:
     - q: "Vad visar det ljusblå bandet?"
       type: choice
@@ -428,6 +449,8 @@ figures:
 
 - id: page-043-diagram-01
   caption: "Diagram 26. Bidrag till BNP-tillväxt (årlig, prognos)"
+  page: 43
+  bbox: [118.1, 411.8, 440.2, 604.7]
   questions:
     - q: "Vilket år har högst BNP-tillväxt?"
       type: choice
@@ -479,6 +502,8 @@ figures:
 
 - id: page-058-diagram-01
   caption: "Diagram 36. Prognos för styrräntan"
+  page: 58
+  bbox: [114.1, 418.4, 461.3, 609.1]
   questions:
     - q: "Vilken är styrräntans högsta nivå i diagrammet, i procent (en decimal)?"
       type: number
@@ -520,6 +545,8 @@ figures:
 
 - id: page-060-diagram-01
   caption: "Diagram 38. Riksbankens innehav av värdepapper"
+  page: 60
+  bbox: [117.4, 131.4, 434.6, 321.8]
   questions:
     - q: "Ungefär hur stort var det totala innehavet i början av perioden (2022), i miljarder kronor (heltal)?"
       type: number
@@ -562,6 +589,8 @@ figures:
 
 - id: page-066-diagram-01
   caption: "Diagram 39. Prognos och alternativscenarier för KPIF exklusive moms / exklusive energi och moms"
+  page: 66
+  bbox: [116.4, 147.9, 468.4, 335.2]
   questions:
     - q: "Ungefär hur lågt faller KPIF exklusive moms i scenariot med lägre inflation, i procent (en decimal)?"
       type: number
