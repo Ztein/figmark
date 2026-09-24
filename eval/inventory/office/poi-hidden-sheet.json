@@ -1,0 +1,11 @@
+{
+ "name": "poi-hidden-sheet",
+ "manifest": "office",
+ "format": "xlsx",
+ "language": "en",
+ "pages": 2,
+ "images": 0,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

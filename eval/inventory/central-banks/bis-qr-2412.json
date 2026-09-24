@@ -1,0 +1,565 @@
+{
+ "name": "bis-qr-2412",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 96,
+ "pages_with_text": 93,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    68.2,
+    595.0,
+    651.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.494,
+   "caption": null
+  },
+  {
+   "page": 2,
+   "bbox": [
+    85.4,
+    440.0,
+    159.9,
+    514.1
+   ],
+   "class": "qr_code",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    74.9,
+    427.3,
+    538.9,
+    638.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.968,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    53.8,
+    500.5,
+    518.0,
+    717.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    82.3,
+    360.7,
+    549.6,
+    581.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    74.9,
+    96.9,
+    538.4,
+    306.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.851,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    74.8,
+    484.3,
+    539.3,
+    719.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    54.3,
+    431.5,
+    517.8,
+    664.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.964,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    75.0,
+    120.1,
+    538.4,
+    307.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.928,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    53.7,
+    102.6,
+    517.6,
+    319.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.951,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    75.5,
+    95.5,
+    538.1,
+    323.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.94,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    75.1,
+    470.5,
+    539.1,
+    704.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    54.1,
+    476.3,
+    517.6,
+    686.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.963,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    75.3,
+    456.8,
+    302.4,
+    628.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    311.6,
+    463.0,
+    537.2,
+    618.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    53.8,
+    108.1,
+    517.5,
+    318.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.821,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    75.9,
+    95.5,
+    538.8,
+    349.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.968,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    44.4,
+    315.0,
+    509.0,
+    503.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.951,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    82.9,
+    157.0,
+    549.2,
+    377.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.877,
+   "caption": "Supply-demand imbalances in government bond markets"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    45.1,
+    194.1,
+    511.4,
+    375.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    75.1,
+    475.6,
+    538.3,
+    648.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    92.1,
+    378.1,
+    519.9,
+    538.4
+   ],
+   "class": "engineering_drawing",
+   "confidence": 0.716,
+   "caption": "AD = aggregate demand; AS = aggregate supply."
+  },
+  {
+   "page": 35,
+   "bbox": [
+    46.0,
+    373.5,
+    274.1,
+    541.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.944,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    282.2,
+    373.7,
+    510.1,
+    541.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    74.6,
+    389.1,
+    538.8,
+    586.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    54.2,
+    436.2,
+    518.0,
+    650.9
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.46,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    74.9,
+    505.5,
+    538.5,
+    710.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": "Graph 5"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    75.0,
+    117.9,
+    539.0,
+    336.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.871,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    75.3,
+    133.7,
+    538.9,
+    668.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.951,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    82.8,
+    362.3,
+    549.1,
+    551.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.616,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    193.1,
+    445.6,
+    227.9,
+    477.4
+   ],
+   "class": "icon",
+   "confidence": 0.893,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    350.0,
+    439.9,
+    440.3,
+    476.4
+   ],
+   "class": "engineering_drawing",
+   "confidence": 0.376,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    68.4,
+    129.0,
+    507.1,
+    356.7
+   ],
+   "class": "flow_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    54.2,
+    408.4,
+    517.4,
+    629.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.853,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    75.4,
+    473.6,
+    302.7,
+    651.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    311.3,
+    473.8,
+    538.4,
+    651.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    74.3,
+    91.2,
+    538.5,
+    334.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.789,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    75.6,
+    116.3,
+    538.9,
+    364.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.938,
+   "caption": "Graph 3"
+  },
+  {
+   "page": 76,
+   "bbox": [
+    74.8,
+    145.0,
+    539.5,
+    318.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.89,
+   "caption": null
+  },
+  {
+   "page": 82,
+   "bbox": [
+    78.8,
+    249.1,
+    551.5,
+    477.4
+   ],
+   "class": "flow_chart",
+   "confidence": 0.574,
+   "caption": null
+  },
+  {
+   "page": 83,
+   "bbox": [
+    54.1,
+    449.9,
+    518.2,
+    647.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 84,
+   "bbox": [
+    74.9,
+    473.0,
+    538.8,
+    640.6
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.898,
+   "caption": null
+  },
+  {
+   "page": 86,
+   "bbox": [
+    74.9,
+    288.4,
+    538.6,
+    507.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 89,
+   "bbox": [
+    54.1,
+    86.4,
+    517.9,
+    277.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.553,
+   "caption": null
+  },
+  {
+   "page": 90,
+   "bbox": [
+    74.5,
+    122.8,
+    539.2,
+    331.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.573,
+   "caption": null
+  },
+  {
+   "page": 91,
+   "bbox": [
+    54.0,
+    125.9,
+    517.4,
+    336.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.51,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 8.9,
+ "tool": "docling 2.130.0"
+}

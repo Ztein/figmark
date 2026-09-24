@@ -1,0 +1,997 @@
+{
+ "name": "fed-fsr-202411",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 69,
+ "pages_with_text": 65,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    69.7,
+    70.7,
+    145.6,
+    143.8
+   ],
+   "class": "logo",
+   "confidence": 0.871,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    229.1,
+    612.0,
+    683.8
+   ],
+   "class": "full_page_image",
+   "confidence": 0.191,
+   "caption": null
+  },
+  {
+   "page": 2,
+   "bbox": [
+    136.6,
+    200.3,
+    276.7,
+    274.8
+   ],
+   "class": "photograph",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    104.4,
+    307.0,
+    196.7,
+    376.0
+   ],
+   "class": "icon",
+   "confidence": 0.895,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    207.4,
+    307.1,
+    299.3,
+    375.6
+   ],
+   "class": "icon",
+   "confidence": 0.967,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    310.5,
+    307.2,
+    405.6,
+    376.3
+   ],
+   "class": "icon",
+   "confidence": 0.931,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    413.4,
+    307.0,
+    505.2,
+    375.9
+   ],
+   "class": "logo",
+   "confidence": 0.488,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    134.4,
+    296.6,
+    207.5,
+    371.3
+   ],
+   "class": "icon",
+   "confidence": 0.921,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    95.8,
+    380.7,
+    135.3,
+    427.5
+   ],
+   "class": "icon",
+   "confidence": 0.457,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    95.4,
+    432.8,
+    135.6,
+    479.9
+   ],
+   "class": "icon",
+   "confidence": 0.486,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    211.9,
+    296.6,
+    285.1,
+    371.6
+   ],
+   "class": "icon",
+   "confidence": 0.897,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    288.7,
+    296.7,
+    361.7,
+    371.2
+   ],
+   "class": "icon",
+   "confidence": 0.612,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    366.1,
+    296.6,
+    439.3,
+    371.1
+   ],
+   "class": "icon",
+   "confidence": 0.888,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    443.0,
+    296.6,
+    516.2,
+    370.5
+   ],
+   "class": "icon",
+   "confidence": 0.843,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    89.4,
+    530.8,
+    521.9,
+    681.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Figure 1.1. Nominal Treasury yields fell but remained high"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    88.7,
+    89.1,
+    295.1,
+    297.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    317.6,
+    89.3,
+    522.6,
+    295.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    317.0,
+    351.6,
+    522.4,
+    586.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    88.9,
+    88.9,
+    294.8,
+    314.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    317.1,
+    89.3,
+    522.6,
+    287.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    88.8,
+    475.5,
+    294.6,
+    666.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    317.4,
+    475.8,
+    522.8,
+    656.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    89.2,
+    89.1,
+    522.6,
+    276.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    89.2,
+    459.2,
+    522.4,
+    629.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    89.1,
+    300.2,
+    522.5,
+    480.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    89.4,
+    507.7,
+    522.3,
+    687.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    88.4,
+    264.9,
+    521.9,
+    434.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    316.7,
+    498.7,
+    522.7,
+    688.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    88.6,
+    89.4,
+    295.2,
+    324.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    89.8,
+    455.4,
+    520.0,
+    590.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.929,
+   "caption": "Figure 1.16. Banks reported having tightened lending standards for commercial real estate loans"
+  },
+  {
+   "page": 21,
+   "bbox": [
+    88.9,
+    275.3,
+    294.6,
+    473.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    317.0,
+    275.3,
+    522.8,
+    474.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    89.2,
+    500.4,
+    522.4,
+    670.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    89.0,
+    294.4,
+    522.3,
+    464.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    89.3,
+    487.9,
+    522.4,
+    658.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    89.4,
+    380.6,
+    521.6,
+    542.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.868,
+   "caption": "Figure 2.1. The total debt of businesses and households relative to GDP declined to its lowest level in 20 years"
+  },
+  {
+   "page": 23,
+   "bbox": [
+    89.1,
+    567.7,
+    522.0,
+    747.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.895,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    316.9,
+    114.7,
+    522.7,
+    304.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    89.1,
+    403.2,
+    522.4,
+    573.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.929,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    89.8,
+    119.8,
+    293.1,
+    277.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Figure 2.5. Gross leverage of large businesses stayed high by historical standards"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    317.3,
+    89.5,
+    522.7,
+    288.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    88.9,
+    89.9,
+    522.1,
+    269.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    89.2,
+    293.1,
+    522.4,
+    463.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    89.2,
+    326.5,
+    522.3,
+    505.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    89.1,
+    89.2,
+    522.2,
+    268.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    89.1,
+    445.1,
+    294.7,
+    643.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    317.4,
+    444.8,
+    522.6,
+    624.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.964,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    89.1,
+    218.4,
+    522.3,
+    397.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    89.3,
+    534.9,
+    522.2,
+    713.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    89.2,
+    349.7,
+    522.6,
+    520.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    89.5,
+    544.2,
+    522.6,
+    714.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    88.9,
+    233.6,
+    522.3,
+    422.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    89.0,
+    446.5,
+    522.5,
+    616.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    89.1,
+    460.0,
+    522.6,
+    630.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    89.9,
+    89.4,
+    522.5,
+    258.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.934,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    89.3,
+    519.6,
+    522.6,
+    707.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.902,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    88.6,
+    184.4,
+    522.1,
+    391.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.877,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    317.5,
+    90.0,
+    523.1,
+    296.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    88.8,
+    329.0,
+    522.2,
+    517.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.953,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    88.9,
+    420.7,
+    294.4,
+    609.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    317.0,
+    418.9,
+    522.5,
+    645.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    89.5,
+    120.8,
+    520.0,
+    251.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Figure 3.9. The current distribution of the sources of broker-dealer trading profits was in line with recent averages"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    89.4,
+    102.8,
+    522.6,
+    267.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Figure 3.10. Leverage at life insurers remained above the average observed in the previous 15 years"
+  },
+  {
+   "page": 41,
+   "bbox": [
+    88.8,
+    89.5,
+    294.5,
+    306.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    317.4,
+    89.3,
+    522.8,
+    296.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    89.7,
+    493.9,
+    521.7,
+    653.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Figure 3.13. Dealers indicated that the use of leverage by hedge funds remained largely unchanged for most clients"
+  },
+  {
+   "page": 43,
+   "bbox": [
+    88.7,
+    89.8,
+    522.1,
+    268.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    89.9,
+    540.1,
+    522.7,
+    720.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.597,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    89.0,
+    187.9,
+    522.7,
+    405.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.903,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    92.1,
+    516.4,
+    519.5,
+    640.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.957,
+   "caption": "Figure 4.1. Ratio of runnable money-like liabilities to GDP remained around its historical median"
+  },
+  {
+   "page": 47,
+   "bbox": [
+    88.8,
+    89.4,
+    522.5,
+    259.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    316.3,
+    482.9,
+    522.3,
+    691.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    89.1,
+    203.0,
+    522.4,
+    382.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    88.8,
+    243.8,
+    522.6,
+    423.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.928,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    88.6,
+    89.8,
+    522.4,
+    268.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.876,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    89.1,
+    304.1,
+    522.6,
+    474.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    89.1,
+    509.7,
+    522.3,
+    690.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.924,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    88.6,
+    413.5,
+    522.5,
+    620.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.863,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    88.5,
+    169.5,
+    522.2,
+    367.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.891,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    102.3,
+    258.2,
+    509.8,
+    440.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": "Figure A. Fall 2024: Most cited potential shocks over the next 12 to 18 months"
+  },
+  {
+   "page": 56,
+   "bbox": [
+    99.3,
+    462.7,
+    511.5,
+    662.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 69,
+   "bbox": [
+    262.5,
+    647.6,
+    348.0,
+    732.8
+   ],
+   "class": "logo",
+   "confidence": 0.904,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 7.1,
+ "tool": "docling 2.130.0"
+}

@@ -1,0 +1,11 @@
+{
+ "name": "poi-bar-chart",
+ "manifest": "office",
+ "format": "pptx",
+ "language": "en",
+ "pages": 1,
+ "images": 0,
+ "charts": 1,
+ "smartart": 0,
+ "tool": "zip"
+}

@@ -1,0 +1,11 @@
+{
+ "name": "nist-vital",
+ "manifest": "office",
+ "format": "pptx",
+ "language": "en",
+ "pages": 32,
+ "images": 11,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

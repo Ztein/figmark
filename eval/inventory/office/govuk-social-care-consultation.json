@@ -1,0 +1,11 @@
+{
+ "name": "govuk-social-care-consultation",
+ "manifest": "office",
+ "format": "docx",
+ "language": "en",
+ "pages": 38,
+ "images": 6,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

@@ -1,0 +1,11 @@
+{
+ "name": "energi-slutrapport-mall",
+ "manifest": "office",
+ "format": "docx",
+ "language": "sv",
+ "pages": 6,
+ "images": 2,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

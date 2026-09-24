@@ -1,0 +1,409 @@
+{
+ "name": "riksbank-betalningsrapport-202503",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 73,
+ "pages_with_text": 73,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.7,
+    271.0,
+    567.5,
+    809.4
+   ],
+   "class": "photograph",
+   "confidence": 0.821,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    564.9,
+    113.2
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    130.0,
+    281.7,
+    135.6,
+    288.5
+   ],
+   "class": "icon",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    130.0,
+    331.0,
+    135.6,
+    337.5
+   ],
+   "class": "icon",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    124.6,
+    296.9,
+    469.7,
+    477.4
+   ],
+   "class": "icon",
+   "confidence": 0.633,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    125.6,
+    266.9,
+    470.5,
+    444.2
+   ],
+   "class": "icon",
+   "confidence": 0.777,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    116.7,
+    133.6,
+    478.5,
+    360.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    117.1,
+    148.0,
+    480.4,
+    378.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    119.7,
+    136.3,
+    477.9,
+    350.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    119.6,
+    436.5,
+    473.0,
+    617.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    125.9,
+    299.7,
+    470.3,
+    468.2
+   ],
+   "class": "icon",
+   "confidence": 0.664,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    123.1,
+    133.8,
+    473.4,
+    343.4
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    120.0,
+    138.2,
+    475.0,
+    346.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    124.6,
+    302.6,
+    469.3,
+    473.0
+   ],
+   "class": "icon",
+   "confidence": 0.59,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    121.6,
+    136.4,
+    474.0,
+    321.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    117.8,
+    200.1,
+    478.3,
+    382.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    118.9,
+    150.0,
+    477.5,
+    382.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    123.2,
+    329.8,
+    471.7,
+    513.0
+   ],
+   "class": "geographical_map",
+   "confidence": 0.76,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    126.1,
+    271.8,
+    470.7,
+    441.4
+   ],
+   "class": "icon",
+   "confidence": 0.746,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    124.5,
+    302.9,
+    470.3,
+    497.6
+   ],
+   "class": "icon",
+   "confidence": 0.656,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    126.3,
+    134.7,
+    467.1,
+    322.3
+   ],
+   "class": "flow_chart",
+   "confidence": 0.892,
+   "caption": "Figur 1. Kontantkedjan"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    122.8,
+    283.0,
+    470.4,
+    467.5
+   ],
+   "class": "icon",
+   "confidence": 0.769,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    116.9,
+    251.3,
+    480.3,
+    370.5
+   ],
+   "class": "engineering_drawing",
+   "confidence": 0.488,
+   "caption": "Figur 2. Förenklad bild av en kortbetalning"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    113.9,
+    534.8,
+    481.2,
+    654.7
+   ],
+   "class": "flow_chart",
+   "confidence": 0.805,
+   "caption": "Figur 3. Förenklad bild av en swishbetalning"
+  },
+  {
+   "page": 41,
+   "bbox": [
+    109.5,
+    262.1,
+    498.1,
+    389.7
+   ],
+   "class": "flow_chart",
+   "confidence": 0.763,
+   "caption": "Figur 4. Förenklad bild av en betalningsinitiering"
+  },
+  {
+   "page": 47,
+   "bbox": [
+    125.9,
+    239.7,
+    470.4,
+    434.3
+   ],
+   "class": "icon",
+   "confidence": 0.371,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    125.3,
+    379.6,
+    470.5,
+    547.8
+   ],
+   "class": "icon",
+   "confidence": 0.378,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    125.8,
+    301.8,
+    470.3,
+    471.3
+   ],
+   "class": "icon",
+   "confidence": 0.553,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    125.8,
+    234.8,
+    470.3,
+    409.8
+   ],
+   "class": "icon",
+   "confidence": 0.703,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    124.8,
+    267.5,
+    469.3,
+    436.4
+   ],
+   "class": "icon",
+   "confidence": 0.565,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    126.0,
+    317.8,
+    477.5,
+    487.0
+   ],
+   "class": "icon",
+   "confidence": 0.641,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    124.7,
+    269.9,
+    469.2,
+    439.6
+   ],
+   "class": "icon",
+   "confidence": 0.451,
+   "caption": null
+  },
+  {
+   "page": 73,
+   "bbox": [
+    55.7,
+    714.2,
+    211.0,
+    785.9
+   ],
+   "class": "logo",
+   "confidence": 0.66,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 5.9,
+ "tool": "docling 2.130.0"
+}

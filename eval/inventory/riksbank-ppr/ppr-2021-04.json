@@ -1,0 +1,829 @@
+{
+ "name": "ppr-2021-04",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 84,
+ "pages_with_text": 84,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.6,
+    271.2,
+    567.7,
+    810.1
+   ],
+   "class": "photograph",
+   "confidence": 0.555,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.1,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    116.6,
+    176.4,
+    169.8,
+    229.7
+   ],
+   "class": "icon",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    119.8,
+    291.3,
+    169.2,
+    348.5
+   ],
+   "class": "icon",
+   "confidence": 0.818,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    119.8,
+    391.8,
+    171.7,
+    445.9
+   ],
+   "class": "icon",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    120.2,
+    512.3,
+    177.9,
+    564.6
+   ],
+   "class": "icon",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    137.3,
+    468.9,
+    434.0,
+    656.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    146.9,
+    384.3,
+    433.9,
+    574.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    138.1,
+    387.4,
+    433.9,
+    561.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 3. BNP i Sverige Index, 2019 kv4 = 100, säsongsrensade data"
+  },
+  {
+   "page": 11,
+   "bbox": [
+    146.9,
+    133.4,
+    433.8,
+    320.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    112.7,
+    116.2,
+    434.5,
+    329.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.972,
+   "caption": "Diagram 5. Långsiktiga inflationsförväntningar"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    147.2,
+    438.6,
+    433.9,
+    613.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.827,
+   "caption": "Diagram 6. Reporänta med osäkerhetsintervall Procent"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    125.8,
+    303.9,
+    434.5,
+    465.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    133.4,
+    133.8,
+    434.9,
+    294.4
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    128.8,
+    133.9,
+    435.2,
+    317.9
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": "Diagram 9. Riksbankens innehav av värdepapper uppdelat på tillgångsslag Nominellt belopp, miljarder kronor"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    133.2,
+    135.4,
+    434.6,
+    334.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.885,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    137.4,
+    234.8,
+    434.5,
+    416.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    146.7,
+    132.3,
+    434.0,
+    320.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "Diagram 12. Styrräntor och ränteförväntningar enligt terminsprissättning Procent"
+  },
+  {
+   "page": 25,
+   "bbox": [
+    124.1,
+    133.8,
+    434.1,
+    328.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.949,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    138.7,
+    396.5,
+    433.9,
+    584.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    112.4,
+    204.3,
+    434.0,
+    427.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": "Diagram 15. Marknadsbaserade mått på långsiktiga inflationsförväntningar"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    146.6,
+    133.4,
+    434.1,
+    320.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 16. Statsobligationsräntor, 10 års löptid Procent"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    151.4,
+    235.8,
+    433.7,
+    375.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    133.6,
+    146.7,
+    434.5,
+    345.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    131.9,
+    117.5,
+    433.8,
+    348.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    137.4,
+    130.0,
+    433.9,
+    288.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    112.3,
+    118.6,
+    434.4,
+    366.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    141.6,
+    132.2,
+    434.8,
+    335.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    146.8,
+    145.7,
+    434.0,
+    376.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 23. Reporänta samt genomsnittlig in- och utlåningsränta till hushåll och företag, nya och omförhandlade lån Procent"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    126.0,
+    237.9,
+    434.2,
+    423.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    142.9,
+    132.3,
+    434.1,
+    335.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.911,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    118.6,
+    210.3,
+    434.1,
+    404.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.947,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    137.3,
+    148.1,
+    434.4,
+    352.1
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    137.2,
+    456.8,
+    434.6,
+    679.9
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    138.0,
+    495.8,
+    435.0,
+    684.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    132.2,
+    266.4,
+    434.7,
+    450.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    137.3,
+    132.2,
+    435.1,
+    320.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    136.1,
+    133.5,
+    445.0,
+    313.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    132.7,
+    568.2,
+    434.3,
+    741.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Källa: U.S. Bureau of Labor Statistics."
+  },
+  {
+   "page": 46,
+   "bbox": [
+    146.9,
+    132.6,
+    434.9,
+    320.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    137.9,
+    246.1,
+    434.9,
+    420.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    132.9,
+    135.3,
+    434.0,
+    367.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 36. Hushållens totala konsumtion samt några utvalda undergrupper Index, 2019 kv4 = 100, säsongsrensade data"
+  },
+  {
+   "page": 49,
+   "bbox": [
+    141.4,
+    331.0,
+    435.0,
+    518.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.968,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    133.6,
+    428.1,
+    434.7,
+    613.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.963,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    112.2,
+    299.5,
+    434.1,
+    551.9
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": "Diagram 39. Anställda i utvalda branscher"
+  },
+  {
+   "page": 53,
+   "bbox": [
+    132.8,
+    195.0,
+    434.6,
+    381.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.932,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    143.9,
+    453.1,
+    434.9,
+    655.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    140.3,
+    135.2,
+    434.8,
+    320.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    111.8,
+    175.4,
+    434.5,
+    393.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    141.5,
+    178.8,
+    435.1,
+    396.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.973,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    148.7,
+    261.8,
+    435.1,
+    419.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    136.6,
+    125.3,
+    435.0,
+    320.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    120.2,
+    133.3,
+    455.6,
+    307.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    141.6,
+    133.5,
+    434.3,
+    285.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    113.1,
+    465.9,
+    435.4,
+    671.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 49. Antal sysselsatta och antal i arbetskraften"
+  },
+  {
+   "page": 65,
+   "bbox": [
+    135.6,
+    133.5,
+    434.3,
+    314.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    137.7,
+    415.6,
+    434.6,
+    635.2
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    118.2,
+    359.6,
+    433.9,
+    568.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    141.3,
+    462.2,
+    434.5,
+    649.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 53. Rörlig bolåneränta och förväntad rörlig bolåneränta om 5 år Procent"
+  },
+  {
+   "page": 68,
+   "bbox": [
+    142.0,
+    220.1,
+    434.9,
+    409.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    115.1,
+    439.7,
+    479.7,
+    566.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 55. Enkätsvar beträffande hemarbete bland svenska hushåll Procent"
+  },
+  {
+   "page": 71,
+   "bbox": [
+    114.8,
+    230.7,
+    478.6,
+    371.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 72,
+   "bbox": [
+    113.7,
+    120.8,
+    434.5,
+    319.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 73,
+   "bbox": [
+    126.1,
+    134.1,
+    459.4,
+    322.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 78,
+   "bbox": [
+    131.3,
+    309.9,
+    434.6,
+    509.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 79,
+   "bbox": [
+    130.3,
+    130.0,
+    434.3,
+    329.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 79,
+   "bbox": [
+    134.2,
+    414.1,
+    434.2,
+    612.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 84,
+   "bbox": [
+    55.8,
+    713.7,
+    92.2,
+    786.2
+   ],
+   "class": "logo",
+   "confidence": 0.98,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 7.6,
+ "tool": "docling 2.130.0"
+}

@@ -1,0 +1,769 @@
+{
+ "name": "ppr-2018-07",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 38,
+ "pages_with_text": 35,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    509.7,
+    0.4,
+    567.2,
+    113.9
+   ],
+   "class": "logo",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    27.4,
+    273.6,
+    568.0,
+    813.4
+   ],
+   "class": "photograph",
+   "confidence": 0.606,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    347.9,
+    87.4,
+    535.5,
+    260.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.921,
+   "caption": "Diagram 1:1. Reporänta med osäkerhetsintervall"
+  },
+  {
+   "page": 8,
+   "bbox": [
+    348.1,
+    351.9,
+    535.5,
+    526.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.948,
+   "caption": "Diagram 1:2. BNP med osäkerhetsintervall Årlig procentuell förändring, säsongsrensade data"
+  },
+  {
+   "page": 8,
+   "bbox": [
+    348.5,
+    582.0,
+    535.3,
+    764.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.965,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    348.0,
+    67.3,
+    535.3,
+    261.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": "Anm. Utfall är dagsdata och prognoser avser kvartalsmedelvärden. Källa: Riksbanken"
+  },
+  {
+   "page": 10,
+   "bbox": [
+    341.3,
+    82.1,
+    535.4,
+    233.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "Diagram 1:5. Riksbankens innehav av statsobligationer Nominellt belopp, miljarder kronor"
+  },
+  {
+   "page": 10,
+   "bbox": [
+    341.3,
+    321.2,
+    535.8,
+    505.9
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": "Diagram 1:6. Riksbankens köp och återinvesteringar Nominellt belopp, miljarder kronor"
+  },
+  {
+   "page": 10,
+   "bbox": [
+    341.2,
+    572.1,
+    535.4,
+    752.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "Diagram 1:7. Konkurrensvägd nominell växelkurs, KIX Index, 1992-11-18 = 100"
+  },
+  {
+   "page": 11,
+   "bbox": [
+    347.6,
+    99.3,
+    535.3,
+    275.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 1:8. Real reporänta Procent, kvartalsmedelvärden"
+  },
+  {
+   "page": 11,
+   "bbox": [
+    342.6,
+    343.3,
+    535.0,
+    523.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 1:9. KPIF Årlig procentuell förändring"
+  },
+  {
+   "page": 11,
+   "bbox": [
+    338.8,
+    566.1,
+    534.6,
+    743.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 1:10. Offentlig bruttoskuld i Italien och euroområdet Procent av BNP"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    347.8,
+    530.2,
+    546.3,
+    713.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "Diagram 1:11. Bostadspriser enligt HOX Sverige Procent"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    341.4,
+    109.7,
+    535.5,
+    284.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": "Diagram 1:12. Hushållens skulder Procent av årlig disponibel inkomst"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    318.0,
+    346.4,
+    533.8,
+    532.8
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.835,
+   "caption": "arbetslöshet"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    62.1,
+    120.8,
+    259.3,
+    297.3
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.751,
+   "caption": "Diagram 1:14. Phillipskurva med inflation och arbetslöshet Årlig procentuell förändring respektive procent av arbetskraften, 15-74 år"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    67.4,
+    491.6,
+    257.7,
+    676.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 1:15. Löner, KPIF och RU-indikatorn 6 kvartal tidigare Årlig procentuell förändring respektive standardavvikelse"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    406.8,
+    517.5,
+    419.0,
+    529.6
+   ],
+   "class": "icon",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    138.8,
+    426.7,
+    151.1,
+    439.7
+   ],
+   "class": "icon",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    317.9,
+    398.4,
+    513.5,
+    603.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    74.9,
+    180.7,
+    265.8,
+    357.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "Diagram 1:17. Inflation och enhetsarbetskostnad Årlig procentuell förändring"
+  },
+  {
+   "page": 20,
+   "bbox": [
+    347.8,
+    91.5,
+    532.7,
+    269.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    342.0,
+    339.8,
+    535.3,
+    515.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    342.5,
+    570.7,
+    532.9,
+    754.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 2:3. Statsobligationsräntor, 10 års löptid Procent"
+  },
+  {
+   "page": 21,
+   "bbox": [
+    349.0,
+    111.5,
+    532.5,
+    287.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 2:4. Ränteskillnader mot Tyskland, 10 år Procentenheter"
+  },
+  {
+   "page": 21,
+   "bbox": [
+    338.8,
+    344.5,
+    533.9,
+    531.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 2:5. Tillväxtekonomiers valutor mot dollarn Index, 2018-01-01=100"
+  },
+  {
+   "page": 21,
+   "bbox": [
+    341.2,
+    585.9,
+    532.5,
+    763.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": "Anm. Vertikala linjen markerar penningpolitiska mötet i april. Källa: Macrobond"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    344.6,
+    67.3,
+    545.5,
+    220.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 2:7. Volatilitetsindex Procent respektive index"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    342.1,
+    330.2,
+    532.8,
+    511.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": "Diagram 2:8. Reporänta och marknadens förväntningar Procent, medelvärde"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    343.0,
+    593.3,
+    532.6,
+    768.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    341.2,
+    70.3,
+    532.7,
+    217.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    340.5,
+    286.8,
+    535.4,
+    474.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    347.9,
+    569.7,
+    532.6,
+    774.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 2:12. Reporänta samt genomsnittlig in- och utlåningsränta till hushåll och företag, nya avtal Procent"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    344.6,
+    547.5,
+    535.3,
+    699.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    344.0,
+    68.6,
+    535.1,
+    254.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    344.8,
+    318.4,
+    535.1,
+    462.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 3:3. KPIF och olika mått på underliggande inflation Årlig procentuell förändring"
+  },
+  {
+   "page": 25,
+   "bbox": [
+    343.0,
+    563.6,
+    532.6,
+    746.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.956,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    342.7,
+    90.4,
+    532.7,
+    283.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 3:5. Inflationsförväntningar bland samtliga aktörer Procent, medelvärde"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    338.7,
+    314.8,
+    535.3,
+    512.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": "Diagram 3:6. Konfidensindikatorer i omvärlden Index, medelvärde = 100, standardavvikelse = 10"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    340.0,
+    578.1,
+    535.2,
+    756.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": "Anm. För euroområdet visas HIKP exklusive energi, mat, alkohol och tobak. För USA visas deflator för PCE exklusive energi och livsmedel. Källor: Bureau of Economic Analysis och Eurostat"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    341.0,
+    96.3,
+    539.0,
+    283.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 3:8. Konfidensindikatorer Index, medelvärde = 100, standardavvikelse = 10, säsongsrensade data"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    349.4,
+    321.4,
+    539.0,
+    495.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Diagram 3:9. BNP, modellprognos och osäkerhetsintervall Kvartalsförändring i procent uppräknad till årstakt, säsongsrensade data"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    343.7,
+    551.0,
+    549.6,
+    736.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Anm. Anställningsplaner avser förväntningar om antal anställda i näringslivet på tre månaders sikt, framflyttade ett kvartal. Anställningsplaner för 2018 kv2 avser ett genomsnitt av månadsutfallen för april - juni 2018. Källor: Konjunkturinstitutet, SCB och Riksbanken."
+  },
+  {
+   "page": 28,
+   "bbox": [
+    325.9,
+    93.8,
+    550.8,
+    282.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    347.7,
+    359.7,
+    532.7,
+    505.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    340.3,
+    584.5,
+    535.4,
+    768.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    348.0,
+    405.3,
+    535.0,
+    591.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 4:1. BNP i olika länder och regioner Årlig procentuell förändring"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    341.6,
+    488.6,
+    535.5,
+    674.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 4:2. Pris på råolja USD per fat, Brentolja"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    347.7,
+    76.5,
+    535.2,
+    252.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    341.5,
+    323.1,
+    535.2,
+    518.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    343.5,
+    605.6,
+    595.0,
+    785.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.638,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    343.2,
+    77.8,
+    535.2,
+    259.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": "Diagram 4:6. Export och svensk exportmarknad Årlig procentuell förändring, kalenderkorrigerade data"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    332.6,
+    338.3,
+    541.0,
+    515.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.697,
+   "caption": "Diagram 4:7. Påbörjade bostäder och bostadsinvesteringar Antal respektive procent"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    344.1,
+    580.8,
+    595.2,
+    783.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.536,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    345.8,
+    94.8,
+    542.3,
+    284.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.699,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    344.9,
+    362.2,
+    535.0,
+    556.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 4:10. Sysselsättningsgrad och arbetskraftsdeltagande Sysselsättning och arbetskraft i procent av befolkningen, 15-74 år, säsongsrensade data"
+  },
+  {
+   "page": 33,
+   "bbox": [
+    343.1,
+    597.7,
+    535.1,
+    774.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 4:11. Arbetslöshet Procent av arbetskraften, 15-74 år, säsongsrensade data"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    347.5,
+    101.1,
+    535.2,
+    289.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 4:12. BNP-, sysselsättnings- och timgap Procent"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    348.9,
+    356.3,
+    535.5,
+    540.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 4:13. Löner och arbetskostnader i hela ekonomin Årlig procentuell förändring"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    343.8,
+    119.4,
+    595.1,
+    277.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.608,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    343.1,
+    373.5,
+    534.9,
+    552.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Diagram 4:15. KPIF exklusive energi Årlig procentuell förändring"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    348.5,
+    595.5,
+    535.0,
+    777.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 4:16. KPIF, KPIF exklusive energi och KPI Årlig procentuell förändring"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    55.8,
+    713.7,
+    92.3,
+    786.2
+   ],
+   "class": "logo",
+   "confidence": 0.99,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 4.5,
+ "tool": "docling 2.130.0"
+}

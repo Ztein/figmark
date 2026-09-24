@@ -1,0 +1,769 @@
+{
+ "name": "ppr-2023-06",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 68,
+ "pages_with_text": 67,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.2,
+    567.7,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.585,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.1,
+    0.0,
+    565.0,
+    113.2
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    119.9,
+    134.0,
+    176.3,
+    184.7
+   ],
+   "class": "icon",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    119.5,
+    272.0,
+    178.5,
+    323.9
+   ],
+   "class": "icon",
+   "confidence": 0.666,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    116.9,
+    424.8,
+    174.3,
+    476.5
+   ],
+   "class": "icon",
+   "confidence": 0.665,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    119.9,
+    520.5,
+    178.6,
+    572.1
+   ],
+   "class": "logo",
+   "confidence": 0.501,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    117.3,
+    135.9,
+    468.5,
+    307.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 1. Inflation och styrräntor Procent"
+  },
+  {
+   "page": 8,
+   "bbox": [
+    112.9,
+    116.5,
+    447.9,
+    308.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": "Diagram 2. Hushållens konsumtion"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    117.6,
+    385.1,
+    438.1,
+    562.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    113.1,
+    205.3,
+    443.8,
+    396.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 4. Inflationsförväntningar"
+  },
+  {
+   "page": 11,
+   "bbox": [
+    114.1,
+    237.6,
+    438.6,
+    441.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    118.0,
+    388.9,
+    438.2,
+    567.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.3,
+    129.6,
+    438.1,
+    339.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.0,
+    147.9,
+    466.6,
+    318.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.8,
+    410.2,
+    475.4,
+    612.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.937,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    116.6,
+    123.6,
+    447.1,
+    322.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Index, 1992-11-18 = 100"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    115.6,
+    467.0,
+    469.1,
+    671.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    116.9,
+    209.9,
+    468.2,
+    406.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    106.2,
+    236.5,
+    504.9,
+    380.3
+   ],
+   "class": "flow_chart",
+   "confidence": 0.459,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    118.2,
+    127.1,
+    441.7,
+    307.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": "Diagram 13. Styrräntor och styrränteförväntningar enligt marknadsprissättningen Procent"
+  },
+  {
+   "page": 25,
+   "bbox": [
+    113.3,
+    212.5,
+    440.0,
+    403.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    112.9,
+    486.1,
+    436.7,
+    677.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 15. Statsobligationsräntor, 10 års löptid"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    118.7,
+    135.5,
+    469.0,
+    308.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    117.2,
+    433.7,
+    463.8,
+    603.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    112.7,
+    426.0,
+    436.9,
+    615.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    112.6,
+    430.4,
+    439.0,
+    610.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    117.0,
+    387.5,
+    467.8,
+    576.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    112.4,
+    342.0,
+    448.4,
+    550.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 21. Hushållens och företagens upplåning"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    112.6,
+    404.8,
+    440.1,
+    597.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.791,
+   "caption": "Diagram 22. Fördelning av hushållens återstående räntebindningstider"
+  },
+  {
+   "page": 33,
+   "bbox": [
+    112.3,
+    300.1,
+    436.3,
+    492.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 23. Riksbankens styrränta och utlåningsräntor till hushåll"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    118.3,
+    206.0,
+    439.9,
+    398.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.95,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    113.0,
+    118.2,
+    448.7,
+    324.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    117.5,
+    426.5,
+    467.8,
+    614.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    115.5,
+    242.6,
+    439.0,
+    425.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    116.3,
+    125.7,
+    447.6,
+    316.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    113.5,
+    248.8,
+    447.8,
+    439.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.975,
+   "caption": "Diagram 29. Konfidensindikatorer i näringslivet"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    118.7,
+    248.0,
+    473.6,
+    436.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    114.2,
+    118.5,
+    447.2,
+    308.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    117.7,
+    473.4,
+    447.7,
+    652.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    117.1,
+    325.1,
+    468.1,
+    498.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    117.9,
+    349.0,
+    447.3,
+    526.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 34. Nominella och reala löner samt real disponibel inkomst per capita Årlig procentuell förändring"
+  },
+  {
+   "page": 45,
+   "bbox": [
+    117.9,
+    143.0,
+    449.6,
+    350.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.851,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    117.5,
+    130.2,
+    445.8,
+    309.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    118.1,
+    407.8,
+    445.2,
+    615.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.642,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    118.0,
+    400.8,
+    447.8,
+    580.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    118.4,
+    225.4,
+    438.8,
+    402.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    115.4,
+    120.7,
+    438.7,
+    325.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.723,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    116.7,
+    395.0,
+    438.5,
+    568.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    117.3,
+    255.9,
+    467.3,
+    430.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    117.3,
+    147.2,
+    477.2,
+    515.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.958,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    114.1,
+    279.2,
+    439.2,
+    468.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    112.6,
+    115.5,
+    448.0,
+    307.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    113.1,
+    285.7,
+    447.7,
+    478.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 46. Nominell växelkurs, KIX"
+  },
+  {
+   "page": 55,
+   "bbox": [
+    115.3,
+    449.9,
+    438.8,
+    629.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    116.9,
+    126.3,
+    446.7,
+    308.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    117.3,
+    379.6,
+    446.3,
+    560.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    117.2,
+    245.2,
+    446.6,
+    425.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    112.8,
+    175.4,
+    462.7,
+    395.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "Diagram 51. Labour hoarding i totala näringslivet"
+  },
+  {
+   "page": 62,
+   "bbox": [
+    118.0,
+    149.2,
+    285.8,
+    337.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    119.1,
+    353.8,
+    286.1,
+    556.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    303.8,
+    148.9,
+    468.0,
+    336.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    114.6,
+    119.5,
+    438.3,
+    309.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Index, kvartal 4 2019 = 100"
+  },
+  {
+   "page": 68,
+   "bbox": [
+    55.5,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.499,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 6.2,
+ "tool": "docling 2.130.0"
+}

@@ -1,0 +1,493 @@
+{
+ "name": "ppr-2025-06",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 63,
+ "pages_with_text": 63,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.2,
+    567.7,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.586,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.1,
+    0.0,
+    565.0,
+    113.2
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    112.1,
+    122.4,
+    477.0,
+    513.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    114.5,
+    244.4,
+    469.2,
+    438.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    118.4,
+    292.3,
+    476.3,
+    478.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    116.8,
+    181.1,
+    460.6,
+    368.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    64.7,
+    594.0,
+    538.3,
+    717.4
+   ],
+   "class": "flow_chart",
+   "confidence": 0.795,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    116.8,
+    494.8,
+    438.6,
+    673.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    112.3,
+    115.5,
+    442.6,
+    322.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    117.9,
+    181.6,
+    468.5,
+    383.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 7. Börsutveckling och kreditspreadar Index, 2025-01-02 = 100 (vänster) respektive index (höger)"
+  },
+  {
+   "page": 18,
+   "bbox": [
+    117.9,
+    147.5,
+    468.7,
+    364.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    116.6,
+    136.3,
+    476.8,
+    336.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    116.7,
+    129.9,
+    471.2,
+    322.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Index, 1992-11-18 = 100 (vänster) respektive kronor (höger)"
+  },
+  {
+   "page": 21,
+   "bbox": [
+    117.5,
+    262.9,
+    461.9,
+    493.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    116.2,
+    181.1,
+    477.0,
+    399.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 12. Arbetslöshet och olika mått på resursutnyttjandet Procent av arbetskraften (vänster) respektive procent och standardavvikelse (höger)"
+  },
+  {
+   "page": 23,
+   "bbox": [
+    116.9,
+    341.0,
+    439.7,
+    518.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    112.1,
+    127.4,
+    482.4,
+    508.6
+   ],
+   "class": "table",
+   "confidence": 0.592,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    116.8,
+    153.6,
+    475.8,
+    360.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    116.7,
+    118.2,
+    448.8,
+    308.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    113.2,
+    564.7,
+    434.3,
+    720.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Diagram 17. Spridningen av prisökningar i KPIF exklusive energi Fördelningen av årlig procentuell förändring av produktgrupper i KPIF exklusive energi"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    118.3,
+    261.9,
+    442.5,
+    456.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 18. Utvecklingen i delindex jämfört med prognos i PPR december 2024 Årlig procentuell förändring"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    112.0,
+    408.4,
+    454.0,
+    632.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    118.3,
+    136.1,
+    475.7,
+    322.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    117.3,
+    130.5,
+    468.4,
+    339.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    117.6,
+    125.7,
+    437.1,
+    321.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.637,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    117.1,
+    136.8,
+    476.6,
+    322.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    112.5,
+    116.3,
+    447.5,
+    310.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": "Diagram 24. Mått på resursutnyttjandet"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    116.3,
+    185.3,
+    438.3,
+    369.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    114.8,
+    116.2,
+    445.8,
+    307.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Anm. KIX (kronindex) är ett viktat genomsnitt mot valutor i 32 länder som är viktiga för Sveriges handel med omvärlden. Sedan 28 mars 2022 är indexet beräknat mot 31 länder, eftersom den ryska rubeln exkluderats ur indexet. Ett högre värde indikerar en svagare växelkurs. Heldragen linje avser utfall och streckad linje avser Riksbankens prognos."
+  },
+  {
+   "page": 46,
+   "bbox": [
+    116.9,
+    136.6,
+    461.5,
+    330.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 27. Inflationsförväntningar Procent"
+  },
+  {
+   "page": 47,
+   "bbox": [
+    112.9,
+    174.3,
+    482.1,
+    358.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    119.0,
+    460.2,
+    438.6,
+    623.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    116.6,
+    281.0,
+    441.9,
+    474.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.9,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    116.7,
+    135.3,
+    469.0,
+    339.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    117.4,
+    437.2,
+    440.0,
+    612.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    117.3,
+    438.6,
+    476.8,
+    646.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.837,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    117.2,
+    531.3,
+    469.9,
+    721.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": "Diagram 34. Prognoser för inflation Årlig procentuell förändring"
+  },
+  {
+   "page": 59,
+   "bbox": [
+    117.7,
+    135.2,
+    285.0,
+    316.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    302.5,
+    135.2,
+    469.1,
+    300.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    55.6,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.554,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 5.6,
+ "tool": "docling 2.130.0"
+}

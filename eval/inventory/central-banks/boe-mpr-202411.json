@@ -1,0 +1,577 @@
+{
+ "name": "boe-mpr-202411",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 90,
+ "pages_with_text": 90,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    29.9,
+    346.5,
+    565.4,
+    812.5
+   ],
+   "class": "logo",
+   "confidence": 0.682,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    47.8,
+    406.7,
+    548.4,
+    677.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.959,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    47.8,
+    129.4,
+    547.9,
+    367.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.929,
+   "caption": "Chart 1.2: GDP growth projection based on market interest rate expectations, other policy measures as announced"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    48.7,
+    346.9,
+    548.1,
+    599.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.967,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    47.8,
+    151.7,
+    548.0,
+    421.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.956,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    64.4,
+    75.5,
+    532.2,
+    443.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.833,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    65.3,
+    163.1,
+    531.2,
+    439.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.567,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    48.4,
+    131.8,
+    548.3,
+    706.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.94,
+   "caption": "Chart 2.1: In the MPC's latest projections, headline GDP growth falls back slightly and the unemployment rate is flat in the second half of this year; CPI inflation rises moderately in Q4 Near-term projections (a)"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    47.3,
+    237.3,
+    548.4,
+    584.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.791,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    47.6,
+    75.5,
+    548.4,
+    368.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    47.7,
+    163.4,
+    547.8,
+    438.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    48.0,
+    75.6,
+    548.5,
+    444.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.6,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    47.6,
+    324.8,
+    548.3,
+    583.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.952,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    48.3,
+    160.4,
+    545.1,
+    435.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.968,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    47.9,
+    291.1,
+    548.0,
+    563.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.95,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    47.6,
+    291.4,
+    548.3,
+    603.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.954,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    47.3,
+    274.7,
+    548.3,
+    501.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    47.6,
+    75.9,
+    548.6,
+    351.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    47.4,
+    189.1,
+    548.4,
+    486.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    47.6,
+    81.5,
+    548.3,
+    367.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    47.6,
+    146.8,
+    548.0,
+    402.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.948,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    47.8,
+    75.9,
+    548.5,
+    367.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.825,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    47.5,
+    272.8,
+    548.5,
+    532.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.973,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    47.4,
+    146.4,
+    548.3,
+    450.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.892,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    47.6,
+    193.5,
+    547.9,
+    433.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    47.5,
+    75.9,
+    548.5,
+    322.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    47.4,
+    76.8,
+    548.1,
+    384.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    47.5,
+    75.5,
+    548.7,
+    367.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    48.6,
+    179.7,
+    546.6,
+    400.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.586,
+   "caption": "Chart 2.22: CPI inflation fell to 1.7% in September, but it is expected to rise again before the end of the year"
+  },
+  {
+   "page": 59,
+   "bbox": [
+    48.0,
+    76.0,
+    548.4,
+    366.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    47.7,
+    76.4,
+    547.9,
+    353.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    48.0,
+    77.4,
+    548.1,
+    333.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    47.9,
+    179.3,
+    548.2,
+    455.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    47.7,
+    291.5,
+    548.4,
+    598.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    47.7,
+    324.7,
+    548.1,
+    575.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.932,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    48.0,
+    263.6,
+    548.3,
+    521.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.885,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    47.4,
+    324.6,
+    548.2,
+    583.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.721,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    47.5,
+    146.3,
+    548.4,
+    404.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    65.4,
+    229.8,
+    531.2,
+    476.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 73,
+   "bbox": [
+    64.7,
+    76.3,
+    533.2,
+    321.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.502,
+   "caption": null
+  },
+  {
+   "page": 75,
+   "bbox": [
+    64.5,
+    75.3,
+    531.7,
+    323.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 76,
+   "bbox": [
+    64.3,
+    75.2,
+    532.4,
+    373.6
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.855,
+   "caption": null
+  },
+  {
+   "page": 77,
+   "bbox": [
+    65.2,
+    351.8,
+    530.9,
+    595.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 78,
+   "bbox": [
+    65.1,
+    308.1,
+    531.0,
+    555.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.835,
+   "caption": null
+  },
+  {
+   "page": 80,
+   "bbox": [
+    63.2,
+    75.4,
+    532.4,
+    409.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 81,
+   "bbox": [
+    65.2,
+    146.6,
+    531.6,
+    434.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 87,
+   "bbox": [
+    47.7,
+    74.8,
+    548.3,
+    447.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.738,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 7.6,
+ "tool": "docling 2.130.0"
+}

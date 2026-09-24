@@ -1,0 +1,673 @@
+{
+ "name": "bis-ar-2025",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 126,
+ "pages_with_text": 122,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    55.6,
+    72.5,
+    195.8,
+    114.3
+   ],
+   "class": "logo",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 2,
+   "bbox": [
+    58.5,
+    753.1,
+    199.0,
+    781.2
+   ],
+   "class": "logo",
+   "confidence": 0.839,
+   "caption": null
+  },
+  {
+   "page": 3,
+   "bbox": [
+    55.5,
+    72.3,
+    196.0,
+    114.6
+   ],
+   "class": "logo",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    76.6,
+    458.1,
+    142.7,
+    524.3
+   ],
+   "class": "qr_code",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    76.3,
+    506.5,
+    539.0,
+    733.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": "Graph 1"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    55.5,
+    488.3,
+    519.2,
+    741.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.826,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    75.4,
+    100.5,
+    539.1,
+    306.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.873,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    75.1,
+    489.5,
+    539.9,
+    769.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.96,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    74.8,
+    118.3,
+    538.6,
+    299.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    55.4,
+    101.4,
+    518.5,
+    309.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.868,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    75.5,
+    488.3,
+    539.9,
+    719.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.704,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    51.9,
+    410.1,
+    522.0,
+    646.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.779,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    75.9,
+    516.5,
+    539.2,
+    714.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    55.1,
+    529.6,
+    204.7,
+    733.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    213.0,
+    527.9,
+    361.0,
+    723.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.93,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    369.2,
+    528.3,
+    518.2,
+    714.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    72.0,
+    444.2,
+    542.6,
+    696.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.512,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    73.7,
+    443.6,
+    543.1,
+    668.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.589,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    55.5,
+    513.8,
+    518.2,
+    733.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    75.2,
+    101.9,
+    538.2,
+    314.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.924,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    55.4,
+    470.6,
+    519.4,
+    735.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.734,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    55.3,
+    475.3,
+    518.4,
+    700.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.94,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    75.5,
+    502.3,
+    539.7,
+    732.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.653,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    55.1,
+    120.7,
+    519.0,
+    333.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    75.7,
+    503.3,
+    539.8,
+    768.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    104.0,
+    125.5,
+    470.0,
+    527.4
+   ],
+   "class": "flow_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    75.2,
+    480.7,
+    540.0,
+    722.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    51.4,
+    575.8,
+    523.9,
+    771.3
+   ],
+   "class": "table",
+   "confidence": 0.42,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    54.6,
+    315.0,
+    518.5,
+    712.2
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    55.2,
+    100.8,
+    519.3,
+    313.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.805,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    73.5,
+    459.2,
+    541.9,
+    669.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.684,
+   "caption": null
+  },
+  {
+   "page": 69,
+   "bbox": [
+    55.0,
+    508.3,
+    518.9,
+    687.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.755,
+   "caption": "FCIs = financial conditions indices; GS = Goldman Sachs; IG = investment grade."
+  },
+  {
+   "page": 70,
+   "bbox": [
+    75.9,
+    455.6,
+    539.5,
+    675.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    54.9,
+    456.7,
+    519.3,
+    703.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.973,
+   "caption": "1 Spreads of long-term local currency sovereign bond yield over long-term US Treasury yield with comparable maturities. See endnotes for details. 2 *** denotes statistical significance at the 1% level. 3 Impact of a 1% appreciation shock to the bilateral US dollar exchange rate (ie an appreciation against the US dollar) on EME local currency bond spreads (five-year local currency sovereign bond yield over five-year US Treasury yield) and the embedded credit risk premium."
+  },
+  {
+   "page": 72,
+   "bbox": [
+    75.6,
+    464.9,
+    539.6,
+    693.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.781,
+   "caption": null
+  },
+  {
+   "page": 73,
+   "bbox": [
+    55.3,
+    463.4,
+    518.9,
+    701.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.943,
+   "caption": "FCI = financial conditions index; GS = Goldman Sachs."
+  },
+  {
+   "page": 74,
+   "bbox": [
+    75.8,
+    531.3,
+    539.5,
+    722.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": "Graph 14"
+  },
+  {
+   "page": 75,
+   "bbox": [
+    54.9,
+    115.0,
+    518.8,
+    308.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.957,
+   "caption": null
+  },
+  {
+   "page": 93,
+   "bbox": [
+    52.6,
+    458.5,
+    520.7,
+    669.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.736,
+   "caption": null
+  },
+  {
+   "page": 94,
+   "bbox": [
+    74.9,
+    437.3,
+    540.3,
+    697.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.587,
+   "caption": null
+  },
+  {
+   "page": 98,
+   "bbox": [
+    74.6,
+    76.9,
+    539.3,
+    307.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 98,
+   "bbox": [
+    76.9,
+    479.8,
+    539.2,
+    716.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.748,
+   "caption": null
+  },
+  {
+   "page": 99,
+   "bbox": [
+    54.2,
+    304.0,
+    520.7,
+    495.7
+   ],
+   "class": "flow_chart",
+   "confidence": 0.925,
+   "caption": null
+  },
+  {
+   "page": 102,
+   "bbox": [
+    80.3,
+    550.7,
+    304.9,
+    729.9
+   ],
+   "class": "flow_chart",
+   "confidence": 0.571,
+   "caption": "CB = central bank; D = tokenised deposit; KYC = know your customer."
+  },
+  {
+   "page": 102,
+   "bbox": [
+    311.1,
+    536.9,
+    535.6,
+    730.8
+   ],
+   "class": "engineering_drawing",
+   "confidence": 0.434,
+   "caption": null
+  },
+  {
+   "page": 104,
+   "bbox": [
+    95.0,
+    126.2,
+    509.1,
+    192.5
+   ],
+   "class": "flow_chart",
+   "confidence": 0.681,
+   "caption": null
+  },
+  {
+   "page": 104,
+   "bbox": [
+    81.7,
+    236.1,
+    531.3,
+    425.0
+   ],
+   "class": "flow_chart",
+   "confidence": 0.514,
+   "caption": null
+  },
+  {
+   "page": 105,
+   "bbox": [
+    91.1,
+    107.9,
+    482.6,
+    304.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.822,
+   "caption": null
+  },
+  {
+   "page": 106,
+   "bbox": [
+    68.8,
+    501.7,
+    545.4,
+    709.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.907,
+   "caption": null
+  },
+  {
+   "page": 109,
+   "bbox": [
+    55.1,
+    102.4,
+    518.5,
+    331.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.841,
+   "caption": null
+  },
+  {
+   "page": 111,
+   "bbox": [
+    80.9,
+    108.7,
+    498.1,
+    420.9
+   ],
+   "class": "flow_chart",
+   "confidence": 0.953,
+   "caption": null
+  },
+  {
+   "page": 111,
+   "bbox": [
+    72.1,
+    440.4,
+    105.7,
+    467.2
+   ],
+   "class": "icon",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 111,
+   "bbox": [
+    193.8,
+    441.7,
+    309.1,
+    466.2
+   ],
+   "class": "logo",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 111,
+   "bbox": [
+    330.5,
+    449.9,
+    372.6,
+    458.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.493,
+   "caption": null
+  },
+  {
+   "page": 126,
+   "bbox": [
+    9.2,
+    222.5,
+    595.3,
+    644.9
+   ],
+   "class": "icon",
+   "confidence": 0.704,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 14.7,
+ "tool": "docling 2.130.0"
+}

@@ -1,0 +1,145 @@
+{
+ "name": "ppu-2024-05",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 10,
+ "pages_with_text": 9,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    266.0,
+    312.5,
+    578.2
+   ],
+   "class": "photograph",
+   "confidence": 0.674,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.4,
+    0.0,
+    565.4,
+    113.1
+   ],
+   "class": "logo",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    117.5,
+    180.1,
+    467.5,
+    352.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    117.5,
+    461.9,
+    438.3,
+    641.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    116.1,
+    130.2,
+    468.8,
+    317.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": "Index, 1992-11-18 = 100 (vänster) respektive dagliga noteringar (höger)"
+  },
+  {
+   "page": 7,
+   "bbox": [
+    117.1,
+    440.0,
+    468.4,
+    643.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    117.1,
+    135.7,
+    469.1,
+    339.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    117.1,
+    442.4,
+    468.6,
+    629.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    113.7,
+    116.4,
+    438.2,
+    308.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "Diagram 7. Prisplaner i barometern"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    113.1,
+    406.0,
+    438.0,
+    596.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 8. Inflationsförväntningar"
+  },
+  {
+   "page": 10,
+   "bbox": [
+    55.9,
+    713.7,
+    92.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.992,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 1.0,
+ "tool": "docling 2.130.0"
+}

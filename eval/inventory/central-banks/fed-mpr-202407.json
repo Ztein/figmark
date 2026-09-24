@@ -1,0 +1,961 @@
+{
+ "name": "fed-mpr-202407",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 79,
+ "pages_with_text": 74,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    0.5,
+    320.4,
+    444.2,
+    609.2
+   ],
+   "class": "photograph",
+   "confidence": 0.951,
+   "caption": null
+  },
+  {
+   "page": 3,
+   "bbox": [
+    78.4,
+    413.5,
+    262.5,
+    462.3
+   ],
+   "class": "signature",
+   "confidence": 0.998,
+   "caption": "Jerome H. Powell, Chair"
+  },
+  {
+   "page": 3,
+   "bbox": [
+    473.3,
+    91.9,
+    546.0,
+    164.7
+   ],
+   "class": "logo",
+   "confidence": 0.959,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    326.5,
+    212.2,
+    546.3,
+    372.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    326.4,
+    430.5,
+    546.4,
+    591.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    65.3,
+    334.0,
+    285.0,
+    494.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.965,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    65.7,
+    548.4,
+    285.0,
+    708.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.973,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    326.3,
+    204.6,
+    546.5,
+    358.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.905,
+   "caption": "SOURCE: Bureau of Labor Statistics via Haver Analytics."
+  },
+  {
+   "page": 13,
+   "bbox": [
+    326.5,
+    458.0,
+    546.6,
+    618.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.864,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    65.7,
+    521.1,
+    285.2,
+    680.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "8. Measures of inflation expectations"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    317.7,
+    172.7,
+    534.9,
+    331.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": "A. Contributions to 12-month change in core personal consumption expenditures price index"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    78.0,
+    305.1,
+    521.1,
+    517.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    65.7,
+    299.9,
+    285.4,
+    459.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": "9. Inflation compensation implied by Treasury Inflation-Protected Securities"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    78.0,
+    469.3,
+    546.4,
+    691.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "12. Unemployment rate, by race and ethnicity"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    326.4,
+    107.6,
+    546.7,
+    268.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": "11. Civilian unemployment rate"
+  },
+  {
+   "page": 21,
+   "bbox": [
+    326.2,
+    107.6,
+    546.6,
+    268.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.888,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    77.3,
+    502.6,
+    522.4,
+    716.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    317.9,
+    171.7,
+    537.4,
+    333.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "B. Employment-to-population ratios relative to 2019 average, by age"
+  },
+  {
+   "page": 25,
+   "bbox": [
+    89.7,
+    135.7,
+    534.5,
+    487.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.913,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    65.7,
+    182.2,
+    285.4,
+    341.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "14. Available jobs versus available workers"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    65.5,
+    527.8,
+    282.9,
+    685.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "15. Measures of change in hourly compensation"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    326.4,
+    481.4,
+    546.9,
+    642.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.924,
+   "caption": "16. U.S. labor productivity"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    65.3,
+    197.8,
+    285.3,
+    358.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.981,
+   "caption": "17. Change in real gross domestic product and gross domestic income"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    65.5,
+    107.5,
+    285.3,
+    268.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.961,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    65.4,
+    315.5,
+    285.2,
+    475.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.879,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    65.9,
+    539.1,
+    285.2,
+    699.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    326.8,
+    108.0,
+    546.2,
+    267.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.965,
+   "caption": "22. Mortgage interest rates"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    326.7,
+    329.8,
+    533.1,
+    479.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "23. Distribution of interest rates on outstanding mortgages"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    326.7,
+    532.2,
+    546.4,
+    691.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    65.5,
+    107.9,
+    285.1,
+    267.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "25. Private housing starts and permits"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    65.6,
+    306.4,
+    285.3,
+    466.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "26. Growth rate in house prices"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    65.9,
+    543.6,
+    285.2,
+    702.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.973,
+   "caption": "27. Change in real business fixed investment"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    65.5,
+    118.0,
+    284.9,
+    278.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.936,
+   "caption": "28. Change in real imports and exports of goods and services"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    65.7,
+    391.7,
+    285.3,
+    552.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": "29. Federal receipts and expenditures"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    326.3,
+    108.3,
+    546.3,
+    267.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "30. Federal government debt and net interest outlays"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    326.3,
+    385.0,
+    546.4,
+    545.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.867,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    65.1,
+    107.7,
+    285.4,
+    268.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.905,
+   "caption": "32. State and local government payroll employment"
+  },
+  {
+   "page": 36,
+   "bbox": [
+    65.3,
+    552.2,
+    285.3,
+    712.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    326.6,
+    118.1,
+    546.5,
+    277.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "35. Corporate bond yields, by securities rating, and municipal bond yield"
+  },
+  {
+   "page": 37,
+   "bbox": [
+    326.0,
+    370.6,
+    546.2,
+    530.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "36. Yield and spread on agency mortgage-backed securities"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    65.2,
+    108.0,
+    285.3,
+    268.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": "37. Equity prices"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    66.0,
+    322.0,
+    283.6,
+    480.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": "38. S&P 500 volatility"
+  },
+  {
+   "page": 39,
+   "bbox": [
+    317.9,
+    161.8,
+    534.3,
+    319.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "A. Private nonfinancial-sector credit-to-GDP ratio"
+  },
+  {
+   "page": 39,
+   "bbox": [
+    316.6,
+    439.7,
+    534.2,
+    596.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.892,
+   "caption": "B. Nonfinancial business and household debt-to-GDP ratios"
+  },
+  {
+   "page": 42,
+   "bbox": [
+    65.3,
+    118.2,
+    284.4,
+    276.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": "39. Ratio of total commercial bank credit to nominal gross domestic product"
+  },
+  {
+   "page": 42,
+   "bbox": [
+    65.8,
+    336.3,
+    286.4,
+    494.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": "40. Profitability of bank holding companies"
+  },
+  {
+   "page": 43,
+   "bbox": [
+    326.4,
+    108.4,
+    546.5,
+    268.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": "41. Consumer price inflation in foreign economies"
+  },
+  {
+   "page": 44,
+   "bbox": [
+    65.8,
+    298.6,
+    285.2,
+    457.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "43. Equity indexes for selected foreign economies"
+  },
+  {
+   "page": 44,
+   "bbox": [
+    65.5,
+    549.6,
+    285.3,
+    710.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "44. Nominal 10-year government bond yields in selected advanced foreign economies"
+  },
+  {
+   "page": 47,
+   "bbox": [
+    78.1,
+    497.3,
+    546.4,
+    664.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    78.5,
+    507.3,
+    545.9,
+    665.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.934,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    77.0,
+    159.1,
+    294.8,
+    310.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.899,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    89.4,
+    160.6,
+    305.9,
+    309.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.954,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    77.7,
+    164.5,
+    522.1,
+    320.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "B. Historical federal funds rate prescriptions from simple policy rules"
+  },
+  {
+   "page": 60,
+   "bbox": [
+    100.0,
+    114.1,
+    504.9,
+    721.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": "Figure 1. Medians, central tendencies, and ranges of economic projections, 2024-26 and over the longer run"
+  },
+  {
+   "page": 61,
+   "bbox": [
+    101.5,
+    119.6,
+    513.5,
+    513.6
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.67,
+   "caption": "Figure 2. FOMC participants' assessments of appropriate monetary policy: Midpoint of target range or target level for the federal funds rate"
+  },
+  {
+   "page": 62,
+   "bbox": [
+    97.9,
+    113.5,
+    506.3,
+    646.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.866,
+   "caption": "Figure 3.A. Distribution of participants' projections for the change in real GDP, 2024-26 and over the longer run"
+  },
+  {
+   "page": 63,
+   "bbox": [
+    98.5,
+    112.5,
+    506.3,
+    646.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.779,
+   "caption": "Figure 3.B. Distribution of participants' projections for the unemployment rate, 2024-26 and over the longer run"
+  },
+  {
+   "page": 64,
+   "bbox": [
+    97.2,
+    113.6,
+    507.1,
+    673.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.734,
+   "caption": "Figure 3.C. Distribution of participants' projections for PCE inflation, 2024-26 and over the longer run"
+  },
+  {
+   "page": 65,
+   "bbox": [
+    96.7,
+    112.2,
+    506.3,
+    267.3
+   ],
+   "class": "table",
+   "confidence": 0.478,
+   "caption": "Figure 3.D. Distribution of participants' projections for core PCE inflation, 2024-26"
+  },
+  {
+   "page": 65,
+   "bbox": [
+    99.9,
+    287.1,
+    505.5,
+    437.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.734,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    99.8,
+    455.9,
+    505.5,
+    605.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.667,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    97.2,
+    121.6,
+    506.1,
+    662.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.831,
+   "caption": "Figure 3.E. Distribution of participants' judgments of the midpoint of the appropriate target range for the federal funds rate or the appropriate target level for the federal funds rate, 2024-26 and over the longer run"
+  },
+  {
+   "page": 67,
+   "bbox": [
+    99.0,
+    113.7,
+    506.2,
+    286.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.955,
+   "caption": "Figure 4.A. Uncertainty and risks in projections of GDP growth"
+  },
+  {
+   "page": 67,
+   "bbox": [
+    106.0,
+    326.8,
+    486.9,
+    456.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.97,
+   "caption": "FOMC participants' assessments of uncertainty and risks around their economic projections"
+  },
+  {
+   "page": 68,
+   "bbox": [
+    97.5,
+    111.2,
+    505.1,
+    286.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.959,
+   "caption": "Figure 4.B. Uncertainty and risks in projections of the unemployment rate"
+  },
+  {
+   "page": 68,
+   "bbox": [
+    105.9,
+    327.7,
+    487.0,
+    458.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.969,
+   "caption": "FOMC participants' assessments of uncertainty and risks around their economic projections"
+  },
+  {
+   "page": 69,
+   "bbox": [
+    98.5,
+    110.8,
+    505.2,
+    286.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.832,
+   "caption": "Figure 4.C. Uncertainty and risks in projections of PCE inflation"
+  },
+  {
+   "page": 69,
+   "bbox": [
+    105.5,
+    325.8,
+    487.4,
+    602.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.979,
+   "caption": "FOMC participants' assessments of uncertainty and risks around their economic projections"
+  },
+  {
+   "page": 70,
+   "bbox": [
+    94.6,
+    93.2,
+    505.5,
+    218.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Figure 4.D. Diffusion indexes of participants' uncertainty assessments"
+  },
+  {
+   "page": 70,
+   "bbox": [
+    98.2,
+    252.1,
+    505.3,
+    371.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    98.0,
+    405.6,
+    505.1,
+    525.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    97.9,
+    559.1,
+    506.1,
+    711.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    97.3,
+    94.1,
+    505.2,
+    218.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": "Figure 4.E. Diffusion indexes of participants' risk weightings"
+  },
+  {
+   "page": 71,
+   "bbox": [
+    98.9,
+    252.3,
+    504.8,
+    371.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    98.8,
+    405.8,
+    504.7,
+    526.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    97.9,
+    559.7,
+    505.2,
+    710.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 72,
+   "bbox": [
+    94.3,
+    111.9,
+    505.3,
+    323.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": "Figure 5. Uncertainty and risks in projections of the federal funds rate"
+  },
+  {
+   "page": 79,
+   "bbox": [
+    77.8,
+    342.1,
+    611.8,
+    588.1
+   ],
+   "class": "photograph",
+   "confidence": 0.977,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 8.2,
+ "tool": "docling 2.130.0"
+}

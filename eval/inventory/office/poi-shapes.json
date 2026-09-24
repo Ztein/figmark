@@ -1,0 +1,11 @@
+{
+ "name": "poi-shapes",
+ "manifest": "office",
+ "format": "pptx",
+ "language": "en",
+ "pages": 6,
+ "images": 1,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

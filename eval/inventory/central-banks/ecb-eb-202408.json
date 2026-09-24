@@ -1,0 +1,1033 @@
+{
+ "name": "ecb-eb-202408",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 156,
+ "pages_with_text": 155,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    225.7,
+    27.5,
+    368.2,
+    89.6
+   ],
+   "class": "logo",
+   "confidence": 0.777,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    500.7,
+    595.3,
+    802.0
+   ],
+   "class": "logo",
+   "confidence": 0.287,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    180.2,
+    133.5,
+    540.5,
+    335.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Chart 1 Global output PMI"
+  },
+  {
+   "page": 11,
+   "bbox": [
+    179.4,
+    525.4,
+    540.8,
+    736.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.584,
+   "caption": "Chart 2 OECD CPI inflation"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    179.4,
+    130.8,
+    540.8,
+    358.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.785,
+   "caption": "Chart 3 Euro area real GDP and its components"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    179.9,
+    131.2,
+    540.9,
+    354.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    179.2,
+    131.7,
+    540.5,
+    335.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.939,
+   "caption": "Chart 5 Euro area employment, PMI assessment of employment and unemployment rate"
+  },
+  {
+   "page": 18,
+   "bbox": [
+    179.0,
+    238.5,
+    540.7,
+    450.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    180.0,
+    131.5,
+    540.6,
+    381.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.928,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    179.6,
+    130.4,
+    540.7,
+    335.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.946,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    180.0,
+    130.9,
+    540.5,
+    390.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Chart 9 Indicators of underlying inflation"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    180.1,
+    131.0,
+    540.7,
+    361.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 10 Indicators of pipeline pressures"
+  },
+  {
+   "page": 25,
+   "bbox": [
+    180.0,
+    131.0,
+    540.7,
+    343.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.887,
+   "caption": "Chart 11 Breakdown of the GDP deflator"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    180.9,
+    162.3,
+    533.9,
+    353.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    180.7,
+    374.3,
+    541.0,
+    587.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    180.2,
+    266.5,
+    541.2,
+    459.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 13 Euro area HICP and HICPX inflation"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    180.1,
+    131.4,
+    541.3,
+    351.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    180.3,
+    131.3,
+    539.5,
+    366.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Chart 15 Ten-year sovereign bond yields and the ten-year OIS rate based on the €STR"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    180.6,
+    146.2,
+    539.7,
+    400.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    180.0,
+    131.7,
+    539.8,
+    347.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    180.3,
+    130.5,
+    540.8,
+    414.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.958,
+   "caption": "Chart 18 Changes in the exchange rate of the euro vis-à-vis selected currencies"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    179.9,
+    126.4,
+    539.8,
+    518.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    179.2,
+    183.2,
+    539.8,
+    583.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Sources: ECB and ECB calculations."
+  },
+  {
+   "page": 37,
+   "bbox": [
+    179.5,
+    237.4,
+    540.3,
+    458.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    180.2,
+    132.3,
+    540.3,
+    361.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Chart 22 MFI loans in selected euro area countries"
+  },
+  {
+   "page": 39,
+   "bbox": [
+    180.0,
+    146.2,
+    540.5,
+    356.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.936,
+   "caption": "Chart 23 Changes in euro area firms' bank loan needs, current and expected availability and financing gap"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    180.3,
+    132.1,
+    540.7,
+    330.5
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    180.2,
+    130.8,
+    540.3,
+    350.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.98,
+   "caption": "Chart 25 Budget balance and its components"
+  },
+  {
+   "page": 43,
+   "bbox": [
+    180.0,
+    238.9,
+    540.1,
+    451.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.681,
+   "caption": "Chart 26 Drivers of change in euro area government debt"
+  },
+  {
+   "page": 47,
+   "bbox": [
+    180.2,
+    131.1,
+    537.3,
+    594.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    179.8,
+    267.1,
+    540.2,
+    464.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    179.9,
+    173.9,
+    540.0,
+    385.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    180.5,
+    425.4,
+    539.5,
+    649.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    179.3,
+    266.8,
+    540.1,
+    477.3
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.862,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    179.4,
+    133.2,
+    539.9,
+    354.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    180.2,
+    131.8,
+    539.6,
+    345.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": "Chart B The impact of a carbon price shock on gross fixed capital formation in the EU"
+  },
+  {
+   "page": 55,
+   "bbox": [
+    179.7,
+    145.3,
+    539.9,
+    324.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.529,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    180.1,
+    197.9,
+    540.4,
+    406.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    182.4,
+    184.6,
+    533.7,
+    359.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    180.3,
+    131.2,
+    540.4,
+    349.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.984,
+   "caption": "Chart C Impact of rises in uncertainty measures"
+  },
+  {
+   "page": 60,
+   "bbox": [
+    179.7,
+    400.0,
+    540.2,
+    595.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    180.4,
+    238.8,
+    539.9,
+    449.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.863,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    180.6,
+    170.0,
+    538.9,
+    365.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    179.5,
+    132.3,
+    539.4,
+    326.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Chart D Household net wealth"
+  },
+  {
+   "page": 64,
+   "bbox": [
+    179.8,
+    294.7,
+    540.2,
+    523.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.681,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    180.1,
+    133.7,
+    539.1,
+    395.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.864,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    180.1,
+    148.1,
+    538.2,
+    358.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.872,
+   "caption": "Chart B Responses of sensitive and non-sensitive NEIG and services aggregates to monetary policy shocks"
+  },
+  {
+   "page": 69,
+   "bbox": [
+    179.7,
+    145.7,
+    539.7,
+    364.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.954,
+   "caption": null
+  },
+  {
+   "page": 74,
+   "bbox": [
+    179.7,
+    305.2,
+    539.8,
+    509.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.956,
+   "caption": null
+  },
+  {
+   "page": 76,
+   "bbox": [
+    180.1,
+    409.4,
+    540.1,
+    628.7
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 78,
+   "bbox": [
+    180.6,
+    166.3,
+    540.9,
+    421.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.923,
+   "caption": null
+  },
+  {
+   "page": 79,
+   "bbox": [
+    184.9,
+    211.5,
+    537.3,
+    377.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 79,
+   "bbox": [
+    185.5,
+    401.6,
+    537.8,
+    584.0
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 83,
+   "bbox": [
+    180.3,
+    221.5,
+    540.5,
+    478.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": "Chart 1 Energy sources in industrial processes and electricity generation in the EU"
+  },
+  {
+   "page": 84,
+   "bbox": [
+    179.9,
+    332.7,
+    539.7,
+    545.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 86,
+   "bbox": [
+    179.5,
+    197.0,
+    540.2,
+    414.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.955,
+   "caption": null
+  },
+  {
+   "page": 87,
+   "bbox": [
+    179.9,
+    281.4,
+    539.5,
+    492.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 89,
+   "bbox": [
+    180.6,
+    187.3,
+    536.3,
+    644.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.956,
+   "caption": null
+  },
+  {
+   "page": 94,
+   "bbox": [
+    180.6,
+    138.1,
+    529.5,
+    334.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 94,
+   "bbox": [
+    181.2,
+    366.1,
+    539.3,
+    578.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.963,
+   "caption": null
+  },
+  {
+   "page": 95,
+   "bbox": [
+    181.3,
+    134.3,
+    539.5,
+    327.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Chart 2 The Beveridge curve"
+  },
+  {
+   "page": 96,
+   "bbox": [
+    54.5,
+    212.1,
+    478.0,
+    441.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 97,
+   "bbox": [
+    54.8,
+    134.3,
+    479.4,
+    361.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 98,
+   "bbox": [
+    180.3,
+    183.1,
+    539.3,
+    396.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.878,
+   "caption": "Chart 3 Okun's law, productivity and real wages"
+  },
+  {
+   "page": 98,
+   "bbox": [
+    180.7,
+    409.4,
+    539.7,
+    619.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 99,
+   "bbox": [
+    179.7,
+    364.0,
+    539.8,
+    583.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.76,
+   "caption": null
+  },
+  {
+   "page": 102,
+   "bbox": [
+    188.8,
+    178.6,
+    521.3,
+    332.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 102,
+   "bbox": [
+    182.3,
+    366.5,
+    525.1,
+    564.7
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 103,
+   "bbox": [
+    179.8,
+    323.2,
+    540.1,
+    537.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Chart 6 ECB labour hoarding indicator by sector of economic activity"
+  },
+  {
+   "page": 105,
+   "bbox": [
+    180.4,
+    137.0,
+    535.6,
+    359.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Chart 7 Average hours worked"
+  },
+  {
+   "page": 105,
+   "bbox": [
+    181.1,
+    390.8,
+    539.7,
+    592.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 107,
+   "bbox": [
+    181.5,
+    162.9,
+    533.2,
+    359.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.739,
+   "caption": null
+  },
+  {
+   "page": 107,
+   "bbox": [
+    181.8,
+    409.4,
+    539.0,
+    610.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 109,
+   "bbox": [
+    179.3,
+    225.6,
+    539.6,
+    463.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 115,
+   "bbox": [
+    179.4,
+    131.3,
+    540.4,
+    375.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.849,
+   "caption": "Chart 1 RRF-funded expenditure: distribution across euro area countries"
+  },
+  {
+   "page": 116,
+   "bbox": [
+    179.9,
+    145.7,
+    540.1,
+    380.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": "Chart 2 RRF-funded expenditure in the euro area: difference between estimated actual spending following the plan revisions and initial ESCB estimates"
+  },
+  {
+   "page": 117,
+   "bbox": [
+    180.1,
+    212.6,
+    539.2,
+    414.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 3 Cumulative number of RRF payment requests"
+  },
+  {
+   "page": 118,
+   "bbox": [
+    179.3,
+    131.2,
+    540.8,
+    334.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 121,
+   "bbox": [
+    179.4,
+    198.0,
+    539.9,
+    419.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.857,
+   "caption": null
+  },
+  {
+   "page": 123,
+   "bbox": [
+    179.4,
+    468.7,
+    540.8,
+    692.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 124,
+   "bbox": [
+    180.0,
+    214.4,
+    538.6,
+    432.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 125,
+   "bbox": [
+    179.9,
+    210.7,
+    540.6,
+    431.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.809,
+   "caption": null
+  },
+  {
+   "page": 126,
+   "bbox": [
+    181.3,
+    130.8,
+    539.0,
+    511.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 127,
+   "bbox": [
+    179.1,
+    333.1,
+    540.4,
+    537.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 128,
+   "bbox": [
+    179.7,
+    423.8,
+    539.5,
+    661.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.644,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 15.5,
+ "tool": "docling 2.130.0"
+}

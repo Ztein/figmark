@@ -1,0 +1,781 @@
+{
+ "name": "ppr-2022-09",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 80,
+ "pages_with_text": 80,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.8,
+    810.1
+   ],
+   "class": "photograph",
+   "confidence": 0.565,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    120.4,
+    164.1,
+    171.5,
+    220.0
+   ],
+   "class": "logo",
+   "confidence": 0.659,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    119.4,
+    303.5,
+    178.6,
+    357.0
+   ],
+   "class": "icon",
+   "confidence": 0.554,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    120.0,
+    472.6,
+    178.2,
+    525.2
+   ],
+   "class": "icon",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    115.3,
+    538.1,
+    173.6,
+    590.7
+   ],
+   "class": "logo",
+   "confidence": 0.6,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    113.4,
+    355.6,
+    446.1,
+    569.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.965,
+   "caption": "Diagram 1. Långsiktiga inflationsförväntningar"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    117.9,
+    251.3,
+    475.9,
+    425.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    114.0,
+    117.8,
+    446.2,
+    310.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 3. Riksbankens styrränta"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    117.6,
+    150.0,
+    471.5,
+    341.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Diagram 4. BNP och arbetslöshet i Sverige 15-74 år, säsongsrensade data (höger)"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    115.8,
+    118.4,
+    445.9,
+    310.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    118.4,
+    130.9,
+    440.1,
+    325.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.887,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    113.3,
+    464.6,
+    440.3,
+    654.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    114.8,
+    339.4,
+    440.0,
+    527.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    112.5,
+    175.4,
+    428.0,
+    364.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 9. Statsobligationsräntor, 10 års löptid"
+  },
+  {
+   "page": 20,
+   "bbox": [
+    118.9,
+    479.9,
+    467.7,
+    669.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    116.5,
+    465.4,
+    472.3,
+    638.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Diagram 11. Volatilitet på aktie- och obligationsmarknaden Index"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    112.2,
+    237.8,
+    444.9,
+    443.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 12. Långsiktiga inflationsförväntningar i euroområdet och USA"
+  },
+  {
+   "page": 23,
+   "bbox": [
+    115.6,
+    119.1,
+    440.0,
+    307.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    116.4,
+    486.4,
+    440.3,
+    650.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Index, 1992-11-18 = 100"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    118.4,
+    275.1,
+    473.3,
+    480.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    113.4,
+    163.8,
+    448.8,
+    355.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 16. Hushållens och företagens upplåning"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    114.7,
+    277.3,
+    440.2,
+    464.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    117.0,
+    181.3,
+    467.6,
+    370.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 18. Konsumentpriser Årlig procentuell förändring"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    117.0,
+    135.9,
+    476.0,
+    308.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 19. Andel konsumentpriser som ökar snabbare än 2 respektive 4 procent Procent"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    116.9,
+    119.8,
+    445.8,
+    306.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    112.8,
+    115.8,
+    446.5,
+    306.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    116.0,
+    181.7,
+    445.4,
+    358.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    118.5,
+    181.3,
+    461.7,
+    351.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 23. Förtroende hos hushållen och orderingång i tillverkningsindustrin Standardiserade data, medelvärde = 0, standardavvikelse = 1"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    112.6,
+    117.3,
+    440.0,
+    308.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    112.9,
+    116.8,
+    446.0,
+    306.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 25. Konsumentpriser i olika länder och regioner"
+  },
+  {
+   "page": 36,
+   "bbox": [
+    117.8,
+    177.1,
+    445.3,
+    372.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": "Diagram 26. Indikatorer i Konjunkturbarometern Standardiserade data, medelvärde = 0, standardavvikelse = 1"
+  },
+  {
+   "page": 37,
+   "bbox": [
+    113.2,
+    262.9,
+    446.8,
+    455.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 27. Förväntningarna på den egna ekonomin och inflationen enligt KPI"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    95.8,
+    68.7,
+    496.4,
+    365.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    113.8,
+    117.0,
+    447.9,
+    308.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    117.0,
+    447.4,
+    474.7,
+    617.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    117.8,
+    289.0,
+    447.1,
+    467.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 31. Nominella och reala löner samt real disponibel inkomst per capita Årlig procentuell förändring"
+  },
+  {
+   "page": 41,
+   "bbox": [
+    118.2,
+    246.6,
+    448.9,
+    443.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.663,
+   "caption": "Årlig procentuell förändring respektive procentenheter"
+  },
+  {
+   "page": 42,
+   "bbox": [
+    118.1,
+    359.8,
+    476.2,
+    534.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    115.0,
+    287.2,
+    444.6,
+    497.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    114.7,
+    167.3,
+    445.8,
+    352.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    118.0,
+    135.0,
+    472.3,
+    482.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    118.9,
+    177.7,
+    436.3,
+    352.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.655,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    117.8,
+    134.9,
+    475.4,
+    309.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 38. Energipriser i KPIF Index, 2018-01-01 = 100 (vänster) och årlig procentuell förändring (höger)"
+  },
+  {
+   "page": 48,
+   "bbox": [
+    115.3,
+    120.1,
+    445.8,
+    306.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    116.9,
+    176.5,
+    445.5,
+    352.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    113.4,
+    115.9,
+    443.1,
+    310.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": "Diagram 41. Spotpriset på el i Sveriges olika elområden"
+  },
+  {
+   "page": 51,
+   "bbox": [
+    120.2,
+    369.9,
+    438.1,
+    539.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.717,
+   "caption": "Diagram 42. Illustration av effekten på elpriset av stigande pris på naturgas"
+  },
+  {
+   "page": 54,
+   "bbox": [
+    116.0,
+    218.4,
+    441.4,
+    397.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    117.9,
+    390.3,
+    468.4,
+    562.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Diagram 44. Effekter på KPIF-inflationen under olika antaganden om elpriset Index, 2022-08-01 = 100 (vänster) och årlig procentuell förändring (höger)"
+  },
+  {
+   "page": 62,
+   "bbox": [
+    113.8,
+    218.9,
+    442.0,
+    411.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    115.3,
+    120.3,
+    437.9,
+    309.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    118.3,
+    177.0,
+    438.1,
+    370.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 47. Procentuella månadsförändringar för varupriser Utjämnade procentuella månadsförändringar"
+  },
+  {
+   "page": 65,
+   "bbox": [
+    113.1,
+    116.1,
+    438.1,
+    324.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Diagram 48. Procentuella månadsförändringar tjänstepriser"
+  },
+  {
+   "page": 66,
+   "bbox": [
+    115.8,
+    119.1,
+    438.7,
+    309.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    115.9,
+    238.1,
+    446.9,
+    419.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 69,
+   "bbox": [
+    116.7,
+    146.7,
+    467.9,
+    337.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.623,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    115.3,
+    196.5,
+    472.6,
+    370.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    116.2,
+    193.2,
+    468.2,
+    368.4
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 72,
+   "bbox": [
+    112.5,
+    261.0,
+    440.1,
+    454.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 54. Fördelning av belåningsgrader bland nya bolånetagare 2021"
+  },
+  {
+   "page": 73,
+   "bbox": [
+    118.2,
+    147.8,
+    479.6,
+    323.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 74,
+   "bbox": [
+    115.3,
+    119.6,
+    444.5,
+    338.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.658,
+   "caption": null
+  },
+  {
+   "page": 76,
+   "bbox": [
+    112.5,
+    128.1,
+    438.9,
+    321.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.725,
+   "caption": "Diagram 57. Skattad effekt på hushållens konsumtion av en styrräntehöjning med 1 procentenhet vid olika nivåer på skuldkvoten"
+  },
+  {
+   "page": 80,
+   "bbox": [
+    55.8,
+    713.6,
+    264.4,
+    785.8
+   ],
+   "class": "logo",
+   "confidence": 0.441,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 6.9,
+ "tool": "docling 2.130.0"
+}

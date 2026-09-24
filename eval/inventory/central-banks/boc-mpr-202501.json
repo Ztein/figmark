@@ -1,0 +1,553 @@
+{
+ "name": "boc-mpr-202501",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 53,
+ "pages_with_text": 53,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    104.0,
+    63.4,
+    231.5,
+    95.4
+   ],
+   "class": "logo",
+   "confidence": 0.943,
+   "caption": null
+  },
+  {
+   "page": 2,
+   "bbox": [
+    122.3,
+    214.2,
+    152.3,
+    246.5
+   ],
+   "class": "icon",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 3,
+   "bbox": [
+    114.8,
+    436.8,
+    471.1,
+    658.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    104.3,
+    253.4,
+    113.8,
+    261.4
+   ],
+   "class": "icon",
+   "confidence": 0.953,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    115.1,
+    331.8,
+    445.0,
+    466.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.886,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    115.8,
+    479.4,
+    128.7,
+    492.2
+   ],
+   "class": "icon",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    113.3,
+    496.0,
+    131.4,
+    514.1
+   ],
+   "class": "icon",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    113.2,
+    516.7,
+    131.5,
+    533.9
+   ],
+   "class": "icon",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    113.2,
+    536.6,
+    131.3,
+    554.2
+   ],
+   "class": "icon",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    113.3,
+    558.6,
+    131.1,
+    577.2
+   ],
+   "class": "icon",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    113.3,
+    582.3,
+    131.0,
+    600.3
+   ],
+   "class": "icon",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    114.8,
+    259.7,
+    467.6,
+    436.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    119.6,
+    114.7,
+    445.6,
+    241.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    121.9,
+    135.2,
+    462.9,
+    406.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.972,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    114.8,
+    133.6,
+    444.8,
+    259.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    118.8,
+    121.9,
+    444.5,
+    340.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    120.8,
+    206.6,
+    444.4,
+    366.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    121.4,
+    109.8,
+    464.2,
+    585.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    135.4,
+    101.2,
+    475.2,
+    361.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    112.5,
+    143.3,
+    447.1,
+    618.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    114.8,
+    121.7,
+    447.2,
+    303.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.674,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    127.7,
+    133.5,
+    445.0,
+    292.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    119.5,
+    121.5,
+    445.0,
+    358.7
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    120.5,
+    132.9,
+    445.2,
+    263.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    113.3,
+    188.6,
+    444.7,
+    485.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.594,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    113.3,
+    121.8,
+    444.6,
+    366.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.581,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    120.3,
+    162.2,
+    444.5,
+    320.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    120.7,
+    374.5,
+    444.6,
+    534.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    119.8,
+    121.0,
+    456.7,
+    247.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    115.1,
+    121.5,
+    453.1,
+    362.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.528,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    121.1,
+    192.1,
+    444.2,
+    336.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    114.8,
+    390.3,
+    444.4,
+    539.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.673,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    114.0,
+    424.0,
+    473.7,
+    595.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    126.1,
+    140.2,
+    444.4,
+    304.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    127.0,
+    349.5,
+    444.0,
+    516.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    115.1,
+    133.4,
+    461.5,
+    259.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    120.6,
+    349.2,
+    439.1,
+    507.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    121.1,
+    121.3,
+    444.4,
+    320.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    122.5,
+    355.5,
+    488.9,
+    692.7
+   ],
+   "class": "flow_chart",
+   "confidence": 0.998,
+   "caption": "Figure 1: Tariffs on intermediate goods amplify the impacts of tariffs on production costs and prices"
+  },
+  {
+   "page": 46,
+   "bbox": [
+    114.5,
+    345.4,
+    444.7,
+    567.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    114.6,
+    121.1,
+    445.1,
+    342.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    114.7,
+    195.8,
+    461.4,
+    413.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    114.4,
+    132.7,
+    461.3,
+    350.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    128.2,
+    133.4,
+    444.5,
+    370.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.95,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    121.2,
+    469.6,
+    458.0,
+    689.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.978,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 5.0,
+ "tool": "docling 2.130.0"
+}

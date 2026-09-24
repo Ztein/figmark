@@ -1,0 +1,11 @@
+{
+ "name": "poi-three-charts",
+ "manifest": "office",
+ "format": "xlsx",
+ "language": "en",
+ "pages": 3,
+ "images": 0,
+ "charts": 3,
+ "smartart": 0,
+ "tool": "zip"
+}

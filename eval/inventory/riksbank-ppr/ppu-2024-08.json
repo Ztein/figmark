@@ -1,0 +1,157 @@
+{
+ "name": "ppu-2024-08",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 11,
+ "pages_with_text": 10,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    266.0,
+    312.4,
+    578.0
+   ],
+   "class": "photograph",
+   "confidence": 0.716,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.4,
+    0.1,
+    565.2,
+    113.2
+   ],
+   "class": "logo",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    117.2,
+    183.2,
+    467.8,
+    370.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    117.4,
+    479.5,
+    438.4,
+    658.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    117.5,
+    147.6,
+    467.8,
+    329.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    116.1,
+    443.9,
+    466.6,
+    632.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": "Index, 1992-11-18 = 100 (vänster) respektive kronor (höger)"
+  },
+  {
+   "page": 8,
+   "bbox": [
+    118.1,
+    135.9,
+    466.8,
+    310.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    117.3,
+    426.9,
+    467.5,
+    613.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    118.8,
+    131.7,
+    438.3,
+    309.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    112.9,
+    404.4,
+    438.3,
+    596.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    113.0,
+    115.2,
+    438.2,
+    306.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 9. Inflationsförväntningar"
+  },
+  {
+   "page": 11,
+   "bbox": [
+    55.9,
+    713.7,
+    92.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.992,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 1.0,
+ "tool": "docling 2.130.0"
+}

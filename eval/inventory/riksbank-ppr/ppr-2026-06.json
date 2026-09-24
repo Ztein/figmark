@@ -1,0 +1,493 @@
+{
+ "name": "ppr-2026-06",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 70,
+ "pages_with_text": 70,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.4,
+    271.2,
+    567.7,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.632,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    112.2,
+    123.4,
+    477.3,
+    511.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    117.6,
+    156.8,
+    468.1,
+    343.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    117.1,
+    475.5,
+    438.5,
+    655.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    115.4,
+    136.1,
+    469.2,
+    322.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": "Diagram 4. Priset på olja USD/fat"
+  },
+  {
+   "page": 21,
+   "bbox": [
+    117.8,
+    135.8,
+    469.8,
+    331.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    117.9,
+    135.6,
+    474.9,
+    336.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 6. Producentpriser samt konsumentpriser exklusive energi i omvärlden Årlig procentuell förändring"
+  },
+  {
+   "page": 23,
+   "bbox": [
+    117.8,
+    211.2,
+    462.2,
+    400.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    119.3,
+    238.4,
+    467.6,
+    471.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 8. Statsobligationsräntor och inflationsswappar Procent"
+  },
+  {
+   "page": 25,
+   "bbox": [
+    113.9,
+    236.7,
+    444.5,
+    438.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    115.2,
+    278.6,
+    438.4,
+    463.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    118.5,
+    194.3,
+    468.3,
+    412.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.968,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    118.4,
+    374.9,
+    468.0,
+    576.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    118.3,
+    246.8,
+    445.8,
+    425.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    117.0,
+    223.1,
+    466.1,
+    415.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "Diagram 14. KPIF och KPIF exklusive energi samt priser på insatsvaror Årlig procentuell förändring (vänster) respektive index (höger)"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    113.4,
+    287.8,
+    440.4,
+    482.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    117.7,
+    127.5,
+    447.2,
+    311.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    116.6,
+    291.9,
+    465.7,
+    483.3
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": "Diagram 17. Storlek och frekvens på planerad prisförändring Procent"
+  },
+  {
+   "page": 37,
+   "bbox": [
+    117.3,
+    136.3,
+    472.9,
+    323.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 18. Olje-och energiförbrukning i förhållande till BNP-utvecklingen Megajoule/USD"
+  },
+  {
+   "page": 39,
+   "bbox": [
+    119.2,
+    147.4,
+    470.4,
+    370.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.874,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    117.1,
+    156.0,
+    474.1,
+    363.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.926,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    117.6,
+    136.0,
+    477.1,
+    322.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    115.0,
+    407.6,
+    448.5,
+    600.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    118.6,
+    357.7,
+    468.1,
+    558.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "Diagram 23. Inflation inklusive och exklusive tillfälliga finanspolitiska åtgärder Årlig procentuell förändring"
+  },
+  {
+   "page": 45,
+   "bbox": [
+    117.1,
+    217.2,
+    453.8,
+    397.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    112.7,
+    408.5,
+    439.2,
+    601.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.933,
+   "caption": "Diagram 25. Effekten av tillfälliga finanspolitiska åtgärder på KPIF och KPIF exklusive energi"
+  },
+  {
+   "page": 50,
+   "bbox": [
+    121.6,
+    136.1,
+    473.7,
+    298.7
+   ],
+   "class": "table",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    118.0,
+    248.1,
+    471.7,
+    505.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 27. Indikatorer över pristrycket samt energiintensiva undergrupper i KPI Standardavvikelse"
+  },
+  {
+   "page": 54,
+   "bbox": [
+    117.4,
+    135.9,
+    477.6,
+    323.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    112.5,
+    407.5,
+    434.2,
+    597.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "Diagram 29. Spridning i 5-åriga inflationsförväntningar, penningmarknadens aktörer"
+  },
+  {
+   "page": 55,
+   "bbox": [
+    113.1,
+    357.4,
+    437.9,
+    548.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.958,
+   "caption": "Diagram 30. Prognos för styrräntan"
+  },
+  {
+   "page": 56,
+   "bbox": [
+    112.8,
+    116.8,
+    435.9,
+    291.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    116.8,
+    147.9,
+    468.7,
+    336.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    117.2,
+    470.5,
+    438.6,
+    648.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    118.1,
+    135.2,
+    465.4,
+    323.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.917,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    117.8,
+    415.0,
+    281.5,
+    602.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    117.0,
+    321.5,
+    440.2,
+    516.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "Diagram 36. Terminspriser på Brentolja vid olika tidpunkter USD/fat"
+  },
+  {
+   "page": 66,
+   "bbox": [
+    113.2,
+    277.5,
+    443.2,
+    467.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    55.6,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.554,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 6.1,
+ "tool": "docling 2.130.0"
+}

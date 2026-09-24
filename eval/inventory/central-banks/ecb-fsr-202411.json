@@ -1,0 +1,1069 @@
+{
+ "name": "ecb-fsr-202411",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 119,
+ "pages_with_text": 118,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    225.7,
+    27.5,
+    368.1,
+    89.6
+   ],
+   "class": "logo",
+   "confidence": 0.709,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    500.5,
+    595.3,
+    802.1
+   ],
+   "class": "logo",
+   "confidence": 0.237,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    55.6,
+    157.2,
+    168.8,
+    298.2
+   ],
+   "class": "photograph",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    181.3,
+    155.4,
+    539.4,
+    721.1
+   ],
+   "class": "full_page_image",
+   "confidence": 0.527,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    181.2,
+    441.7,
+    539.6,
+    693.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.802,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    179.4,
+    408.4,
+    539.6,
+    638.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.962,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    180.7,
+    297.0,
+    539.5,
+    578.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.832,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    180.7,
+    325.1,
+    538.8,
+    588.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.558,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    181.4,
+    270.9,
+    538.8,
+    532.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.441,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    180.5,
+    165.5,
+    538.7,
+    619.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.331,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    180.2,
+    379.9,
+    540.1,
+    663.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.734,
+   "caption": "Chart 1.1 Economic recovery remains uneven across sectors and domestic demand is picking up only slowly"
+  },
+  {
+   "page": 17,
+   "bbox": [
+    179.9,
+    240.3,
+    540.1,
+    512.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.95,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    181.7,
+    148.3,
+    540.8,
+    379.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.913,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    180.6,
+    352.6,
+    540.1,
+    599.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    55.1,
+    335.3,
+    477.3,
+    569.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.953,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    59.3,
+    449.8,
+    477.4,
+    661.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.735,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    181.0,
+    132.8,
+    537.8,
+    404.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.684,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    179.9,
+    146.1,
+    540.2,
+    400.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.957,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    181.4,
+    348.0,
+    539.6,
+    613.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.585,
+   "caption": "Chart 1.7 Households' economic situation is robust in aggregate"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    180.0,
+    445.9,
+    539.5,
+    687.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": "Chart 1.8 Higher levels of saving can signal a risk for household consumption and broader economic growth"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    181.0,
+    357.7,
+    540.1,
+    618.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    179.6,
+    199.1,
+    539.9,
+    435.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    181.1,
+    185.1,
+    540.2,
+    439.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.959,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    55.6,
+    350.8,
+    477.0,
+    591.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.896,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    55.2,
+    211.7,
+    477.6,
+    435.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    180.5,
+    154.6,
+    538.7,
+    608.3
+   ],
+   "class": "flow_chart",
+   "confidence": 0.404,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    181.1,
+    339.0,
+    539.9,
+    568.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    181.1,
+    146.4,
+    540.0,
+    407.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.892,
+   "caption": "Chart 2.2 prospects, amid heightened political uncertainty"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    180.5,
+    133.5,
+    538.8,
+    380.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.673,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    180.0,
+    132.6,
+    540.0,
+    345.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "Chart 2.4 New volatility regime amid heightened geopolitical and policy uncertainty"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    180.9,
+    339.2,
+    537.1,
+    590.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    180.2,
+    147.3,
+    539.6,
+    384.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Sources: LSEG, ICE Bank of America, Moody's Analytics and ECB calculations."
+  },
+  {
+   "page": 42,
+   "bbox": [
+    181.0,
+    148.3,
+    539.5,
+    400.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.892,
+   "caption": "Chart 2.7 Corporate bond market liquidity is largely supportive, but rollover costs remain comparatively high"
+  },
+  {
+   "page": 44,
+   "bbox": [
+    180.6,
+    146.9,
+    539.9,
+    387.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.858,
+   "caption": "Chart 2.8 Interconnected global financial markets render euro area sovereign bond markets vulnerable to external factors"
+  },
+  {
+   "page": 45,
+   "bbox": [
+    179.6,
+    338.1,
+    540.1,
+    587.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "Chart 2.9 Global uncertainty and geopolitical tensions are driving trends in commodity markets"
+  },
+  {
+   "page": 46,
+   "bbox": [
+    56.6,
+    337.4,
+    478.0,
+    599.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.645,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    56.9,
+    146.5,
+    478.1,
+    423.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.677,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    180.3,
+    165.3,
+    538.9,
+    619.5
+   ],
+   "class": "flow_chart",
+   "confidence": 0.296,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    180.5,
+    295.2,
+    540.5,
+    536.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.965,
+   "caption": "Chart 3.1 Marginal funding costs are declining while the cost of banks' outstanding liabilities is peaking"
+  },
+  {
+   "page": 52,
+   "bbox": [
+    180.4,
+    350.6,
+    539.2,
+    592.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.917,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    180.4,
+    160.4,
+    539.9,
+    409.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    180.8,
+    132.0,
+    540.1,
+    366.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": "Chart 3.4 NPL ratios have deteriorated as defaulting loans offset the disposal of legacy NPLs"
+  },
+  {
+   "page": 55,
+   "bbox": [
+    181.2,
+    147.4,
+    539.9,
+    383.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.967,
+   "caption": "Chart 3.5 CRE and consumer credit segments have deteriorated, but exposures are contained in aggregate"
+  },
+  {
+   "page": 56,
+   "bbox": [
+    180.1,
+    148.9,
+    539.3,
+    404.4
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.496,
+   "caption": "Chart 3.6 The deterioration in SME NPL ratios is small but widespread in the euro area, while the exposure to fragile credit segments and the dynamics of NPLs vary across countries"
+  },
+  {
+   "page": 57,
+   "bbox": [
+    180.3,
+    185.7,
+    539.7,
+    429.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.946,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    179.7,
+    239.1,
+    540.2,
+    503.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.8,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    180.2,
+    146.1,
+    539.8,
+    380.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.679,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    180.2,
+    147.8,
+    539.6,
+    387.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.497,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    181.1,
+    146.0,
+    540.1,
+    452.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.795,
+   "caption": "Chart 3.11 Banks maintain robust capital ratios which are well above requirements, thanks to retained earnings"
+  },
+  {
+   "page": 62,
+   "bbox": [
+    180.2,
+    169.9,
+    539.8,
+    407.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.948,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    180.1,
+    225.3,
+    539.7,
+    487.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    58.1,
+    378.1,
+    476.9,
+    634.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.593,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    55.1,
+    324.4,
+    477.5,
+    566.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.858,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    57.2,
+    254.7,
+    476.6,
+    546.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.896,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    180.4,
+    165.5,
+    538.8,
+    619.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.695,
+   "caption": null
+  },
+  {
+   "page": 69,
+   "bbox": [
+    180.9,
+    198.5,
+    539.5,
+    477.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.476,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    181.6,
+    133.9,
+    539.4,
+    385.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.754,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    180.8,
+    371.8,
+    540.6,
+    636.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.638,
+   "caption": null
+  },
+  {
+   "page": 72,
+   "bbox": [
+    180.6,
+    240.8,
+    539.1,
+    493.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.835,
+   "caption": null
+  },
+  {
+   "page": 73,
+   "bbox": [
+    183.7,
+    262.9,
+    355.1,
+    427.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.592,
+   "caption": null
+  },
+  {
+   "page": 73,
+   "bbox": [
+    360.3,
+    222.1,
+    539.4,
+    419.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 74,
+   "bbox": [
+    180.2,
+    132.7,
+    539.4,
+    363.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 75,
+   "bbox": [
+    56.0,
+    376.8,
+    476.9,
+    615.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.967,
+   "caption": null
+  },
+  {
+   "page": 76,
+   "bbox": [
+    56.1,
+    283.8,
+    477.7,
+    532.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.631,
+   "caption": null
+  },
+  {
+   "page": 78,
+   "bbox": [
+    180.1,
+    198.8,
+    539.9,
+    463.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.801,
+   "caption": null
+  },
+  {
+   "page": 80,
+   "bbox": [
+    181.6,
+    154.6,
+    538.2,
+    379.7
+   ],
+   "class": "flow_chart",
+   "confidence": 0.506,
+   "caption": null
+  },
+  {
+   "page": 81,
+   "bbox": [
+    179.7,
+    186.4,
+    539.2,
+    410.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.966,
+   "caption": "Chart 5.1 The financial cycle continues its orderly downturn"
+  },
+  {
+   "page": 92,
+   "bbox": [
+    178.7,
+    146.1,
+    540.8,
+    421.8
+   ],
+   "class": "flow_chart",
+   "confidence": 0.763,
+   "caption": "Figure A.1 Risk identification and communication are inextricably intertwined in the ECB's financial stability analysis and macroprudential policy processes"
+  },
+  {
+   "page": 93,
+   "bbox": [
+    179.7,
+    198.2,
+    540.3,
+    459.4
+   ],
+   "class": "flow_chart",
+   "confidence": 0.881,
+   "caption": null
+  },
+  {
+   "page": 95,
+   "bbox": [
+    180.1,
+    376.3,
+    539.8,
+    534.3
+   ],
+   "class": "flow_chart",
+   "confidence": 0.556,
+   "caption": null
+  },
+  {
+   "page": 96,
+   "bbox": [
+    179.5,
+    497.4,
+    540.2,
+    675.4
+   ],
+   "class": "flow_chart",
+   "confidence": 0.98,
+   "caption": "Figure A.4 Central banks need to make a number of trade-offs to ensure their financial stability communication is credible, timely and suitable for target audiences"
+  },
+  {
+   "page": 97,
+   "bbox": [
+    180.8,
+    353.5,
+    538.7,
+    577.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 99,
+   "bbox": [
+    56.0,
+    226.6,
+    477.6,
+    514.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.912,
+   "caption": "Source: ECB."
+  },
+  {
+   "page": 100,
+   "bbox": [
+    55.0,
+    267.0,
+    477.6,
+    539.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 101,
+   "bbox": [
+    180.6,
+    553.1,
+    539.8,
+    752.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.658,
+   "caption": null
+  },
+  {
+   "page": 102,
+   "bbox": [
+    180.0,
+    368.0,
+    538.5,
+    600.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.972,
+   "caption": null
+  },
+  {
+   "page": 103,
+   "bbox": [
+    180.7,
+    381.3,
+    538.9,
+    608.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.825,
+   "caption": null
+  },
+  {
+   "page": 104,
+   "bbox": [
+    186.3,
+    341.3,
+    345.9,
+    491.3
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.939,
+   "caption": null
+  },
+  {
+   "page": 104,
+   "bbox": [
+    360.3,
+    306.0,
+    536.9,
+    493.9
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 107,
+   "bbox": [
+    180.0,
+    408.6,
+    536.8,
+    598.7
+   ],
+   "class": "flow_chart",
+   "confidence": 0.978,
+   "caption": "Figure B.1 Transmission channels between credit allocation, productivity and financial stability"
+  },
+  {
+   "page": 108,
+   "bbox": [
+    179.4,
+    450.6,
+    539.7,
+    694.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.693,
+   "caption": null
+  },
+  {
+   "page": 109,
+   "bbox": [
+    180.6,
+    353.6,
+    539.4,
+    573.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.716,
+   "caption": "Chart B.2 The widening TFP growth gap between the euro area and the United States has largely been driven by the ICT sector"
+  },
+  {
+   "page": 110,
+   "bbox": [
+    181.1,
+    294.4,
+    540.1,
+    574.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.684,
+   "caption": "Chart B.3 Bank lending to real estate firms vastly exceeds their share in gross value added"
+  },
+  {
+   "page": 112,
+   "bbox": [
+    182.1,
+    149.1,
+    538.9,
+    381.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.763,
+   "caption": null
+  },
+  {
+   "page": 113,
+   "bbox": [
+    181.1,
+    172.0,
+    540.3,
+    396.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.875,
+   "caption": "b) Outstanding value of the venture capital market in the euro area and the United States"
+  },
+  {
+   "page": 114,
+   "bbox": [
+    180.7,
+    146.7,
+    540.4,
+    394.0
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.555,
+   "caption": null
+  },
+  {
+   "page": 115,
+   "bbox": [
+    182.2,
+    282.0,
+    540.0,
+    463.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 116,
+   "bbox": [
+    412.6,
+    496.7,
+    520.9,
+    648.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 11.5,
+ "tool": "docling 2.130.0"
+}

@@ -1,0 +1,985 @@
+{
+ "name": "oenb-konjunktur-202309",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "de",
+ "pages": 87,
+ "pages_with_text": 83,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    379.3,
+    34.9,
+    545.5,
+    84.0
+   ],
+   "class": "logo",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    601.4,
+    545.6,
+    757.3
+   ],
+   "class": "photograph",
+   "confidence": 0.394,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    288.8,
+    213.6,
+    523.2,
+    409.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.796,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    73.0,
+    484.2,
+    305.9,
+    693.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.687,
+   "caption": "China: Probleme im Immobiliensektor"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    205.4,
+    146.8,
+    507.0,
+    354.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.934,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    87.2,
+    154.8,
+    518.4,
+    391.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.921,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    69.7,
+    365.8,
+    512.2,
+    701.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.866,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    71.1,
+    399.4,
+    524.5,
+    615.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.925,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    71.2,
+    104.7,
+    510.8,
+    429.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.931,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    84.8,
+    137.9,
+    490.7,
+    396.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Grafik 1"
+  },
+  {
+   "page": 25,
+   "bbox": [
+    83.6,
+    187.5,
+    532.2,
+    454.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.815,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    69.6,
+    122.0,
+    525.2,
+    494.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.567,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    71.9,
+    148.7,
+    284.5,
+    318.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.954,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    75.4,
+    358.3,
+    287.5,
+    532.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    298.0,
+    157.8,
+    521.9,
+    329.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Wechselkursezum Euro"
+  },
+  {
+   "page": 53,
+   "bbox": [
+    296.8,
+    354.8,
+    510.0,
+    529.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    74.2,
+    564.9,
+    514.5,
+    753.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.861,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    76.5,
+    125.9,
+    519.0,
+    430.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    73.2,
+    491.0,
+    501.7,
+    705.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "USDbzw. EUR je Barrel; HWWI-Rohstoffpreisindex: 2015=100"
+  },
+  {
+   "page": 57,
+   "bbox": [
+    80.9,
+    145.2,
+    507.6,
+    406.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    75.8,
+    442.9,
+    500.6,
+    725.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    97.3,
+    159.7,
+    487.9,
+    382.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    76.0,
+    453.4,
+    494.9,
+    687.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.861,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    74.3,
+    133.4,
+    276.8,
+    380.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    78.6,
+    429.4,
+    284.6,
+    715.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    291.8,
+    130.8,
+    508.9,
+    380.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    302.2,
+    429.4,
+    499.6,
+    693.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Renditen 10-jähriger Staatsanleihen, (ehemalige) Hochzinsländer"
+  },
+  {
+   "page": 60,
+   "bbox": [
+    82.7,
+    144.6,
+    291.0,
+    419.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    76.4,
+    465.2,
+    293.1,
+    733.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    302.1,
+    141.2,
+    512.5,
+    414.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Kreditzinssätze für Unternehmen mit Zinsfixierung bis zu 1 Jahr, in %"
+  },
+  {
+   "page": 60,
+   "bbox": [
+    313.9,
+    457.5,
+    510.0,
+    725.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.934,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    73.4,
+    148.8,
+    291.8,
+    424.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    74.1,
+    467.8,
+    507.5,
+    712.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    313.0,
+    148.1,
+    505.6,
+    408.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "Geldmenge M3und Inflation"
+  },
+  {
+   "page": 62,
+   "bbox": [
+    73.1,
+    341.4,
+    499.8,
+    501.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    74.4,
+    558.7,
+    501.1,
+    707.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    71.0,
+    143.5,
+    296.6,
+    311.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.884,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    78.6,
+    336.5,
+    295.1,
+    513.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    298.0,
+    133.8,
+    522.4,
+    311.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    307.7,
+    333.3,
+    523.3,
+    516.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.909,
+   "caption": "Seite 12"
+  },
+  {
+   "page": 64,
+   "bbox": [
+    291.5,
+    302.2,
+    492.9,
+    425.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.961,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    79.7,
+    308.7,
+    289.9,
+    486.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.797,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    284.3,
+    523.3,
+    487.9,
+    725.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.924,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    82.0,
+    504.3,
+    296.6,
+    716.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    72.1,
+    124.9,
+    286.9,
+    312.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.881,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    73.1,
+    340.3,
+    288.1,
+    510.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    302.4,
+    130.6,
+    519.6,
+    305.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.456,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    301.3,
+    332.6,
+    520.3,
+    522.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Immobilienpreisindizes"
+  },
+  {
+   "page": 65,
+   "bbox": [
+    74.7,
+    543.5,
+    290.0,
+    717.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    307.3,
+    541.9,
+    515.5,
+    718.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.994,
+   "caption": "Finanzierungssaldo desGesamtstaates"
+  },
+  {
+   "page": 66,
+   "bbox": [
+    72.2,
+    130.3,
+    273.5,
+    275.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.949,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    72.1,
+    288.1,
+    274.2,
+    433.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.891,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    283.0,
+    118.1,
+    512.1,
+    276.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.939,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    290.2,
+    307.4,
+    509.4,
+    448.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": "Jan.2015=100, Anstieg = Aufwertung"
+  },
+  {
+   "page": 74,
+   "bbox": [
+    75.3,
+    128.7,
+    493.2,
+    285.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.925,
+   "caption": null
+  },
+  {
+   "page": 74,
+   "bbox": [
+    76.1,
+    317.7,
+    290.1,
+    440.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.958,
+   "caption": null
+  },
+  {
+   "page": 74,
+   "bbox": [
+    300.7,
+    313.9,
+    511.6,
+    463.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 75,
+   "bbox": [
+    71.1,
+    336.9,
+    492.6,
+    530.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.926,
+   "caption": null
+  },
+  {
+   "page": 75,
+   "bbox": [
+    72.5,
+    576.7,
+    502.7,
+    767.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 76,
+   "bbox": [
+    73.0,
+    326.1,
+    512.6,
+    480.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 76,
+   "bbox": [
+    78.8,
+    519.2,
+    277.4,
+    677.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 78,
+   "bbox": [
+    74.6,
+    277.9,
+    520.9,
+    421.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.955,
+   "caption": "in % des BIP"
+  },
+  {
+   "page": 78,
+   "bbox": [
+    75.9,
+    592.6,
+    516.5,
+    768.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.538,
+   "caption": null
+  },
+  {
+   "page": 79,
+   "bbox": [
+    75.3,
+    597.2,
+    516.5,
+    780.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.808,
+   "caption": null
+  },
+  {
+   "page": 80,
+   "bbox": [
+    76.0,
+    567.8,
+    512.3,
+    665.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.8,
+   "caption": null
+  },
+  {
+   "page": 80,
+   "bbox": [
+    72.5,
+    666.1,
+    518.1,
+    773.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 81,
+   "bbox": [
+    80.6,
+    395.7,
+    283.4,
+    506.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 81,
+   "bbox": [
+    79.3,
+    570.7,
+    284.0,
+    708.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 81,
+   "bbox": [
+    310.0,
+    394.3,
+    510.6,
+    502.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.966,
+   "caption": null
+  },
+  {
+   "page": 81,
+   "bbox": [
+    309.3,
+    529.6,
+    513.1,
+    713.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.61,
+   "caption": null
+  },
+  {
+   "page": 82,
+   "bbox": [
+    75.0,
+    178.9,
+    289.2,
+    420.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 82,
+   "bbox": [
+    81.3,
+    454.5,
+    289.3,
+    700.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 82,
+   "bbox": [
+    302.1,
+    179.7,
+    509.2,
+    425.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Einlagen von österreichischen"
+  },
+  {
+   "page": 82,
+   "bbox": [
+    299.9,
+    465.4,
+    520.5,
+    698.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.968,
+   "caption": "Wertpapierumlauf vom Bankensektor Veränderung zum Vorjahr in %"
+  },
+  {
+   "page": 83,
+   "bbox": [
+    73.3,
+    169.9,
+    280.0,
+    325.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 83,
+   "bbox": [
+    72.2,
+    366.3,
+    279.7,
+    525.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 83,
+   "bbox": [
+    294.6,
+    169.5,
+    501.2,
+    325.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 83,
+   "bbox": [
+    293.2,
+    381.1,
+    498.9,
+    530.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": "Nach Verwendungszweck in Österreich"
+  },
+  {
+   "page": 83,
+   "bbox": [
+    72.7,
+    580.2,
+    279.6,
+    750.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.963,
+   "caption": null
+  },
+  {
+   "page": 83,
+   "bbox": [
+    292.5,
+    578.4,
+    504.2,
+    754.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 85,
+   "bbox": [
+    144.5,
+    162.4,
+    408.3,
+    387.3
+   ],
+   "class": "pie_chart",
+   "confidence": 0.999,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 8.8,
+ "tool": "docling 2.130.0"
+}

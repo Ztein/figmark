@@ -1,0 +1,11 @@
+{
+ "name": "scb-amneslarare",
+ "manifest": "office",
+ "format": "xlsx",
+ "language": "sv",
+ "pages": 3,
+ "images": 1,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

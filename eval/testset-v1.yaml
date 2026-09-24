@@ -1,0 +1,360 @@
+# Test set v1 — FROZEN. Drawn by eval/testset.py from eval/inventory.csv.
+# Change nothing here; new documents go into a new version.
+# Gap: no scanned documents in the evaluation corpus yet (PRD asks for them).
+strata:
+  documents: 49
+  pages: 2523
+  figures (detected or embedded): 1633
+  formats:
+    pdf: 31
+    pptx: 8
+    docx: 10
+  languages:
+    en: 28
+    de: 1
+    sv: 20
+  scanned: 0
+documents:
+- manifest: central-banks
+  name: bis-ar-2024
+  format: pdf
+  language: en
+  pages: 150
+  figures: 67
+  why: 'rare figure types: flow_chart'
+- manifest: central-banks
+  name: bis-ar-2025
+  format: pdf
+  language: en
+  pages: 126
+  figures: 55
+  why: 'rare figure types: flow_chart'
+- manifest: central-banks
+  name: bis-qr-2412
+  format: pdf
+  language: en
+  pages: 96
+  figures: 46
+  why: 'rare figure types: flow_chart'
+- manifest: central-banks
+  name: bis-qr-2503
+  format: pdf
+  language: en
+  pages: 116
+  figures: 49
+  why: 'rare figure types: flow_chart'
+- manifest: central-banks
+  name: boc-mpr-202501
+  format: pdf
+  language: en
+  pages: 53
+  figures: 45
+  why: has figure questions
+- manifest: central-banks
+  name: ecb-eb-202501
+  format: pdf
+  language: en
+  pages: 157
+  figures: 90
+  why: has figure questions
+- manifest: central-banks
+  name: ecb-eb-202502
+  format: pdf
+  language: en
+  pages: 127
+  figures: 72
+  why: has figure questions
+- manifest: central-banks
+  name: ecb-fsr-202411
+  format: pdf
+  language: en
+  pages: 119
+  figures: 88
+  why: has figure questions
+- manifest: central-banks
+  name: fed-bb-202401
+  format: pdf
+  language: en
+  pages: 54
+  figures: 15
+  why: 'rare figure types: geographical_map'
+- manifest: central-banks
+  name: fed-bb-202410
+  format: pdf
+  language: en
+  pages: 56
+  figures: 15
+  why: 'rare figure types: geographical_map'
+- manifest: central-banks
+  name: oenb-konjunktur-202309
+  format: pdf
+  language: de
+  pages: 87
+  figures: 81
+  why: 'rare figure types: pie_chart'
+- manifest: central-banks
+  name: riksbank-betalningsrapport-202503
+  format: pdf
+  language: sv
+  pages: 73
+  figures: 33
+  why: has figure questions
+- manifest: central-banks
+  name: riksbank-fsr-202505
+  format: pdf
+  language: sv
+  pages: 53
+  figures: 39
+  why: 'rare figure types: flow_chart'
+- manifest: office
+  name: cdc-epi-lesson
+  format: pptx
+  language: en
+  pages: 19
+  figures: 1
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: cdc-vaccine-effectiveness
+  format: pptx
+  language: en
+  pages: 2
+  figures: 3
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: energi-slutrapport-mall
+  format: docx
+  language: sv
+  pages: 6
+  figures: 2
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: govuk-social-care-consultation
+  format: docx
+  language: en
+  pages: 38
+  figures: 6
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: govuk-tracked-consultation
+  format: docx
+  language: en
+  pages: 14
+  figures: 0
+  why: 'native text only: text and tracked-change truth'
+- manifest: office
+  name: nist-vital
+  format: pptx
+  language: en
+  pages: 32
+  figures: 11
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: poi-bar-chart
+  format: pptx
+  language: en
+  pages: 1
+  figures: 0
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: poi-chart-docx
+  format: docx
+  language: en
+  pages: 3
+  figures: 2
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: poi-comments
+  format: docx
+  language: en
+  pages: 1
+  figures: 1
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: poi-footnotes
+  format: docx
+  language: en
+  pages: 1
+  figures: 0
+  why: 'native text only: text and tracked-change truth'
+- manifest: office
+  name: poi-pictures
+  format: docx
+  language: en
+  pages: 1
+  figures: 5
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: poi-shapes
+  format: pptx
+  language: en
+  pages: 6
+  figures: 1
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: poi-smartart
+  format: pptx
+  language: en
+  pages: 1
+  figures: 0
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: poi-tracked-changes
+  format: docx
+  language: en
+  pages: 1
+  figures: 0
+  why: 'native text only: text and tracked-change truth'
+- manifest: office
+  name: skr-arsplanering
+  format: pptx
+  language: sv
+  pages: 2
+  figures: 1
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: skr-kommunbas
+  format: docx
+  language: sv
+  pages: 141
+  figures: 1
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: skr-patientsakerhet
+  format: pptx
+  language: sv
+  pages: 10
+  figures: 5
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: office
+  name: skr-pub-avtal
+  format: docx
+  language: sv
+  pages: 18
+  figures: 2
+  why: 'native figures: images, chart XML or SmartArt'
+- manifest: papers
+  name: transformer-1706.03762
+  format: pdf
+  language: en
+  pages: 15
+  figures: 7
+  why: has figure questions
+- manifest: riksbank-ppr
+  name: ppr-2026-03
+  format: pdf
+  language: sv
+  pages: 72
+  figures: 45
+  why: has figure questions
+- manifest: central-banks
+  name: boe-mpr-202402
+  format: pdf
+  language: en
+  pages: 92
+  figures: 41
+  why: 'publisher coverage: boe'
+- manifest: central-banks
+  name: boj-outlook-2410
+  format: pdf
+  language: en
+  pages: 53
+  figures: 80
+  why: 'publisher coverage: boj'
+- manifest: central-banks
+  name: cnb-geo-chartbook-202511
+  format: pdf
+  language: en
+  pages: 23
+  figures: 100
+  why: 'publisher coverage: cnb'
+- manifest: central-banks
+  name: norges-mpr-2-2025
+  format: pdf
+  language: en
+  pages: 66
+  figures: 73
+  why: 'publisher coverage: norges'
+- manifest: riksbank-ppr
+  name: ppr-2017-12
+  format: pdf
+  language: sv
+  pages: 38
+  figures: 52
+  why: Riksbank PPR, one per year (2017)
+- manifest: riksbank-ppr
+  name: ppr-2018-12
+  format: pdf
+  language: sv
+  pages: 36
+  figures: 58
+  why: Riksbank PPR, one per year (2018)
+- manifest: riksbank-ppr
+  name: ppr-2019-12
+  format: pdf
+  language: sv
+  pages: 36
+  figures: 56
+  why: Riksbank PPR, one per year (2019)
+- manifest: riksbank-ppr
+  name: ppr-2020-11
+  format: pdf
+  language: sv
+  pages: 79
+  figures: 57
+  why: Riksbank PPR, one per year (2020)
+- manifest: riksbank-ppr
+  name: ppr-2021-11
+  format: pdf
+  language: sv
+  pages: 89
+  figures: 65
+  why: Riksbank PPR, one per year (2021)
+- manifest: riksbank-ppr
+  name: ppr-2022-11
+  format: pdf
+  language: sv
+  pages: 63
+  figures: 52
+  why: Riksbank PPR, one per year (2022)
+- manifest: riksbank-ppr
+  name: ppr-2023-11
+  format: pdf
+  language: sv
+  pages: 68
+  figures: 56
+  why: Riksbank PPR, one per year (2023)
+- manifest: riksbank-ppr
+  name: ppr-2024-12
+  format: pdf
+  language: sv
+  pages: 68
+  figures: 47
+  why: Riksbank PPR, one per year (2024)
+- manifest: riksbank-ppr
+  name: ppr-2025-12
+  format: pdf
+  language: sv
+  pages: 67
+  figures: 42
+  why: Riksbank PPR, one per year (2025)
+- manifest: riksbank-ppr
+  name: ppr-2026-06
+  format: pdf
+  language: sv
+  pages: 70
+  figures: 40
+  why: Riksbank PPR, one per year (2026)
+- manifest: riksbank-ppr
+  name: ppu-2024-02
+  format: pdf
+  language: sv
+  pages: 10
+  figures: 11
+  why: Riksbank PPR update, short format
+- manifest: riksbank-ppr
+  name: ppu-2025-05
+  format: pdf
+  language: sv
+  pages: 14
+  figures: 15
+  why: Riksbank PPR update, short format

@@ -1,0 +1,769 @@
+{
+ "name": "ppr-2022-06",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 70,
+ "pages_with_text": 70,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.2,
+    567.7,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.567,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    113.2,
+    171.7,
+    179.7,
+    229.3
+   ],
+   "class": "icon",
+   "confidence": 0.927,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    114.0,
+    324.8,
+    178.3,
+    380.0
+   ],
+   "class": "logo",
+   "confidence": 0.5,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    119.7,
+    464.7,
+    178.7,
+    518.0
+   ],
+   "class": "icon",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    114.1,
+    576.4,
+    172.3,
+    630.1
+   ],
+   "class": "icon",
+   "confidence": 0.778,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    117.2,
+    349.4,
+    464.7,
+    552.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 1. Inflation och underliggande inflation i olika länder och regioner Årlig procentuell förändring"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    112.8,
+    177.1,
+    438.7,
+    368.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "Diagram 2. Statsobligationsräntor, 10 års löptid"
+  },
+  {
+   "page": 10,
+   "bbox": [
+    117.1,
+    148.7,
+    472.3,
+    337.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    116.4,
+    223.0,
+    441.9,
+    425.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.704,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    114.2,
+    116.4,
+    447.5,
+    309.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 5. Lönsamhet bland företag"
+  },
+  {
+   "page": 13,
+   "bbox": [
+    115.0,
+    117.7,
+    438.0,
+    309.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    117.8,
+    394.5,
+    438.2,
+    573.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    112.7,
+    189.3,
+    447.2,
+    400.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.962,
+   "caption": "Diagram 8. Långsiktiga inflationsförväntningar"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    112.9,
+    116.4,
+    447.9,
+    309.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    112.7,
+    215.3,
+    446.7,
+    408.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    115.0,
+    284.8,
+    438.6,
+    491.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.576,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    115.0,
+    202.9,
+    446.8,
+    394.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.921,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    117.3,
+    124.6,
+    447.2,
+    309.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    112.1,
+    115.6,
+    438.4,
+    310.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Diagram 14. KPIF och osäkerhetsintervall"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    118.4,
+    177.3,
+    438.4,
+    369.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.945,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    112.1,
+    343.7,
+    439.0,
+    534.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 16. Styrräntor och ränteförväntningar enligt terminsprissättning"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    114.7,
+    208.9,
+    438.6,
+    397.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.693,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    112.6,
+    115.7,
+    438.6,
+    308.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": "Diagram 18. Riksbankens styrränta och marknadsräntor"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    118.1,
+    136.0,
+    462.6,
+    324.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    118.7,
+    137.5,
+    471.3,
+    325.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    117.6,
+    469.4,
+    438.4,
+    648.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    112.5,
+    118.3,
+    438.5,
+    320.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    112.7,
+    449.5,
+    446.6,
+    642.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 23. Inflationsförväntningar bland penningmarknadens aktörer"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    112.8,
+    285.3,
+    438.4,
+    461.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 24. Nominell växelkurs, KIX"
+  },
+  {
+   "page": 33,
+   "bbox": [
+    113.0,
+    202.9,
+    438.3,
+    410.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": "Diagram 25. Bankernas finansieringskostnader på penningmarknaden, i svenska kronor"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    113.2,
+    128.9,
+    445.7,
+    366.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 26. Riksbankens styrränta samt genomsnittlig in- och utlåningsränta, nya och omförhandlade lån"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    114.3,
+    451.4,
+    447.7,
+    642.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    117.9,
+    385.6,
+    445.8,
+    563.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    118.4,
+    136.2,
+    468.0,
+    308.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    119.0,
+    528.9,
+    447.0,
+    694.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    117.0,
+    432.5,
+    292.0,
+    605.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 31. Andel konsumentpriser som ökar snabbare än 2 respektive 4 procent Procentandel"
+  },
+  {
+   "page": 39,
+   "bbox": [
+    112.3,
+    323.0,
+    438.7,
+    513.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "Diagram 32. BNP i Sverige och omvärlden"
+  },
+  {
+   "page": 41,
+   "bbox": [
+    112.4,
+    115.8,
+    446.7,
+    308.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 33. Konsumentpriser i olika länder och regioner"
+  },
+  {
+   "page": 42,
+   "bbox": [
+    117.6,
+    126.3,
+    447.1,
+    324.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    117.5,
+    480.6,
+    475.1,
+    654.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    117.7,
+    177.6,
+    449.7,
+    370.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.774,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    118.0,
+    479.9,
+    446.3,
+    642.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    117.3,
+    277.2,
+    474.8,
+    444.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    117.2,
+    541.8,
+    446.0,
+    706.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    114.3,
+    255.2,
+    447.7,
+    445.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    117.3,
+    187.4,
+    445.5,
+    385.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    118.2,
+    259.6,
+    439.7,
+    455.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "Diagram 42. Beveridgekurva Procent av arbetskraften, säsongsrensade data, 15-74 år, trendvärden"
+  },
+  {
+   "page": 50,
+   "bbox": [
+    118.0,
+    177.6,
+    446.9,
+    354.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    113.6,
+    116.5,
+    447.0,
+    307.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 44. Nominell växelkurs, KIX"
+  },
+  {
+   "page": 52,
+   "bbox": [
+    118.2,
+    136.3,
+    468.5,
+    481.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    112.1,
+    115.2,
+    438.5,
+    308.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    112.3,
+    114.5,
+    445.7,
+    323.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": "Diagram 47. Priser i producentled och råvarupriser"
+  },
+  {
+   "page": 54,
+   "bbox": [
+    117.7,
+    521.0,
+    438.7,
+    701.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.628,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    115.1,
+    221.2,
+    438.6,
+    412.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    115.1,
+    366.3,
+    446.8,
+    545.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    117.6,
+    394.4,
+    438.3,
+    574.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.737,
+   "caption": "Diagram 51. Drivkraften bakom prisförändringar bland företag inom tjänstesektorn Nettotal"
+  },
+  {
+   "page": 60,
+   "bbox": [
+    118.5,
+    462.9,
+    447.1,
+    631.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    118.5,
+    205.6,
+    446.9,
+    382.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    112.7,
+    116.8,
+    447.0,
+    309.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 54. Antalet lediga jobb i förhållande antalet jobbsökande"
+  },
+  {
+   "page": 65,
+   "bbox": [
+    112.7,
+    262.3,
+    447.2,
+    453.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    114.7,
+    259.1,
+    447.1,
+    439.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    55.5,
+    713.8,
+    211.3,
+    786.2
+   ],
+   "class": "logo",
+   "confidence": 0.506,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 6.4,
+ "tool": "docling 2.130.0"
+}

@@ -1,0 +1,577 @@
+{
+ "name": "ppr-2024-12",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 68,
+ "pages_with_text": 68,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.8,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.585,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    111.6,
+    126.6,
+    474.2,
+    527.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    112.7,
+    116.3,
+    438.6,
+    310.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Diagram 2. Index för osäkerhet inom handelspolitik"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    117.3,
+    135.5,
+    467.0,
+    322.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "Diagram 3. BNP och real disponibel inkomst i olika länder och regioner Index, 2019 kv4 = 100"
+  },
+  {
+   "page": 13,
+   "bbox": [
+    118.1,
+    136.9,
+    467.8,
+    324.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 4. Industriproduktion och inköpschefsindex inom tillverkningsindustrier Index, 2021 kv4 = 100 (vänster) samt index (höger)"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    116.3,
+    136.0,
+    466.9,
+    322.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.6,
+    135.7,
+    465.7,
+    322.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.2,
+    412.9,
+    465.7,
+    601.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    115.4,
+    244.5,
+    446.0,
+    426.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 8. Den offentliga sektorns finansiella sparande i Sverige och omvärlden Procent av BNP"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    113.0,
+    117.0,
+    438.5,
+    310.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 10. Marknadens förväntningar på styrräntor i framtiden"
+  },
+  {
+   "page": 20,
+   "bbox": [
+    115.2,
+    121.0,
+    471.0,
+    346.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    116.9,
+    138.8,
+    470.7,
+    338.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.856,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    117.5,
+    460.7,
+    466.2,
+    668.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    117.0,
+    433.1,
+    468.1,
+    637.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": "Diagram 14. Genomsnittliga bolåneräntor till hushåll för olika bindningstider Procent"
+  },
+  {
+   "page": 23,
+   "bbox": [
+    116.5,
+    249.1,
+    474.4,
+    459.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    113.4,
+    131.3,
+    469.9,
+    350.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    116.3,
+    211.2,
+    473.9,
+    398.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    112.7,
+    116.4,
+    438.4,
+    310.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.749,
+   "caption": "Diagram 18. Omsättningen på bostadsmarknaden"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    114.2,
+    117.7,
+    472.2,
+    324.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 19. BNP-gap och efterfrågeläget i näringslivet"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    117.7,
+    143.0,
+    438.4,
+    322.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    116.6,
+    408.7,
+    438.2,
+    604.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.942,
+   "caption": "Diagram 21. Bidrag till KPIF-inflationen Årlig procentuell förändring respektive procentenheter"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    115.3,
+    324.8,
+    438.8,
+    537.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    113.4,
+    117.3,
+    438.2,
+    310.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": "Diagram 23. Prisplaner i Konjunkturbarometern"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    113.4,
+    407.0,
+    438.1,
+    600.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    118.8,
+    240.1,
+    438.5,
+    418.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    117.8,
+    395.1,
+    290.6,
+    582.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    117.1,
+    131.0,
+    444.9,
+    307.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    118.3,
+    525.0,
+    437.9,
+    717.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.502,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    114.9,
+    362.3,
+    447.0,
+    548.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    117.7,
+    400.1,
+    473.6,
+    588.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    114.0,
+    410.4,
+    446.8,
+    605.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.962,
+   "caption": "Diagram 31. Mått på resursutnyttjandet i Sverige"
+  },
+  {
+   "page": 42,
+   "bbox": [
+    117.2,
+    308.7,
+    446.4,
+    497.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    113.8,
+    198.4,
+    437.8,
+    394.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    117.8,
+    136.1,
+    475.5,
+    354.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.793,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    117.1,
+    427.0,
+    436.8,
+    606.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    115.3,
+    116.5,
+    445.0,
+    311.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    96.5,
+    85.8,
+    497.4,
+    357.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    117.5,
+    399.6,
+    466.7,
+    585.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "Diagram 38. Inflationsförväntningar Procent"
+  },
+  {
+   "page": 52,
+   "bbox": [
+    115.2,
+    405.1,
+    444.9,
+    591.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    114.7,
+    211.8,
+    444.7,
+    398.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    116.9,
+    365.9,
+    446.4,
+    566.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.947,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    115.7,
+    348.8,
+    467.9,
+    564.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    114.6,
+    118.9,
+    437.1,
+    326.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    117.9,
+    368.2,
+    440.2,
+    546.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.896,
+   "caption": "Diagram 44. Riksbankens och andra centralbankers bedömningar av neutral ränta Procent"
+  },
+  {
+   "page": 64,
+   "bbox": [
+    113.3,
+    255.7,
+    461.8,
+    431.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    55.5,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.499,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 6.0,
+ "tool": "docling 2.130.0"
+}

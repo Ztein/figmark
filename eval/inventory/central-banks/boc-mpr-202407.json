@@ -1,0 +1,301 @@
+{
+ "name": "boc-mpr-202407",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 29,
+ "pages_with_text": 28,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    32.8,
+    32.8,
+    172.1,
+    68.1
+   ],
+   "class": "logo",
+   "confidence": 0.777,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    248.3,
+    611.9,
+    792.0
+   ],
+   "class": "photograph",
+   "confidence": 0.813,
+   "caption": null
+  },
+  {
+   "page": 3,
+   "bbox": [
+    31.9,
+    32.3,
+    171.1,
+    66.7
+   ],
+   "class": "logo",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    44.1,
+    483.4,
+    557.6,
+    675.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    174.4,
+    297.7,
+    443.9,
+    476.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    310.9,
+    160.3,
+    565.4,
+    340.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    41.9,
+    116.9,
+    562.0,
+    318.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Chart 3: Since the April Report, global fi nancial conditions have eased, while the Canadian dollar has remained stable Daily data"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    164.4,
+    112.1,
+    438.0,
+    337.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.624,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    165.7,
+    394.4,
+    437.8,
+    609.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.976,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    157.2,
+    243.8,
+    448.7,
+    429.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.954,
+   "caption": "Chart 6: Capacity pressures for businesses have eased since 2022"
+  },
+  {
+   "page": 17,
+   "bbox": [
+    174.2,
+    512.2,
+    441.3,
+    688.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    309.2,
+    159.0,
+    564.1,
+    367.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.961,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    308.9,
+    460.4,
+    559.0,
+    645.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": "Chart 3-B: Newcomers are more likely than others to be unemployed across all working-age groups"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    307.4,
+    145.6,
+    557.6,
+    323.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    171.1,
+    105.9,
+    439.8,
+    292.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    173.9,
+    502.5,
+    440.4,
+    684.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    45.9,
+    108.9,
+    559.3,
+    486.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.951,
+   "caption": "Figure 1: CPI infl ation has eased, although some components are persistently high"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    308.7,
+    161.2,
+    560.3,
+    350.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    46.1,
+    140.9,
+    292.0,
+    345.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    309.8,
+    143.5,
+    556.9,
+    330.5
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    173.2,
+    121.3,
+    437.3,
+    316.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    165.5,
+    112.8,
+    437.1,
+    300.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.612,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    161.5,
+    453.8,
+    442.5,
+    671.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.603,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    174.6,
+    111.0,
+    436.4,
+    289.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 2.8,
+ "tool": "docling 2.130.0"
+}
