@@ -1,0 +1,553 @@
+{
+ "name": "ppr-2026-03",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 72,
+ "pages_with_text": 72,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.7,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.632,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    112.4,
+    127.9,
+    477.7,
+    513.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    116.8,
+    148.0,
+    468.1,
+    336.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    117.2,
+    463.7,
+    468.2,
+    651.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    117.6,
+    248.7,
+    467.3,
+    466.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.5,
+    181.0,
+    471.5,
+    390.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 5. Börsutveckling och inflationsswappar Index, 2025-01-02 = 100 (vänster) respektive procent (höger)"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.3,
+    135.7,
+    473.0,
+    365.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    112.7,
+    116.6,
+    438.4,
+    308.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 7. Marknadens förväntningar på styrräntor i framtiden"
+  },
+  {
+   "page": 18,
+   "bbox": [
+    115.9,
+    201.6,
+    468.9,
+    413.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.889,
+   "caption": "Diagram 8. Nya och gamla tullsatser samt utvecklingen i världshandeln Procent (vänster) respektive index (höger)"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    117.7,
+    320.2,
+    464.1,
+    506.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 9. BNP och arbetslöshet i omvärlden Index 2021 kv4 = 100 (vänster) respektive procent av arbetskraften (höger)"
+  },
+  {
+   "page": 20,
+   "bbox": [
+    116.5,
+    135.0,
+    467.9,
+    323.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    117.7,
+    248.5,
+    476.6,
+    442.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 11. Kinas export samt kinesiska export- och producentpriser Index, december 2024 = 100 (vänster) respektive årlig procentuell förändring (höger)"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    118.1,
+    180.8,
+    476.7,
+    384.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 12. Bytesbalans och importpriser Procent av BNP (vänster) respektive årlig procentuell förändring (höger)"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    118.6,
+    148.3,
+    468.3,
+    365.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    116.5,
+    271.6,
+    473.0,
+    464.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    112.9,
+    116.1,
+    445.3,
+    323.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 15. Dollarns utveckling mot ett antal valutor"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    118.4,
+    148.5,
+    467.8,
+    364.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.925,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    117.9,
+    160.8,
+    470.5,
+    391.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    116.9,
+    123.3,
+    438.6,
+    309.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    113.4,
+    116.0,
+    450.1,
+    323.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 19. Arbetslösheten enligt olika mått"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    115.9,
+    120.8,
+    448.6,
+    323.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    113.1,
+    114.7,
+    452.9,
+    308.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.958,
+   "caption": "Diagram 21. Elpris"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    116.5,
+    419.2,
+    472.4,
+    626.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    117.4,
+    482.5,
+    465.6,
+    669.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    116.8,
+    395.9,
+    477.1,
+    599.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    117.4,
+    124.8,
+    447.1,
+    309.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    118.1,
+    411.8,
+    440.2,
+    604.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.528,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    117.7,
+    203.9,
+    476.9,
+    412.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.847,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    117.2,
+    137.7,
+    475.6,
+    323.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    117.6,
+    518.0,
+    447.8,
+    705.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    112.2,
+    469.9,
+    438.9,
+    658.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    117.3,
+    335.8,
+    467.9,
+    537.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    116.4,
+    199.1,
+    448.0,
+    381.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    112.8,
+    116.1,
+    439.4,
+    308.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 33. KPIF, KPIF exklusive energi och KPI"
+  },
+  {
+   "page": 52,
+   "bbox": [
+    117.7,
+    195.3,
+    468.6,
+    398.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    117.3,
+    461.2,
+    463.0,
+    647.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    114.1,
+    418.4,
+    461.3,
+    609.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    112.7,
+    174.7,
+    435.0,
+    356.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    117.4,
+    131.4,
+    434.6,
+    321.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    116.4,
+    147.9,
+    468.4,
+    335.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    117.0,
+    462.3,
+    468.5,
+    648.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    116.9,
+    136.0,
+    468.6,
+    320.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    116.8,
+    410.5,
+    471.8,
+    599.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 72,
+   "bbox": [
+    55.6,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.554,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 15.9,
+ "tool": "docling 2.130.0"
+}

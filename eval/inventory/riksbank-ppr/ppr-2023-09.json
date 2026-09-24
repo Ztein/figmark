@@ -1,0 +1,805 @@
+{
+ "name": "ppr-2023-09",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 81,
+ "pages_with_text": 81,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.8,
+    810.1
+   ],
+   "class": "photograph",
+   "confidence": 0.565,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.1,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    121.5,
+    160.3,
+    188.7,
+    221.6
+   ],
+   "class": "icon",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.8,
+    256.6,
+    180.8,
+    316.9
+   ],
+   "class": "icon",
+   "confidence": 0.92,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    117.1,
+    366.1,
+    185.0,
+    426.5
+   ],
+   "class": "icon",
+   "confidence": 0.557,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    121.0,
+    476.0,
+    187.8,
+    536.1
+   ],
+   "class": "icon",
+   "confidence": 0.944,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    117.6,
+    135.4,
+    467.9,
+    323.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    118.3,
+    410.4,
+    438.0,
+    588.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.696,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    116.2,
+    143.2,
+    468.3,
+    336.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    113.6,
+    463.9,
+    446.7,
+    652.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    112.3,
+    363.7,
+    437.6,
+    570.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.77,
+   "caption": "Diagram 5. Bidrag till KPIF-inflationen"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    112.8,
+    161.3,
+    442.7,
+    355.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 6. Inflationsförväntningar"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    114.4,
+    210.1,
+    446.5,
+    396.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.2,
+    130.1,
+    440.7,
+    324.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.0,
+    147.4,
+    468.9,
+    336.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    118.0,
+    429.2,
+    475.6,
+    615.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    116.3,
+    181.4,
+    469.0,
+    384.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    116.7,
+    482.3,
+    437.7,
+    668.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    116.3,
+    311.6,
+    467.8,
+    510.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    117.8,
+    257.8,
+    437.5,
+    443.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Index, 2022 = 100, säsongsrensade data"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    104.6,
+    268.2,
+    507.0,
+    550.0
+   ],
+   "class": "flow_chart",
+   "confidence": 0.828,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    118.6,
+    130.1,
+    440.4,
+    307.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.96,
+   "caption": "Diagram 15. Styrräntor och styrränteförväntningar enligt marknadsprissättningen Procent"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    118.3,
+    309.2,
+    440.1,
+    486.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 16. Riksbankens styrränta och korta marknadsräntor Procent"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    113.8,
+    165.5,
+    436.6,
+    354.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    118.8,
+    456.6,
+    469.2,
+    644.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    115.8,
+    390.4,
+    468.8,
+    572.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    112.7,
+    333.3,
+    439.8,
+    523.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.893,
+   "caption": "Diagram 20. Fördelning av hushållens återstående räntebindningstider"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    118.4,
+    148.5,
+    466.1,
+    336.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    112.9,
+    117.4,
+    434.7,
+    308.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 22. Riksbankens styrränta och utlåningsräntor till hushåll"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    113.1,
+    403.6,
+    448.0,
+    610.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 23. Hushållens och företagens upplåning"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    118.3,
+    366.5,
+    477.0,
+    552.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.888,
+   "caption": "Räntenivå (bubblor) procent respektive ränteförändring (staplar) procentenheter"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    111.1,
+    205.6,
+    482.1,
+    603.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 25. Skuldsättning i olika länder Skuldstockar, procent av BNP"
+  },
+  {
+   "page": 36,
+   "bbox": [
+    116.9,
+    414.1,
+    478.1,
+    600.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 26. Utveckling av räntekänsliga delar av ekonomin sedan slutet av 2021 Procentuell förändring sedan slutet av 2021"
+  },
+  {
+   "page": 37,
+   "bbox": [
+    117.7,
+    302.1,
+    441.1,
+    484.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    117.3,
+    223.9,
+    463.2,
+    409.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    115.6,
+    125.6,
+    438.1,
+    308.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    112.8,
+    116.0,
+    438.1,
+    307.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    112.8,
+    219.6,
+    468.4,
+    433.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    116.9,
+    148.4,
+    481.4,
+    522.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.959,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    113.4,
+    116.3,
+    446.8,
+    308.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    114.1,
+    117.4,
+    438.3,
+    307.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 34. KPIF, KPIF exklusive energi och KPI"
+  },
+  {
+   "page": 48,
+   "bbox": [
+    116.3,
+    128.0,
+    438.7,
+    309.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    117.6,
+    136.8,
+    474.1,
+    315.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 36. Arbetslöshet och sysselsättningsgrad i Sverige, euroområdet och USA Procent av arbetskraften (vänster) respektive procent av befolkningen 15-74 år (höger)"
+  },
+  {
+   "page": 50,
+   "bbox": [
+    115.9,
+    521.9,
+    438.1,
+    704.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    115.4,
+    121.2,
+    438.5,
+    309.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    117.2,
+    394.4,
+    446.9,
+    572.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.961,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    115.7,
+    461.0,
+    462.7,
+    649.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    117.6,
+    398.1,
+    446.7,
+    577.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.961,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    117.6,
+    323.7,
+    284.3,
+    504.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    117.7,
+    219.5,
+    446.9,
+    396.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Diagram 43. Nominella och reala löner samt real disponibel inkomst per capita Årlig procentuell förändring"
+  },
+  {
+   "page": 56,
+   "bbox": [
+    117.6,
+    129.9,
+    446.8,
+    308.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    118.1,
+    131.0,
+    446.9,
+    308.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    116.6,
+    449.2,
+    438.1,
+    631.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    115.9,
+    128.7,
+    468.0,
+    324.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.546,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    114.2,
+    209.5,
+    446.6,
+    397.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.841,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    113.2,
+    217.7,
+    476.7,
+    425.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.659,
+   "caption": "Diagram 49. Nettopremier till försäkrings- och pensionssektorn samt totala placeringstillgångar (inkl. AP-fonder)"
+  },
+  {
+   "page": 66,
+   "bbox": [
+    114.2,
+    117.4,
+    438.8,
+    324.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    116.4,
+    369.6,
+    445.9,
+    587.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.826,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    115.7,
+    450.6,
+    438.5,
+    650.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    113.1,
+    116.2,
+    447.4,
+    324.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 72,
+   "bbox": [
+    114.5,
+    117.4,
+    438.2,
+    309.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 54. Hushållens disponibla inkomster och konsumtion"
+  },
+  {
+   "page": 72,
+   "bbox": [
+    116.6,
+    474.3,
+    447.3,
+    653.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 74,
+   "bbox": [
+    117.6,
+    176.6,
+    445.8,
+    385.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.828,
+   "caption": null
+  },
+  {
+   "page": 75,
+   "bbox": [
+    116.1,
+    242.6,
+    438.6,
+    425.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 76,
+   "bbox": [
+    117.4,
+    143.0,
+    467.9,
+    335.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 81,
+   "bbox": [
+    55.5,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.499,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 7.1,
+ "tool": "docling 2.130.0"
+}

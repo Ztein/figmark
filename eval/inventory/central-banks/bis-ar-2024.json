@@ -1,0 +1,817 @@
+{
+ "name": "bis-ar-2024",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 150,
+ "pages_with_text": 146,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    63.3,
+    594.9,
+    768.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.962,
+   "caption": null
+  },
+  {
+   "page": 2,
+   "bbox": [
+    58.4,
+    753.0,
+    199.1,
+    781.2
+   ],
+   "class": "logo",
+   "confidence": 0.781,
+   "caption": null
+  },
+  {
+   "page": 3,
+   "bbox": [
+    55.4,
+    72.4,
+    196.4,
+    115.9
+   ],
+   "class": "logo",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    76.6,
+    458.1,
+    142.7,
+    524.0
+   ],
+   "class": "qr_code",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    75.9,
+    516.7,
+    540.0,
+    713.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    55.3,
+    102.0,
+    518.5,
+    337.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.823,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    76.0,
+    535.7,
+    539.8,
+    703.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.951,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    55.1,
+    106.9,
+    518.6,
+    367.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.906,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    55.9,
+    453.0,
+    518.9,
+    702.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.723,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    72.1,
+    280.0,
+    542.1,
+    491.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    52.0,
+    109.7,
+    522.8,
+    305.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.95,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    54.7,
+    130.2,
+    518.5,
+    339.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.857,
+   "caption": "tech firms remained above norms 3"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    55.8,
+    479.6,
+    518.5,
+    715.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    74.9,
+    177.7,
+    538.9,
+    417.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.948,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    75.8,
+    522.2,
+    538.9,
+    730.5
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    53.2,
+    295.0,
+    519.6,
+    526.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": "1 GDP-PPP weighted averages for 10 AEs (AU, CA, DK, EA, GB, JP, NO, NZ, SE and US) and 10 EMEs (CL, CO, IN, KR, MX, MY, PH, TH, TR and ZA). Shaded areas represent persistent inflation periods. 2 Simulation based on a Bayesian vector autoregression (BVAR) model of core personal consumption expenditures (PCE) inflation, output gap, financial condition index and monetary policy stance index (an optimally weighted average of policy rate and balance sheet size). Blue line is the counterfactual inflation outcome assuming zero monetary policy shocks, identified through sign restrictions. Methodology based on Mojon et al (forthcoming). 3 Median across countries within regions. Other AEs = AU, CA, CH, DK, GB, JP, NO, NZ and SE."
+  },
+  {
+   "page": 32,
+   "bbox": [
+    75.6,
+    498.8,
+    303.6,
+    684.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    312.4,
+    505.3,
+    539.1,
+    709.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    55.0,
+    450.7,
+    519.1,
+    715.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.961,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    54.9,
+    461.0,
+    519.4,
+    716.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.94,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    74.8,
+    101.4,
+    538.4,
+    353.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.558,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    52.0,
+    225.5,
+    522.3,
+    496.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.915,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    69.3,
+    133.4,
+    542.1,
+    417.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.562,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    55.1,
+    140.8,
+    519.2,
+    406.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.679,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    55.3,
+    533.2,
+    517.4,
+    733.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    69.9,
+    262.4,
+    541.0,
+    515.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.735,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    76.2,
+    469.6,
+    539.1,
+    720.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.85,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    51.2,
+    378.2,
+    523.1,
+    672.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.604,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    55.1,
+    117.9,
+    519.4,
+    315.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.9,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    55.0,
+    488.0,
+    518.7,
+    720.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.485,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    54.9,
+    118.0,
+    519.4,
+    377.2
+   ],
+   "class": "box_plot",
+   "confidence": 0.675,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    75.8,
+    513.7,
+    540.1,
+    732.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.957,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    55.0,
+    98.3,
+    519.0,
+    282.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.908,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    75.5,
+    80.8,
+    538.5,
+    334.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.667,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    75.1,
+    100.9,
+    538.4,
+    297.6
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.676,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    55.0,
+    101.5,
+    518.7,
+    325.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    75.1,
+    101.2,
+    538.8,
+    306.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 69,
+   "bbox": [
+    55.1,
+    85.2,
+    519.1,
+    339.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.951,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    55.8,
+    127.1,
+    518.6,
+    348.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": "B. Low interest rates, high debt and downturns reduce traction of expansionary monetary policy 3"
+  },
+  {
+   "page": 71,
+   "bbox": [
+    55.2,
+    442.4,
+    519.0,
+    718.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.894,
+   "caption": null
+  },
+  {
+   "page": 73,
+   "bbox": [
+    52.6,
+    155.6,
+    520.9,
+    424.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.692,
+   "caption": null
+  },
+  {
+   "page": 75,
+   "bbox": [
+    55.0,
+    102.2,
+    518.2,
+    303.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 76,
+   "bbox": [
+    75.5,
+    119.7,
+    538.8,
+    333.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 77,
+   "bbox": [
+    53.6,
+    225.6,
+    521.1,
+    400.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 79,
+   "bbox": [
+    54.8,
+    100.8,
+    518.4,
+    333.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.857,
+   "caption": null
+  },
+  {
+   "page": 81,
+   "bbox": [
+    55.0,
+    118.2,
+    519.0,
+    298.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.866,
+   "caption": null
+  },
+  {
+   "page": 82,
+   "bbox": [
+    75.4,
+    100.5,
+    539.2,
+    275.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.802,
+   "caption": null
+  },
+  {
+   "page": 83,
+   "bbox": [
+    55.1,
+    118.0,
+    518.3,
+    318.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.959,
+   "caption": "Graph 15"
+  },
+  {
+   "page": 86,
+   "bbox": [
+    72.2,
+    364.6,
+    541.1,
+    540.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 87,
+   "bbox": [
+    51.1,
+    153.6,
+    523.2,
+    360.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 90,
+   "bbox": [
+    71.6,
+    350.9,
+    540.7,
+    575.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.935,
+   "caption": null
+  },
+  {
+   "page": 112,
+   "bbox": [
+    75.8,
+    461.7,
+    539.8,
+    714.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.744,
+   "caption": null
+  },
+  {
+   "page": 115,
+   "bbox": [
+    52.9,
+    274.3,
+    523.2,
+    643.8
+   ],
+   "class": "engineering_drawing",
+   "confidence": 0.394,
+   "caption": null
+  },
+  {
+   "page": 116,
+   "bbox": [
+    74.4,
+    329.2,
+    539.5,
+    590.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 118,
+   "bbox": [
+    74.3,
+    306.8,
+    539.9,
+    462.5
+   ],
+   "class": "engineering_drawing",
+   "confidence": 0.458,
+   "caption": null
+  },
+  {
+   "page": 120,
+   "bbox": [
+    74.6,
+    101.2,
+    537.9,
+    360.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.887,
+   "caption": null
+  },
+  {
+   "page": 122,
+   "bbox": [
+    76.5,
+    121.1,
+    538.0,
+    352.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 124,
+   "bbox": [
+    75.0,
+    79.0,
+    539.3,
+    295.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 125,
+   "bbox": [
+    91.6,
+    122.9,
+    482.5,
+    325.6
+   ],
+   "class": "flow_chart",
+   "confidence": 0.689,
+   "caption": "A. Silos lead to duplication of effort in AML screening"
+  },
+  {
+   "page": 126,
+   "bbox": [
+    75.4,
+    101.2,
+    538.6,
+    269.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 130,
+   "bbox": [
+    71.5,
+    367.3,
+    541.6,
+    605.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.74,
+   "caption": null
+  },
+  {
+   "page": 131,
+   "bbox": [
+    55.4,
+    142.6,
+    282.0,
+    295.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.959,
+   "caption": null
+  },
+  {
+   "page": 131,
+   "bbox": [
+    291.4,
+    143.1,
+    518.4,
+    307.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 132,
+   "bbox": [
+    79.1,
+    633.8,
+    536.3,
+    743.4
+   ],
+   "class": "flow_chart",
+   "confidence": 0.93,
+   "caption": null
+  },
+  {
+   "page": 133,
+   "bbox": [
+    55.8,
+    120.5,
+    519.1,
+    315.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 135,
+   "bbox": [
+    55.0,
+    481.6,
+    516.5,
+    721.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 150,
+   "bbox": [
+    11.4,
+    222.0,
+    595.0,
+    662.2
+   ],
+   "class": "logo",
+   "confidence": 0.38,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 14.5,
+ "tool": "docling 2.130.0"
+}

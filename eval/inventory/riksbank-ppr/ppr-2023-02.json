@@ -1,0 +1,625 @@
+{
+ "name": "ppr-2023-02",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 64,
+ "pages_with_text": 63,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.7,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.585,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    119.6,
+    160.7,
+    176.1,
+    211.1
+   ],
+   "class": "icon",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    119.5,
+    350.0,
+    178.7,
+    403.2
+   ],
+   "class": "logo",
+   "confidence": 0.598,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    116.2,
+    541.7,
+    174.1,
+    593.8
+   ],
+   "class": "icon",
+   "confidence": 0.773,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    112.5,
+    115.1,
+    438.3,
+    309.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": "Diagram 1. Långsiktiga inflationsförväntningar"
+  },
+  {
+   "page": 10,
+   "bbox": [
+    116.7,
+    260.1,
+    441.0,
+    432.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    117.2,
+    511.5,
+    446.0,
+    696.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.955,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    117.0,
+    500.5,
+    437.4,
+    680.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.882,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.9,
+    136.4,
+    284.7,
+    307.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    303.5,
+    136.2,
+    467.6,
+    289.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    118.3,
+    412.8,
+    279.7,
+    585.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    296.7,
+    412.7,
+    463.5,
+    567.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    114.7,
+    118.3,
+    437.8,
+    309.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.944,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    117.5,
+    494.9,
+    438.6,
+    673.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.972,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    103.7,
+    529.6,
+    497.6,
+    671.7
+   ],
+   "class": "flow_chart",
+   "confidence": 0.458,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    118.9,
+    290.5,
+    438.7,
+    467.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": "Diagram 9. Styrräntor och styrränteförväntningar enligt marknadsprissättningen Procent"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    117.0,
+    521.0,
+    438.4,
+    706.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    113.9,
+    193.2,
+    438.2,
+    383.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    118.9,
+    181.7,
+    468.7,
+    354.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    117.2,
+    490.0,
+    438.5,
+    683.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    118.1,
+    536.3,
+    446.9,
+    717.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    112.9,
+    280.9,
+    438.6,
+    458.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Diagram 15. Nominell växelkurs, KIX"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    117.2,
+    148.2,
+    468.1,
+    337.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    117.1,
+    438.4,
+    447.7,
+    625.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    112.4,
+    363.1,
+    441.4,
+    585.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 18. Andel nya bolån med räntebindningstid på 1 år eller kortare"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    112.7,
+    219.3,
+    438.8,
+    411.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.761,
+   "caption": "Diagram 19. Fördelning av hushållens återstående räntebindningstider"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    112.5,
+    116.7,
+    438.6,
+    308.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 20. Riksbankens styrränta och utlåningsräntor till hushåll"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    118.2,
+    130.7,
+    438.9,
+    324.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.968,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    112.7,
+    116.2,
+    448.4,
+    309.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    116.8,
+    135.8,
+    466.7,
+    323.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    117.0,
+    406.4,
+    441.6,
+    601.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    113.3,
+    405.6,
+    447.0,
+    590.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 25. Arbetslöshet i Sverige, euroområdet och USA"
+  },
+  {
+   "page": 37,
+   "bbox": [
+    118.0,
+    135.8,
+    468.3,
+    308.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    117.3,
+    512.7,
+    438.3,
+    690.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    117.6,
+    389.5,
+    446.8,
+    567.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    118.4,
+    266.0,
+    447.3,
+    460.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    117.5,
+    135.1,
+    474.8,
+    323.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    116.7,
+    135.9,
+    468.1,
+    308.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    117.7,
+    129.1,
+    447.4,
+    309.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    118.3,
+    143.1,
+    448.8,
+    337.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.862,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    117.5,
+    130.7,
+    447.0,
+    307.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    117.5,
+    126.0,
+    445.8,
+    324.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    113.1,
+    116.7,
+    443.2,
+    324.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.686,
+   "caption": "Diagram 36. Bidrag till KPIF-inflationen"
+  },
+  {
+   "page": 47,
+   "bbox": [
+    116.5,
+    135.1,
+    466.3,
+    481.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    118.3,
+    126.2,
+    438.7,
+    309.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    118.3,
+    483.1,
+    448.1,
+    693.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    117.8,
+    317.5,
+    466.6,
+    492.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "Diagram 40. Energipriser i KPIF Index, januari 2020 = 100 (vänster) respektive årlig procentuell förändring (höger)"
+  },
+  {
+   "page": 51,
+   "bbox": [
+    113.8,
+    115.9,
+    438.5,
+    308.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    114.9,
+    116.9,
+    438.4,
+    309.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 42. KPIF, KPIF exklusive energi och KPI"
+  },
+  {
+   "page": 64,
+   "bbox": [
+    55.5,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.499,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 5.7,
+ "tool": "docling 2.130.0"
+}

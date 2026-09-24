@@ -1,0 +1,517 @@
+{
+ "name": "riksbank-ppr-202512",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 67,
+ "pages_with_text": 66,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.4,
+    567.6,
+    810.5
+   ],
+   "class": "photograph",
+   "confidence": 0.695,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.1,
+    0.0,
+    564.8,
+    113.1
+   ],
+   "class": "logo",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    112.2,
+    124.1,
+    476.6,
+    511.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    117.7,
+    135.6,
+    468.3,
+    339.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    118.1,
+    252.9,
+    471.6,
+    441.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    116.9,
+    181.4,
+    464.0,
+    370.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    115.7,
+    121.8,
+    437.6,
+    308.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.7,
+    135.1,
+    471.1,
+    356.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.3,
+    470.9,
+    470.7,
+    687.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    112.7,
+    130.1,
+    438.2,
+    338.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 8. Genomsnittliga in- och utlåningsräntor till hushåll samt Riksbankens styrränta"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    116.5,
+    128.3,
+    466.6,
+    336.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "Index, 1992-11-18 = 100 (vänster) respektive kronor (höger)"
+  },
+  {
+   "page": 21,
+   "bbox": [
+    117.5,
+    128.8,
+    476.3,
+    324.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    117.9,
+    388.3,
+    467.5,
+    617.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.968,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    117.6,
+    147.4,
+    467.7,
+    378.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    117.1,
+    135.5,
+    474.2,
+    356.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    117.6,
+    177.3,
+    445.1,
+    371.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    117.4,
+    143.0,
+    437.5,
+    319.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    118.1,
+    470.5,
+    437.8,
+    647.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 16. KPIF exklusive energi och KPIF exklusive energi med fasta vikter Årlig procentuell förändring"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    116.8,
+    342.8,
+    476.3,
+    544.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    117.8,
+    125.1,
+    446.9,
+    307.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    113.3,
+    119.7,
+    458.7,
+    316.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.922,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    116.9,
+    497.6,
+    474.9,
+    705.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    117.7,
+    438.4,
+    440.4,
+    634.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    116.2,
+    216.5,
+    440.2,
+    410.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    118.2,
+    454.5,
+    440.2,
+    647.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.577,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    116.0,
+    124.8,
+    438.5,
+    308.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    117.2,
+    135.9,
+    472.9,
+    322.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    117.1,
+    510.9,
+    449.2,
+    696.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    112.2,
+    116.0,
+    439.6,
+    310.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 27. KPIF, KPIF exklusive energi och KPI"
+  },
+  {
+   "page": 42,
+   "bbox": [
+    113.4,
+    115.2,
+    447.1,
+    310.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    116.8,
+    149.3,
+    465.3,
+    350.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    117.4,
+    180.5,
+    468.4,
+    399.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.515,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    119.7,
+    335.5,
+    470.4,
+    570.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.818,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    117.1,
+    182.0,
+    468.3,
+    372.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Diagram 32. Inflationsförväntningar Procent"
+  },
+  {
+   "page": 51,
+   "bbox": [
+    114.2,
+    127.5,
+    478.6,
+    312.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    116.3,
+    517.5,
+    439.8,
+    684.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    117.1,
+    281.3,
+    449.3,
+    479.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.937,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    117.6,
+    194.0,
+    468.2,
+    397.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    114.8,
+    118.4,
+    440.1,
+    307.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    117.1,
+    518.2,
+    468.5,
+    714.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.961,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    96.4,
+    89.4,
+    497.0,
+    417.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    55.6,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.554,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 5.8,
+ "tool": "docling 2.130.0"
+}

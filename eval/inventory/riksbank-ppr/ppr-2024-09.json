@@ -1,0 +1,529 @@
+{
+ "name": "ppr-2024-09",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 63,
+ "pages_with_text": 63,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.8,
+    810.1
+   ],
+   "class": "photograph",
+   "confidence": 0.565,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    111.8,
+    127.7,
+    477.5,
+    527.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    116.4,
+    248.7,
+    466.8,
+    436.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    116.7,
+    526.4,
+    467.6,
+    716.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "Diagram 3. Inköpschefsindex inom tjänstebranscher och tillverkningsindustrier Index"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    116.8,
+    285.2,
+    468.0,
+    476.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.4,
+    223.2,
+    467.9,
+    413.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.5,
+    136.7,
+    468.5,
+    326.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    112.6,
+    116.1,
+    438.7,
+    323.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.732,
+   "caption": "Diagram 7. Styrräntor i omvärlden"
+  },
+  {
+   "page": 18,
+   "bbox": [
+    112.3,
+    116.6,
+    438.6,
+    309.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": "Diagram 8. Marknadens förväntningar på styrräntor i framtiden"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    116.6,
+    142.2,
+    468.7,
+    369.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    118.1,
+    250.6,
+    468.5,
+    454.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    112.8,
+    119.3,
+    439.4,
+    309.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    116.5,
+    136.7,
+    475.9,
+    337.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    114.2,
+    130.2,
+    468.9,
+    351.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Diagram 13. Utvecklingen av ett antal mindre valutor mot dollarn samt nominell växelkurs mot KIX4"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    117.7,
+    129.3,
+    438.2,
+    307.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    117.4,
+    125.0,
+    476.1,
+    338.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    114.6,
+    141.0,
+    447.8,
+    322.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    116.6,
+    287.9,
+    437.8,
+    464.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    116.6,
+    142.9,
+    468.7,
+    351.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "Anm. Fälten visar det högsta och lägsta utfallet bland 5 mått på underliggande inflation: UND24, Trim85, persistensviktad inflation (KPIFPV), faktor från principalkomponentanalys (KPIFPC) och viktad medianinflation (Trim1). Det högra diagrammet visar säsongsrensade månadsförändringar. I intervallet för månadsförändringarna har KPIFPV exkluderats."
+  },
+  {
+   "page": 30,
+   "bbox": [
+    113.5,
+    117.1,
+    438.2,
+    308.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": "Diagram 19. Prisplaner i Konjunkturbarometern"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    113.3,
+    406.0,
+    437.9,
+    595.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    118.1,
+    238.9,
+    446.5,
+    417.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    117.6,
+    503.1,
+    288.3,
+    689.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    298.7,
+    500.9,
+    473.0,
+    673.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    118.1,
+    275.9,
+    438.6,
+    484.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.528,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    117.8,
+    135.4,
+    291.0,
+    321.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    117.9,
+    129.4,
+    445.1,
+    310.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    118.1,
+    314.1,
+    446.0,
+    506.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    114.1,
+    118.8,
+    438.2,
+    322.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    113.5,
+    532.1,
+    439.0,
+    718.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    115.8,
+    363.7,
+    445.8,
+    548.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    116.0,
+    124.3,
+    443.0,
+    301.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    117.3,
+    370.8,
+    468.3,
+    558.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 31. Inflationsförväntningar Procent"
+  },
+  {
+   "page": 45,
+   "bbox": [
+    113.3,
+    442.2,
+    446.6,
+    635.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    112.9,
+    116.7,
+    447.1,
+    295.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 33. Prognos för real styrränta"
+  },
+  {
+   "page": 48,
+   "bbox": [
+    117.6,
+    131.5,
+    440.5,
+    325.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    115.4,
+    129.5,
+    475.9,
+    309.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.891,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    116.3,
+    196.9,
+    466.7,
+    414.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    112.9,
+    117.0,
+    439.0,
+    340.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 37. Prognos och alternativscenarier för styrräntan"
+  },
+  {
+   "page": 55,
+   "bbox": [
+    117.8,
+    453.9,
+    291.9,
+    634.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    300.4,
+    454.9,
+    466.4,
+    619.6
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    55.5,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.499,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 5.5,
+ "tool": "docling 2.130.0"
+}

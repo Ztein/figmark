@@ -1,0 +1,685 @@
+{
+ "name": "ppr-2023-11",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 68,
+ "pages_with_text": 68,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.8,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.585,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    121.5,
+    136.2,
+    188.5,
+    195.7
+   ],
+   "class": "icon",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.7,
+    245.8,
+    180.6,
+    305.5
+   ],
+   "class": "icon",
+   "confidence": 0.937,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    117.0,
+    383.2,
+    184.7,
+    443.0
+   ],
+   "class": "logo",
+   "confidence": 0.508,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    119.7,
+    506.3,
+    187.2,
+    567.0
+   ],
+   "class": "icon",
+   "confidence": 0.87,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    117.2,
+    348.1,
+    468.5,
+    535.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 1. Inflation Årlig procentuell förändring"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    112.9,
+    116.8,
+    438.6,
+    324.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.839,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    117.3,
+    135.7,
+    474.8,
+    323.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 3. Hushållens konsumtionsutgifter och bostadsinvesteringar Årlig procentuell förändring"
+  },
+  {
+   "page": 11,
+   "bbox": [
+    114.8,
+    118.9,
+    438.6,
+    325.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.774,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    115.8,
+    142.0,
+    468.6,
+    337.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    117.7,
+    135.2,
+    468.6,
+    337.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    112.4,
+    117.2,
+    444.1,
+    323.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 7. Inflationsförväntningar"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    112.8,
+    447.8,
+    447.4,
+    656.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    117.3,
+    130.5,
+    447.8,
+    339.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.891,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    117.1,
+    147.9,
+    469.4,
+    335.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    117.9,
+    462.8,
+    475.7,
+    650.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    112.4,
+    410.0,
+    476.7,
+    616.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "Diagram 12. Mått på global risk"
+  },
+  {
+   "page": 23,
+   "bbox": [
+    115.6,
+    136.1,
+    468.9,
+    338.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    117.5,
+    437.2,
+    438.7,
+    634.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    115.8,
+    136.1,
+    468.8,
+    338.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    118.0,
+    437.7,
+    438.2,
+    615.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    115.5,
+    351.3,
+    438.7,
+    536.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.973,
+   "caption": "Diagram 17. Styrräntor och styrränteförväntningar enligt marknadsprissättningen Procent"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    113.0,
+    117.1,
+    436.9,
+    308.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 18. Riksbankens styrränta och korta marknadsräntor"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    112.7,
+    428.7,
+    437.0,
+    616.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    118.8,
+    265.9,
+    470.5,
+    456.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    116.0,
+    348.5,
+    468.3,
+    535.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    104.8,
+    226.4,
+    503.9,
+    364.4
+   ],
+   "class": "flow_chart",
+   "confidence": 0.444,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    118.8,
+    196.5,
+    466.1,
+    398.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    112.4,
+    114.9,
+    447.3,
+    338.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": "Diagram 23. Hushållens och företagens upplåning"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    116.7,
+    457.8,
+    440.1,
+    667.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    112.2,
+    400.2,
+    478.8,
+    592.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    117.4,
+    282.6,
+    468.6,
+    482.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    117.6,
+    135.8,
+    466.5,
+    323.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    116.6,
+    128.6,
+    438.3,
+    308.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    117.5,
+    395.4,
+    438.1,
+    571.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    117.1,
+    224.0,
+    468.4,
+    427.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": "Diagram 30. Mått på underliggande inflation i Sverige Årlig procentuell förändring respektive månadsförändring i uppräknad årstakt"
+  },
+  {
+   "page": 46,
+   "bbox": [
+    117.1,
+    135.4,
+    468.9,
+    511.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    113.3,
+    118.5,
+    439.0,
+    309.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.782,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    118.2,
+    135.6,
+    456.6,
+    316.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    116.2,
+    333.8,
+    446.9,
+    519.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    117.3,
+    148.3,
+    480.9,
+    523.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.959,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    113.0,
+    116.6,
+    438.4,
+    309.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 36. KPIF, KPIF exklusive energi och KPI"
+  },
+  {
+   "page": 53,
+   "bbox": [
+    117.4,
+    311.3,
+    438.9,
+    489.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    117.4,
+    136.2,
+    471.1,
+    315.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    117.0,
+    414.2,
+    447.5,
+    599.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    115.4,
+    429.5,
+    439.2,
+    612.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    117.3,
+    215.9,
+    448.0,
+    396.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    117.2,
+    130.7,
+    446.8,
+    308.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 42. Räntekvot Hushållens ränteutgifter som andel av disponibel inkomst i procent"
+  },
+  {
+   "page": 58,
+   "bbox": [
+    116.2,
+    258.2,
+    438.2,
+    425.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    117.3,
+    127.1,
+    289.5,
+    322.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    117.6,
+    438.7,
+    473.2,
+    626.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    112.0,
+    115.1,
+    440.3,
+    307.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    117.7,
+    376.3,
+    468.3,
+    561.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    116.8,
+    174.9,
+    438.5,
+    355.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    55.5,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.499,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 6.1,
+ "tool": "docling 2.130.0"
+}

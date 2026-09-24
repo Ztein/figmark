@@ -1,0 +1,97 @@
+{
+ "name": "transformer-1706.03762",
+ "manifest": "papers",
+ "format": "pdf",
+ "language": "en",
+ "pages": 15,
+ "pages_with_text": 15,
+ "figures": [
+  {
+   "page": 3,
+   "bbox": [
+    195.7,
+    72.8,
+    416.2,
+    394.1
+   ],
+   "class": "flow_chart",
+   "confidence": 0.991,
+   "caption": "Figure 1: The Transformer - model architecture."
+  },
+  {
+   "page": 4,
+   "bbox": [
+    174.1,
+    93.7,
+    239.5,
+    219.4
+   ],
+   "class": "flow_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    346.6,
+    71.0,
+    466.9,
+    238.2
+   ],
+   "class": "flow_chart",
+   "confidence": 0.926,
+   "caption": "Figure2: (left)ScaledDot-ProductAttention. (right)Multi-HeadAttentionconsistsofseveral attention layers running in parallel."
+  },
+  {
+   "page": 13,
+   "bbox": [
+    106.3,
+    63.5,
+    503.7,
+    301.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.391,
+   "caption": "Figure 3: An example of the attention mechanism following long-distance dependencies in the encoder self-attention in layer 5 of 6. Many of the attention heads attend to a distant dependency of the verb 'making', completing the phrase 'making...more difficult'. Attentions here shown only for the word 'making'. Different colors represent different heads. Best viewed in color."
+  },
+  {
+   "page": 14,
+   "bbox": [
+    107.8,
+    170.2,
+    501.4,
+    604.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.659,
+   "caption": "Figure 4: Two attention heads, also in layer 5 of 6, apparently involved in anaphora resolution. Top: Full attentions for head 5. Bottom: Isolated attentions from just the word 'its' for attention heads 5 and 6. Note that the attentions are very sharp for this word."
+  },
+  {
+   "page": 15,
+   "bbox": [
+    124.5,
+    137.2,
+    276.1,
+    157.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.903,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    106.2,
+    185.1,
+    498.0,
+    590.1
+   ],
+   "class": "engineering_drawing",
+   "confidence": 0.432,
+   "caption": "Figure 5: Many of the attention heads exhibit behaviour that seems related to the structure of the sentence. We give two such examples above, from two different heads from the encoder self-attention at layer 5 of 6. The heads clearly learned to perform different tasks."
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 11.0,
+ "tool": "docling 2.130.0"
+}

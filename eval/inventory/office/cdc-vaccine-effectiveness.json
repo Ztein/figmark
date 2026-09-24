@@ -1,0 +1,11 @@
+{
+ "name": "cdc-vaccine-effectiveness",
+ "manifest": "office",
+ "format": "pptx",
+ "language": "en",
+ "pages": 2,
+ "images": 3,
+ "charts": 2,
+ "smartart": 0,
+ "tool": "zip"
+}

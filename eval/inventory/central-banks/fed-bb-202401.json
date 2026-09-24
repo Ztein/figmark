@@ -1,0 +1,193 @@
+{
+ "name": "fed-bb-202401",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 54,
+ "pages_with_text": 53,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    63.6,
+    99.5,
+    208.2,
+    243.8
+   ],
+   "class": "logo",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    73.8,
+    348.5,
+    603.6,
+    695.7
+   ],
+   "class": "geographical_map",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    88.8,
+    89.1,
+    438.6,
+    160.0
+   ],
+   "class": "logo",
+   "confidence": 0.947,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    88.7,
+    88.7,
+    438.3,
+    159.4
+   ],
+   "class": "logo",
+   "confidence": 0.938,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    88.7,
+    86.9,
+    431.0,
+    159.8
+   ],
+   "class": "logo",
+   "confidence": 0.895,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    88.7,
+    88.8,
+    438.9,
+    160.5
+   ],
+   "class": "logo",
+   "confidence": 0.892,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    88.3,
+    88.9,
+    408.7,
+    158.0
+   ],
+   "class": "logo",
+   "confidence": 0.838,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    89.2,
+    88.2,
+    426.2,
+    157.5
+   ],
+   "class": "logo",
+   "confidence": 0.916,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    88.7,
+    89.2,
+    435.9,
+    157.4
+   ],
+   "class": "logo",
+   "confidence": 0.854,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    88.7,
+    89.4,
+    437.2,
+    158.1
+   ],
+   "class": "logo",
+   "confidence": 0.925,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    89.0,
+    89.1,
+    433.1,
+    156.0
+   ],
+   "class": "logo",
+   "confidence": 0.896,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    88.4,
+    87.8,
+    186.8,
+    124.0
+   ],
+   "class": "icon",
+   "confidence": 0.581,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    88.7,
+    89.1,
+    429.2,
+    159.5
+   ],
+   "class": "logo",
+   "confidence": 0.945,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    88.8,
+    89.6,
+    434.6,
+    156.0
+   ],
+   "class": "logo",
+   "confidence": 0.964,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    263.5,
+    646.2,
+    346.9,
+    719.2
+   ],
+   "class": "logo",
+   "confidence": 0.87,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 4.1,
+ "tool": "docling 2.130.0"
+}

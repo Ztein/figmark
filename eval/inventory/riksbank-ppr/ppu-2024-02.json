@@ -1,0 +1,145 @@
+{
+ "name": "ppu-2024-02",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 10,
+ "pages_with_text": 9,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    266.0,
+    312.5,
+    578.3
+   ],
+   "class": "photograph",
+   "confidence": 0.674,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.4,
+    0.0,
+    565.4,
+    113.0
+   ],
+   "class": "logo",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    116.6,
+    171.2,
+    438.4,
+    353.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Diagram 1. Styrräntor och styrränteförväntningar enligt marknadsprissättning Procent"
+  },
+  {
+   "page": 6,
+   "bbox": [
+    115.4,
+    460.8,
+    468.0,
+    650.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.935,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    118.0,
+    135.7,
+    284.3,
+    339.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    117.3,
+    454.8,
+    284.2,
+    657.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    118.1,
+    135.9,
+    468.2,
+    322.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    117.0,
+    408.1,
+    437.8,
+    588.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    117.6,
+    136.2,
+    468.2,
+    331.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    118.0,
+    426.3,
+    447.7,
+    619.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.833,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    55.8,
+    713.7,
+    92.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.992,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 1.0,
+ "tool": "docling 2.130.0"
+}

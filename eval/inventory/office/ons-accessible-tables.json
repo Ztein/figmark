@@ -1,0 +1,11 @@
+{
+ "name": "ons-accessible-tables",
+ "manifest": "office",
+ "format": "xlsx",
+ "language": "en",
+ "pages": 7,
+ "images": 0,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

@@ -1,0 +1,1213 @@
+{
+ "name": "cnb-geo-chartbook-202511",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 23,
+ "pages_with_text": 23,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    59.7,
+    49.9,
+    160.7,
+    113.2
+   ],
+   "class": "logo",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    115.2,
+    269.0,
+    520.2,
+    782.9
+   ],
+   "class": "other",
+   "confidence": 0.651,
+   "caption": null
+  },
+  {
+   "page": 4,
+   "bbox": [
+    60.4,
+    106.4,
+    534.5,
+    741.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    81.0,
+    126.5,
+    295.4,
+    266.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    307.7,
+    143.4,
+    520.1,
+    265.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": "Inflation, %"
+  },
+  {
+   "page": 5,
+   "bbox": [
+    83.5,
+    275.9,
+    296.6,
+    310.4
+   ],
+   "class": "table",
+   "confidence": 0.879,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    80.7,
+    331.6,
+    295.9,
+    470.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    80.7,
+    563.4,
+    295.0,
+    688.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Newly created jobs (thousands)"
+  },
+  {
+   "page": 5,
+   "bbox": [
+    310.7,
+    348.6,
+    520.9,
+    456.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Interest Rates, %"
+  },
+  {
+   "page": 5,
+   "bbox": [
+    304.5,
+    568.2,
+    521.3,
+    703.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "International trade development, bil. USD"
+  },
+  {
+   "page": 6,
+   "bbox": [
+    81.2,
+    127.0,
+    295.5,
+    266.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.967,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    308.1,
+    143.8,
+    520.1,
+    266.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Inflation, %"
+  },
+  {
+   "page": 6,
+   "bbox": [
+    83.6,
+    276.1,
+    296.5,
+    310.5
+   ],
+   "class": "table",
+   "confidence": 0.706,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    309.1,
+    276.2,
+    522.2,
+    310.1
+   ],
+   "class": "table",
+   "confidence": 0.554,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    80.9,
+    332.6,
+    295.3,
+    468.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    84.8,
+    565.5,
+    294.5,
+    671.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "ESI leading indicators"
+  },
+  {
+   "page": 6,
+   "bbox": [
+    311.5,
+    332.4,
+    521.0,
+    455.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    311.8,
+    565.8,
+    521.7,
+    671.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Economic and inflation surprises in the euro area, %"
+  },
+  {
+   "page": 7,
+   "bbox": [
+    79.6,
+    112.1,
+    521.9,
+    307.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.927,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    83.3,
+    366.1,
+    524.3,
+    550.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    80.1,
+    609.5,
+    521.0,
+    794.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    80.5,
+    106.9,
+    295.8,
+    246.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    80.4,
+    350.2,
+    521.4,
+    535.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.967,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    79.7,
+    596.5,
+    522.0,
+    781.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    67.3,
+    138.8,
+    509.2,
+    322.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    61.6,
+    106.4,
+    290.1,
+    303.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    300.5,
+    103.8,
+    530.2,
+    310.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    58.9,
+    320.4,
+    288.5,
+    529.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    301.8,
+    330.0,
+    530.3,
+    467.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    299.7,
+    481.2,
+    524.9,
+    527.9
+   ],
+   "class": "table",
+   "confidence": 0.995,
+   "caption": "The Chinese renminbi (CNY/USD)"
+  },
+  {
+   "page": 10,
+   "bbox": [
+    58.3,
+    553.2,
+    288.3,
+    729.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    300.3,
+    554.4,
+    530.3,
+    729.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    76.2,
+    140.5,
+    304.6,
+    260.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": "Outlook for prices of oil (USD/barrel) and natural gas (USD / 1000 m³)"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    80.7,
+    353.6,
+    302.2,
+    485.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": "Non-energy commodities price indicies"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    316.4,
+    141.6,
+    542.1,
+    261.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Industrial stocks of oil and oil products in OECD (bil. barrel)"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    313.8,
+    350.9,
+    539.6,
+    479.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Food commodities"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    83.4,
+    559.8,
+    300.7,
+    682.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "Meat, non-food agricultural commodities"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    315.3,
+    555.5,
+    536.2,
+    682.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Basic metals and iron ore"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    68.2,
+    131.5,
+    548.7,
+    231.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    67.4,
+    269.0,
+    548.7,
+    394.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.911,
+   "caption": "ECB 2025 ECB 2026 CF IMF OECD Inflation in the euro area countries in 2025 and 2026, %"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    72.4,
+    579.5,
+    287.0,
+    717.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    299.7,
+    579.9,
+    512.8,
+    717.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.973,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    74.9,
+    728.0,
+    288.7,
+    762.4
+   ],
+   "class": "table",
+   "confidence": 0.783,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    301.3,
+    728.0,
+    515.1,
+    762.4
+   ],
+   "class": "table",
+   "confidence": 0.516,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    80.6,
+    101.0,
+    295.9,
+    241.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    308.0,
+    101.6,
+    521.5,
+    240.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    80.9,
+    336.6,
+    295.9,
+    476.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    306.9,
+    351.4,
+    521.2,
+    475.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Inflation, %"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    83.1,
+    485.1,
+    296.8,
+    520.5
+   ],
+   "class": "table",
+   "confidence": 0.843,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    309.6,
+    485.4,
+    523.4,
+    520.4
+   ],
+   "class": "table",
+   "confidence": 0.727,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    80.4,
+    578.4,
+    295.9,
+    718.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.963,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    306.9,
+    581.0,
+    521.5,
+    718.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    83.1,
+    727.5,
+    297.2,
+    763.0
+   ],
+   "class": "table",
+   "confidence": 0.845,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    72.9,
+    106.5,
+    288.2,
+    246.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    300.2,
+    106.6,
+    514.0,
+    246.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    75.4,
+    255.8,
+    289.3,
+    290.9
+   ],
+   "class": "table",
+   "confidence": 0.827,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    74.7,
+    338.6,
+    289.6,
+    478.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    301.6,
+    351.9,
+    516.2,
+    478.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Inflation, %"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    77.3,
+    488.1,
+    291.6,
+    523.2
+   ],
+   "class": "table",
+   "confidence": 0.789,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    80.0,
+    579.6,
+    296.4,
+    710.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "GDP growth, %"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    83.1,
+    719.9,
+    296.9,
+    754.8
+   ],
+   "class": "table",
+   "confidence": 0.83,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    307.7,
+    572.9,
+    521.4,
+    710.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    80.7,
+    101.5,
+    295.9,
+    240.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    307.6,
+    101.8,
+    521.5,
+    240.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    83.1,
+    250.5,
+    296.9,
+    285.2
+   ],
+   "class": "table",
+   "confidence": 0.834,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    71.0,
+    331.6,
+    287.0,
+    515.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    70.8,
+    583.2,
+    287.3,
+    767.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.957,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    298.6,
+    332.8,
+    511.9,
+    471.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    298.3,
+    584.5,
+    511.9,
+    722.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    80.6,
+    102.4,
+    295.8,
+    241.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    308.2,
+    102.9,
+    521.4,
+    241.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    83.0,
+    251.2,
+    296.6,
+    285.5
+   ],
+   "class": "table",
+   "confidence": 0.601,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    88.5,
+    334.1,
+    303.1,
+    473.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.964,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    314.9,
+    346.9,
+    529.1,
+    473.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "Inflation, %"
+  },
+  {
+   "page": 18,
+   "bbox": [
+    80.6,
+    578.2,
+    295.4,
+    717.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    306.4,
+    579.5,
+    520.3,
+    717.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    82.9,
+    727.2,
+    296.5,
+    761.6
+   ],
+   "class": "table",
+   "confidence": 0.712,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    80.1,
+    105.8,
+    295.0,
+    245.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    305.9,
+    106.4,
+    520.7,
+    245.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    82.5,
+    255.0,
+    296.1,
+    289.8
+   ],
+   "class": "table",
+   "confidence": 0.834,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    80.9,
+    343.6,
+    295.6,
+    479.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "GDP growth, %"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    83.2,
+    488.9,
+    296.7,
+    523.6
+   ],
+   "class": "table",
+   "confidence": 0.748,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    306.5,
+    347.4,
+    520.6,
+    479.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Inflation, %"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    74.1,
+    579.5,
+    288.6,
+    719.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    299.8,
+    596.4,
+    514.7,
+    718.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": "Inflation, %"
+  },
+  {
+   "page": 20,
+   "bbox": [
+    80.6,
+    101.4,
+    295.9,
+    240.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    308.2,
+    101.8,
+    521.2,
+    240.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    83.2,
+    250.0,
+    296.8,
+    284.9
+   ],
+   "class": "table",
+   "confidence": 0.782,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    309.5,
+    250.5,
+    523.4,
+    284.6
+   ],
+   "class": "table",
+   "confidence": 0.694,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    80.6,
+    342.1,
+    296.0,
+    480.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    307.3,
+    342.8,
+    521.3,
+    479.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.946,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    85.3,
+    574.9,
+    298.9,
+    712.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    311.5,
+    575.8,
+    525.3,
+    712.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    86.9,
+    722.4,
+    301.2,
+    757.0
+   ],
+   "class": "table",
+   "confidence": 0.79,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    74.8,
+    122.6,
+    517.2,
+    308.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    72.7,
+    359.9,
+    288.3,
+    500.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    299.6,
+    360.4,
+    514.1,
+    500.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    75.6,
+    509.8,
+    289.7,
+    545.1
+   ],
+   "class": "table",
+   "confidence": 0.6,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    301.6,
+    510.1,
+    515.8,
+    545.1
+   ],
+   "class": "table",
+   "confidence": 0.45,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    72.1,
+    603.4,
+    514.2,
+    789.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.963,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 4.2,
+ "tool": "docling 2.130.0"
+}

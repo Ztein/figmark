@@ -1,0 +1,11 @@
+{
+ "name": "poi-smartart",
+ "manifest": "office",
+ "format": "pptx",
+ "language": "en",
+ "pages": 1,
+ "images": 0,
+ "charts": 0,
+ "smartart": 1,
+ "tool": "zip"
+}

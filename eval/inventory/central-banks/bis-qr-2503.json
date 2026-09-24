@@ -1,0 +1,601 @@
+{
+ "name": "bis-qr-2503",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 116,
+ "pages_with_text": 114,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    0.0,
+    71.1,
+    594.9,
+    626.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 2,
+   "bbox": [
+    86.5,
+    439.7,
+    161.1,
+    513.4
+   ],
+   "class": "qr_code",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    75.4,
+    438.7,
+    538.8,
+    685.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.962,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    54.0,
+    483.7,
+    517.8,
+    704.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    74.8,
+    359.9,
+    539.4,
+    586.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.944,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    43.7,
+    333.6,
+    510.2,
+    574.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.93,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    55.1,
+    96.4,
+    518.7,
+    312.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.967,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    74.9,
+    99.8,
+    538.5,
+    319.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.932,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    75.3,
+    497.9,
+    539.3,
+    737.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.927,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    45.8,
+    256.6,
+    515.7,
+    555.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.867,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    54.2,
+    104.0,
+    517.4,
+    317.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.954,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    75.4,
+    80.1,
+    538.4,
+    365.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.587,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    53.7,
+    128.7,
+    517.5,
+    312.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.895,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    54.3,
+    82.6,
+    518.0,
+    321.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.554,
+   "caption": "TMT = technology, media and telecommunications."
+  },
+  {
+   "page": 28,
+   "bbox": [
+    75.1,
+    131.3,
+    538.6,
+    307.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.874,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    45.3,
+    462.1,
+    511.5,
+    632.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.955,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    55.2,
+    144.1,
+    203.5,
+    285.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    369.2,
+    144.3,
+    517.9,
+    286.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": "C. The cost of capital has converged"
+  },
+  {
+   "page": 33,
+   "bbox": [
+    211.9,
+    122.2,
+    360.8,
+    299.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.959,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    75.0,
+    491.8,
+    538.9,
+    693.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": "BDC = business development company; WACC = weighted average cost of capital."
+  },
+  {
+   "page": 40,
+   "bbox": [
+    75.4,
+    112.5,
+    539.0,
+    339.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    55.3,
+    101.2,
+    514.2,
+    312.6
+   ],
+   "class": "flow_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    74.9,
+    557.5,
+    539.2,
+    747.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    75.3,
+    426.9,
+    539.3,
+    657.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.964,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    75.2,
+    102.7,
+    539.5,
+    498.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.934,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    53.8,
+    118.8,
+    517.9,
+    309.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    74.5,
+    154.7,
+    539.6,
+    564.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.692,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    53.7,
+    433.3,
+    517.8,
+    654.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.707,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    54.1,
+    427.0,
+    518.0,
+    658.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.927,
+   "caption": "1 Includes funds with socially responsible investment mandates, an older designation. AUM = assets under management; ESG = environmental, social and governance; ETFs = exchange-traded funds. 2 Includes multi-asset, money market and alternative funds. 3 The lines show the simple average of spreads on a green bond over a conventional sovereign bond with identical characteristics issued by Germany and Denmark. For Germany, bonds maturing in 2025, 2027, 2029, 2030, 2031, 2033, 2050 and 2053. For Denmark, bonds maturing in 2031 and 2033. Dashed lines show sample averages. 4 Global yield to maturity of overall global index (Bloomberg GlobalAggregate) and green bond global index (Bloomberg MSCI Global Green Bond Index)."
+  },
+  {
+   "page": 69,
+   "bbox": [
+    54.2,
+    98.5,
+    517.9,
+    288.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.935,
+   "caption": "Heavy corporate GHG emitters account for small but growing share of green bonds Graph 3"
+  },
+  {
+   "page": 70,
+   "bbox": [
+    75.0,
+    160.3,
+    539.8,
+    367.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.607,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    74.9,
+    498.3,
+    537.9,
+    716.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.897,
+   "caption": null
+  },
+  {
+   "page": 73,
+   "bbox": [
+    53.7,
+    405.8,
+    518.3,
+    615.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.96,
+   "caption": null
+  },
+  {
+   "page": 87,
+   "bbox": [
+    54.3,
+    450.8,
+    517.8,
+    620.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.961,
+   "caption": null
+  },
+  {
+   "page": 89,
+   "bbox": [
+    53.8,
+    368.8,
+    518.0,
+    552.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 90,
+   "bbox": [
+    75.1,
+    522.6,
+    538.8,
+    722.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 92,
+   "bbox": [
+    75.2,
+    129.9,
+    302.6,
+    294.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.986,
+   "caption": "B. Simulated net flows vs Covid-19 experience, conditional on high-pressure episodes"
+  },
+  {
+   "page": 92,
+   "bbox": [
+    311.3,
+    129.6,
+    538.7,
+    293.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.929,
+   "caption": null
+  },
+  {
+   "page": 93,
+   "bbox": [
+    45.6,
+    445.0,
+    510.2,
+    617.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.511,
+   "caption": null
+  },
+  {
+   "page": 102,
+   "bbox": [
+    74.8,
+    100.7,
+    539.0,
+    336.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.945,
+   "caption": null
+  },
+  {
+   "page": 103,
+   "bbox": [
+    51.8,
+    337.4,
+    507.4,
+    495.1
+   ],
+   "class": "flow_chart",
+   "confidence": 0.765,
+   "caption": null
+  },
+  {
+   "page": 105,
+   "bbox": [
+    53.7,
+    127.0,
+    518.7,
+    333.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.788,
+   "caption": null
+  },
+  {
+   "page": 106,
+   "bbox": [
+    74.9,
+    88.2,
+    537.0,
+    330.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.907,
+   "caption": null
+  },
+  {
+   "page": 107,
+   "bbox": [
+    54.2,
+    96.8,
+    517.5,
+    303.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 108,
+   "bbox": [
+    75.2,
+    464.2,
+    300.4,
+    628.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.796,
+   "caption": null
+  },
+  {
+   "page": 108,
+   "bbox": [
+    311.3,
+    463.5,
+    536.6,
+    628.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.898,
+   "caption": null
+  },
+  {
+   "page": 109,
+   "bbox": [
+    54.2,
+    107.2,
+    517.0,
+    276.0
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.62,
+   "caption": null
+  },
+  {
+   "page": 110,
+   "bbox": [
+    75.8,
+    111.0,
+    538.3,
+    338.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 111,
+   "bbox": [
+    53.8,
+    125.6,
+    517.5,
+    335.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.64,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 12.1,
+ "tool": "docling 2.130.0"
+}

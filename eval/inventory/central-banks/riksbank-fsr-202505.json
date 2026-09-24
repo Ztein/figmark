@@ -1,0 +1,481 @@
+{
+ "name": "riksbank-fsr-202505",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 53,
+ "pages_with_text": 53,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.8,
+    271.1,
+    567.3,
+    805.6
+   ],
+   "class": "photograph",
+   "confidence": 0.536,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.2,
+    0.0,
+    565.0,
+    113.2
+   ],
+   "class": "logo",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    88.9,
+    135.0,
+    138.9,
+    185.3
+   ],
+   "class": "icon",
+   "confidence": 0.807,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    84.1,
+    229.3,
+    138.8,
+    280.1
+   ],
+   "class": "icon",
+   "confidence": 0.652,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    88.4,
+    342.0,
+    145.9,
+    398.1
+   ],
+   "class": "logo",
+   "confidence": 0.564,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    88.5,
+    452.6,
+    138.8,
+    517.3
+   ],
+   "class": "icon",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    87.5,
+    563.9,
+    140.2,
+    623.0
+   ],
+   "class": "logo",
+   "confidence": 0.72,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    88.1,
+    699.0,
+    139.0,
+    749.2
+   ],
+   "class": "icon",
+   "confidence": 0.808,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    118.1,
+    148.0,
+    456.5,
+    336.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    117.1,
+    135.3,
+    455.8,
+    324.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.7,
+    320.2,
+    456.2,
+    540.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.865,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.8,
+    420.1,
+    280.6,
+    609.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    297.2,
+    421.3,
+    459.4,
+    581.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    117.4,
+    394.4,
+    453.5,
+    583.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.905,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    117.5,
+    384.0,
+    438.4,
+    564.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    115.2,
+    287.2,
+    482.3,
+    565.3
+   ],
+   "class": "flow_chart",
+   "confidence": 0.969,
+   "caption": "Figur 1: Global osäkerhet och risker för realekonomin och finansiell stabilitet"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    117.2,
+    195.0,
+    459.6,
+    399.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.583,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    112.7,
+    117.4,
+    437.2,
+    309.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "Diagram 8. Andelen hushåll som skuldsätter sig och/eller nyttjar sparade medel Procent"
+  },
+  {
+   "page": 25,
+   "bbox": [
+    118.0,
+    238.2,
+    453.5,
+    441.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": "Diagram 9. Ekonomiska marginaler i olika bolånetagares kassaflöden Procent"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    112.4,
+    115.4,
+    451.7,
+    307.8
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    117.4,
+    135.3,
+    273.7,
+    308.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    117.0,
+    209.5,
+    445.7,
+    380.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.903,
+   "caption": "Diagram 12. Spridning i fastighetsföretagens nyckeltal Procent"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    122.5,
+    252.4,
+    459.8,
+    441.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": "Diagram 13. Fastighetsvärden och kontorsvakanser Procent"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    116.7,
+    176.8,
+    448.5,
+    348.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.972,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    116.6,
+    135.9,
+    453.4,
+    354.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.864,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    112.4,
+    426.8,
+    438.9,
+    619.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 16. Ägarandelar för säkerställda obligationer i svenska kronor"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    112.7,
+    295.3,
+    438.6,
+    488.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": "Diagram 17. Femåriga CDS-premier för banker"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    119.8,
+    333.8,
+    456.0,
+    522.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.849,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    118.2,
+    135.7,
+    457.5,
+    336.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.752,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    114.2,
+    118.9,
+    438.7,
+    309.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    117.9,
+    289.8,
+    453.9,
+    463.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    116.5,
+    364.5,
+    464.3,
+    567.4
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": "Diagram 22. Svenska icke-bankers innehav av aktier och obligationer i dollar Procent"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    116.7,
+    427.7,
+    439.8,
+    611.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.937,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    113.6,
+    254.8,
+    445.8,
+    445.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.96,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    116.1,
+    409.1,
+    445.9,
+    606.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    116.4,
+    146.3,
+    464.6,
+    367.5
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    117.6,
+    410.7,
+    457.0,
+    586.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.659,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    117.6,
+    135.6,
+    458.8,
+    309.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    55.8,
+    714.2,
+    181.5,
+    785.8
+   ],
+   "class": "logo",
+   "confidence": 0.709,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 4.5,
+ "tool": "docling 2.130.0"
+}

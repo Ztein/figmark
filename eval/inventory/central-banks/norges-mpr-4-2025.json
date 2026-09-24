@@ -1,0 +1,745 @@
+{
+ "name": "norges-mpr-4-2025",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 56,
+ "pages_with_text": 55,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    32.6,
+    32.6,
+    161.4,
+    66.0
+   ],
+   "class": "logo",
+   "confidence": 0.955,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    0.2,
+    417.7,
+    595.3,
+    841.3
+   ],
+   "class": "photograph",
+   "confidence": 0.833,
+   "caption": null
+  },
+  {
+   "page": 2,
+   "bbox": [
+    526.4,
+    705.3,
+    562.8,
+    765.6
+   ],
+   "class": "icon",
+   "confidence": 0.94,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    41.6,
+    240.0,
+    197.2,
+    396.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Output gap. Percent"
+  },
+  {
+   "page": 8,
+   "bbox": [
+    33.1,
+    639.8,
+    381.2,
+    768.9
+   ],
+   "class": "other",
+   "confidence": 0.579,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    40.6,
+    78.8,
+    362.7,
+    222.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    37.4,
+    611.5,
+    367.8,
+    748.7
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    394.1,
+    272.2,
+    426.8,
+    298.8
+   ],
+   "class": "icon",
+   "confidence": 0.938,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    36.7,
+    612.2,
+    369.0,
+    751.9
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    36.7,
+    80.5,
+    374.6,
+    218.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    36.7,
+    73.6,
+    369.0,
+    220.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    42.4,
+    82.9,
+    363.6,
+    218.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": "Uncertainty indicators"
+  },
+  {
+   "page": 13,
+   "bbox": [
+    34.3,
+    573.0,
+    420.4,
+    771.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    44.5,
+    465.9,
+    368.7,
+    602.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.981,
+   "caption": "2.1 Trading partner GDP Annual change. Percent"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    33.1,
+    637.6,
+    381.0,
+    763.5
+   ],
+   "class": "other",
+   "confidence": 0.607,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    42.9,
+    83.3,
+    363.9,
+    217.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    43.6,
+    616.4,
+    363.6,
+    754.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    43.4,
+    82.6,
+    197.4,
+    207.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    44.7,
+    614.4,
+    370.9,
+    751.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.582,
+   "caption": "Sources: Statistics Norway and Norges Bank"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    217.6,
+    82.8,
+    370.1,
+    209.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    43.4,
+    615.5,
+    364.0,
+    750.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    42.6,
+    86.3,
+    372.4,
+    219.8
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    45.3,
+    82.3,
+    371.7,
+    215.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    42.3,
+    82.7,
+    370.4,
+    218.4
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    42.5,
+    80.6,
+    362.4,
+    205.6
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    44.4,
+    81.3,
+    359.4,
+    219.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    40.2,
+    84.3,
+    364.8,
+    217.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    41.4,
+    80.0,
+    362.6,
+    216.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    43.4,
+    81.2,
+    364.4,
+    212.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    394.2,
+    33.2,
+    418.6,
+    57.7
+   ],
+   "class": "icon",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    43.2,
+    84.4,
+    363.9,
+    220.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    44.2,
+    86.2,
+    367.8,
+    221.8
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    45.1,
+    86.4,
+    369.3,
+    221.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    42.7,
+    598.5,
+    368.6,
+    745.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    64.6,
+    82.2,
+    331.6,
+    224.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.968,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    42.7,
+    86.4,
+    363.5,
+    221.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    42.0,
+    410.3,
+    372.2,
+    544.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    44.9,
+    620.9,
+    361.1,
+    753.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    42.9,
+    77.3,
+    360.3,
+    221.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    43.9,
+    299.7,
+    361.9,
+    435.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    42.5,
+    84.0,
+    363.6,
+    227.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    43.2,
+    617.9,
+    370.9,
+    763.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    394.0,
+    33.6,
+    418.8,
+    57.7
+   ],
+   "class": "icon",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    42.3,
+    83.1,
+    363.8,
+    216.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Sources: Bloomberg and Norges Bank"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    42.0,
+    86.3,
+    188.0,
+    206.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    216.6,
+    86.5,
+    363.6,
+    204.2
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    44.0,
+    83.5,
+    361.9,
+    218.4
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    43.0,
+    616.4,
+    358.6,
+    750.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    39.6,
+    69.6,
+    302.8,
+    222.3
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.943,
+   "caption": "Source: Norges Bank"
+  },
+  {
+   "page": 43,
+   "bbox": [
+    41.8,
+    93.2,
+    363.3,
+    217.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.925,
+   "caption": "Source: Norges Bank"
+  },
+  {
+   "page": 43,
+   "bbox": [
+    42.6,
+    323.4,
+    368.6,
+    451.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": "Source: Norges Bank"
+  },
+  {
+   "page": 44,
+   "bbox": [
+    42.7,
+    92.0,
+    363.7,
+    225.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    42.3,
+    322.2,
+    363.5,
+    456.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    42.2,
+    498.3,
+    192.8,
+    641.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    229.9,
+    509.8,
+    368.2,
+    641.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    34.5,
+    99.8,
+    378.9,
+    221.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.668,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    393.8,
+    33.2,
+    419.4,
+    58.2
+   ],
+   "class": "icon",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    214.7,
+    83.4,
+    368.7,
+    232.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.425,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    42.2,
+    81.2,
+    372.7,
+    229.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.925,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    526.5,
+    703.4,
+    562.2,
+    764.6
+   ],
+   "class": "icon",
+   "confidence": 0.939,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    33.1,
+    32.8,
+    67.2,
+    65.9
+   ],
+   "class": "logo",
+   "confidence": 0.861,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 6.0,
+ "tool": "docling 2.130.0"
+}

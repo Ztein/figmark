@@ -1,0 +1,11 @@
+{
+ "name": "cdc-epi-lesson",
+ "manifest": "office",
+ "format": "pptx",
+ "language": "en",
+ "pages": 19,
+ "images": 1,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

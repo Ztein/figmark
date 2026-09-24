@@ -1,0 +1,541 @@
+{
+ "name": "boe-mpr-202408",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 91,
+ "pages_with_text": 91,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    29.9,
+    346.4,
+    565.4,
+    812.5
+   ],
+   "class": "logo",
+   "confidence": 0.678,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    47.5,
+    469.5,
+    548.5,
+    738.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.96,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    47.9,
+    131.8,
+    547.8,
+    367.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.935,
+   "caption": "Chart 1.2: GDP growth projection based on market interest rate expectations, other policy measures as announced"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    47.4,
+    76.5,
+    548.4,
+    352.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    47.5,
+    76.7,
+    548.5,
+    368.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.956,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    64.4,
+    75.3,
+    533.3,
+    350.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.862,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    64.2,
+    76.1,
+    532.6,
+    333.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    48.8,
+    145.2,
+    548.3,
+    707.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.933,
+   "caption": "Chart 2.1: In the MPC's latest projections, GDP growth remains strong before falling back, the unemployment rate is flat, and CPI inflation rises moderately in the second half of this year Near-term projections (a)"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    47.6,
+    75.6,
+    548.6,
+    428.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.901,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    47.8,
+    75.6,
+    548.6,
+    369.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    47.5,
+    76.2,
+    548.0,
+    351.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    47.9,
+    75.7,
+    548.5,
+    318.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    47.8,
+    76.2,
+    548.4,
+    334.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.952,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    48.1,
+    163.1,
+    548.3,
+    485.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.973,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    49.5,
+    145.1,
+    546.6,
+    378.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.966,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    47.6,
+    213.3,
+    548.5,
+    488.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    47.5,
+    76.0,
+    548.5,
+    409.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    48.1,
+    370.0,
+    547.4,
+    671.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    47.9,
+    75.8,
+    548.5,
+    319.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.959,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    48.1,
+    267.5,
+    548.2,
+    541.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.94,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    48.4,
+    75.5,
+    548.0,
+    508.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.89,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    47.5,
+    224.4,
+    548.5,
+    516.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    47.3,
+    76.2,
+    548.5,
+    395.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.779,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    47.7,
+    76.1,
+    548.7,
+    365.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.957,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    47.7,
+    207.7,
+    548.1,
+    516.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    48.0,
+    341.5,
+    547.8,
+    649.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.951,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    47.4,
+    196.5,
+    548.5,
+    516.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    47.9,
+    76.3,
+    548.4,
+    336.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.914,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    47.9,
+    76.5,
+    548.3,
+    334.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.634,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    65.1,
+    146.5,
+    531.1,
+    472.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.557,
+   "caption": "(a) OIS rates are the overnight index swap rates and represent market expectations for Bank Rate. Data up to 22 July 2024 are included. Estimates are based on the standard treatment of the impact of changes in Bank Rate and Bank Rate expectations in the Bank's forecasting models. The effects of the estimated impact of changes in the OIS curve on sterling exchange rates have been excluded. Both the total impact and the decomposition are uncertain and could be higher or lower than presented here."
+  },
+  {
+   "page": 66,
+   "bbox": [
+    64.4,
+    75.6,
+    531.5,
+    291.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    64.9,
+    75.9,
+    531.3,
+    361.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.892,
+   "caption": null
+  },
+  {
+   "page": 69,
+   "bbox": [
+    65.4,
+    354.6,
+    530.6,
+    693.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    65.4,
+    459.0,
+    531.0,
+    707.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 78,
+   "bbox": [
+    47.8,
+    74.9,
+    548.3,
+    446.3
+   ],
+   "class": "bar_chart",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 80,
+   "bbox": [
+    47.8,
+    76.3,
+    548.5,
+    330.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.96,
+   "caption": null
+  },
+  {
+   "page": 81,
+   "bbox": [
+    47.8,
+    75.4,
+    548.5,
+    349.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": "(a) Absolute forecast errors are calculated as the absolute difference between the outturn in each quarter and the projection made at the time of the Monetary Policy Report one quarter and one year earlier respectively. For example, the final data points are the absolute differences between the 2024 Q2 CPI inflation outturn and the corresponding projections from the May 2024 Report and August 2023 Report."
+  },
+  {
+   "page": 82,
+   "bbox": [
+    47.5,
+    76.3,
+    548.4,
+    331.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.686,
+   "caption": null
+  },
+  {
+   "page": 83,
+   "bbox": [
+    47.6,
+    77.2,
+    548.4,
+    350.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": null
+  },
+  {
+   "page": 84,
+   "bbox": [
+    47.5,
+    76.3,
+    548.5,
+    380.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.648,
+   "caption": null
+  },
+  {
+   "page": 85,
+   "bbox": [
+    47.7,
+    291.8,
+    548.3,
+    546.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 86,
+   "bbox": [
+    48.0,
+    76.4,
+    548.0,
+    363.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.953,
+   "caption": null
+  },
+  {
+   "page": 87,
+   "bbox": [
+    48.1,
+    76.0,
+    548.4,
+    319.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.953,
+   "caption": null
+  },
+  {
+   "page": 88,
+   "bbox": [
+    48.0,
+    76.3,
+    548.1,
+    363.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 8.0,
+ "tool": "docling 2.130.0"
+}

@@ -1,0 +1,973 @@
+{
+ "name": "cnb-mpr-2025-autumn",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 46,
+ "pages_with_text": 45,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    70.0,
+    49.7,
+    171.5,
+    113.1
+   ],
+   "class": "logo",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    115.8,
+    271.6,
+    518.7,
+    781.9
+   ],
+   "class": "other",
+   "confidence": 0.629,
+   "caption": null
+  },
+  {
+   "page": 5,
+   "bbox": [
+    57.3,
+    694.2,
+    121.8,
+    725.1
+   ],
+   "class": "signature",
+   "confidence": 0.998,
+   "caption": "Aleš Michl Governor"
+  },
+  {
+   "page": 5,
+   "bbox": [
+    394.1,
+    132.3,
+    539.8,
+    277.3
+   ],
+   "class": "photograph",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    68.7,
+    114.3,
+    299.0,
+    264.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.821,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    312.2,
+    515.5,
+    534.1,
+    682.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Chart 1.1 US consumer confidence dropped following the announcement of tariffs in early 2025"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    313.7,
+    135.0,
+    536.6,
+    277.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.918,
+   "caption": "Chart 1.3"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    314.7,
+    365.8,
+    534.1,
+    519.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    314.2,
+    605.4,
+    536.0,
+    759.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    314.8,
+    135.5,
+    534.3,
+    299.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.857,
+   "caption": "Chart 1.6 Following a temporary slowdown next year, inflation will rise again in 2027"
+  },
+  {
+   "page": 10,
+   "bbox": [
+    314.4,
+    388.3,
+    534.5,
+    541.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "Chart 1.7 The market outlook expects rates to be broadly flat in the euro area; a rate cut is expected in the USA"
+  },
+  {
+   "page": 10,
+   "bbox": [
+    314.3,
+    630.7,
+    537.2,
+    775.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    314.1,
+    299.3,
+    533.5,
+    463.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.593,
+   "caption": "Growth in domestic economic activity will be above"
+  },
+  {
+   "page": 12,
+   "bbox": [
+    314.8,
+    552.7,
+    534.8,
+    694.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.806,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    314.5,
+    148.1,
+    534.3,
+    299.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": "Chart 2.4 Growth in nominal disposable income will slow"
+  },
+  {
+   "page": 13,
+   "bbox": [
+    313.9,
+    374.5,
+    531.6,
+    540.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.756,
+   "caption": "Chart 2.5"
+  },
+  {
+   "page": 13,
+   "bbox": [
+    314.2,
+    606.3,
+    533.8,
+    729.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    314.3,
+    135.2,
+    533.3,
+    283.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.738,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    313.9,
+    390.4,
+    534.6,
+    533.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Chart 2.8 Real general government consumption growth will decrease this year"
+  },
+  {
+   "page": 14,
+   "bbox": [
+    314.1,
+    621.6,
+    534.0,
+    785.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.652,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    314.1,
+    124.0,
+    533.7,
+    307.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.702,
+   "caption": "Chart 2.10"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    314.5,
+    405.7,
+    535.9,
+    561.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.944,
+   "caption": "Chart 2.11"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    314.0,
+    626.6,
+    533.9,
+    766.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    313.9,
+    123.6,
+    533.7,
+    287.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.917,
+   "caption": "Chart 2.13 Despite slowing, nominal wage growth will remain above-average from the long-term perspective"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    314.4,
+    459.6,
+    533.7,
+    624.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    314.0,
+    136.8,
+    533.7,
+    277.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    313.6,
+    399.0,
+    536.1,
+    518.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    314.7,
+    136.0,
+    533.5,
+    312.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.546,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    313.1,
+    558.2,
+    534.3,
+    729.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    58.2,
+    131.8,
+    284.1,
+    302.2
+   ],
+   "class": "bar_chart",
+   "confidence": 0.553,
+   "caption": "Chart 4 The import intensity of fixed investment stayed above 40% after 1990"
+  },
+  {
+   "page": 20,
+   "bbox": [
+    57.8,
+    374.7,
+    284.7,
+    542.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.53,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    299.4,
+    130.6,
+    525.9,
+    302.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.605,
+   "caption": "Chart 5 The import intensity of exports of goods and services reached an all-time high in 2022"
+  },
+  {
+   "page": 20,
+   "bbox": [
+    299.3,
+    373.2,
+    522.4,
+    539.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.54,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    313.4,
+    120.7,
+    534.1,
+    285.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.53,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    322.5,
+    262.4,
+    534.6,
+    399.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.715,
+   "caption": "Chart 3.2 The contribution of core inflation will remain slightly elevated in the coming quarters"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    314.0,
+    475.5,
+    532.0,
+    637.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.538,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    314.3,
+    146.4,
+    534.5,
+    299.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.697,
+   "caption": "Chart 3.4 The repercussions of the elevated growth in costs will foster further price growth in the coming quarters"
+  },
+  {
+   "page": 23,
+   "bbox": [
+    313.8,
+    373.1,
+    534.5,
+    524.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.501,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    314.4,
+    631.3,
+    534.4,
+    786.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.69,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    314.5,
+    146.3,
+    533.7,
+    282.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Chart 3.7 Core inflation will be just below 3% in the coming quarters amid an increased contribution of imputed"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    311.8,
+    356.8,
+    534.4,
+    526.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.527,
+   "caption": "rent"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    313.8,
+    605.1,
+    534.4,
+    759.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    313.4,
+    310.5,
+    535.8,
+    460.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.661,
+   "caption": "Chart 4.2"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    311.9,
+    551.2,
+    533.9,
+    726.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    313.0,
+    363.2,
+    535.2,
+    520.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.821,
+   "caption": "Chart 4.4 Most of the market was expecting rates to stay unchanged at the November meeting; the market outlook is roughly in line with the CNB forecast"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    312.8,
+    606.4,
+    535.7,
+    748.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    60.6,
+    160.5,
+    290.1,
+    330.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.634,
+   "caption": "summer forecast decomposition of changes in 3M PRIBOR forecast in pp"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    304.6,
+    161.3,
+    538.9,
+    307.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.943,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    314.9,
+    369.1,
+    536.4,
+    517.1
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    311.8,
+    605.4,
+    532.4,
+    757.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Chart 4.8 Domestic interest rates with longer maturities have risen slightly since the start of this year"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    311.6,
+    107.8,
+    535.7,
+    267.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": "Chart 4.9 The Czech government bond yield curve has moved a little higher; it is slightly rising"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    311.6,
+    340.2,
+    532.4,
+    532.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": "Interest rates on loans to corporations and loans for house purchase have not changed much following their previous decline"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    313.0,
+    601.1,
+    534.4,
+    776.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    313.5,
+    121.6,
+    531.8,
+    285.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Chart 4.13 M3 growth accelerated slightly in Q3 but remained moderate"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    314.3,
+    361.7,
+    531.8,
+    533.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.881,
+   "caption": "Chart 4.14"
+  },
+  {
+   "page": 31,
+   "bbox": [
+    313.8,
+    608.2,
+    533.9,
+    758.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.852,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    56.1,
+    241.6,
+    283.6,
+    378.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.838,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    55.8,
+    403.7,
+    283.8,
+    544.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.852,
+   "caption": "Output gap of selected trading partners"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    297.1,
+    239.6,
+    520.2,
+    377.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": "HICP of selected trading partners"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    296.8,
+    402.3,
+    520.5,
+    542.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.725,
+   "caption": "3M EURIBOR"
+  },
+  {
+   "page": 33,
+   "bbox": [
+    56.5,
+    198.2,
+    283.5,
+    339.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.934,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    296.7,
+    191.5,
+    520.4,
+    340.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.976,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    56.0,
+    360.4,
+    294.5,
+    552.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.801,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    296.8,
+    364.8,
+    520.8,
+    502.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.908,
+   "caption": "GDP y-o-y changes in %"
+  },
+  {
+   "page": 35,
+   "bbox": [
+    56.3,
+    259.1,
+    273.6,
+    396.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.946,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    55.6,
+    419.9,
+    318.7,
+    609.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.835,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    296.7,
+    248.8,
+    520.1,
+    396.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.962,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    298.4,
+    439.7,
+    520.4,
+    558.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.755,
+   "caption": "GDP y-o-y changes in %"
+  },
+  {
+   "page": 37,
+   "bbox": [
+    313.0,
+    239.3,
+    534.4,
+    414.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    57.8,
+    324.2,
+    282.7,
+    513.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.952,
+   "caption": "CZK billions; saving rate in %; seasonally adjusted"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    306.7,
+    334.9,
+    534.6,
+    524.5
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.776,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    58.3,
+    208.6,
+    281.9,
+    401.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.539,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    308.5,
+    209.3,
+    531.9,
+    398.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.665,
+   "caption": "Note: The decomposition of the saving rate into factors is based on a simple regression model. In the model, the saving rate depends on the Stringency Index (anti-pandemic measures), consumer sentiment (precautionary motive) and real interest rates (3M PRIBOR adjusted for inflation expected by financial analysts one year ahead)."
+  },
+  {
+   "page": 40,
+   "bbox": [
+    58.7,
+    138.9,
+    287.0,
+    329.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    307.0,
+    127.8,
+    535.1,
+    346.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    58.7,
+    549.2,
+    284.3,
+    747.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.818,
+   "caption": "Chart 8"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    307.7,
+    560.6,
+    532.0,
+    744.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    58.0,
+    318.1,
+    282.1,
+    496.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    307.7,
+    331.3,
+    534.3,
+    515.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.589,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    50.5,
+    717.8,
+    126.7,
+    766.3
+   ],
+   "class": "logo",
+   "confidence": 1.0,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 5.0,
+ "tool": "docling 2.130.0"
+}

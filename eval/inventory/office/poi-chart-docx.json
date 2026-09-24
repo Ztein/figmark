@@ -1,0 +1,11 @@
+{
+ "name": "poi-chart-docx",
+ "manifest": "office",
+ "format": "docx",
+ "language": "en",
+ "pages": 3,
+ "images": 2,
+ "charts": 6,
+ "smartart": 0,
+ "tool": "zip"
+}

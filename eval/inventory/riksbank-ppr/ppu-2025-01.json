@@ -1,0 +1,181 @@
+{
+ "name": "ppu-2025-01",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 13,
+ "pages_with_text": 13,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    0.1,
+    265.9,
+    312.5,
+    578.7
+   ],
+   "class": "photograph",
+   "confidence": 0.547,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.4,
+    0.0,
+    565.2,
+    113.2
+   ],
+   "class": "logo",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    117.8,
+    180.3,
+    467.9,
+    367.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 7,
+   "bbox": [
+    116.3,
+    461.1,
+    437.4,
+    645.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    118.4,
+    130.0,
+    437.0,
+    309.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    117.0,
+    411.5,
+    469.1,
+    615.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    113.3,
+    116.7,
+    446.8,
+    308.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 5. Anställningsplaner i näringslivet"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    117.7,
+    417.9,
+    438.4,
+    597.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    117.0,
+    135.7,
+    472.1,
+    338.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    117.5,
+    442.2,
+    468.2,
+    629.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    113.6,
+    116.2,
+    439.6,
+    306.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": "Diagram 9. Prisplaner i Konjunkturbarometern"
+  },
+  {
+   "page": 11,
+   "bbox": [
+    114.9,
+    406.0,
+    439.4,
+    591.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    113.3,
+    129.7,
+    468.2,
+    336.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 11. Nominell växelkurs för den svenska kronan mot KIX4 samt mot dollar och euro"
+  },
+  {
+   "page": 13,
+   "bbox": [
+    55.6,
+    713.7,
+    92.4,
+    786.2
+   ],
+   "class": "logo",
+   "confidence": 0.996,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 1.2,
+ "tool": "docling 2.130.0"
+}

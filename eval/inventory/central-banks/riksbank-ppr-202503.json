@@ -1,0 +1,517 @@
+{
+ "name": "riksbank-ppr-202503",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 65,
+ "pages_with_text": 65,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.2,
+    567.8,
+    810.1
+   ],
+   "class": "photograph",
+   "confidence": 0.565,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    110.7,
+    127.0,
+    477.1,
+    543.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    114.9,
+    272.7,
+    472.8,
+    465.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    117.6,
+    223.3,
+    462.3,
+    410.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.2,
+    136.2,
+    471.2,
+    321.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.3,
+    135.1,
+    462.9,
+    321.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    115.3,
+    120.3,
+    438.3,
+    323.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    116.0,
+    126.8,
+    468.7,
+    337.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    114.8,
+    138.7,
+    472.1,
+    336.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    116.8,
+    147.7,
+    468.0,
+    349.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    112.9,
+    117.2,
+    473.5,
+    335.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 10. Nominell växelkurs mot KIX4 samt ett antal mindre valutor mot dollarn"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    112.5,
+    237.9,
+    446.8,
+    445.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    118.2,
+    190.8,
+    446.8,
+    398.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    116.9,
+    344.1,
+    438.2,
+    535.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    112.4,
+    127.6,
+    509.2,
+    553.3
+   ],
+   "class": "table",
+   "confidence": 0.648,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    116.2,
+    122.5,
+    441.4,
+    338.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    112.2,
+    116.4,
+    438.3,
+    369.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "Diagram 16. Olika mått på underliggande inflation"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    117.6,
+    303.6,
+    446.9,
+    495.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    112.7,
+    115.5,
+    474.3,
+    324.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 18. KPIF och HIKP exklusive energi"
+  },
+  {
+   "page": 34,
+   "bbox": [
+    118.3,
+    471.1,
+    292.8,
+    656.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    302.7,
+    469.6,
+    477.5,
+    642.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    115.9,
+    460.1,
+    468.1,
+    671.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    113.2,
+    239.5,
+    439.4,
+    459.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.63,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    117.1,
+    135.8,
+    476.4,
+    321.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    116.7,
+    490.5,
+    447.9,
+    692.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.958,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    112.4,
+    116.3,
+    438.6,
+    322.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    118.8,
+    131.5,
+    438.5,
+    323.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.636,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    114.7,
+    116.2,
+    447.7,
+    321.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": "Diagram 26. Nominell växelkurs"
+  },
+  {
+   "page": 43,
+   "bbox": [
+    117.6,
+    284.2,
+    471.8,
+    513.9
+   ],
+   "class": "bar_chart",
+   "confidence": 1.0,
+   "caption": "Diagram 27. Företagens svar på frågor om importtullar och handelshinder Procent"
+  },
+  {
+   "page": 46,
+   "bbox": [
+    117.2,
+    542.4,
+    467.8,
+    731.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.953,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    117.5,
+    135.7,
+    285.0,
+    317.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    301.1,
+    135.3,
+    467.2,
+    301.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.96,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    116.8,
+    136.6,
+    469.3,
+    328.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Diagram 30. Inflationsförväntningar Procent"
+  },
+  {
+   "page": 50,
+   "bbox": [
+    113.1,
+    227.4,
+    478.1,
+    396.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.962,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    118.4,
+    499.6,
+    438.1,
+    662.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    113.8,
+    409.9,
+    439.1,
+    631.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.977,
+   "caption": "Diagram 33. Riksbankens innehav av värdepapper"
+  },
+  {
+   "page": 57,
+   "bbox": [
+    116.3,
+    458.8,
+    467.5,
+    659.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    113.2,
+    116.1,
+    439.0,
+    323.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 35. Prognos och alternativscenarier för styrräntan"
+  },
+  {
+   "page": 60,
+   "bbox": [
+    113.8,
+    274.7,
+    446.1,
+    484.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": "Diagram 36. Index för svensk och global geopolitisk risk"
+  },
+  {
+   "page": 61,
+   "bbox": [
+    115.1,
+    219.9,
+    439.9,
+    428.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.955,
+   "caption": "Diagram 37. Effekten på KPIF av ökad geopolitisk risk"
+  },
+  {
+   "page": 65,
+   "bbox": [
+    55.6,
+    713.9,
+    211.1,
+    786.1
+   ],
+   "class": "logo",
+   "confidence": 0.554,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 5.6,
+ "tool": "docling 2.130.0"
+}

@@ -1,0 +1,829 @@
+{
+ "name": "ppr-2021-02",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 84,
+ "pages_with_text": 84,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.7,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.589,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.1,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    116.4,
+    172.1,
+    169.8,
+    225.3
+   ],
+   "class": "icon",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.0,
+    284.9,
+    169.2,
+    334.2
+   ],
+   "class": "logo",
+   "confidence": 0.594,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.1,
+    399.7,
+    171.8,
+    451.9
+   ],
+   "class": "icon",
+   "confidence": 0.841,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.3,
+    509.4,
+    177.6,
+    561.2
+   ],
+   "class": "icon",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    137.3,
+    194.2,
+    433.9,
+    384.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.965,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    137.9,
+    519.6,
+    434.9,
+    708.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    146.8,
+    480.5,
+    435.0,
+    670.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    129.4,
+    406.9,
+    434.9,
+    618.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.96,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    138.0,
+    333.5,
+    435.0,
+    507.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    146.8,
+    133.0,
+    434.8,
+    320.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    134.9,
+    135.3,
+    434.4,
+    347.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": "Diagram 7. Ränteskillnad mellan olika obligationsslag och statsobligationer Procentenheter"
+  },
+  {
+   "page": 15,
+   "bbox": [
+    147.1,
+    133.2,
+    435.0,
+    307.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.667,
+   "caption": "Diagram 8. Reporänta med osäkerhetsintervall Procent"
+  },
+  {
+   "page": 16,
+   "bbox": [
+    133.1,
+    237.7,
+    434.4,
+    411.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    132.4,
+    134.5,
+    434.7,
+    353.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": "Diagram 10. Riksbankens innehav av värdepapper uppdelat på tillgångsslag Nominellt belopp, miljarder kronor"
+  },
+  {
+   "page": 18,
+   "bbox": [
+    126.1,
+    134.1,
+    434.5,
+    287.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    133.3,
+    332.9,
+    434.7,
+    532.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.892,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    133.2,
+    457.5,
+    434.5,
+    654.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    147.5,
+    226.0,
+    434.9,
+    414.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.966,
+   "caption": "Diagram 14. Styrräntor och ränteförväntningar enligt terminsprissättning Procent"
+  },
+  {
+   "page": 25,
+   "bbox": [
+    127.2,
+    532.3,
+    434.7,
+    731.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.95,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    126.5,
+    321.6,
+    435.1,
+    520.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    147.1,
+    219.5,
+    435.0,
+    409.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 28,
+   "bbox": [
+    149.7,
+    207.0,
+    434.9,
+    394.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    133.7,
+    147.4,
+    434.6,
+    344.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    125.5,
+    117.6,
+    435.1,
+    349.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    137.9,
+    132.3,
+    435.0,
+    287.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    112.4,
+    116.8,
+    434.5,
+    330.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": "Diagram 22. Reporäntan och bankernas finansieringsräntor"
+  },
+  {
+   "page": 33,
+   "bbox": [
+    146.7,
+    145.8,
+    435.0,
+    375.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    141.5,
+    132.2,
+    435.4,
+    336.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    135.3,
+    135.1,
+    434.4,
+    319.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    127.7,
+    134.0,
+    438.5,
+    320.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.979,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    142.7,
+    429.2,
+    434.9,
+    632.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    111.5,
+    280.6,
+    434.6,
+    501.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": "Diagram 28. Marknadsmått på långsiktiga inflationsförväntningar"
+  },
+  {
+   "page": 39,
+   "bbox": [
+    137.7,
+    134.7,
+    433.6,
+    353.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    133.3,
+    134.4,
+    434.7,
+    319.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.965,
+   "caption": "Diagram 30. Mått på grad av statliga restriktioner för att dämpa smittspridningen Index"
+  },
+  {
+   "page": 41,
+   "bbox": [
+    136.3,
+    192.6,
+    435.0,
+    382.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    137.7,
+    132.3,
+    434.8,
+    320.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    132.9,
+    134.9,
+    433.7,
+    337.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    137.3,
+    134.8,
+    434.2,
+    333.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": "Diagram 34. Inköpschefsindex i Sverige och omvärlden Index"
+  },
+  {
+   "page": 45,
+   "bbox": [
+    146.4,
+    205.9,
+    435.1,
+    395.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    136.9,
+    277.5,
+    433.7,
+    480.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    137.9,
+    132.5,
+    434.8,
+    334.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    133.2,
+    552.1,
+    433.8,
+    741.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    137.6,
+    489.7,
+    434.8,
+    691.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    120.7,
+    208.8,
+    434.6,
+    393.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    137.0,
+    233.5,
+    435.0,
+    423.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.629,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    143.5,
+    132.2,
+    434.9,
+    335.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    125.2,
+    440.2,
+    458.7,
+    631.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    142.7,
+    132.3,
+    434.8,
+    350.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    113.0,
+    115.7,
+    449.0,
+    322.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 45. Nyanmälda lediga platser och varsel"
+  },
+  {
+   "page": 56,
+   "bbox": [
+    140.9,
+    132.9,
+    445.7,
+    350.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    148.5,
+    131.9,
+    434.8,
+    287.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    141.6,
+    379.2,
+    434.4,
+    532.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    140.9,
+    375.0,
+    434.6,
+    546.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    146.6,
+    367.7,
+    434.8,
+    557.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    139.2,
+    332.5,
+    435.2,
+    511.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    124.6,
+    383.8,
+    434.5,
+    546.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    131.2,
+    437.0,
+    454.8,
+    633.6
+   ],
+   "class": "bar_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    126.7,
+    388.9,
+    434.5,
+    542.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 69,
+   "bbox": [
+    132.3,
+    135.0,
+    434.7,
+    346.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    131.5,
+    194.3,
+    434.6,
+    407.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    138.0,
+    135.0,
+    434.4,
+    327.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 72,
+   "bbox": [
+    142.1,
+    353.9,
+    434.2,
+    553.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 74,
+   "bbox": [
+    112.6,
+    203.0,
+    436.6,
+    370.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "Diagram 59. Uppskattad skillnad mellan KPIF-inflationen beräknad med vikter från 2020 och med vikter från 2018"
+  },
+  {
+   "page": 76,
+   "bbox": [
+    134.0,
+    180.9,
+    434.6,
+    355.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 79,
+   "bbox": [
+    143.5,
+    442.8,
+    435.0,
+    661.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 84,
+   "bbox": [
+    55.8,
+    713.8,
+    92.1,
+    786.0
+   ],
+   "class": "logo",
+   "confidence": 0.992,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 7.5,
+ "tool": "docling 2.130.0"
+}

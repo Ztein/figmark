@@ -1,0 +1,11 @@
+{
+ "name": "skr-patientsakerhet",
+ "manifest": "office",
+ "format": "pptx",
+ "language": "sv",
+ "pages": 10,
+ "images": 5,
+ "charts": 0,
+ "smartart": 1,
+ "tool": "zip"
+}

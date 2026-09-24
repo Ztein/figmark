@@ -1,0 +1,11 @@
+{
+ "name": "socialstyrelsen-covid",
+ "manifest": "office",
+ "format": "xlsx",
+ "language": "sv",
+ "pages": 12,
+ "images": 1,
+ "charts": 8,
+ "smartart": 0,
+ "tool": "zip"
+}

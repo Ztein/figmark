@@ -1,0 +1,11 @@
+{
+ "name": "skr-pub-avtal",
+ "manifest": "office",
+ "format": "docx",
+ "language": "sv",
+ "pages": 18,
+ "images": 2,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

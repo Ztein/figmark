@@ -1,0 +1,11 @@
+{
+ "name": "skr-arsplanering",
+ "manifest": "office",
+ "format": "pptx",
+ "language": "sv",
+ "pages": 2,
+ "images": 1,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

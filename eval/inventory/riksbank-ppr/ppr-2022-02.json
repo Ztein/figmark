@@ -1,0 +1,793 @@
+{
+ "name": "ppr-2022-02",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 77,
+ "pages_with_text": 76,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.7,
+    810.3
+   ],
+   "class": "photograph",
+   "confidence": 0.585,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.0,
+    173.9,
+    169.3,
+    223.9
+   ],
+   "class": "logo",
+   "confidence": 0.675,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.0,
+    270.2,
+    173.2,
+    322.7
+   ],
+   "class": "icon",
+   "confidence": 0.944,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.0,
+    383.9,
+    173.0,
+    437.2
+   ],
+   "class": "icon",
+   "confidence": 0.94,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    119.7,
+    493.3,
+    178.0,
+    545.9
+   ],
+   "class": "icon",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 8,
+   "bbox": [
+    117.4,
+    400.3,
+    446.7,
+    571.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 1. BNP i Sverige och omvärlden Index, 2019 kv4 = 100, säsongsrensade data"
+  },
+  {
+   "page": 9,
+   "bbox": [
+    119.0,
+    223.8,
+    448.3,
+    393.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    118.8,
+    516.7,
+    448.1,
+    687.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    120.4,
+    141.0,
+    292.8,
+    309.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    302.8,
+    141.1,
+    477.8,
+    296.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    118.4,
+    441.0,
+    447.1,
+    613.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    118.6,
+    133.6,
+    446.5,
+    304.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    117.2,
+    134.1,
+    446.4,
+    304.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    115.7,
+    123.8,
+    446.3,
+    321.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    118.3,
+    136.0,
+    446.6,
+    303.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.843,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    118.0,
+    417.6,
+    438.1,
+    603.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.686,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    117.8,
+    237.8,
+    438.6,
+    424.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    119.4,
+    133.9,
+    438.6,
+    304.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.978,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    118.8,
+    442.0,
+    446.7,
+    613.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.887,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    118.6,
+    182.1,
+    445.0,
+    385.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.853,
+   "caption": null
+  },
+  {
+   "page": 25,
+   "bbox": [
+    117.8,
+    135.8,
+    440.8,
+    302.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 27,
+   "bbox": [
+    119.5,
+    135.7,
+    441.1,
+    309.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.975,
+   "caption": "Diagram 16. Styrräntor och ränteförväntningar enligt terminsprissättning Procent"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    117.5,
+    135.0,
+    441.3,
+    309.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.9,
+   "caption": "Miljarder kronor"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    118.7,
+    135.0,
+    441.1,
+    304.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    113.3,
+    116.5,
+    466.8,
+    312.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    117.1,
+    146.1,
+    434.3,
+    321.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 32,
+   "bbox": [
+    117.0,
+    181.7,
+    441.2,
+    369.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    117.1,
+    146.9,
+    436.1,
+    318.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    117.8,
+    135.8,
+    440.9,
+    301.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    118.1,
+    134.4,
+    434.4,
+    303.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    117.0,
+    134.3,
+    441.1,
+    337.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.88,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    119.3,
+    474.6,
+    449.1,
+    688.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    118.4,
+    395.0,
+    450.4,
+    579.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    117.7,
+    252.1,
+    447.5,
+    429.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.989,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    120.9,
+    135.0,
+    440.9,
+    304.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    117.7,
+    135.3,
+    437.7,
+    306.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    117.5,
+    538.1,
+    448.0,
+    708.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    117.9,
+    135.6,
+    448.0,
+    305.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    117.8,
+    279.6,
+    443.2,
+    450.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    118.0,
+    135.1,
+    446.8,
+    320.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 45,
+   "bbox": [
+    118.0,
+    312.7,
+    448.8,
+    489.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    117.4,
+    181.5,
+    447.4,
+    349.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Diagram 36. Andelen små företag som uppger att de inte kan fylla vakanser i USA Procent, säsongsrensade data"
+  },
+  {
+   "page": 48,
+   "bbox": [
+    117.3,
+    237.1,
+    446.7,
+    407.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    118.9,
+    135.2,
+    447.2,
+    306.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.869,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    117.5,
+    526.3,
+    442.4,
+    711.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    117.8,
+    134.2,
+    446.6,
+    328.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.837,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    118.5,
+    135.1,
+    448.1,
+    312.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.985,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    118.8,
+    195.4,
+    447.4,
+    371.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    117.1,
+    363.5,
+    445.8,
+    566.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    118.7,
+    134.0,
+    446.6,
+    304.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    119.5,
+    195.3,
+    442.8,
+    372.4
+   ],
+   "class": "bar_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    117.7,
+    135.6,
+    447.6,
+    304.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    118.6,
+    223.1,
+    444.2,
+    424.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.792,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    118.1,
+    194.3,
+    438.5,
+    365.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    116.9,
+    122.9,
+    448.6,
+    311.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.968,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    117.4,
+    123.5,
+    447.9,
+    305.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    117.7,
+    130.6,
+    448.1,
+    306.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 64,
+   "bbox": [
+    119.1,
+    134.4,
+    447.6,
+    312.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 67,
+   "bbox": [
+    118.6,
+    133.9,
+    443.9,
+    305.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    117.9,
+    134.7,
+    446.5,
+    306.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 68,
+   "bbox": [
+    115.5,
+    466.0,
+    446.4,
+    638.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 70,
+   "bbox": [
+    118.4,
+    134.2,
+    443.9,
+    306.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 73,
+   "bbox": [
+    115.9,
+    361.7,
+    472.0,
+    562.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.991,
+   "caption": "Källor: SCB och Riksbanken."
+  },
+  {
+   "page": 77,
+   "bbox": [
+    55.5,
+    713.8,
+    211.3,
+    786.2
+   ],
+   "class": "logo",
+   "confidence": 0.486,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 6.9,
+ "tool": "docling 2.130.0"
+}

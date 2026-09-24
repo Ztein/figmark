@@ -1,0 +1,1081 @@
+{
+ "name": "boj-outlook-2501",
+ "manifest": "central-banks",
+ "format": "pdf",
+ "language": "en",
+ "pages": 62,
+ "pages_with_text": 61,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    406.7,
+    124.5,
+    518.9,
+    150.1
+   ],
+   "class": "logo",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    272.2,
+    303.1,
+    594.7,
+    719.5
+   ],
+   "class": "logo",
+   "confidence": 0.672,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    77.4,
+    129.4,
+    541.9,
+    375.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    78.1,
+    403.8,
+    541.8,
+    650.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.973,
+   "caption": "Notes: 1. The solid lines show actual figures, while the dotted lines show the medians of the Policy Board members' forecasts (point estimates)."
+  },
+  {
+   "page": 13,
+   "bbox": [
+    302.9,
+    179.9,
+    516.6,
+    370.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 1:Real GDP 1. Level"
+  },
+  {
+   "page": 13,
+   "bbox": [
+    301.1,
+    399.2,
+    539.1,
+    596.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.671,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    300.8,
+    77.6,
+    536.4,
+    270.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.885,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    300.7,
+    88.6,
+    516.3,
+    289.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.694,
+   "caption": "Chart 3:Potential Growth Rate"
+  },
+  {
+   "page": 18,
+   "bbox": [
+    303.3,
+    155.2,
+    534.0,
+    341.8
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 4:Public Investment"
+  },
+  {
+   "page": 18,
+   "bbox": [
+    302.3,
+    451.7,
+    516.8,
+    634.5
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 5:Overseas Economies"
+  },
+  {
+   "page": 19,
+   "bbox": [
+    300.5,
+    76.5,
+    524.4,
+    289.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 19,
+   "bbox": [
+    302.0,
+    400.1,
+    517.4,
+    583.8
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    300.7,
+    74.9,
+    532.9,
+    291.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.98,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    301.7,
+    300.5,
+    537.1,
+    506.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    300.9,
+    543.9,
+    537.1,
+    748.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 21,
+   "bbox": [
+    302.6,
+    94.3,
+    539.5,
+    291.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.622,
+   "caption": "Chart 12:Number of Inbound Visitors"
+  },
+  {
+   "page": 21,
+   "bbox": [
+    303.6,
+    332.5,
+    539.0,
+    516.0
+   ],
+   "class": "bar_chart",
+   "confidence": 0.871,
+   "caption": null
+  },
+  {
+   "page": 22,
+   "bbox": [
+    300.5,
+    72.9,
+    539.3,
+    286.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.533,
+   "caption": "Chart 14:Industrial Production"
+  },
+  {
+   "page": 22,
+   "bbox": [
+    301.7,
+    336.1,
+    516.7,
+    521.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    301.4,
+    93.2,
+    533.5,
+    285.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.967,
+   "caption": "Chart 15:Indicators Related to Corporate Profits"
+  },
+  {
+   "page": 23,
+   "bbox": [
+    300.7,
+    339.1,
+    518.2,
+    530.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.871,
+   "caption": "Notes: 1. The contribution of changes in commodity prices, etc. is calculated using changes in export/import price indexes on a contract currency basis. The contribution of changes in exchange rates is calculated using the difference between export/import price indexes on a yen basis and those on a contract currency basis. 2. Termsof trade= Export price index ona yen basis / Import price index ona yen basis"
+  },
+  {
+   "page": 24,
+   "bbox": [
+    300.0,
+    75.9,
+    517.4,
+    278.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.928,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    302.7,
+    123.1,
+    538.3,
+    313.6
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 17:Coincident Indicators of Business Fixed Investment"
+  },
+  {
+   "page": 26,
+   "bbox": [
+    305.0,
+    523.9,
+    517.0,
+    708.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 18:Leading Indicators of Business Fixed Investment"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    303.2,
+    97.7,
+    517.1,
+    283.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Chart 19:Planned and Actual Business Fixed Investment"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    304.4,
+    93.0,
+    538.8,
+    284.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.944,
+   "caption": "Chart 20:CapitalStock Cycles"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    299.9,
+    493.3,
+    538.3,
+    683.3
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 21:Number of Employed Persons"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    302.1,
+    96.6,
+    533.5,
+    290.2
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 22:Unemployment Rate and Labor Force Participation Rate"
+  },
+  {
+   "page": 29,
+   "bbox": [
+    301.5,
+    331.9,
+    517.2,
+    517.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Chart23:Various Measures of Labor Market Conditions"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    309.5,
+    93.3,
+    538.8,
+    272.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.575,
+   "caption": "Chart 24:Nominal Wages"
+  },
+  {
+   "page": 30,
+   "bbox": [
+    306.4,
+    342.9,
+    518.0,
+    525.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    306.4,
+    92.3,
+    516.1,
+    259.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.784,
+   "caption": "Chart 26:Employee Income"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    301.4,
+    73.7,
+    537.8,
+    254.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 27:Real Private Consumption"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    300.2,
+    344.4,
+    537.1,
+    539.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 28:ConsumptionActivity Index (CAI, Real)"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    300.7,
+    593.3,
+    522.6,
+    779.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    300.8,
+    102.9,
+    516.9,
+    290.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Chart 30:Confidence Indicators Related to Private Consumption"
+  },
+  {
+   "page": 33,
+   "bbox": [
+    301.6,
+    348.7,
+    517.8,
+    534.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    301.5,
+    75.1,
+    536.3,
+    292.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    301.6,
+    407.2,
+    539.7,
+    593.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.893,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    301.2,
+    96.8,
+    539.3,
+    283.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.869,
+   "caption": "Chart 35:CPI (Excluding Temporary Factors)"
+  },
+  {
+   "page": 36,
+   "bbox": [
+    302.7,
+    357.2,
+    516.6,
+    540.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    301.7,
+    79.7,
+    537.6,
+    265.6
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    301.7,
+    370.7,
+    538.0,
+    558.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart38:CPI Changes due to Wage Factors"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    302.2,
+    61.5,
+    531.5,
+    246.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 39:Inflation Rate and Output Gap"
+  },
+  {
+   "page": 38,
+   "bbox": [
+    301.0,
+    304.7,
+    521.6,
+    501.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 38,
+   "bbox": [
+    302.1,
+    588.6,
+    522.7,
+    777.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    303.5,
+    92.9,
+    526.7,
+    280.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 41:Output Prices"
+  },
+  {
+   "page": 39,
+   "bbox": [
+    302.0,
+    326.4,
+    520.8,
+    519.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 42:International Commodity Prices"
+  },
+  {
+   "page": 39,
+   "bbox": [
+    301.7,
+    548.9,
+    515.8,
+    742.8
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 43:Import Price Index"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    300.8,
+    102.7,
+    516.7,
+    293.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Chart 44:FD-ID Price Indexes (All Commodities)"
+  },
+  {
+   "page": 41,
+   "bbox": [
+    309.2,
+    94.0,
+    518.0,
+    284.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.869,
+   "caption": "Sources: Ministry of Internal Affairs and Communications; Bank of Japan. Notes: 1. The CPI figures are staff estimates and exclude mobile phone charges and the effects of the consumption tax hikes, policies concerning the provision of free education, and travel subsidy programs."
+  },
+  {
+   "page": 43,
+   "bbox": [
+    301.9,
+    85.8,
+    520.7,
+    276.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.983,
+   "caption": "Chart 46:Short-term Interest Rates"
+  },
+  {
+   "page": 43,
+   "bbox": [
+    301.6,
+    319.6,
+    517.5,
+    506.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 47:Real Interest Rate (1-Year)"
+  },
+  {
+   "page": 43,
+   "bbox": [
+    303.2,
+    564.4,
+    517.1,
+    751.2
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 48:Bank Lending Rates and Issuance Yields for CP and Corporate Bonds"
+  },
+  {
+   "page": 44,
+   "bbox": [
+    302.8,
+    90.0,
+    526.6,
+    276.6
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 49:Lending Attitudes of Financial Institutions as Perceived by Firms"
+  },
+  {
+   "page": 44,
+   "bbox": [
+    303.1,
+    320.7,
+    528.2,
+    508.1
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 50: Firms' Financial Positions"
+  },
+  {
+   "page": 44,
+   "bbox": [
+    305.7,
+    562.2,
+    518.3,
+    745.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 51: Amounts Outstanding of Bank Lending, CP, and Corporate Bonds"
+  },
+  {
+   "page": 45,
+   "bbox": [
+    300.4,
+    77.6,
+    517.1,
+    285.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    304.2,
+    114.9,
+    519.4,
+    306.2
+   ],
+   "class": "line_chart",
+   "confidence": 1.0,
+   "caption": "Chart 53:10-Year Government Bond Yields in Selected Advanced Economies"
+  },
+  {
+   "page": 46,
+   "bbox": [
+    302.8,
+    339.3,
+    519.5,
+    523.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    299.8,
+    602.6,
+    515.8,
+    783.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    301.8,
+    95.4,
+    516.6,
+    287.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": "Chart 56:U.S. Dollar/Yen and Euro/Yen"
+  },
+  {
+   "page": 48,
+   "bbox": [
+    301.5,
+    128.9,
+    539.9,
+    324.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.714,
+   "caption": null
+  },
+  {
+   "page": 48,
+   "bbox": [
+    300.1,
+    396.2,
+    538.4,
+    591.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 49,
+   "bbox": [
+    299.6,
+    72.0,
+    539.5,
+    273.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.974,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    300.3,
+    86.0,
+    538.6,
+    293.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.848,
+   "caption": "Chart B1-4:Comparisonof Digital-Related Services Balance"
+  },
+  {
+   "page": 51,
+   "bbox": [
+    300.8,
+    104.7,
+    538.9,
+    345.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": "ChartB2-2:Shape of Production Function and Labor Supply Constraints"
+  },
+  {
+   "page": 51,
+   "bbox": [
+    306.7,
+    397.7,
+    515.9,
+    580.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.973,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    311.3,
+    600.4,
+    516.5,
+    779.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.735,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    299.5,
+    125.5,
+    512.3,
+    328.7
+   ],
+   "class": "bar_chart",
+   "confidence": 0.975,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    304.2,
+    370.0,
+    522.8,
+    544.7
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.883,
+   "caption": "Sources: Ministry of Finance; Cabinet Office; Bank of Japan."
+  },
+  {
+   "page": 54,
+   "bbox": [
+    300.2,
+    133.1,
+    535.7,
+    345.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    305.8,
+    349.4,
+    554.8,
+    610.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.994,
+   "caption": "Source: Bank of Japan. Note: Figures show the share of firms that chose each answer as the main reason for"
+  },
+  {
+   "page": 55,
+   "bbox": [
+    298.8,
+    90.7,
+    539.0,
+    278.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.988,
+   "caption": "ChartB3-4:Investment Order Backlog 1. Machinery Orders"
+  },
+  {
+   "page": 55,
+   "bbox": [
+    306.7,
+    318.2,
+    517.0,
+    486.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    303.9,
+    505.0,
+    517.1,
+    680.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    314.6,
+    152.9,
+    525.8,
+    323.1
+   ],
+   "class": "calendar",
+   "confidence": 0.745,
+   "caption": "ChartB4-1:Heat Map for LaborMarket Conditions, Tankan"
+  },
+  {
+   "page": 56,
+   "bbox": [
+    324.0,
+    463.6,
+    517.7,
+    552.9
+   ],
+   "class": "table",
+   "confidence": 0.648,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    323.9,
+    571.4,
+    517.9,
+    663.6
+   ],
+   "class": "table",
+   "confidence": 0.749,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    323.6,
+    111.9,
+    518.3,
+    228.9
+   ],
+   "class": "table",
+   "confidence": 0.932,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    302.9,
+    306.1,
+    538.4,
+    498.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    309.3,
+    112.6,
+    523.7,
+    285.7
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.914,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    307.5,
+    312.4,
+    524.4,
+    489.8
+   ],
+   "class": "scatter_plot",
+   "confidence": 0.847,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    302.1,
+    133.3,
+    530.6,
+    348.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.966,
+   "caption": "Source: Ministry of Internal Affairs and Communications. Note: Figures are staff estimates and exclude mobile phone charges and the effects of the consumption taxhikes,policies concerning the provision of free education and travel subsidy programs. Figures for goods exclude fresh food and energy. Figures for general services exclude housing rent. Figures for administered prices consist of public services and water charges. The latest figures are for November 2024."
+  },
+  {
+   "page": 60,
+   "bbox": [
+    303.8,
+    75.3,
+    516.9,
+    379.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    300.8,
+    484.6,
+    516.3,
+    654.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    298.5,
+    77.1,
+    536.5,
+    288.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    300.1,
+    437.8,
+    516.1,
+    612.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.912,
+   "caption": "Chart B5-5:GDP Deflator"
+  },
+  {
+   "page": 62,
+   "bbox": [
+    249.0,
+    383.8,
+    347.2,
+    481.9
+   ],
+   "class": "logo",
+   "confidence": 0.577,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 6.6,
+ "tool": "docling 2.130.0"
+}

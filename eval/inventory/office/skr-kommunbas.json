@@ -1,0 +1,11 @@
+{
+ "name": "skr-kommunbas",
+ "manifest": "office",
+ "format": "docx",
+ "language": "sv",
+ "pages": 141,
+ "images": 1,
+ "charts": 0,
+ "smartart": 0,
+ "tool": "zip"
+}

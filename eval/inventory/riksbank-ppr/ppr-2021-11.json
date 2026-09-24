@@ -1,0 +1,793 @@
+{
+ "name": "ppr-2021-11",
+ "manifest": "riksbank-ppr",
+ "format": "pdf",
+ "language": "sv",
+ "pages": 89,
+ "pages_with_text": 89,
+ "figures": [
+  {
+   "page": 1,
+   "bbox": [
+    27.5,
+    271.3,
+    567.8,
+    810.2
+   ],
+   "class": "photograph",
+   "confidence": 0.585,
+   "caption": null
+  },
+  {
+   "page": 1,
+   "bbox": [
+    507.0,
+    0.0,
+    565.0,
+    113.3
+   ],
+   "class": "logo",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    118.6,
+    160.3,
+    170.0,
+    212.1
+   ],
+   "class": "logo",
+   "confidence": 0.892,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    112.9,
+    296.8,
+    177.8,
+    348.9
+   ],
+   "class": "logo",
+   "confidence": 0.692,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    117.9,
+    429.4,
+    173.2,
+    482.8
+   ],
+   "class": "icon",
+   "confidence": 0.879,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.0,
+    561.4,
+    171.7,
+    615.5
+   ],
+   "class": "icon",
+   "confidence": 0.944,
+   "caption": null
+  },
+  {
+   "page": 6,
+   "bbox": [
+    120.3,
+    663.1,
+    177.8,
+    714.7
+   ],
+   "class": "icon",
+   "confidence": 0.988,
+   "caption": null
+  },
+  {
+   "page": 9,
+   "bbox": [
+    117.8,
+    135.7,
+    438.9,
+    304.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 10,
+   "bbox": [
+    119.1,
+    134.9,
+    438.9,
+    304.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 11,
+   "bbox": [
+    118.3,
+    135.6,
+    438.7,
+    311.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 12,
+   "bbox": [
+    118.8,
+    135.2,
+    438.8,
+    305.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.986,
+   "caption": null
+  },
+  {
+   "page": 13,
+   "bbox": [
+    119.0,
+    492.6,
+    438.9,
+    662.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 14,
+   "bbox": [
+    117.5,
+    133.8,
+    438.8,
+    304.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.981,
+   "caption": null
+  },
+  {
+   "page": 15,
+   "bbox": [
+    115.6,
+    122.2,
+    448.1,
+    320.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.971,
+   "caption": null
+  },
+  {
+   "page": 16,
+   "bbox": [
+    117.9,
+    135.3,
+    438.7,
+    319.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.656,
+   "caption": null
+  },
+  {
+   "page": 17,
+   "bbox": [
+    118.8,
+    135.6,
+    438.9,
+    302.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.881,
+   "caption": null
+  },
+  {
+   "page": 18,
+   "bbox": [
+    117.9,
+    375.9,
+    438.7,
+    560.8
+   ],
+   "class": "bar_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 20,
+   "bbox": [
+    119.0,
+    290.8,
+    439.2,
+    461.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.977,
+   "caption": null
+  },
+  {
+   "page": 23,
+   "bbox": [
+    119.0,
+    195.7,
+    445.3,
+    394.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.827,
+   "caption": null
+  },
+  {
+   "page": 24,
+   "bbox": [
+    117.7,
+    135.6,
+    438.4,
+    305.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 26,
+   "bbox": [
+    119.1,
+    135.6,
+    440.4,
+    304.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": "Diagram 14. Styrräntor och ränteförväntningar enligt terminsprissättning Procent"
+  },
+  {
+   "page": 27,
+   "bbox": [
+    118.3,
+    135.4,
+    439.2,
+    306.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.935,
+   "caption": "Diagram 15. Likviditetsöverskott i banksystemet, inlåning och Riksbankscertifikat Miljarder kronor"
+  },
+  {
+   "page": 28,
+   "bbox": [
+    117.9,
+    132.7,
+    438.2,
+    318.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.969,
+   "caption": null
+  },
+  {
+   "page": 29,
+   "bbox": [
+    118.8,
+    134.7,
+    443.4,
+    319.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 30,
+   "bbox": [
+    118.7,
+    135.0,
+    445.3,
+    319.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 31,
+   "bbox": [
+    117.1,
+    134.6,
+    440.4,
+    348.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": "Diagram 19. Långsiktiga inflationsförväntningar i euroområdet och USA Procent"
+  },
+  {
+   "page": 32,
+   "bbox": [
+    116.5,
+    122.7,
+    443.2,
+    334.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 33,
+   "bbox": [
+    116.5,
+    127.5,
+    445.6,
+    335.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 34,
+   "bbox": [
+    117.2,
+    134.8,
+    440.2,
+    297.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 35,
+   "bbox": [
+    116.5,
+    133.6,
+    440.1,
+    334.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.841,
+   "caption": null
+  },
+  {
+   "page": 36,
+   "bbox": [
+    116.9,
+    221.6,
+    449.1,
+    421.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.992,
+   "caption": null
+  },
+  {
+   "page": 37,
+   "bbox": [
+    118.9,
+    147.3,
+    448.7,
+    375.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 39,
+   "bbox": [
+    118.2,
+    135.6,
+    442.3,
+    320.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": "Per en miljon invånare"
+  },
+  {
+   "page": 40,
+   "bbox": [
+    118.0,
+    135.5,
+    446.6,
+    304.7
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 40,
+   "bbox": [
+    115.9,
+    493.2,
+    445.8,
+    671.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 41,
+   "bbox": [
+    114.7,
+    329.1,
+    438.4,
+    514.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.999,
+   "caption": null
+  },
+  {
+   "page": 42,
+   "bbox": [
+    117.8,
+    181.7,
+    438.2,
+    350.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 43,
+   "bbox": [
+    117.0,
+    195.1,
+    446.7,
+    365.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 44,
+   "bbox": [
+    119.5,
+    350.8,
+    438.4,
+    520.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 46,
+   "bbox": [
+    117.2,
+    147.1,
+    447.0,
+    324.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 47,
+   "bbox": [
+    118.8,
+    404.4,
+    443.4,
+    605.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.717,
+   "caption": null
+  },
+  {
+   "page": 50,
+   "bbox": [
+    117.7,
+    135.2,
+    438.8,
+    304.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 51,
+   "bbox": [
+    117.5,
+    133.6,
+    446.0,
+    320.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.845,
+   "caption": null
+  },
+  {
+   "page": 52,
+   "bbox": [
+    117.8,
+    147.4,
+    439.1,
+    349.1
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 53,
+   "bbox": [
+    118.6,
+    134.9,
+    446.6,
+    306.1
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 54,
+   "bbox": [
+    118.8,
+    147.8,
+    447.4,
+    319.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.987,
+   "caption": null
+  },
+  {
+   "page": 55,
+   "bbox": [
+    117.6,
+    135.8,
+    438.6,
+    306.4
+   ],
+   "class": "line_chart",
+   "confidence": 0.997,
+   "caption": null
+  },
+  {
+   "page": 56,
+   "bbox": [
+    115.2,
+    120.1,
+    445.9,
+    305.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 57,
+   "bbox": [
+    118.2,
+    135.1,
+    446.3,
+    304.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 58,
+   "bbox": [
+    117.8,
+    134.7,
+    446.7,
+    320.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 59,
+   "bbox": [
+    118.9,
+    195.5,
+    445.7,
+    366.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.984,
+   "caption": null
+  },
+  {
+   "page": 60,
+   "bbox": [
+    117.6,
+    236.9,
+    435.7,
+    407.9
+   ],
+   "class": "bar_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 61,
+   "bbox": [
+    117.7,
+    135.0,
+    446.7,
+    304.8
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 62,
+   "bbox": [
+    119.0,
+    134.9,
+    443.4,
+    336.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.711,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    118.2,
+    133.7,
+    438.1,
+    306.3
+   ],
+   "class": "line_chart",
+   "confidence": 0.994,
+   "caption": null
+  },
+  {
+   "page": 63,
+   "bbox": [
+    117.8,
+    541.5,
+    447.4,
+    713.5
+   ],
+   "class": "line_chart",
+   "confidence": 0.97,
+   "caption": null
+  },
+  {
+   "page": 65,
+   "bbox": [
+    118.6,
+    133.8,
+    446.8,
+    305.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 66,
+   "bbox": [
+    119.1,
+    135.3,
+    446.5,
+    312.0
+   ],
+   "class": "line_chart",
+   "confidence": 0.982,
+   "caption": null
+  },
+  {
+   "page": 71,
+   "bbox": [
+    118.9,
+    134.2,
+    443.4,
+    320.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": null
+  },
+  {
+   "page": 74,
+   "bbox": [
+    117.6,
+    181.0,
+    438.6,
+    351.6
+   ],
+   "class": "line_chart",
+   "confidence": 0.998,
+   "caption": "Diagram 53. Varupriser exklusive energi och livsmedel i olika länder och regioner Årlig procentuell förändring"
+  },
+  {
+   "page": 74,
+   "bbox": [
+    119.0,
+    452.2,
+    438.7,
+    622.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.99,
+   "caption": null
+  },
+  {
+   "page": 77,
+   "bbox": [
+    117.5,
+    209.3,
+    438.6,
+    379.9
+   ],
+   "class": "line_chart",
+   "confidence": 0.993,
+   "caption": null
+  },
+  {
+   "page": 79,
+   "bbox": [
+    118.3,
+    181.0,
+    447.3,
+    352.2
+   ],
+   "class": "line_chart",
+   "confidence": 0.996,
+   "caption": null
+  },
+  {
+   "page": 84,
+   "bbox": [
+    118.6,
+    195.1,
+    446.9,
+    396.5
+   ],
+   "class": "bar_chart",
+   "confidence": 0.995,
+   "caption": null
+  },
+  {
+   "page": 89,
+   "bbox": [
+    55.5,
+    713.8,
+    211.3,
+    786.2
+   ],
+   "class": "logo",
+   "confidence": 0.512,
+   "caption": null
+  }
+ ],
+ "bbox_origin": "top-left",
+ "seconds": 7.8,
+ "tool": "docling 2.130.0"
+}
