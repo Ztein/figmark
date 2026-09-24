@@ -1,0 +1,9 @@
+Diagram 4 visar priset på Brentolja och naturgas (utfall och terminspriser) samt ett index för global geopolitisk risk; i mars 2026 har oljepriset stigit brant till ca 100 dollar per fat och gaspriset till ca 50–55 euro/MWh, terminspriserna ligger långt över dem vid PPR december, och den geopolitiska risken har nått nära toppnivån från mars 2022.
+
+Axlar: Vänster panel 2021–2026, EUR/MWh 0–350 (vänster axel, naturgas) och dollar per fat 50–140 (höger axel, Brentolja); höger panel 2021–2026, index (1985–2019 = 100) 0–500.
+
+- **Brentolja (höger axel)**: Utfall ca 52 dollar i början av 2021, stiger till topp ca 128 dollar i mars 2022, faller till ca 75–90 dollar 2023–2024 och ca 60–65 dollar under andra halvåret 2025 (lägst ca 61 kring årsskiftet 2025/2026). Stiger därefter brant till ca 100–104 dollar i mars 2026 (utfallets slut). Prickade terminspriser faller från ca 103 dollar till ca 82 dollar i slutet av 2026.
+- **Brentolja, PPR december (höger axel)**: Streckade terminspriser vid decemberrapporten, i stort sett oförändrade kring ca 60 dollar under hela 2026.
+- **Naturgas (vänster axel)**: Utfall ca 18 euro/MWh i början av 2021, stiger till ca 180 i slutet av 2021 och topp ca 340 euro/MWh i augusti 2022, faller till ca 25–55 under 2023–2025 (lägst ca 25 sommaren 2023 och i början av 2024, ca 55 i början av 2025), ca 27–32 i slutet av 2025, stiger till ca 52–55 i mars 2026. Prickade terminspriser ca 50 euro/MWh under resten av 2026.
+- **Naturgas, PPR december (vänster axel)**: Streckade terminspriser vid decemberrapporten, ca 30 euro/MWh i början av 2026 och ca 26–27 euro/MWh under resten av 2026.
+- **Global geopolitisk risk**: Utfall (veckomedel) kring ca 50–130 under 2021, topp ca 440 i mars 2022, ca 100–170 under 2022–2023, topp ca 280 i oktober 2023, ca 205 våren 2024, ca 310 i juni 2025, ca 210 i januari 2026 och ny topp ca 400 i mars 2026; senaste värde ca 350.

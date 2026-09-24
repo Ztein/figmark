@@ -1,0 +1,73 @@
+# Keys read from the rendered figure (not from any description, not from alt text)
+# by claude-opus-5-5 on 2026-09-24 — a model from another family than the figure
+# interpreter. PENDING HUMAN REVIEW: the PRD requires every question to be written
+# or reviewed by a person before the set is frozen.
+document: ecb-eb-202501
+manifest: central-banks
+language: en
+figures:
+
+- id: page-055-figure-01
+  caption: "Figure A Distribution of floods across European regions (1995-2022)"
+  kind: map
+  page: 55
+  bbox: [178.0, 340.3, 539.6, 636.0]
+  questions:
+    - q: "In the map of floods across European regions (1995-2022), which of these countries has no data?"
+      type: choice
+      options: ["United Kingdom", "France", "Spain", "Poland"]
+      key: "United Kingdom"
+    - q: "In the map of floods across European regions (1995-2022), is Norway covered with data? yes/no"
+      type: bool
+      key: false
+    - q: "What is the highest category in the legend of the map of floods across European regions (number of floods)?"
+      type: choice
+      options: [">20", "16-20", "11-15", ">50"]
+      key: ">20"
+    - q: "In the map of floods across European regions (1995-2022), are most regions of Finland in the lowest category (0 floods)? yes/no"
+      type: bool
+      key: true
+    - q: "In the map of floods across European regions (1995-2022), which of these countries has several regions in the highest category?"
+      type: choice
+      options: ["Italy", "Finland", "Poland", "Ireland"]
+      key: "Italy"
+    - q: "In the map of floods across European regions (1995-2022), is Turkey covered with data? yes/no"
+      type: bool
+      key: false
+    - q: "In the map of floods across European regions (1995-2022), does Ireland have regions with 6-10 floods? yes/no"
+      type: bool
+      key: true
+
+- id: page-127-figure-01
+  caption: "Chart 6 a) MFF and NGEU envelopes contributing to climate objectives, by programme"
+  kind: pie_chart
+  page: 127
+  bbox: [284.4, 140.0, 536.6, 316.2]
+  questions:
+    - q: "What share of the MFF and NGEU envelopes contributing to climate objectives comes from the Recovery and Resilience Facility, in percent (integer)?"
+      type: number
+      decimals: 0
+      key: 42
+      tolerance: 0
+    - q: "Which programme has the second-largest share of the MFF and NGEU envelopes contributing to climate objectives?"
+      type: choice
+      options: ["Common agricultural policy", "Regional policy", "Horizon Europe", "Recovery and Resilience Facility"]
+      key: "Common agricultural policy"
+    - q: "What share of the MFF and NGEU climate envelopes does regional policy account for, in percent (integer)?"
+      type: number
+      decimals: 0
+      key: 14
+      tolerance: 0
+    - q: "What share of the MFF and NGEU climate envelopes does Horizon Europe account for, in percent (integer)?"
+      type: number
+      decimals: 0
+      key: 5
+      tolerance: 0
+    - q: "What share of the MFF and NGEU climate envelopes does the Just Transition Mechanism account for, in percent (integer)?"
+      type: number
+      decimals: 0
+      key: 3
+      tolerance: 0
+    - q: "Is the common agricultural policy's share of the MFF and NGEU climate envelopes larger than regional policy and Horizon Europe combined? yes/no"
+      type: bool
+      key: true

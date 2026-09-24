@@ -1,0 +1,20 @@
+# Copy to eval/config.yaml (gitignored) and point it at your endpoints.
+# Every model here must be one that can run locally (PRD): during development a
+# hosted endpoint may serve the same model for speed.
+answerer:
+  base_url: http://localhost:11434/v1      # any OpenAI-compatible endpoint
+  api_key_env: EVAL_API_KEY                # name of the environment variable, never the key
+  model: gemma4:31b
+  parallel: 8
+  extra:
+    reasoning_effort: none                 # Gemma 4 thinks by default and can spend the whole budget
+embedder:
+  base_url: http://localhost:11434/v1
+  api_key_env: EVAL_API_KEY
+  model: multilingual-e5-large           # 512-token input limit: keep chunk_chars at ~800
+  query_prefix: "query: "
+  passage_prefix: "passage: "
+retrieval:
+  chunk_chars: 800
+  overlap_chars: 150
+  top_k: 8

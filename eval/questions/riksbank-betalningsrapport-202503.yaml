@@ -1,0 +1,71 @@
+# Keys read from the rendered figure (not from any description, not from alt text)
+# by claude-opus-5-5 on 2026-09-24 — a model from another family than the figure
+# interpreter. PENDING HUMAN REVIEW: the PRD requires every question to be written
+# or reviewed by a person before the set is frozen.
+document: riksbank-betalningsrapport-202503
+manifest: central-banks
+language: sv
+figures:
+
+- id: page-033-figure-01
+  caption: "Figur 1. Kontantkedjan"
+  kind: flowchart
+  page: 33
+  bbox: [126.3, 134.7, 467.1, 322.3]
+  questions:
+    - q: "Vilken aktör i kontantkedjan är direkt kopplad till både handel och bank/automater?"
+      type: choice
+      options: ["Värdetransportbolag", "Riksbanken", "Mynt- och sedelproduktion", "Kontanthanteringskontor"]
+      key: "Värdetransportbolag"
+    - q: "Går flödet mellan värdetransportbolag och handel åt båda hållen i kontantkedjan? ja/nej"
+      type: bool
+      key: true
+    - q: "Är allmänheten direkt kopplad till värdetransportbolaget i kontantkedjan? ja/nej"
+      type: bool
+      key: false
+    - q: "Hur många aktörer är direkt kopplade till allmänheten i kontantkedjan (heltal)?"
+      type: number
+      decimals: 0
+      key: 2
+      tolerance: 0
+    - q: "Vart går returflödet av kontanter från värdetransportbolaget i kontantkedjan?"
+      type: choice
+      options: ["Kontanthanteringskontor", "Riksbanken", "Mynt- och sedelproduktion", "Allmänhet"]
+      key: "Kontanthanteringskontor"
+    - q: "Hur många aktörer ingår i figuren över kontantkedjan (heltal)?"
+      type: number
+      decimals: 0
+      key: 7
+      tolerance: 0
+    - q: "Har Riksbanken en pil till någon annan aktör i figuren över kontantkedjan? ja/nej"
+      type: bool
+      key: false
+
+- id: page-040-figure-02
+  caption: "Figur 3. Förenklad bild av en swishbetalning"
+  kind: flowchart
+  page: 40
+  bbox: [113.9, 534.8, 481.2, 654.7]
+  questions:
+    - q: "Via vilket system genomförs swishbetalningen enligt figuren?"
+      type: choice
+      options: ["RIX-INST", "RIX-RTGS", "Bankgirot", "Kortnätverket"]
+      key: "RIX-INST"
+    - q: "Passerar swishbetalningen Riksbanken enligt figuren? ja/nej"
+      type: bool
+      key: true
+    - q: "Vem betalar en avgift vid en swishbetalning enligt figuren?"
+      type: choice
+      options: ["Konsument", "Betalningsmottagare", "Konsumentens bank", "Riksbanken"]
+      key: "Betalningsmottagare"
+    - q: "Till vem går avgiften vid en swishbetalning enligt figuren?"
+      type: choice
+      options: ["Konsumentens bank", "Betalningsmottagarens bank", "Riksbanken", "Konsument"]
+      key: "Betalningsmottagarens bank"
+    - q: "Genomförs swishbetalningen omedelbart enligt figuren? ja/nej"
+      type: bool
+      key: true
+    - q: "Vem startar swishbetalningen i figuren?"
+      type: choice
+      options: ["Konsument", "Betalningsmottagare", "Konsumentens bank", "Riksbanken"]
+      key: "Konsument"
