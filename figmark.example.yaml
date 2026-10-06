@@ -1,0 +1,10 @@
+# Copy to figmark.yaml (gitignored). Every model must be one that can run
+# locally; a hosted endpoint serving the same model is fine for speed.
+figures:
+  base_url: http://localhost:11434/v1     # any OpenAI-compatible endpoint
+  model: gemma4:26b
+  api_key_env: null                       # name of the env var holding the key, if any
+  params:
+    reasoning_effort: none                # Gemma 4 thinks by default and can spend the whole budget
+    max_tokens: 600
+  concurrency: 4

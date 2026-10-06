@@ -1,7 +1,8 @@
 # Phase 0 — the yardstick
 
-Status 2026-09-24: built and run. **Waiting for the decision point**: the
-yardstick's approval and the thresholds for H1–H10 are Joel's call (PRD, *Faser*).
+Status: done. **Decision point passed 2026-10-06**: Joel said "kör fas 1" to the
+proposal below, which approves the yardstick for charts and the thresholds as
+proposed (flowchart questions to be redone before phase 2).
 
 ## What exists
 
@@ -83,9 +84,9 @@ questions: the 95 % interval on a paired difference is about ±0.08–0.10 score
 per question, or **±10 coverage points with ~150 questions**. For ±5 points,
 about 500–650 questions are needed.
 
-## Proposed thresholds (for decision)
+## Thresholds (decided 2026-10-06)
 
-Proposals only. The PRD says they are set before any pipeline is measured.
+Set before any pipeline was measured, as the PRD requires.
 
 | Id | Proposal | Note |
 | --- | --- | --- |

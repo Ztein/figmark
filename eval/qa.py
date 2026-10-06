@@ -108,9 +108,11 @@ def load_questions(paths: list[Path]) -> list[dict]:
 
 def chunks(text: str, size: int, overlap: int) -> list[str]:
     """Pack lines into chunks of about `size` characters; each chunk repeats the
-    last `overlap` characters of the previous one so nothing falls in a crack."""
+    last `overlap` characters of the previous one so nothing falls in a crack.
+    A line longer than `size` (a wide Markdown table row) is cut into pieces."""
+    lines = [ln[i : i + size] for ln in text.splitlines() for i in range(0, max(len(ln), 1), size)]
     out, cur = [], ""
-    for line in text.splitlines():
+    for line in lines:
         if cur and len(cur) + len(line) > size:
             out.append(cur.strip())
             cur = cur[-overlap:] if overlap else ""
@@ -128,6 +130,19 @@ class Embedder:
         self.db.execute("create table if not exists e (k text primary key, v blob)")
         self.lock = threading.Lock()
 
+    def _embed(self, inputs: list[str]) -> list:
+        """Embed a batch; an input over the model's token limit (dense tables,
+        many digits) is shortened until it fits — for retrieval only, the
+        answerer still sees the whole chunk."""
+        from openai import BadRequestError
+
+        try:
+            return self.api.embeddings.create(model=self.cfg["model"], input=inputs).data
+        except BadRequestError:
+            if len(inputs) > 1:
+                return [d for t in inputs for d in self._embed([t])]
+            return self._embed([inputs[0][: int(len(inputs[0]) * 0.85)]])
+
     def __call__(self, texts: list[str], kind: str) -> np.ndarray:
         prefix = self.cfg.get(f"{kind}_prefix", "")
         keys = [hashlib.sha1(f"{self.cfg['model']}\0{prefix}{t}".encode()).hexdigest() for t in texts]
@@ -136,9 +151,8 @@ class Embedder:
         missing = [i for i, k in enumerate(keys) if k not in have]
         for start in range(0, len(missing), 64):
             batch = missing[start : start + 64]
-            resp = self.api.embeddings.create(model=self.cfg["model"], input=[prefix + texts[i] for i in batch])
             with self.lock:
-                for i, d in zip(batch, resp.data):
+                for i, d in zip(batch, self._embed([prefix + texts[i] for i in batch])):
                     have[keys[i]] = np.asarray(d.embedding, dtype=np.float32).tobytes()
                     self.db.execute("insert or replace into e values (?, ?)", (keys[i], have[keys[i]]))
                 self.db.commit()

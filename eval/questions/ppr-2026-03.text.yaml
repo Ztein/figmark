@@ -1,0 +1,86 @@
+# Text and table questions — keys read from the PDF page by claude-opus-5-5 on 2026-10-06.
+# PENDING HUMAN REVIEW. Used for H1: do text and tables survive conversion?
+# Page numbers are 1-based PDF page indices (in this document they equal the printed page numbers).
+document: ppr-2026-03
+manifest: riksbank-ppr
+language: sv
+figures:
+
+- id: text-page-002
+  caption: "Text, sida 2"
+  kind: text
+  page: 2
+  questions:
+    - q: "Vilken dag i mars 2026 fattade Riksbankens direktion beslut om Penningpolitisk rapport mars 2026? Ange dagen i månaden."
+      type: number
+      decimals: 0
+      key: 18
+      tolerance: 0
+
+- id: text-page-006
+  caption: "Text, sida 6"
+  kind: text
+  page: 6
+  questions:
+    - q: "Hur många räntesänkningar av Federal Reserve i år indikerar marknadsaktörernas förväntningar enligt Riksbankens penningpolitiska rapport mars 2026 (efter krigsutbrottet i Mellanöstern)?"
+      type: choice
+      options: ["en", "två", "tre"]
+      key: "en"
+
+- id: text-page-042
+  caption: "Text, sida 42"
+  kind: text
+  page: 42
+  questions:
+    - q: "Har EU, enligt Riksbankens penningpolitiska rapport mars 2026, sedan december träffat ett frihandelsavtal med Indien? Svara ja eller nej."
+      type: bool
+      key: true
+
+- id: text-page-046
+  caption: "Text, sida 46"
+  kind: text
+  page: 46
+  questions:
+    - q: "Enligt faktarutan om förändrade makrotillsynsåtgärder i Riksbankens penningpolitiska rapport mars 2026: till hur många procent av bostadens marknadsvärde höjs bolånetaket vid köp av ny bostad från 1 april 2026?"
+      type: number
+      decimals: 0
+      key: 90
+      tolerance: 0
+
+- id: table-page-069
+  caption: "Tabell 5. BNP och efterfrågan"
+  kind: table
+  page: 69
+  questions:
+    - q: "I Tabell 5 (BNP och efterfrågan) i Riksbankens penningpolitiska rapport mars 2026: vilken BNP-tillväxt för 2026 angavs i föregående penningpolitiska rapport (siffran inom parentes), i procent?"
+      type: number
+      decimals: 1
+      key: 2.9
+      tolerance: 0
+
+- id: table-page-070
+  caption: "Tabell 6. Produktion och sysselsättning"
+  kind: table
+  page: 70
+  questions:
+    - q: "I Tabell 6 (Produktion och sysselsättning) i Riksbankens penningpolitiska rapport mars 2026: vad är prognosen för arbetslösheten 2026, i procent av arbetskraften (aktuell prognos, inte siffran inom parentes)?"
+      type: number
+      decimals: 1
+      key: 8.4
+      tolerance: 0
+
+- id: table-page-071
+  caption: "Tabell 8. Internationella prognoser; Tabell 9. Finansiella prognoser i sammanfattning"
+  kind: table
+  page: 71
+  questions:
+    - q: "I Tabell 8 (Internationella prognoser) i Riksbankens penningpolitiska rapport mars 2026: vilken KIX-vikt har Euroområdet?"
+      type: number
+      decimals: 2
+      key: 0.47
+      tolerance: 0
+    - q: "I Tabell 9 (Finansiella prognoser i sammanfattning) i Riksbankens penningpolitiska rapport mars 2026: vad är prognosen för växelkursen KIX (1992-11-18 = 100) för 2028 (aktuell prognos, inte siffran inom parentes)?"
+      type: number
+      decimals: 1
+      key: 114.7
+      tolerance: 0

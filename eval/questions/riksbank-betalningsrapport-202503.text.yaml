@@ -1,0 +1,75 @@
+# Text and table questions — keys read from the PDF page by claude-opus-5-5 on 2026-10-06.
+# PENDING HUMAN REVIEW. Used for H1: do text and tables survive conversion?
+# Page numbers are 1-based PDF page indices (in this document they equal the printed page numbers).
+# This document has no typeset tables (all numeric material is in diagrams/charts),
+# so all 8 questions are about body prose.
+document: riksbank-betalningsrapport-202503
+manifest: central-banks
+language: sv
+figures:
+
+- id: text-page-002
+  caption: "Text, sida 2"
+  kind: text
+  page: 2
+  questions:
+    - q: "Publicerades någon Betalningsrapport från Riksbanken år 2023? Svara ja eller nej."
+      type: bool
+      key: false
+
+- id: text-page-009
+  caption: "Text, sida 9"
+  kind: text
+  page: 9
+  questions:
+    - q: "Enligt Riksbankens Betalningsrapport 2025: ungefär hur många procent av småföretagen svarar i Riksbankens undersökning att de accepterar kontanter?"
+      type: number
+      decimals: 0
+      key: 70
+      tolerance: 0
+
+- id: text-page-013
+  caption: "Text, sida 13"
+  kind: text
+  page: 13
+  questions:
+    - q: "Enligt Riksbankens Betalningsrapport 2025 (med hänvisning till en rapport från ECB): i hur många av euroområdets 20 länder är kontanter fortfarande det vanligaste betalsättet i fysisk butik?"
+      type: number
+      decimals: 0
+      key: 14
+      tolerance: 0
+    - q: "Enligt Riksbankens Betalningsrapport 2025: hur många procent av köpen i butik görs med kontanter på Malta?"
+      type: number
+      decimals: 0
+      key: 67
+      tolerance: 0
+    - q: "Enligt Riksbankens Betalningsrapport 2025: vilket land i euroområdet har högst andel kontanter i betalningar mellan privatpersoner?"
+      type: choice
+      options: ["Tyskland", "Finland", "Malta", "Nederländerna"]
+      key: "Tyskland"
+
+- id: text-page-022
+  caption: "Text, sida 22"
+  kind: text
+  page: 22
+  questions:
+    - q: "Enligt faktarutan om Kontantutredningen i Riksbankens Betalningsrapport 2025: vilken dag i december 2024 slutredovisades uppdraget? Ange dagen i månaden."
+      type: number
+      decimals: 0
+      key: 19
+      tolerance: 0
+
+- id: text-page-066
+  caption: "Text, sida 66"
+  kind: text
+  page: 66
+  questions:
+    - q: "Enligt Riksbankens Betalningsrapport 2025: ungefär hur många år beräknas implementeringen av anslutningen av RIX-RTGS till den europeiska plattformen T2 ta?"
+      type: number
+      decimals: 0
+      key: 5
+      tolerance: 0
+    - q: "Enligt Riksbankens Betalningsrapport 2025: vilken europeisk plattform beslutade Riksbanken under 2024 att gå vidare med för avvecklingstjänsten RIX-RTGS?"
+      type: choice
+      options: ["T2", "T2S", "TIPS"]
+      key: "T2"

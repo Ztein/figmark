@@ -1,0 +1,85 @@
+# Text and table questions — keys read from the PDF page by claude-opus-5-5 on 2026-10-06.
+# PENDING HUMAN REVIEW. Used for H1: do text and tables survive conversion?
+# Page numbers are 1-based PDF page indices (in this document they equal the printed page numbers).
+document: transformer-1706.03762
+manifest: papers
+language: en
+figures:
+
+- id: text-page-006
+  caption: "Text, page 6"
+  kind: text
+  page: 6
+  questions:
+    - q: "In the paper 'Attention Is All You Need' (section 3.5, Positional Encoding), which version of positional encoding did the authors choose for the Transformer?"
+      type: choice
+      options: ["sinusoidal", "learned positional embeddings"]
+      key: "sinusoidal"
+
+- id: table-page-006
+  caption: "Table 1: Maximum path lengths, per-layer complexity and minimum number of sequential operations for different layer types"
+  kind: table
+  page: 6
+  questions:
+    - q: "In Table 1 of 'Attention Is All You Need' (maximum path lengths, per-layer complexity and minimum number of sequential operations), what is the maximum path length of a convolutional layer?"
+      type: choice
+      options: ["O(1)", "O(n)", "O(log_k(n))", "O(n/r)"]
+      key: "O(log_k(n))"
+
+- id: text-page-008
+  caption: "Text, page 8"
+  kind: text
+  page: 8
+  questions:
+    - q: "In 'Attention Is All You Need', how many days did training of the big Transformer model for WMT 2014 English-to-German take on 8 P100 GPUs?"
+      type: number
+      decimals: 1
+      key: 3.5
+      tolerance: 0.05
+    - q: "In 'Attention Is All You Need', how many of the last checkpoints were averaged for the big models?"
+      type: number
+      decimals: 0
+      key: 20
+      tolerance: 0
+
+- id: table-page-008
+  caption: "Table 2: The Transformer achieves better BLEU scores than previous state-of-the-art models on the English-to-German and English-to-French newstest2014 tests at a fraction of the training cost."
+  kind: table
+  page: 8
+  questions:
+    - q: "In Table 2 of 'Attention Is All You Need', what is the English-to-French (EN-FR) BLEU score of the single (non-ensemble) ConvS2S [9] model?"
+      type: number
+      decimals: 2
+      key: 40.46
+      tolerance: 0
+
+- id: table-page-009
+  caption: "Table 3: Variations on the Transformer architecture."
+  kind: table
+  page: 9
+  questions:
+    - q: "In Table 3 (Variations on the Transformer architecture) of 'Attention Is All You Need', in the row group (C) variant with d_model = 1024 (and d_k = d_v = 128), how many parameters (x10^6) does the model have?"
+      type: number
+      decimals: 0
+      key: 168
+      tolerance: 0
+
+- id: text-page-010
+  caption: "Text, page 10"
+  kind: text
+  page: 10
+  questions:
+    - q: "According to 'Attention Is All You Need', does the Transformer outperform the BerkeleyParser on English constituency parsing even when training only on the WSJ training set of 40K sentences? Answer yes or no."
+      type: bool
+      key: true
+
+- id: table-page-010
+  caption: "Table 4: The Transformer generalizes well to English constituency parsing (Results are on Section 23 of WSJ)"
+  kind: table
+  page: 10
+  questions:
+    - q: "In Table 4 of 'Attention Is All You Need' (English constituency parsing, WSJ Section 23), what WSJ 23 F1 score does the Transformer (4 layers) achieve in the semi-supervised setting?"
+      type: number
+      decimals: 1
+      key: 92.7
+      tolerance: 0
