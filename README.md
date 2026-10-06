@@ -12,6 +12,7 @@ the yardstick is in [`docs/phase-0.md`](docs/phase-0.md).
 uv sync
 cp figmark.example.yaml figmark.yaml     # point `figures` at an OpenAI-compatible VLM
 uv run figmark convert report.pdf slides.pptx -o out/
+uv run figmark cache stats             # descriptions are cached locally, keyed on image + model + prompt
 ```
 
 - [`docs/PRD.md`](docs/PRD.md) — what is being built, how it is measured, and the

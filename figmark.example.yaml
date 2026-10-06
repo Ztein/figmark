@@ -8,3 +8,4 @@ figures:
     reasoning_effort: none                # Gemma 4 thinks by default and can spend the whole budget
     max_tokens: 600
   concurrency: 4
+  cache: true                             # reuse descriptions of images seen before (~/.cache/figmark); a path, or false

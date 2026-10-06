@@ -23,6 +23,7 @@ class FigureModel:
     prompt: str | None = None  # None: Docling's built-in prompt
     concurrency: int = 4
     timeout: float = 120.0
+    cache: str | bool = True  # True: ~/.cache/figmark/descriptions.sqlite; a path; or false to describe every time
 
     @property
     def api_key(self) -> str | None:
