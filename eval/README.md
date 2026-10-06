@@ -59,3 +59,15 @@ uv run eval/h0.py report [figure|all|<kind>]
 A *reading* is one Markdown/text file per document under `runs/<reading>/`; any
 pipeline is scored by writing its output there. H0 is pre-registered in
 `h0/README.md`; results and the proposed thresholds are in `docs/phase-0.md`.
+
+## Phase 1 tools
+
+```bash
+uv run eval/convert_set.py docling [--testset | --office | --office-pdf] [--no-figures]
+uv run eval/qa.py docling --repeat 2
+uv run eval/report.py floor docling-plain docling   # figure / table / text questions vs floor and ceiling
+uv run eval/textquality.py docling-plain            # edit distance against native Office text
+```
+
+`questions/*.text.yaml` hold 56 questions on body text and tables (for H1),
+pending human review like the 55 figure questions.
