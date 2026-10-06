@@ -1,0 +1,82 @@
+# Text and table questions — keys read from the PDF page by claude-opus-5-5 on 2026-10-06.
+# PENDING HUMAN REVIEW. Used for H1: do text and tables survive conversion?
+# Page numbers are 1-based PDF page indices (printed page number + 1 in the main part;
+# statistical annex pages are printed as "S n").
+document: ecb-eb-202501
+manifest: central-banks
+language: en
+figures:
+
+- id: text-page-004
+  caption: "Text, page 4"
+  kind: text
+  page: 4
+  questions:
+    - q: "According to the summary of the ECB Economic Bulletin Issue 1/2025, by how many basis points did the Governing Council decide to lower the three key ECB interest rates at its meeting on 30 January 2025?"
+      type: number
+      decimals: 0
+      key: 25
+      tolerance: 0
+    - q: "According to the summary of the ECB Economic Bulletin Issue 1/2025, is the Governing Council pre-committing to a particular interest rate path? Answer yes or no."
+      type: bool
+      key: false
+
+- id: text-page-005
+  caption: "Text, page 5"
+  kind: text
+  page: 5
+  questions:
+    - q: "According to the summary of the ECB Economic Bulletin Issue 1/2025, what was the euro area unemployment rate in December 2024, in percent?"
+      type: number
+      decimals: 1
+      key: 6.3
+      tolerance: 0.05
+    - q: "According to the summary of the ECB Economic Bulletin Issue 1/2025, to what rate did euro area services inflation edge up in December 2024, in percent?"
+      type: number
+      decimals: 1
+      key: 4.0
+      tolerance: 0.05
+
+- id: table-page-072
+  caption: "Table. Cumulated absolute high-frequency changes in risk-free and sovereign yields by event type"
+  kind: table
+  page: 72
+  questions:
+    - q: "In the table 'Cumulated absolute high-frequency changes in risk-free and sovereign yields by event type' (box on ECB monetary policy communication, ECB Economic Bulletin Issue 1/2025), what is the cumulated absolute change for the 10-year bond Italy around Governing Council press conferences, in basis points (the cumulated value, not the mean in brackets)?"
+      type: number
+      decimals: 1
+      key: 430.8
+      tolerance: 0
+
+- id: table-page-133
+  caption: "1.1 Main trading partners, GDP and CPI"
+  kind: table
+  page: 133
+  questions:
+    - q: "In statistical table 1.1 (Main trading partners, GDP and CPI) of the ECB Economic Bulletin Issue 1/2025, what is the CPI annual percentage change for Japan in December 2024?"
+      type: number
+      decimals: 1
+      key: 3.6
+      tolerance: 0
+
+- id: table-page-147
+  caption: "4.9 Bilateral exchange rates"
+  kind: table
+  page: 147
+  questions:
+    - q: "In statistical table 4.9 (Bilateral exchange rates, units of national currency per euro) of the ECB Economic Bulletin Issue 1/2025, what is the period-average Swedish krona rate for December 2024?"
+      type: number
+      decimals: 3
+      key: 11.504
+      tolerance: 0
+
+- id: table-page-156
+  caption: "6.6 Fiscal developments in euro area countries"
+  kind: table
+  page: 156
+  questions:
+    - q: "In statistical table 6.6 (Fiscal developments in euro area countries) of the ECB Economic Bulletin Issue 1/2025, what is France's government debt in 2024 Q3, as a percentage of GDP?"
+      type: number
+      decimals: 1
+      key: 113.8
+      tolerance: 0

@@ -1,0 +1,85 @@
+# Text and table questions — keys read from the PDF page by claude-opus-5-5 on 2026-10-06.
+# PENDING HUMAN REVIEW. Used for H1: do text and tables survive conversion?
+# Page numbers are 1-based PDF page indices (in this document they equal the printed page numbers).
+document: boc-mpr-202501
+manifest: central-banks
+language: en
+figures:
+
+- id: text-page-005
+  caption: "Text, page 5"
+  kind: text
+  page: 5
+  questions:
+    - q: "According to the Bank of Canada Monetary Policy Report of January 2025, by about how many percent is residential investment estimated to have increased in the fourth quarter of 2024?"
+      type: number
+      decimals: 0
+      key: 15
+      tolerance: 0
+
+- id: text-page-006
+  caption: "Text, page 6"
+  kind: text
+  page: 6
+  questions:
+    - q: "According to the Bank of Canada Monetary Policy Report of January 2025, to around what rate (in percent) is Canadian export growth estimated to have risen in the fourth quarter of 2024?"
+      type: number
+      decimals: 1
+      key: 4.6
+      tolerance: 0.05
+    - q: "According to the Bank of Canada Monetary Policy Report of January 2025, the sharp rise in Canadian export growth in the fourth quarter of 2024 mostly reflected a surge in exports of which goods?"
+      type: choice
+      options: ["gold and pharmaceuticals", "oil and natural gas", "motor vehicles and parts", "lumber and potash"]
+      key: "gold and pharmaceuticals"
+
+- id: text-page-010
+  caption: "Text, page 10"
+  kind: text
+  page: 10
+  questions:
+    - q: "According to the Bank of Canada Monetary Policy Report of January 2025, is shelter services price inflation the only major CPI component above its historical average? Answer yes or no."
+      type: bool
+      key: true
+
+- id: table-page-033
+  caption: "Table 1: Contributions to average annual real GDP growth"
+  kind: table
+  page: 33
+  questions:
+    - q: "In Table 1 (Contributions to average annual real GDP growth) of the Bank of Canada Monetary Policy Report of January 2025, what is the contribution of business fixed investment in 2025, in percentage points (current projection, not the previous Report's number in parentheses)?"
+      type: number
+      decimals: 1
+      key: 0.1
+      tolerance: 0
+
+- id: table-page-034
+  caption: "Table 2: Summary of the quarterly projection for Canada"
+  kind: table
+  page: 34
+  questions:
+    - q: "In Table 2 (Summary of the quarterly projection for Canada) of the Bank of Canada Monetary Policy Report of January 2025, what is real GDP growth (quarter-over-quarter percentage change at annual rates) for 2024 Q3, in percent (current projection, not the number in parentheses)?"
+      type: number
+      decimals: 1
+      key: 1.0
+      tolerance: 0
+
+- id: table-page-035
+  caption: "Table 3: Projection for global economic growth"
+  kind: table
+  page: 35
+  questions:
+    - q: "In Table 3 (Projection for global economic growth) of the Bank of Canada Monetary Policy Report of January 2025, what is the projected growth for China in 2025, in percent (current projection, not the previous Report's number in parentheses)?"
+      type: number
+      decimals: 1
+      key: 4.9
+      tolerance: 0
+
+- id: table-page-046
+  caption: "Table 4: Details on variations of trade conflict scenario"
+  kind: table
+  page: 46
+  questions:
+    - q: "In Table 4 (Details on variations of trade conflict scenario) of the Bank of Canada Monetary Policy Report of January 2025, under the 'Faster tariff pass-through to consumer prices' variation, over what period is the cost of tariffs assumed to fully pass through into consumer prices?"
+      type: choice
+      options: ["one and a half years", "three years", "two years", "one year"]
+      key: "one and a half years"

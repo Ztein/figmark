@@ -7,3 +7,4 @@ __pycache__/
 eval/config.yaml
 eval/runs/
 eval/truth/
+figmark.yaml

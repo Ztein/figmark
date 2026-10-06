@@ -4,9 +4,15 @@ Turn documents into text that an LLM can use — including what only the figures
 say: charts, diagrams and process sketches become structured, readable text.
 Runs fully locally.
 
-Status: **phase 0 done, at its decision point** — the yardstick is built and
-validated (see [`docs/phase-0.md`](docs/phase-0.md)). Nothing here converts
-documents yet.
+Status: **phase 1 done, at its decision point** — a first converter on Docling,
+measured against the floor and ceiling ([`docs/phase-1.md`](docs/phase-1.md));
+the yardstick is in [`docs/phase-0.md`](docs/phase-0.md).
+
+```bash
+uv sync
+cp figmark.example.yaml figmark.yaml     # point `figures` at an OpenAI-compatible VLM
+uv run figmark convert report.pdf slides.pptx -o out/
+```
 
 - [`docs/PRD.md`](docs/PRD.md) — what is being built, how it is measured, and the
   hypotheses each phase has to pass (in Swedish).

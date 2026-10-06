@@ -1,0 +1,69 @@
+# Text and table questions — keys read from the PDF page by claude-opus-5-5 on 2026-10-06.
+# PENDING HUMAN REVIEW. Used for H1: do text and tables survive conversion?
+# Page numbers are 1-based PDF page indices (printed page number + 1 in this document).
+# The document has only one typeset table (an untitled two-column text table on PDF page 86,
+# "Key principles underpinning a macroprudential approach to NBFI"); all four table questions
+# are drawn from it and ask about text cells, not numbers. All other data is in charts.
+document: ecb-fsr-202411
+manifest: central-banks
+language: en
+figures:
+
+- id: text-page-004
+  caption: "Text, page 4"
+  kind: text
+  page: 4
+  questions:
+    - q: "According to the Foreword of the ECB Financial Stability Review of November 2024, which anniversary of the Review does this edition mark (give the number)?"
+      type: number
+      decimals: 0
+      key: 20
+      tolerance: 0
+
+- id: text-page-051
+  caption: "Text, page 51"
+  kind: text
+  page: 51
+  questions:
+    - q: "According to the ECB Financial Stability Review of November 2024, in which month of 2024 did the reallocation of euro area bank deposits from overnight to agreed maturity deposits come to an end?"
+      type: choice
+      options: ["January", "March", "June", "September"]
+      key: "March"
+
+- id: text-page-057
+  caption: "Text, page 57"
+  kind: text
+  page: 57
+  questions:
+    - q: "According to the ECB Financial Stability Review of November 2024, what return on equity (ROE) did euro area banks reach in the second quarter of 2024 in annual terms, in percent?"
+      type: number
+      decimals: 1
+      key: 9.4
+      tolerance: 0.05
+    - q: "According to the ECB Financial Stability Review of November 2024, to what level did the NPL coverage ratio for firms tick up in the second quarter of 2024, in percent?"
+      type: number
+      decimals: 1
+      key: 42.7
+      tolerance: 0.05
+
+- id: table-page-086
+  caption: "Key principles underpinning a macroprudential approach to NBFI"
+  kind: table
+  page: 86
+  questions:
+    - q: "How many key principles are listed in the table 'Key principles underpinning a macroprudential approach to NBFI' in the ECB Financial Stability Review of November 2024?"
+      type: number
+      decimals: 0
+      key: 7
+      tolerance: 0
+    - q: "In the table 'Key principles underpinning a macroprudential approach to NBFI' (ECB Financial Stability Review, November 2024), which principle states that a one-size-fits-all approach is unlikely to be effective?"
+      type: choice
+      options: ["Taking a system-wide perspective", "Tailored to different entities and activities", "Proportionate/mindful of potential risks", "Supported by clear governance"]
+      key: "Tailored to different entities and activities"
+    - q: "In the table 'Key principles underpinning a macroprudential approach to NBFI' (ECB Financial Stability Review, November 2024), which principle refers to mitigating the risk of cross-border fragmentation and regulatory arbitrage?"
+      type: choice
+      options: ["Globally coordinated/consistent with global standards", "Flexible in responding to emerging risks", "Focused on building resilience ex ante", "Supported by clear governance"]
+      key: "Globally coordinated/consistent with global standards"
+    - q: "In the table 'Key principles underpinning a macroprudential approach to NBFI' (ECB Financial Stability Review, November 2024), under the principle 'Focused on building resilience ex ante': are tools used to address systemic risk after a shock has materialised a substitute for measures that mitigate risk ex ante? Answer yes or no."
+      type: bool
+      key: false

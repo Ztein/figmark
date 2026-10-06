@@ -1,0 +1,75 @@
+# Text and table questions — keys read from the PDF page by claude-opus-5-5 on 2026-10-06.
+# PENDING HUMAN REVIEW. Used for H1: do text and tables survive conversion?
+# Page numbers are 1-based PDF page indices (printed page number + 1 in the main part;
+# statistical annex pages are printed as "S n").
+document: ecb-eb-202502
+manifest: central-banks
+language: en
+figures:
+
+- id: text-page-004
+  caption: "Text, page 4"
+  kind: text
+  page: 4
+  questions:
+    - q: "According to the overview of the ECB Economic Bulletin Issue 2/2025, at what historical low did the euro area unemployment rate stay in January 2025, in percent?"
+      type: number
+      decimals: 1
+      key: 6.2
+      tolerance: 0.05
+    - q: "According to the overview of the ECB Economic Bulletin Issue 2/2025, what annual average real GDP growth is expected for the euro area in 2025, in percent?"
+      type: number
+      decimals: 1
+      key: 0.9
+      tolerance: 0.05
+    - q: "According to the overview of the ECB Economic Bulletin Issue 2/2025, compared with the December 2024 Eurosystem staff projections, how was the GDP growth outlook for 2027 changed?"
+      type: choice
+      options: ["revised down by 0.2 percentage points", "unchanged", "revised up by 0.2 percentage points"]
+      key: "unchanged"
+    - q: "According to the overview of the ECB Economic Bulletin Issue 2/2025, does the baseline projection include the impact of new tariffs on trade between the United States and the European Union? Answer yes or no."
+      type: bool
+      key: false
+
+- id: table-page-079
+  caption: "Table A. Eurosystem liquidity conditions (Liabilities)"
+  kind: table
+  page: 79
+  questions:
+    - q: "In Table A (Eurosystem liquidity conditions, Liabilities) of the box on liquidity conditions in the ECB Economic Bulletin Issue 2/2025, what is the average recourse to the deposit facility in the eighth maintenance period (18 December 2024-4 February 2025), in EUR billions?"
+      type: number
+      decimals: 0
+      key: 2904
+      tolerance: 0
+
+- id: table-page-080
+  caption: "Table A (continued). Other liquidity-based information"
+  kind: table
+  page: 80
+  questions:
+    - q: "In Table A (Eurosystem liquidity conditions, 'Other liquidity-based information') of the box on liquidity conditions in the ECB Economic Bulletin Issue 2/2025, what was average excess liquidity in the previous review period (fifth and sixth maintenance periods, 24 July-22 October 2024), in EUR billions?"
+      type: number
+      decimals: 0
+      key: 3039
+      tolerance: 0
+
+- id: table-page-081
+  caption: "Table A (continued). Interest rate developments"
+  kind: table
+  page: 81
+  questions:
+    - q: "In the 'Interest rate developments' table of the box on liquidity conditions in the ECB Economic Bulletin Issue 2/2025, what was the average €STR in the sixth maintenance period (18 September-22 October 2024), in percent?"
+      type: number
+      decimals: 2
+      key: 3.41
+      tolerance: 0
+
+- id: table-page-110
+  caption: "3.1 Harmonised Index of Consumer Prices"
+  kind: table
+  page: 110
+  questions:
+    - q: "In statistical table 3.1 (Harmonised Index of Consumer Prices) of the ECB Economic Bulletin Issue 2/2025, what is the annual percentage change of the services component 'Communication' in December 2024?"
+      type: number
+      decimals: 1
+      key: -2.4
+      tolerance: 0
