@@ -24,5 +24,7 @@ eval = [
     "rapidfuzz>=3",
 ]
 
+dev = ["pytest>=8"]
+
 [tool.uv]
-default-groups = ["eval"]
+default-groups = ["eval", "dev"]

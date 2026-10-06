@@ -126,26 +126,20 @@ them: figures. Proposed additions to phase 2, each with its own measurement:
 4. Compact Markdown tables.
 5. Flowchart questions redone before (1) is judged on flowcharts (from phase 0).
 
-6. **Figure cache — measured, not proposed for now** (asked for 2026-10-06:
-   the same image, such as a logo, described again and again). `eval/duplicates.py`
-   hashes every figure Docling found in the 120 documents (4 762):
-
-   | | Large figures (≥ 5 %, described today) | Small figures (< 5 %) |
-   | --- | --- | --- |
-   | Figures | 4 357 | 405 |
-   | Exact repeat within the same document | 0 | 2 |
-   | Exact repeat of a figure in an earlier document | 125 (2.9 %) | 112 (27.7 %) |
-
-   Within a document, nothing repeats: a logo printed on every page sits in
-   the page header, which Docling treats as furniture and never describes.
-   Of the 125 cross-document repeats, 72 come from two reports that are in the
-   corpus twice (`riksbank-ppr-202503` = `ppr-2025-03`, `riksbank-ppr-202512` =
-   `ppr-2025-12` — to be removed in test set v2); the rest are publisher logos
-   and portraits. So a cache would save about 1 % of description calls today.
-   The small figures repeat a lot (logos), but the PRD already says logos and
-   decoration are skipped by class — cheaper than describing them once and
-   caching. Revisit if the size cut-off is lowered without a class filter, or
-   for a corpus with repeated diagrams (slide decks built from one template).
+6. **Figure cache — built (2026-10-06).** On the public corpus (120 PDF-heavy
+   documents) repeats are rare: 0 within a document, about 1 % across documents
+   once two reports that are in the corpus twice are discounted
+   (`eval/duplicates.py`; `riksbank-ppr-202503` = `ppr-2025-03` and
+   `riksbank-ppr-202512` = `ppr-2025-12`, to be removed in test set v2). A
+   non-public field corpus of 177 PPTX/DOCX files gave the opposite answer:
+   of 1 143 uses of images ≥ 30 kB in slides and body text, 26 % repeat an
+   image earlier in the same file and 38 % one in an earlier file — decks built
+   from one another and several versions of one deck. So figmark now caches
+   descriptions (`src/figmark/cache.py`): keyed on the image's pixels, the
+   prompt and the request parameters, stored locally, empty answers never
+   stored, identical images in flight described once, hits and misses reported
+   per document. Hit rate on the field is measured there, with Docling's own
+   figures.
 
 Proposed targets after phase 1: figure coverage ≥ 60 % for phase 2 (the
 reference reaches ~80 % on the same questions), ≤ 10 s per figure on the Mac
